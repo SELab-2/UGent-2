@@ -1,5 +1,5 @@
 from flask import Flask
-from backend.routes.extentions import db
+from backend.db.extentions import db
 from backend.routes.lesgevers import lesgevers_blueprint
 
 app = Flask(__name__)

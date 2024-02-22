@@ -1,7 +1,7 @@
 from backend.db.errors.database_errors import ItemNotFoundException
 from backend.db.interface.LesgeverDAO import LesgeverDAO
 from backend.db.models.models import Lesgever, LesgeverModel
-from backend.routes.extentions import db
+from backend.db.extentions import db
 
 
 class SqlLesgeverDAO(LesgeverDAO):

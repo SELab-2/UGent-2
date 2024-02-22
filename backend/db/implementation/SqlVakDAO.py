@@ -2,7 +2,7 @@ from backend.db.errors.database_errors import ItemNotFoundException
 from backend.db.interface.VakDAO import VakDAO
 from backend.db.models.models import LesgeverModel, VakModel
 from backend.domain.models.models import Vak
-from backend.routes.extentions import db
+from backend.db.extentions import db
 
 
 class SqlVakDAO(VakDAO):

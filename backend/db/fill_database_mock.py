@@ -4,7 +4,7 @@ from backend.db.interface.LesgeverDAO import LesgeverDAO
 from backend.db.interface.VakDAO import VakDAO
 from backend.domain.models.models import Lesgever, Vak
 from backend.routes.index import app
-from backend.routes.extentions import db
+from backend.db.extentions import db
 
 if __name__ == '__main__':
     with app.app_context():

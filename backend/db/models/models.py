@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from backend.routes.extentions import db
+from backend.db.extentions import db
 from backend.domain.models.models import Lesgever, Vak
 
 
