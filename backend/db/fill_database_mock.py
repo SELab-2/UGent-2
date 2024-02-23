@@ -1,10 +1,10 @@
-from backend.db.extensions import db
-from backend.db.implementation.SqlLesgeverDAO import SqlTeacherDAO
-from backend.db.implementation.SqlVakDAO import SqlSubjectDAO
-from backend.db.interface.SubjectDAO import SubjectDAO
-from backend.db.interface.TeacherDAO import TeacherDAO
-from backend.domain.models.models import SubjectDataclass, TeacherDataclass
-from backend.routes.index import app
+from db.extensions import db
+from db.implementation.SqlLesgeverDAO import SqlTeacherDAO
+from db.implementation.SqlVakDAO import SqlSubjectDAO
+from db.interface.SubjectDAO import SubjectDAO
+from db.interface.TeacherDAO import TeacherDAO
+from domain.models.models import SubjectDataclass, TeacherDataclass
+from routes.index import app
 
 if __name__ == "__main__":
     with app.app_context():

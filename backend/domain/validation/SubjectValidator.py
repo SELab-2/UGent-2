@@ -1,4 +1,4 @@
-from backend.domain.validation.ValidationResult import ValidationResult
+from domain.validation.ValidationResult import ValidationResult
 
 
 class SubjectValidator:

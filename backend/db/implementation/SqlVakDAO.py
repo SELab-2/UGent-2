@@ -1,8 +1,8 @@
-from backend.db.errors.database_errors import ItemNotFoundError
-from backend.db.extensions import db
-from backend.db.interface.SubjectDAO import SubjectDAO
-from backend.db.models.models import Subject, Teacher
-from backend.domain.models.models import SubjectDataclass
+from db.errors.database_errors import ItemNotFoundError
+from db.extensions import db
+from db.interface.SubjectDAO import SubjectDAO
+from db.models.models import Subject, Teacher
+from domain.models.models import SubjectDataclass
 
 
 class SqlSubjectDAO(SubjectDAO):

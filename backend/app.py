@@ -1,6 +1,7 @@
-from backend.db.extensions import db
-from backend.routes.teachers import teachers_blueprint
 from flask import Flask
+
+from db.extensions import db
+from routes.teachers import teachers_blueprint
 
 app = Flask(__name__)
 

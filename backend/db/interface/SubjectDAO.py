@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from backend.domain.models.models import SubjectDataclass
+from domain.models.models import SubjectDataclass
 
 
 class SubjectDAO(ABC):

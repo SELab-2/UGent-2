@@ -1,6 +1,7 @@
-from backend.db.extensions import db
-from backend.domain.models.models import SubjectDataclass, TeacherDataclass
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+
+from db.extensions import db
+from domain.models.models import SubjectDataclass, TeacherDataclass
 
 
 class Teacher(db.Model):
