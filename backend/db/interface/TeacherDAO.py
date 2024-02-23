@@ -1,12 +1,12 @@
 from abc import ABC, abstractmethod
 
-from backend.domain.models.models import Teacher
+from backend.domain.models.models import TeacherDataclass
 
 
 class TeacherDAO(ABC):
 
     @abstractmethod
-    def get_teacher(self, ident: int) -> Teacher:
+    def get_teacher(self, ident: int) -> TeacherDataclass:
         """
         Haalt een teacher op aan de hand van zijn identificatie.
 
@@ -17,7 +17,7 @@ class TeacherDAO(ABC):
         raise NotImplementedError()
 
     @abstractmethod
-    def get_all_teachers(self) -> list[Teacher]:
+    def get_all_teachers(self) -> list[TeacherDataclass]:
         """
         Haalt alle lesgevers op.
 
@@ -26,7 +26,7 @@ class TeacherDAO(ABC):
         raise NotImplementedError()
 
     @abstractmethod
-    def create_teacher(self, teacher: Teacher):
+    def create_teacher(self, teacher: TeacherDataclass):
         """
         Maakt een nieuwe teacher aan.
 

@@ -11,13 +11,13 @@ class JsonRepresentable(ABC):
 
 
 @dataclass()
-class Subject(JsonRepresentable):
+class SubjectDataclass(JsonRepresentable):
     name: str
     teacher_id: int = None
     id: int = None
 
 
 @dataclass()
-class Teacher(JsonRepresentable):
+class TeacherDataclass(JsonRepresentable):
     name: str
     id: int = None

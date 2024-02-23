@@ -3,7 +3,7 @@ from backend.db.implementation.SqlLesgeverDAO import SqlTeacherDAO
 from backend.db.implementation.SqlVakDAO import SqlSubjectDAO
 from backend.db.interface.SubjectDAO import SubjectDAO
 from backend.db.interface.TeacherDAO import TeacherDAO
-from backend.domain.models.models import Subject, Teacher
+from backend.domain.models.models import SubjectDataclass, TeacherDataclass
 from backend.routes.index import app
 
 if __name__ == "__main__":
@@ -14,9 +14,9 @@ if __name__ == "__main__":
         subject_dao: SubjectDAO = SqlSubjectDAO()
 
         # Maak nieuwe lesgevers aan.
-        Gunnar = Teacher(name="Gunnar Brinkmann")
-        Peter = Teacher(name="Peter Dawyndt")
-        Eric = Teacher(name="Eric Laermans")
+        Gunnar = TeacherDataclass(name="Gunnar Brinkmann")
+        Peter = TeacherDataclass(name="Peter Dawyndt")
+        Eric = TeacherDataclass(name="Eric Laermans")
 
         # Voeg lesgevers toe aan de databank via de teacher DAO
         teacher_dao.create_teacher(Gunnar)
@@ -24,12 +24,12 @@ if __name__ == "__main__":
         teacher_dao.create_teacher(Eric)
 
         # Maak nieuwe subjects aan
-        AD2 = Subject(name="Algoritmen en Datastructuren II")
-        AD3 = Subject(name="Algoritmen en Datastructuren III")
-        Computergebruik = Subject(name="Computergebruik")
-        ComputationeleBiologie = Subject(name="Computationele Biologie")
-        RAF = Subject(name="Redeneren, Abstraheren en Formuleren")
-        InformationSecurity = Subject(name="Information Security")
+        AD2 = SubjectDataclass(name="Algoritmen en Datastructuren II")
+        AD3 = SubjectDataclass(name="Algoritmen en Datastructuren III")
+        Computergebruik = SubjectDataclass(name="Computergebruik")
+        ComputationeleBiologie = SubjectDataclass(name="Computationele Biologie")
+        RAF = SubjectDataclass(name="Redeneren, Abstraheren en Formuleren")
+        InformationSecurity = SubjectDataclass(name="Information Security")
 
         # Steek de subjects in de databank
         subject_dao.create_subject(AD2, Gunnar.id)
