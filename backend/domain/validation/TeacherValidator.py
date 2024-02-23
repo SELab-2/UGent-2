@@ -1,14 +1,14 @@
 from backend.domain.validation.ValidationResult import ValidationResult
 
 
-class LesgeverValidator:
+class TeacherValidator:
     @staticmethod
     def validate(json_data: dict):
         result = ValidationResult()
 
-        naam = json_data.get("naam")
+        name = json_data.get("name")
 
-        if not naam:
-            result.add_error("Veld 'naam' ontbreekt.")
+        if not name:
+            result.add_error("Veld 'name' ontbreekt.")
 
         return result

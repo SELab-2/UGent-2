@@ -1,27 +1,27 @@
 from backend.db.errors.database_errors import ItemNotFoundError
 from backend.db.extentions import db
-from backend.db.interface.LesgeverDAO import LesgeverDAO
-from backend.db.models.models import Lesgever, LesgeverModel
+from backend.db.interface.TeacherDAO import TeacherDAO
+from backend.db.models.models import Teacher, TeacherModel
 
 
-class SqlLesgeverDAO(LesgeverDAO):
+class SqlTeacherDAO(TeacherDAO):
 
-    def create_lesgever(self, lesgever: Lesgever):
-        nieuwe_lesgever = LesgeverModel(naam=lesgever.naam)
+    def get_teacher(self, ident: int):
+        teacher: TeacherModel = TeacherModel.query.get(ident=ident)
 
-        db.session.add(nieuwe_lesgever)
+        if not teacher:
+            raise ItemNotFoundError("Teacher with given id not found.")
+
+        return teacher.to_domain_model()
+
+    def get_all_teachers(self) -> list[Teacher]:
+        teachers: list[TeacherModel] = TeacherModel.query.all()
+        return [lesgever.to_domain_model() for lesgever in teachers]
+
+    def create_teacher(self, teacher: Teacher):
+        new_teacher = TeacherModel(name=teacher.name)
+
+        db.session.add(new_teacher)
         db.session.commit()
 
-        lesgever.id = nieuwe_lesgever.id
-
-    def get_all_lesgevers(self) -> list[Lesgever]:
-        lesgevers: list[LesgeverModel] = LesgeverModel.query.all()
-        return [lesgever.to_domain_model() for lesgever in lesgevers]
-
-    def get_lesgever(self, ident: int):
-        lesgever: LesgeverModel = LesgeverModel.query.get(ident=ident)
-
-        if not lesgever:
-            raise ItemNotFoundError("Lesgever with given id not found.")
-
-        return lesgever.to_domain_model()
+        teacher.id = new_teacher.id

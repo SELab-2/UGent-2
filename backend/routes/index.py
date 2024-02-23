@@ -1,11 +1,11 @@
 from backend.db.extentions import db
-from backend.routes.lesgevers import lesgevers_blueprint
+from backend.routes.teachers import teachers_blueprint
 from flask import Flask
 
 app = Flask(__name__)
 
 # Koppel routes uit andere modules.
-app.register_blueprint(lesgevers_blueprint)
+app.register_blueprint(teachers_blueprint)
 
 # Koppel postgres uri en db aan app instantie
 app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://postgres:postgres@localhost:5432/testdb"

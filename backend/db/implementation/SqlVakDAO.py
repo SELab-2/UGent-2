@@ -1,37 +1,37 @@
 from backend.db.errors.database_errors import ItemNotFoundError
 from backend.db.extentions import db
-from backend.db.interface.VakDAO import VakDAO
-from backend.db.models.models import LesgeverModel, VakModel
-from backend.domain.models.models import Vak
+from backend.db.interface.SubjectDAO import SubjectDAO
+from backend.db.models.models import SubjectModel, TeacherModel
+from backend.domain.models.models import Subject
 
 
-class SqlVakDAO(VakDAO):
+class SqlSubjectDAO(SubjectDAO):
 
-    def create_vak(self, vak: Vak, lesgever_id: int):
-        lesgever = LesgeverModel.query.get(lesgever_id)
+    def create_subject(self, subject: Subject, teacher_id: int):
+        teacher = TeacherModel.query.get(teacher_id)
 
-        if not lesgever:
-            raise ItemNotFoundError(f"De lesgever met id {lesgever_id} kon niet in de databank gevonden worden")
+        if not teacher:
+            raise ItemNotFoundError(f"De teacher met id {teacher_id} kon niet in de databank gevonden worden")
 
-        new_vak = VakModel(naam=vak.naam, lesgever=lesgever)
+        new_subject = SubjectModel(name=subject.name, teacher=teacher)
 
-        db.session.add(new_vak)
+        db.session.add(new_subject)
         db.session.commit()
 
-        vak.id = new_vak.id
+        subject.id = new_subject.id
 
-    def get_vak(self, lesgever_id: int):
-        vak = VakModel.query.get(lesgever_id)
-        if not vak:
-            raise ItemNotFoundError(f"De lesgever met id {lesgever_id} kon niet in de databank gevonden worden")
+    def get_subject(self, teacher_id: int):
+        subject = SubjectModel.query.get(teacher_id)
+        if not subject:
+            raise ItemNotFoundError(f"De lesgever met id {teacher_id} kon niet in de databank gevonden worden")
 
-        return vak.to_domain_model()
+        return subject.to_domain_model()
 
-    def get_vakken(self, lesgever_id: int) -> list[Vak]:
-        lesgever: LesgeverModel = LesgeverModel.query.get(ident=lesgever_id)
+    def get_subjects(self, teacher_id: int) -> list[Subject]:
+        teacher: TeacherModel = TeacherModel.query.get(ident=teacher_id)
 
-        if not lesgever:
-            raise ItemNotFoundError(f"De lesgever met id {lesgever_id} kon niet in de databank gevonden worden")
+        if not teacher:
+            raise ItemNotFoundError(f"De teacher met id {teacher_id} kon niet in de databank gevonden worden")
 
-        vakken: list[VakModel] = lesgever.vakken
-        return [vak.to_domain_model() for vak in vakken]
+        subjects: list[SubjectModel] = teacher.subjects
+        return [vak.to_domain_model() for vak in subjects]

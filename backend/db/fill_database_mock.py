@@ -1,42 +1,42 @@
 from backend.db.extentions import db
-from backend.db.implementation.SqlLesgeverDAO import SqlLesgeverDAO
-from backend.db.implementation.SqlVakDAO import SqlVakDAO
-from backend.db.interface.LesgeverDAO import LesgeverDAO
-from backend.db.interface.VakDAO import VakDAO
-from backend.domain.models.models import Lesgever, Vak
+from backend.db.implementation.SqlLesgeverDAO import SqlTeacherDAO
+from backend.db.implementation.SqlVakDAO import SqlSubjectDAO
+from backend.db.interface.SubjectDAO import SubjectDAO
+from backend.db.interface.TeacherDAO import TeacherDAO
+from backend.domain.models.models import Subject, Teacher
 from backend.routes.index import app
 
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
 
-        lesgever_dao: LesgeverDAO = SqlLesgeverDAO()
-        vak_dao: VakDAO = SqlVakDAO()
+        teacher_dao: TeacherDAO = SqlTeacherDAO()
+        subject_dao: SubjectDAO = SqlSubjectDAO()
 
         # Maak nieuwe lesgevers aan.
-        Gunnar = Lesgever(naam="Gunnar Brinkmann")
-        Peter = Lesgever(naam="Peter Dawyndt")
-        Eric = Lesgever(naam="Eric Laermans")
+        Gunnar = Teacher(name="Gunnar Brinkmann")
+        Peter = Teacher(name="Peter Dawyndt")
+        Eric = Teacher(name="Eric Laermans")
 
-        # Voeg lesgevers toe aan de databank via de lesgever DAO
-        lesgever_dao.create_lesgever(Gunnar)
-        lesgever_dao.create_lesgever(Peter)
-        lesgever_dao.create_lesgever(Eric)
+        # Voeg lesgevers toe aan de databank via de teacher DAO
+        teacher_dao.create_teacher(Gunnar)
+        teacher_dao.create_teacher(Peter)
+        teacher_dao.create_teacher(Eric)
 
-        # Maak nieuwe vakken aan
-        AD2 = Vak(naam="Algoritmen en Datastructuren II")
-        AD3 = Vak(naam="Algoritmen en Datastructuren III")
-        Computergebruik = Vak(naam="Computergebruik")
-        ComputationeleBiologie = Vak(naam="Computationele Biologie")
-        RAF = Vak(naam="Redeneren, Abstraheren en Formuleren")
-        InformationSecurity = Vak(naam="Information Security")
+        # Maak nieuwe subjects aan
+        AD2 = Subject(name="Algoritmen en Datastructuren II")
+        AD3 = Subject(name="Algoritmen en Datastructuren III")
+        Computergebruik = Subject(name="Computergebruik")
+        ComputationeleBiologie = Subject(name="Computationele Biologie")
+        RAF = Subject(name="Redeneren, Abstraheren en Formuleren")
+        InformationSecurity = Subject(name="Information Security")
 
-        # Steek de vakken in de databank
-        vak_dao.create_vak(AD2, Gunnar.id)
-        vak_dao.create_vak(AD3, Gunnar.id)
+        # Steek de subjects in de databank
+        subject_dao.create_subject(AD2, Gunnar.id)
+        subject_dao.create_subject(AD3, Gunnar.id)
 
-        vak_dao.create_vak(Computergebruik, Peter.id)
-        vak_dao.create_vak(ComputationeleBiologie, Peter.id)
+        subject_dao.create_subject(Computergebruik, Peter.id)
+        subject_dao.create_subject(ComputationeleBiologie, Peter.id)
 
-        vak_dao.create_vak(RAF, Eric.id)
-        vak_dao.create_vak(InformationSecurity, Eric.id)
+        subject_dao.create_subject(RAF, Eric.id)
+        subject_dao.create_subject(InformationSecurity, Eric.id)
