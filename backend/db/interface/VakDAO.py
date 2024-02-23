@@ -28,7 +28,7 @@ class VakDAO(ABC):
         raise NotImplementedError()
 
     @abstractmethod
-    def getVakken(self, lesgever_id: int) -> list[Vak]:
+    def get_vakken(self, lesgever_id: int) -> list[Vak]:
         """
         Haalt de vakken op die door een bepaalde lesgever worden gegeven.
 

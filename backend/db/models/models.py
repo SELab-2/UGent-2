@@ -1,7 +1,6 @@
-from sqlalchemy.orm import Mapped, mapped_column, relationship
-
 from backend.db.extentions import db
 from backend.domain.models.models import Lesgever, Vak
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 
 class LesgeverModel(db.Model):
@@ -19,7 +18,7 @@ class LesgeverModel(db.Model):
 class VakModel(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     naam: Mapped[str] = mapped_column()
-    lesgever_id: Mapped[int] = mapped_column(db.ForeignKey('lesgever_model.id'))
+    lesgever_id: Mapped[int] = mapped_column(db.ForeignKey("lesgever_model.id"))
     lesgever: Mapped["LesgeverModel"] = relationship("LesgeverModel", back_populates="vakken")
 
     def to_domain_model(self):

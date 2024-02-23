@@ -1,11 +1,12 @@
 from abc import ABC, abstractmethod
+
 from backend.domain.models.models import Lesgever
 
 
 class LesgeverDAO(ABC):
 
     @abstractmethod
-    def getLesgever(self, ident: int) -> Lesgever:
+    def get_lesgever(self, ident: int) -> Lesgever:
         """
         Haalt een lesgever op aan de hand van zijn identificatie.
 
@@ -16,7 +17,7 @@ class LesgeverDAO(ABC):
         raise NotImplementedError()
 
     @abstractmethod
-    def getAllLesgevers(self) -> list[Lesgever]:
+    def get_all_lesgevers(self) -> list[Lesgever]:
         """
         Haalt alle lesgevers op.
 
@@ -25,7 +26,7 @@ class LesgeverDAO(ABC):
         raise NotImplementedError()
 
     @abstractmethod
-    def createLesgever(self, lesgever: Lesgever):
+    def create_lesgever(self, lesgever: Lesgever):
         """
         Maakt een nieuwe lesgever aan.
 

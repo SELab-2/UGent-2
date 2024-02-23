@@ -1,6 +1,6 @@
-from flask import Flask
 from backend.db.extentions import db
 from backend.routes.lesgevers import lesgevers_blueprint
+from flask import Flask
 
 app = Flask(__name__)
 
@@ -8,14 +8,14 @@ app = Flask(__name__)
 app.register_blueprint(lesgevers_blueprint)
 
 # Koppel postgres uri en db aan app instantie
-app.config["SQLALCHEMY_DATABASE_URI"] = 'postgresql://postgres:postgres@localhost:5432/testdb'
+app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://postgres:postgres@localhost:5432/testdb"
 db.init_app(app)
 
 
-@app.route('/')
+@app.route("/")
 def hello_world():
-    return 'Hello, World!'
+    return "Hello, World!"
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run(debug=True)
