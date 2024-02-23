@@ -1,5 +1,5 @@
 from backend.db.errors.database_errors import ItemNotFoundError
-from backend.db.extentions import db
+from backend.db.extensions import db
 from backend.db.interface.TeacherDAO import TeacherDAO
 from backend.db.models.models import Teacher, TeacherDataclass
 

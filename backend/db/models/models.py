@@ -1,4 +1,4 @@
-from backend.db.extentions import db
+from backend.db.extensions import db
 from backend.domain.models.models import SubjectDataclass, TeacherDataclass
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 

@@ -1,4 +1,4 @@
-from backend.db.extentions import db
+from backend.db.extensions import db
 from backend.routes.teachers import teachers_blueprint
 from flask import Flask
 

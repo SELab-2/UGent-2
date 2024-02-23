@@ -1,4 +1,4 @@
-from backend.db.extentions import db
+from backend.db.extensions import db
 from backend.db.implementation.SqlLesgeverDAO import SqlTeacherDAO
 from backend.db.implementation.SqlVakDAO import SqlSubjectDAO
 from backend.db.interface.SubjectDAO import SubjectDAO
