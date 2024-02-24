@@ -4,7 +4,6 @@ from domain.models.models import SubjectDataclass
 
 
 class SubjectDAO(ABC):
-
     @abstractmethod
     def create_subject(self, subject: SubjectDataclass, teacher_id: int):
         """

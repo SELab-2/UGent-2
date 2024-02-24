@@ -4,7 +4,6 @@ from domain.models.models import ProjectDataclass
 
 
 class Project(ABC):
-
     @abstractmethod
     def create_project(self, project: ProjectDataclass, subject_id: int):
         """
@@ -22,7 +21,7 @@ class Project(ABC):
         Haalt een ProjectDataClass op aan de hand van zijn identificatie.
 
         :param project_id: De identificatie van het op te halen ProjectDataClass.
-        :raises ItemNotFoundException: Als er geen ProjectDataClass met de opgegeven `project_id` in de database bestaat.
+        :raises ItemNotFoundException: Als er geen ProjectDataClass met de opgegeven `project_id` in de database bestaat
         :returns: De domeinmodel-instantie van het opgehaalde ProjectDataClass.
         """
         raise NotImplementedError()

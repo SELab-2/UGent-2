@@ -34,7 +34,6 @@ def get_teacher(teacher_id):
 
 @teachers_blueprint.route("/teachers", methods=["POST"])
 def create_teacher():
-
     teacher_data: dict = request.get_json()
 
     if not teacher_data:

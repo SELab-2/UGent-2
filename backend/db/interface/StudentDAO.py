@@ -4,7 +4,6 @@ from domain.models.models import StudentDataclass
 
 
 class StudentDAO(ABC):
-
     @abstractmethod
     def get_student(self, ident: int) -> StudentDataclass:
         """
@@ -33,4 +32,3 @@ class StudentDAO(ABC):
         :param student: De student die aangemaakt moet worden.
         """
         raise NotImplementedError()
-

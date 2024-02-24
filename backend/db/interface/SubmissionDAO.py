@@ -4,7 +4,6 @@ from domain.models.models import SubmissionDataclass
 
 
 class Project(ABC):
-
     @abstractmethod
     def create_submission(self, submission: SubmissionDataclass, project_id: int, group_id: int):
         """
@@ -25,7 +24,8 @@ class Project(ABC):
         Haalt een SubmissionDataClass op aan de hand van zijn identificatie.
 
         :param submission_id: De identificatie van het op te halen SubmissionDataClass.
-        :raises ItemNotFoundException: Als er geen SubmissionDataclass met de opgegeven `project_id` in de database bestaat.
+        :raises ItemNotFoundException: Als er geen SubmissionDataclass met de opgegeven `project_id` in de database
+        bestaat.
         :returns: De domeinmodel-instantie van het opgehaalde SubmissionDataClass.
         """
         raise NotImplementedError()

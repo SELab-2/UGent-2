@@ -4,7 +4,6 @@ from domain.models.models import TeacherDataclass
 
 
 class TeacherDAO(ABC):
-
     @abstractmethod
     def get_teacher(self, ident: int) -> TeacherDataclass:
         """

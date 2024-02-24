@@ -4,7 +4,6 @@ from domain.models.models import UserDataclass
 
 
 class UserDAO(ABC):
-
     @abstractmethod
     def get_user(self, ident: int) -> UserDataclass:
         """
@@ -33,4 +32,3 @@ class UserDAO(ABC):
         :param user: De user die aangemaakt moet worden.
         """
         raise NotImplementedError()
-

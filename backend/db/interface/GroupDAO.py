@@ -4,7 +4,6 @@ from domain.models.models import GroupDataclass
 
 
 class Group(ABC):
-
     @abstractmethod
     def create_group(self, group: GroupDataclass, project_id: int):
         """

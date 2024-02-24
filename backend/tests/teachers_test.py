@@ -6,7 +6,6 @@ from app import app
 
 
 class LesgeverTestCase(unittest.TestCase):
-
     def setUp(self):
         self.app = app.test_client()
         self.app.testing = True
@@ -17,9 +16,7 @@ class LesgeverTestCase(unittest.TestCase):
         self.assertIn("error", json.loads(response.data))
 
     def test_create_teacher_success(self):
-        teacher_data = {
-            "name": "Bart De Bruyn"
-        }
+        teacher_data = {"name": "Bart De Bruyn"}
         response = self.app.post("/teachers", data=json.dumps(teacher_data), content_type="application/json")
         self.assertEqual(HTTPStatus.CREATED, response.status_code)
 

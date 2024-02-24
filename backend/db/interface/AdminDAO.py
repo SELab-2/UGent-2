@@ -1,10 +1,9 @@
 from abc import ABC, abstractmethod
 
-from domain.models.models import AdminDataclass, UserDataclass
+from domain.models.models import AdminDataclass
 
 
 class AdminDAO(ABC):
-
     @abstractmethod
     def get_admin(self, ident: int) -> AdminDataclass:
         """
@@ -33,4 +32,3 @@ class AdminDAO(ABC):
         :param admin: De AdminDataclass van de nieuwe admin.
         """
         raise NotImplementedError()
-
