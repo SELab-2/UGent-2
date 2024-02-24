@@ -26,11 +26,11 @@ class AdminDAO(ABC):
         raise NotImplementedError()
 
     @abstractmethod
-    def give_admin(self, user: UserDataclass):
+    def give_admin(self, user_id: int):
         """
         Geeft de gegeven user admin rechten.
 
-        :param user: De user die admin moet worden.
+        :param user_id: De id van de user die admin moet worden.
         """
         raise NotImplementedError()
 
