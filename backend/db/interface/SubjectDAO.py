@@ -17,22 +17,32 @@ class SubjectDAO(ABC):
         raise NotImplementedError()
 
     @abstractmethod
-    def get_subject(self, teacher_id: int):
+    def get_subject(self, subject_id: int) -> SubjectDataclass:
         """
         Haalt een SubjectDataclass op aan de hand van zijn identificatie.
 
-        :param teacher_id: De identificatie van het op te halen SubjectDataclass.
+        :param subject_id: De identificatie van het op te halen SubjectDataclass.
         :raises ItemNotFoundException: Als er geen SubjectDataclass met de opgegeven `ident` in de database bestaat.
         :returns: De domeinmodel-instantie van het opgehaalde SubjectDataclass.
         """
         raise NotImplementedError()
 
     @abstractmethod
-    def get_subjects(self, teacher_id: int) -> list[SubjectDataclass]:
+    def get_subjects_teacher(self, teacher_id: int) -> list[SubjectDataclass]:
         """
         Haalt de subjects op die door een bepaalde teacher worden gegeven.
 
         :param teacher_id: De teacher waarvan de subjects opgehaald moeten worden.
         :return: Een lijst van subjects die door de gegeven teacher worden gegeven.
+        """
+        raise NotImplementedError()
+
+    @abstractmethod
+    def get_subjects_student(self, student_id: int) -> list[SubjectDataclass]:
+        """
+        Haalt de subjects op die door een bepaalde student worden gevolgd.
+
+        :param student_id: De student waarvan de subjects opgehaald moeten worden.
+        :return: Een lijst van subjects die door de gegeven student worden gegeven.
         """
         raise NotImplementedError()
