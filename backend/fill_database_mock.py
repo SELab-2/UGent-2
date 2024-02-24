@@ -1,15 +1,17 @@
+import sys
+
+from app import app
 from db.extensions import db
 from db.implementation.SqlLesgeverDAO import SqlTeacherDAO
 from db.implementation.SqlVakDAO import SqlSubjectDAO
 from db.interface.SubjectDAO import SubjectDAO
 from db.interface.TeacherDAO import TeacherDAO
 from domain.models.models import SubjectDataclass, TeacherDataclass
-from routes.index import app
 
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
-
+        sys.exit()  # De DAO's moeten nog aangemaakt worden
         teacher_dao: TeacherDAO = SqlTeacherDAO()
         subject_dao: SubjectDAO = SqlSubjectDAO()
 

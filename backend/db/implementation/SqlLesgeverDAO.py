@@ -1,11 +1,11 @@
 from db.errors.database_errors import ItemNotFoundError
 from db.extensions import db
 from db.interface.TeacherDAO import TeacherDAO
-from db.models.models import Teacher, TeacherDataclass
+from db.models.models import Teacher
+from domain.models.models import TeacherDataclass
 
 
 class SqlTeacherDAO(TeacherDAO):
-
     def get_teacher(self, ident: int):
         teacher: Teacher = Teacher.query.get(ident=ident)
 
