@@ -2,7 +2,7 @@ import json
 import unittest
 from http import HTTPStatus
 
-from routes.index import app
+from app import app
 
 
 class LesgeverTestCase(unittest.TestCase):
