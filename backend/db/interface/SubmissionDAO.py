@@ -1,12 +1,12 @@
 from abc import ABC, abstractmethod
 
-from domain.models.models import SubmissionDataClass
+from domain.models.models import SubmissionDataclass
 
 
 class Project(ABC):
 
     @abstractmethod
-    def create_submission(self, submission: SubmissionDataClass, project_id: int, group_id: int):
+    def create_submission(self, submission: SubmissionDataclass, project_id: int, group_id: int):
         """
         Creëert een nieuw SubmissionDataClass in de database en associeert het met een ProjectDataClass en een
         GroupDataClass.
@@ -20,7 +20,7 @@ class Project(ABC):
         raise NotImplementedError()
 
     @abstractmethod
-    def get_submission(self, submission_id: int) -> SubmissionDataClass:
+    def get_submission(self, submission_id: int) -> SubmissionDataclass:
         """
         Haalt een SubmissionDataClass op aan de hand van zijn identificatie.
 
@@ -31,7 +31,7 @@ class Project(ABC):
         raise NotImplementedError()
 
     @abstractmethod
-    def get_submissions_student(self, student_id: int) -> list[SubmissionDataClass]:
+    def get_submissions_student(self, student_id: int) -> list[SubmissionDataclass]:
         """
         Haalt alle projecten op die bij een bepaalde student horen.
 
@@ -41,7 +41,7 @@ class Project(ABC):
         raise NotImplementedError()
 
     @abstractmethod
-    def get_submissions_group(self, group_id: int) -> list[SubmissionDataClass]:
+    def get_submissions_group(self, group_id: int) -> list[SubmissionDataclass]:
         """
         Haalt alle projecten op die bij een bepaalde groep horen.
 

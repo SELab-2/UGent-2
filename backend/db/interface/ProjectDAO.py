@@ -1,12 +1,12 @@
 from abc import ABC, abstractmethod
 
-from domain.models.models import ProjectDataClass
+from domain.models.models import ProjectDataclass
 
 
 class Project(ABC):
 
     @abstractmethod
-    def create_project(self, project: ProjectDataClass, subject_id: int):
+    def create_project(self, project: ProjectDataclass, subject_id: int):
         """
         Creëert een nieuw ProjectDataClass in de database en associeert het met een SubjectDataClass.
 
@@ -17,7 +17,7 @@ class Project(ABC):
         raise NotImplementedError()
 
     @abstractmethod
-    def get_project(self, project_id: int) -> ProjectDataClass:
+    def get_project(self, project_id: int) -> ProjectDataclass:
         """
         Haalt een ProjectDataClass op aan de hand van zijn identificatie.
 
@@ -28,7 +28,7 @@ class Project(ABC):
         raise NotImplementedError()
 
     @abstractmethod
-    def get_projects(self, subject_id: int) -> list[ProjectDataClass]:
+    def get_projects(self, subject_id: int) -> list[ProjectDataclass]:
         """
         Haalt alle projecten op die bij een bepaald subject horen.
 

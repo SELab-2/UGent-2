@@ -1,12 +1,12 @@
 from abc import ABC, abstractmethod
 
-from domain.models.models import GroupDataClass
+from domain.models.models import GroupDataclass
 
 
 class Group(ABC):
 
     @abstractmethod
-    def create_group(self, group: GroupDataClass, project_id: int):
+    def create_group(self, group: GroupDataclass, project_id: int):
         """
         Creëert een nieuw GroupDataClass in de database en associeert het met een ProjectDataClass.
 
@@ -17,7 +17,7 @@ class Group(ABC):
         raise NotImplementedError()
 
     @abstractmethod
-    def get_group(self, group_id: int) -> GroupDataClass:
+    def get_group(self, group_id: int) -> GroupDataclass:
         """
         Haalt een GroupDataClass op aan de hand van zijn identificatie.
 
@@ -28,7 +28,7 @@ class Group(ABC):
         raise NotImplementedError()
 
     @abstractmethod
-    def get_groups_project(self, project_id: int) -> list[GroupDataClass]:
+    def get_groups_project(self, project_id: int) -> list[GroupDataclass]:
         """
         Haalt alle groepen op die bij een bepaald project horen.
 
@@ -38,7 +38,7 @@ class Group(ABC):
         raise NotImplementedError()
 
     @abstractmethod
-    def get_groups_student(self, student_id: int) -> list[GroupDataClass]:
+    def get_groups_student(self, student_id: int) -> list[GroupDataclass]:
         """
         Haalt alle groepen op die bij een bepaalde student horen.
 
