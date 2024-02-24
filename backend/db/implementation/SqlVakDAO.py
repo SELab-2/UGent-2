@@ -1,7 +1,7 @@
 from db.errors.database_errors import ItemNotFoundError
 from db.extensions import db
 from db.interface.SubjectDAO import SubjectDAO
-from db.models.models import Subject, Teacher
+from db.models.models import Subject, Teacher, Student
 from domain.models.models import SubjectDataclass
 
 
@@ -27,11 +27,20 @@ class SqlSubjectDAO(SubjectDAO):
 
         return subject.to_domain_model()
 
-    def get_subjects(self, teacher_id: int) -> list[SubjectDataclass]:
+    def get_subjects_teacher(self, teacher_id: int) -> list[SubjectDataclass]:
         teacher: Teacher = Teacher.query.get(ident=teacher_id)
 
         if not teacher:
             raise ItemNotFoundError(f"De teacher met id {teacher_id} kon niet in de databank gevonden worden")
 
         subjects: list[Subject] = teacher.subjects
+        return [vak.to_domain_model() for vak in subjects]
+
+    def get_subjects_student(self, student_id: int) -> list[SubjectDataclass]:
+        student: Student = Student.query.get(ident=student_id)
+
+        if not student:
+            raise ItemNotFoundError(f"De student met id {student_id} kon niet in de databank gevonden worden")
+
+        subjects: list[Subject] = student.subjects
         return [vak.to_domain_model() for vak in subjects]
