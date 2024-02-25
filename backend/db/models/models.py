@@ -9,7 +9,7 @@ from domain.models.GroupDataclass import GroupDataclass
 from domain.models.ProjectDataclass import ProjectDataclass
 from domain.models.StudentDataclass import StudentDataclass
 from domain.models.SubjectDataclass import SubjectDataclass
-from domain.models.SubmissionDataclass import SubmissionDataclass
+from domain.models.SubmissionDataclass import SubmissionDataclass, SubmissionState
 from domain.models.TeacherDataclass import TeacherDataclass
 from domain.models.UserDataclass import UserDataclass
 
@@ -122,7 +122,7 @@ class Submission(db.Model):
     group: Mapped[Group] = relationship(back_populates="submissions")
     student_id: Mapped[int] = mapped_column(ForeignKey(Student.id))
     student: Mapped[Student] = relationship(back_populates="submissions")
-    state: Mapped[int]
+    state: Mapped[SubmissionState]
     message: Mapped[str]
 
     def to_domain_model(self) -> SubmissionDataclass:
