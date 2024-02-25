@@ -6,6 +6,7 @@ from domain.models.base_model import JsonRepresentable
 
 @dataclass()
 class ProjectDataclass(JsonRepresentable):
+    id: int
     name: str
     deadline: datetime
     archived: bool
@@ -13,4 +14,3 @@ class ProjectDataclass(JsonRepresentable):
     visible: bool
     max_students: int
     subject_id: int
-    id: int | None = None

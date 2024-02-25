@@ -5,5 +5,5 @@ from domain.models.base_model import JsonRepresentable
 
 @dataclass()
 class GroupDataclass(JsonRepresentable):
+    id: int
     project_id: int
-    id: int | None = None

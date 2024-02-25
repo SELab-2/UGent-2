@@ -5,5 +5,5 @@ from domain.models.base_model import JsonRepresentable
 
 @dataclass()
 class SubjectDataclass(JsonRepresentable):
+    id: int
     name: str
-    id: int | None = None

@@ -13,9 +13,9 @@ class SubmissionState(enum.Enum):
 
 @dataclass()
 class SubmissionDataclass(JsonRepresentable):
+    id: int
     date_time: datetime
     group_id: int
     student_id: int
     state: SubmissionState
     message: str
-    id: int | None = None
