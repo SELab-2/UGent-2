@@ -1,8 +1,8 @@
-from db.errors.database_errors import ItemNotFoundError, UniqueConstraintError
+from db.errors.database_errors import ItemNotFoundError
 from db.extensions import db
 from db.interface.ProjectDAO import ProjectDAO
-from db.models.models import Student, Subject, Teacher, Project
-from domain.models.models import SubjectDataclass, ProjectDataclass
+from db.models.models import Project, Subject
+from domain.models.models import ProjectDataclass
 
 
 class SqlProjectDAO(ProjectDAO):

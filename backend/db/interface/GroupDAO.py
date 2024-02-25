@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from domain.models.models import GroupDataclass
+from domain.models.models import GroupDataclass, StudentDataclass
 
 
 class GroupDAO(ABC):
@@ -43,5 +43,25 @@ class GroupDAO(ABC):
 
         :param student_id: De student waarvan de groepen opgehaald moeten worden.
         :return: Een lijst van groepen die bij een bepaald student horen.
+        """
+        raise NotImplementedError()
+
+    @abstractmethod
+    def add_student_group(self, student_id: int, group_id: int):
+        """
+        Gaat een student toevoegen aan een groep
+
+        :param student_id: De student die aan de groep moet toegevoegd worden.
+        :param group_id: De groep waaraan de student moet toegevoegd worden.
+        :raises ItemNotFoundException: Als er geen group/student met gegeven id in de databank zit.
+        """
+        raise NotImplementedError()
+
+    def get_students_group(self, group_id: int) -> list[StudentDataclass]:
+        """
+        Gaat alle studenten geven die in een bepaalde groep zitten
+
+        :param group_id: De groep waarvan de studenten worden opgeroepen
+        :raises ItemNotFoundException: Als er geen group met gegeven id in de databank zit.
         """
         raise NotImplementedError()
