@@ -3,7 +3,7 @@ from http import HTTPStatus
 
 from flask import Blueprint, Response, request
 
-from db.implementation.SqlLesgeverDAO import SqlTeacherDAO
+from db.implementation.SqlTeacherDAO import SqlTeacherDAO
 from db.interface.TeacherDAO import TeacherDAO
 from domain.models.models import TeacherDataclass
 from domain.validation.TeacherValidator import TeacherValidator
