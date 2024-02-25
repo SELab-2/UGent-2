@@ -45,3 +45,14 @@ class SubjectDAO(ABC):
         :return: Een lijst van subjects die door de gegeven student worden gegeven.
         """
         raise NotImplementedError()
+
+    @abstractmethod
+    def add_subject_student(self, subject_id: int, student_id: int):
+        """
+        Voegt een subject toe aan een student.
+
+        :param subject_id: De id van subject die door de student wordt gevolgd.
+        :param student_id: De student die subject volgt.
+        :raises: ItemNotFoundException: Als er geen student/subject met de opgegeven id in de database is.
+        """
+        raise NotImplementedError()
