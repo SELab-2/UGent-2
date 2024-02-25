@@ -12,7 +12,7 @@ class SqlGroupDAO(GroupDAO):
             raise ItemNotFoundError(f"Het project met id {project_id} kon niet in de databank gevonden worden")
         new_group: Group = Group()
         new_group.project_id = project_id
-
+        new_group.project = project
         db.session.add(new_group)
         db.session.commit()
 

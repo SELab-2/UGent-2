@@ -5,15 +5,15 @@ from domain.models.models import SubmissionDataclass
 
 class SubmissionDAO(ABC):
     @abstractmethod
-    def create_submission(self, submission: SubmissionDataclass, project_id: int, group_id: int):
+    def create_submission(self, submission: SubmissionDataclass, student_id: int, group_id: int):
         """
-        Creëert een nieuw SubmissionDataClass in de database en associeert het met een ProjectDataClass en een
+        Creëert een nieuw SubmissionDataClass in de database en associeert het met een StudentDataclass en een
         GroupDataClass.
 
         :param submission: De SubmissionDataClass domeinmodel-instantie die aan de database moet worden toegevoegd.
-        :param project_id: De identificatie van de ProjectDataClass waarmee het SubmissionDataClass geassocieerd wordt.
+        :param student_id: De identificatie van de StudentDataclass waarmee het SubmissionDataClass geassocieerd wordt.
         :param group_id: De identificatie van de GroupDataClass waarmee het SubmissionDataClass geassocieerd wordt
-        :raises: ItemNotFoundException: Als er geen ProjectDataClass of GroupDataClass met de opgegeven `project_id` of
+        :raises: ItemNotFoundException: Als er geen StudentDataclass of GroupDataClass met de opgegeven `student_id` of
         `group_id` in de database is.
         """
         raise NotImplementedError()
