@@ -20,11 +20,5 @@ db_database = os.getenv("DB_DATABASE", "delphi")
 app.config["SQLALCHEMY_DATABASE_URI"] = f"postgresql://{db_user}:{db_password}@{db_host}:{db_port}/{db_database}"
 db.init_app(app)
 
-
-@app.route("/")
-def hello_world():
-    return "Hello, World!"
-
-
 if __name__ == "__main__":
     app.run(debug=True)

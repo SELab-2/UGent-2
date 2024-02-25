@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 
-from domain.models.base_model import JsonRepresentable
+from domain.models.UserDataclass import UserDataclass
 
 
 @dataclass()
-class TeacherDataclass(JsonRepresentable):
-    id: int
+class TeacherDataclass(UserDataclass):
+    pass

@@ -23,11 +23,11 @@ class User(db.Model):
         return UserDataclass(id=self.id, name=self.name, email=self.email)
 
 
-class Admin(db.Model):
+class Admin(User):
     id: Mapped[int] = mapped_column(ForeignKey(User.id), primary_key=True)
 
     def to_domain_model(self) -> AdminDataclass:
-        return AdminDataclass(id=self.id)
+        return AdminDataclass(id=self.id, name=self.name, email=self.email)
 
 
 teachers_subjects = Table(
@@ -50,22 +50,22 @@ students_groups = Table(
 )
 
 
-class Teacher(db.Model):
+class Teacher(User):
     id: Mapped[int] = mapped_column(ForeignKey(User.id), primary_key=True)
     subjects: Mapped[list["Subject"]] = relationship(secondary=teachers_subjects, back_populates="teachers")
 
     def to_domain_model(self) -> TeacherDataclass:
-        return TeacherDataclass(id=self.id)
+        return TeacherDataclass(id=self.id, name=self.name, email=self.email)
 
 
-class Student(db.Model):
+class Student(User):
     id: Mapped[int] = mapped_column(ForeignKey(User.id), primary_key=True)
     subjects: Mapped[list["Subject"]] = relationship(secondary=students_subjects, back_populates="students")
     groups: Mapped[list["Group"]] = relationship(secondary=students_groups, back_populates="students")
     submissions: Mapped[list["Submission"]] = relationship(back_populates="student")
 
     def to_domain_model(self) -> StudentDataclass:
-        return StudentDataclass(id=self.id)
+        return StudentDataclass(id=self.id, name=self.name, email=self.email)
 
 
 class Subject(db.Model):
