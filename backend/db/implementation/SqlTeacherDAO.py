@@ -1,7 +1,7 @@
 from db.errors.database_errors import ItemNotFoundError
 from db.extensions import db
 from db.interface.TeacherDAO import TeacherDAO
-from db.models.models import Teacher
+from db.models.models import Teacher, User
 from domain.models.models import TeacherDataclass
 
 
@@ -18,11 +18,15 @@ class SqlTeacherDAO(TeacherDAO):
         teachers: list[Teacher] = Teacher.query.all()
         return [lesgever.to_domain_model() for lesgever in teachers]
 
-    def create_teacher(self, teacher: TeacherDataclass):
-        new_teacher = Teacher()
-        new_teacher.subjects = teacher.subject_ids
+    def create_teacher(self, user_id: int):
+        user: User = User.query.get(ident=user_id)
+
+        if not user:
+            raise ItemNotFoundError("User with given id not found.")
+
+        new_teacher: Teacher = Teacher()
+        new_teacher.id = user_id
 
         db.session.add(new_teacher)
         db.session.commit()
 
-        teacher.id = new_teacher.id

@@ -6,13 +6,16 @@ from domain.models.models import SubjectDataclass
 
 
 class SqlSubjectDAO(SubjectDAO):
+
     def create_subject(self, subject: SubjectDataclass, teacher_id: int):
         teacher = Teacher.query.get(teacher_id)
 
         if not teacher:
             raise ItemNotFoundError(f"De teacher met id {teacher_id} kon niet in de databank gevonden worden")
 
-        new_subject = Subject(name=subject.name, teacher=teacher)
+        new_subject = Subject()
+        new_subject.name = subject.name
+        new_subject.teachers.append(teacher)
 
         db.session.add(new_subject)
         db.session.commit()
@@ -43,3 +46,15 @@ class SqlSubjectDAO(SubjectDAO):
 
         subjects: list[Subject] = student.subjects
         return [vak.to_domain_model() for vak in subjects]
+
+    def add_subject_student(self, subject_id: int, student_id: int):
+        student: Student = Student.query.get(ident=student_id)
+        subject: Subject = Subject.query.get(ident=subject_id)
+
+        if not student:
+            raise ItemNotFoundError(f"De student met id {student_id} kon niet in de databank gevonden worden")
+        if not subject:
+            raise ItemNotFoundError(f"Het subject met id {subject_id} kon niet in de databank gevonden worden")
+
+        student.subjects.append(subject)
+        subject.students.append(student)
