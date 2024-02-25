@@ -1,12 +1,11 @@
-from backend.db.errors.database_errors import ItemNotFoundError
-from backend.db.extensions import db
-from backend.db.interface.SubjectDAO import SubjectDAO
-from backend.db.models.models import Subject, Teacher
-from backend.domain.models.models import SubjectDataclass
+from db.errors.database_errors import ItemNotFoundError
+from db.extensions import db
+from db.interface.SubjectDAO import SubjectDAO
+from db.models.models import Subject, Teacher
+from domain.models.SubjectDataclass import SubjectDataclass
 
 
 class SqlSubjectDAO(SubjectDAO):
-
     def create_subject(self, subject: SubjectDataclass, teacher_id: int):
         teacher = Teacher.query.get(teacher_id)
 

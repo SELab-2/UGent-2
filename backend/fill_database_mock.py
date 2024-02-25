@@ -1,15 +1,18 @@
-from backend.db.extensions import db
-from backend.db.implementation.SqlLesgeverDAO import SqlTeacherDAO
-from backend.db.implementation.SqlVakDAO import SqlSubjectDAO
-from backend.db.interface.SubjectDAO import SubjectDAO
-from backend.db.interface.TeacherDAO import TeacherDAO
-from backend.domain.models.models import SubjectDataclass, TeacherDataclass
-from backend.routes.index import app
+import sys
+
+from app import app
+from db.extensions import db
+from db.implementation.SqlLesgeverDAO import SqlTeacherDAO
+from db.implementation.SqlVakDAO import SqlSubjectDAO
+from db.interface.SubjectDAO import SubjectDAO
+from db.interface.TeacherDAO import TeacherDAO
+from domain.models.SubjectDataclass import SubjectDataclass
+from domain.models.TeacherDataclass import TeacherDataclass
 
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
-
+        sys.exit()  # De DAO's moeten nog aangemaakt worden
         teacher_dao: TeacherDAO = SqlTeacherDAO()
         subject_dao: SubjectDAO = SqlSubjectDAO()
 

@@ -1,10 +1,9 @@
 from abc import ABC, abstractmethod
 
-from backend.domain.models.models import TeacherDataclass
+from domain.models.TeacherDataclass import TeacherDataclass
 
 
 class TeacherDAO(ABC):
-
     @abstractmethod
     def get_teacher(self, ident: int) -> TeacherDataclass:
         """

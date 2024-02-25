@@ -1,12 +1,13 @@
 import json
 from http import HTTPStatus
 
-from backend.db.implementation.SqlLesgeverDAO import SqlTeacherDAO
-from backend.db.interface.TeacherDAO import TeacherDAO
-from backend.domain.models.models import TeacherDataclass
-from backend.domain.validation.TeacherValidator import TeacherValidator
-from backend.domain.validation.ValidationResult import ValidationResult
 from flask import Blueprint, Response, request
+
+from db.implementation.SqlLesgeverDAO import SqlTeacherDAO
+from db.interface.TeacherDAO import TeacherDAO
+from domain.models.TeacherDataclass import TeacherDataclass
+from domain.validation.TeacherValidator import TeacherValidator
+from domain.validation.ValidationResult import ValidationResult
 
 teachers_blueprint = Blueprint("teachers", __name__)
 
@@ -33,7 +34,6 @@ def get_teacher(teacher_id):
 
 @teachers_blueprint.route("/teachers", methods=["POST"])
 def create_teacher():
-
     teacher_data: dict = request.get_json()
 
     if not teacher_data:
