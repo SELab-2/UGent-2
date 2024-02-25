@@ -1,10 +1,9 @@
-from typing import List
 
-from db.errors.database_errors import ItemNotFoundError, UniqueConstraintError
+from db.errors.database_errors import ItemNotFoundError
 from db.extensions import db
 from db.interface.SubmissionDAO import SubmissionDAO
-from db.models.models import Student, Subject, Teacher, Project, Group, Submission
-from domain.models.models import SubjectDataclass, SubmissionDataclass
+from db.models.models import Group, Student, Submission
+from domain.models.models import SubmissionDataclass
 
 
 class SqlSubmissionDAO(SubmissionDAO):

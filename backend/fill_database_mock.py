@@ -15,10 +15,10 @@ from db.interface.GroupDAO import GroupDAO
 from db.interface.ProjectDAO import ProjectDAO
 from db.interface.StudentDAO import StudentDAO
 from db.interface.SubjectDAO import SubjectDAO
+from db.interface.SubmissionDAO import SubmissionDAO
 from db.interface.TeacherDAO import TeacherDAO
 from db.interface.UserDAO import UserDAO
-from db.interface.SubmissionDAO import SubmissionDAO
-from domain.models.models import GroupDataclass, ProjectDataclass, SubjectDataclass, UserDataclass, SubmissionDataclass
+from domain.models.models import GroupDataclass, ProjectDataclass, SubjectDataclass, SubmissionDataclass, UserDataclass
 
 if __name__ == "__main__":
     with app.app_context():
