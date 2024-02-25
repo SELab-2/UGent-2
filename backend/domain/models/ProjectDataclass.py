@@ -14,4 +14,3 @@ class ProjectDataclass(JsonRepresentable):
     max_students: int
     subject_id: int
     id: int | None = None
-    group_ids: list[int] | None = None

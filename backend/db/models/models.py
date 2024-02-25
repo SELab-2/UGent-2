@@ -55,7 +55,7 @@ class Teacher(db.Model):
     subjects: Mapped[list["Subject"]] = relationship(secondary=teachers_subjects, back_populates="teachers")
 
     def to_domain_model(self) -> TeacherDataclass:
-        return TeacherDataclass(id=self.id, subject_ids=[subject.id for subject in self.subjects])
+        return TeacherDataclass(id=self.id)
 
 
 class Student(db.Model):
@@ -65,12 +65,7 @@ class Student(db.Model):
     submissions: Mapped[list["Submission"]] = relationship(back_populates="student")
 
     def to_domain_model(self) -> StudentDataclass:
-        return StudentDataclass(
-            id=self.id,
-            subject_ids=[i.id for i in self.subjects],
-            group_ids=[i.id for i in self.groups],
-            submission_ids=[i.id for i in self.submissions],
-        )
+        return StudentDataclass(id=self.id)
 
 
 class Subject(db.Model):
@@ -81,13 +76,7 @@ class Subject(db.Model):
     projects: Mapped[list["Project"]] = relationship(back_populates="subject")
 
     def to_domain_model(self) -> SubjectDataclass:
-        return SubjectDataclass(
-            id=self.id,
-            name=self.name,
-            teacher_ids=[i.id for i in self.teachers],
-            student_ids=[i.id for i in self.students],
-            project_ids=[i.id for i in self.projects],
-        )
+        return SubjectDataclass(id=self.id, name=self.name)
 
 
 class Project(db.Model):
@@ -112,7 +101,6 @@ class Project(db.Model):
             visible=self.visible,
             max_students=self.max_students,
             subject_id=self.subject_id,
-            group_ids=[i.id for i in self.groups],
         )
 
 
@@ -124,12 +112,7 @@ class Group(db.Model):
     submissions: Mapped[list["Submission"]] = relationship(back_populates="group")
 
     def to_domain_model(self) -> GroupDataclass:
-        return GroupDataclass(
-            id=self.id,
-            project_id=self.project_id,
-            student_ids=[i.id for i in self.students],
-            submission_ids=[i.id for i in self.submissions],
-        )
+        return GroupDataclass(id=self.id, project_id=self.project_id)
 
 
 class Submission(db.Model):
