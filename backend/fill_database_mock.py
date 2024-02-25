@@ -6,7 +6,8 @@ from db.implementation.SqlLesgeverDAO import SqlTeacherDAO
 from db.implementation.SqlVakDAO import SqlSubjectDAO
 from db.interface.SubjectDAO import SubjectDAO
 from db.interface.TeacherDAO import TeacherDAO
-from domain.models.models import SubjectDataclass, TeacherDataclass
+from domain.models.SubjectDataclass import SubjectDataclass
+from domain.models.TeacherDataclass import TeacherDataclass
 
 if __name__ == "__main__":
     with app.app_context():

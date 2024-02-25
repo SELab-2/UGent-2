@@ -1,10 +1,9 @@
 from abc import ABC, abstractmethod
 
-from domain.models.models import SubjectDataclass
+from domain.models.SubjectDataclass import SubjectDataclass
 
 
 class SubjectDAO(ABC):
-
     @abstractmethod
     def create_subject(self, subject: SubjectDataclass, teacher_id: int):
         """

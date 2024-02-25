@@ -4,16 +4,14 @@ from sqlalchemy import Column, ForeignKey, Table
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from db.extensions import db
-from domain.models.models import (
-    AdminDataclass,
-    GroupDataclass,
-    ProjectDataclass,
-    StudentDataclass,
-    SubjectDataclass,
-    SubmissionDataclass,
-    TeacherDataclass,
-    UserDataclass,
-)
+from domain.models.AdminDataclass import AdminDataclass
+from domain.models.GroupDataclass import GroupDataclass
+from domain.models.ProjectDataclass import ProjectDataclass
+from domain.models.StudentDataclass import StudentDataclass
+from domain.models.SubjectDataclass import SubjectDataclass
+from domain.models.SubmissionDataclass import SubmissionDataclass
+from domain.models.TeacherDataclass import TeacherDataclass
+from domain.models.UserDataclass import UserDataclass
 
 
 class User(db.Model):
