@@ -41,6 +41,8 @@ class SubjectDataclass(JsonRepresentable):
     name: str
     id: int | None = None
     teacher_ids: list[int] | None = None
+    student_ids: list[int] | None = None
+    project_ids: list[int] | None = None
 
 
 @dataclass()
@@ -53,7 +55,7 @@ class ProjectDataclass(JsonRepresentable):
     max_students: int
     subject_id: int
     id: int | None = None
-    groups: list[int] | None = None
+    group_ids: list[int] | None = None
 
 
 @dataclass()
