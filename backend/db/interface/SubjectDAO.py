@@ -56,3 +56,14 @@ class SubjectDAO(ABC):
         :raises: ItemNotFoundException: Als er geen student/subject met de opgegeven id in de database is.
         """
         raise NotImplementedError()
+
+    @abstractmethod
+    def add_subject_teacher(self, subject_id: int, teacher_id: int):
+        """
+        Voegt een subject toe aan een teacher.
+
+        :param subject_id: De id van subject die door de teacher gegeven wordt.
+        :param teacher_id: De teacher die dit subject geeft.
+        :raises: ItemNotFoundException: Als er geen teacher/subject met de opgegeven id in de database is.
+        """
+        raise NotImplementedError()

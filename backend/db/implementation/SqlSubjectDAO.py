@@ -1,4 +1,4 @@
-from db.errors.database_errors import ItemNotFoundError
+from db.errors.database_errors import ItemNotFoundError, UniqueConstraintError
 from db.extensions import db
 from db.interface.SubjectDAO import SubjectDAO
 from db.models.models import Student, Subject, Teacher
@@ -36,7 +36,7 @@ class SqlSubjectDAO(SubjectDAO):
             raise ItemNotFoundError(f"De teacher met id {teacher_id} kon niet in de databank gevonden worden")
 
         subjects: list[Subject] = teacher.subjects
-        return [vak.to_domain_model() for vak in subjects]
+        return [vak.name for vak in subjects]
 
     def get_subjects_student(self, student_id: int) -> list[SubjectDataclass]:
         student: Student = Student.query.get(ident=student_id)
@@ -45,7 +45,7 @@ class SqlSubjectDAO(SubjectDAO):
             raise ItemNotFoundError(f"De student met id {student_id} kon niet in de databank gevonden worden")
 
         subjects: list[Subject] = student.subjects
-        return [vak.to_domain_model() for vak in subjects]
+        return [vak.name for vak in subjects]
 
     def add_subject_student(self, subject_id: int, student_id: int):
         student: Student = Student.query.get(ident=student_id)
@@ -55,6 +55,21 @@ class SqlSubjectDAO(SubjectDAO):
             raise ItemNotFoundError(f"De student met id {student_id} kon niet in de databank gevonden worden")
         if not subject:
             raise ItemNotFoundError(f"Het subject met id {subject_id} kon niet in de databank gevonden worden")
+        if subject in student.subjects:
+            raise UniqueConstraintError(f"De student met id {student_id} volgt het vak met id {student_id} al")
 
         student.subjects.append(subject)
-        subject.students.append(student)
+
+    def add_subject_teacher(self, subject_id: int, teacher_id: int):
+        teacher: Teacher = Teacher.query.get(ident=teacher_id)
+        subject: Subject = Subject.query.get(ident=subject_id)
+
+        if not teacher:
+            raise ItemNotFoundError(f"De teacher met id {teacher_id} kon niet in de databank gevonden worden")
+        if not subject:
+            raise ItemNotFoundError(f"Het subject met id {subject_id} kon niet in de databank gevonden worden")
+        if subject in teacher.subjects:
+            raise UniqueConstraintError(f"De teacher met id {teacher_id} volgt het vak met id {subject_id} al")
+
+        teacher.subjects.append(subject)
+
