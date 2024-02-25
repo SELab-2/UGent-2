@@ -27,3 +27,5 @@ class SqlAdminDAO(AdminDAO):
 
         db.session.add(new_admin)
         db.session.commit()
+
+

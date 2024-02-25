@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 from domain.models.models import GroupDataclass
 
 
-class Group(ABC):
+class GroupDAO(ABC):
     @abstractmethod
     def create_group(self, group: GroupDataclass, project_id: int):
         """

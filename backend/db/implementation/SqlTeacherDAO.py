@@ -29,4 +29,3 @@ class SqlTeacherDAO(TeacherDAO):
 
         db.session.add(new_teacher)
         db.session.commit()
-

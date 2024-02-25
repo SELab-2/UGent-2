@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 from domain.models.models import SubmissionDataclass
 
 
-class Project(ABC):
+class SubmissionDAO(ABC):
     @abstractmethod
     def create_submission(self, submission: SubmissionDataclass, project_id: int, group_id: int):
         """

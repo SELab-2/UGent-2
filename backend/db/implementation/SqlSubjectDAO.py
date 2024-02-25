@@ -6,7 +6,6 @@ from domain.models.models import SubjectDataclass
 
 
 class SqlSubjectDAO(SubjectDAO):
-
     def create_subject(self, subject: SubjectDataclass, teacher_id: int):
         teacher = Teacher.query.get(teacher_id)
 
@@ -72,4 +71,3 @@ class SqlSubjectDAO(SubjectDAO):
             raise UniqueConstraintError(f"De teacher met id {teacher_id} volgt het vak met id {subject_id} al")
 
         teacher.subjects.append(subject)
-

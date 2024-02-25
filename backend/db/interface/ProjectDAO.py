@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 from domain.models.models import ProjectDataclass
 
 
-class Project(ABC):
+class ProjectDAO(ABC):
     @abstractmethod
     def create_project(self, project: ProjectDataclass, subject_id: int):
         """
