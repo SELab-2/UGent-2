@@ -10,7 +10,8 @@ class SqlSubjectDAO(SubjectDAO):
         teacher = Teacher.query.get(teacher_id)
 
         if not teacher:
-            raise ItemNotFoundError(f"De teacher met id {teacher_id} kon niet in de databank gevonden worden")
+            msg = f"De teacher met id {teacher_id} kon niet in de databank gevonden worden"
+            raise ItemNotFoundError(msg)
 
         new_subject = Subject(name=subject.name, teacher=teacher)
 
@@ -22,7 +23,8 @@ class SqlSubjectDAO(SubjectDAO):
     def get_subject(self, teacher_id: int) -> SubjectDataclass:
         subject = Subject.query.get(teacher_id)
         if not subject:
-            raise ItemNotFoundError(f"De lesgever met id {teacher_id} kon niet in de databank gevonden worden")
+            msg = f"De lesgever met id {teacher_id} kon niet in de databank gevonden worden"
+            raise ItemNotFoundError(msg)
 
         return subject.to_domain_model()
 
@@ -30,7 +32,8 @@ class SqlSubjectDAO(SubjectDAO):
         teacher: Teacher = Teacher.query.get(ident=teacher_id)
 
         if not teacher:
-            raise ItemNotFoundError(f"De teacher met id {teacher_id} kon niet in de databank gevonden worden")
+            msg = f"De teacher met id {teacher_id} kon niet in de databank gevonden worden"
+            raise ItemNotFoundError(msg)
 
         subjects: list[Subject] = teacher.subjects
         return [vak.to_domain_model() for vak in subjects]

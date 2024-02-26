@@ -10,7 +10,8 @@ class SqlTeacherDAO(TeacherDAO):
         teacher: Teacher = Teacher.query.get(ident=ident)
 
         if not teacher:
-            raise ItemNotFoundError("TeacherDataclass with given id not found.")
+            msg = f"Teacher with id {ident}  not found"
+            raise ItemNotFoundError(msg)
 
         return teacher.to_domain_model()
 
