@@ -11,5 +11,13 @@ jobs:
           python-version: '3.12'
       - name: Install dependencies
         run: pip install -r backend/requirements.txt
+      - name: Set up Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - name: Install Pyright
+        run: npm install -g pyright
+      - name: Run Pyright
+        run: pyright
       - name: Lint code
         run: ruff check backend
