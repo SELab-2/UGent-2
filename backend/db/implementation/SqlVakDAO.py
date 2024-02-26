@@ -29,7 +29,7 @@ class SqlSubjectDAO(SubjectDAO):
         return subject.to_domain_model()
 
     def get_subjects(self, teacher_id: int) -> list[SubjectDataclass]:
-        teacher: Teacher = Teacher.query.get(ident=teacher_id)
+        teacher: Teacher | None = Teacher.query.get(ident=teacher_id)
 
         if not teacher:
             msg = f"De teacher met id {teacher_id} kon niet in de databank gevonden worden"

@@ -7,7 +7,7 @@ from domain.models.TeacherDataclass import TeacherDataclass
 
 class SqlTeacherDAO(TeacherDAO):
     def get_teacher(self, ident: int) -> TeacherDataclass:
-        teacher: Teacher = Teacher.query.get(ident=ident)
+        teacher: Teacher | None = Teacher.query.get(ident=ident)
 
         if not teacher:
             msg = f"Teacher with id {ident}  not found"
