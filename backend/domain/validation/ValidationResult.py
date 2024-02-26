@@ -3,8 +3,7 @@ from abc import ABC, abstractmethod
 
 class ValidationResult(ABC):
 
-    def __init__(self) -> None:
-        self.errors = []
+    errors: list[str]
 
     @abstractmethod
     def __bool__(self) -> bool:
@@ -18,8 +17,8 @@ class ValidationSuccess(ValidationResult):
 
 
 class ValidationError(ValidationResult):
-    def add_error(self, error: str) -> None:
-        self.errors.append(error)
+    def __init__(self, errors: list[str]) -> None:
+        self.errors = errors
 
     def __bool__(self) -> bool:
         return False

@@ -41,7 +41,7 @@ def create_teacher() -> Response:
 
     validation_result: ValidationResult = TeacherValidator.validate(teacher_data)
 
-    if not validation_result.is_ok:
+    if not validation_result:
         return Response(json.dumps({"error": validation_result.errors}), status=HTTPStatus.BAD_REQUEST)
 
     dao: TeacherDAO = SqlTeacherDAO()
