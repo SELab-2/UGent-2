@@ -6,31 +6,29 @@ from domain.models.SubjectDataclass import SubjectDataclass
 
 
 class SqlSubjectDAO(SubjectDAO):
-    def create_subject(self, subject: SubjectDataclass, teacher_id: int):
-        teacher = Teacher.query.get(teacher_id)
+    def create_subject(self, subject: SubjectDataclass) -> None:
 
-        if not teacher:
-            raise ItemNotFoundError(f"De teacher met id {teacher_id} kon niet in de databank gevonden worden")
-
-        new_subject = Subject(name=subject.name, teacher=teacher)
+        new_subject = Subject(name=subject.name)
 
         db.session.add(new_subject)
         db.session.commit()
 
         subject.id = new_subject.id
 
-    def get_subject(self, teacher_id: int):
-        subject = Subject.query.get(teacher_id)
+    def get_subject(self, subject_id: int) -> SubjectDataclass:
+        subject = Subject.query.get(subject_id)
         if not subject:
-            raise ItemNotFoundError(f"De lesgever met id {teacher_id} kon niet in de databank gevonden worden")
+            msg = f"Het vak met id {subject_id} kon niet in de databank gevonden worden"
+            raise ItemNotFoundError(msg)
 
         return subject.to_domain_model()
 
     def get_subjects(self, teacher_id: int) -> list[SubjectDataclass]:
-        teacher: Teacher = Teacher.query.get(ident=teacher_id)
+        teacher: Teacher | None = Teacher.query.get(ident=teacher_id)
 
         if not teacher:
-            raise ItemNotFoundError(f"De teacher met id {teacher_id} kon niet in de databank gevonden worden")
+            msg = f"De teacher met id {teacher_id} kon niet in de databank gevonden worden"
+            raise ItemNotFoundError(msg)
 
         subjects: list[Subject] = teacher.subjects
         return [vak.to_domain_model() for vak in subjects]

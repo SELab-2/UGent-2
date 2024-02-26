@@ -6,11 +6,12 @@ from domain.models.TeacherDataclass import TeacherDataclass
 
 
 class SqlTeacherDAO(TeacherDAO):
-    def get_teacher(self, ident: int):
-        teacher: Teacher = Teacher.query.get(ident=ident)
+    def get_teacher(self, ident: int) -> TeacherDataclass:
+        teacher: Teacher | None = Teacher.query.get(ident=ident)
 
         if not teacher:
-            raise ItemNotFoundError("TeacherDataclass with given id not found.")
+            msg = f"Teacher with id {ident}  not found"
+            raise ItemNotFoundError(msg)
 
         return teacher.to_domain_model()
 
@@ -18,8 +19,8 @@ class SqlTeacherDAO(TeacherDAO):
         teachers: list[Teacher] = Teacher.query.all()
         return [lesgever.to_domain_model() for lesgever in teachers]
 
-    def create_teacher(self, teacher: TeacherDataclass):
-        new_teacher = Teacher(name=teacher.name)
+    def create_teacher(self, teacher: TeacherDataclass) -> None:
+        new_teacher = Teacher(name=teacher.name, email=teacher.email)
 
         db.session.add(new_teacher)
         db.session.commit()

@@ -13,3 +13,5 @@ jobs:
         run: pip install -r backend/requirements.txt
       - name: Lint code
         run: ruff check backend
+      - name: Run Pyright
+        run: pyright

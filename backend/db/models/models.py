@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from datetime import datetime
 
 from sqlalchemy import Column, ForeignKey, Table
@@ -14,15 +15,17 @@ from domain.models.TeacherDataclass import TeacherDataclass
 from domain.models.UserDataclass import UserDataclass
 
 
+@dataclass()
 class User(db.Model):
-    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     name: Mapped[str]
     email: Mapped[str]
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
 
     def to_domain_model(self) -> UserDataclass:
         return UserDataclass(id=self.id, name=self.name, email=self.email)
 
 
+@dataclass()
 class Admin(User):
     id: Mapped[int] = mapped_column(ForeignKey(User.id), primary_key=True)
 
@@ -50,6 +53,7 @@ students_groups = Table(
 )
 
 
+@dataclass()
 class Teacher(User):
     id: Mapped[int] = mapped_column(ForeignKey(User.id), primary_key=True)
     subjects: Mapped[list["Subject"]] = relationship(secondary=teachers_subjects, back_populates="teachers")
@@ -58,6 +62,7 @@ class Teacher(User):
         return TeacherDataclass(id=self.id, name=self.name, email=self.email)
 
 
+@dataclass()
 class Student(User):
     id: Mapped[int] = mapped_column(ForeignKey(User.id), primary_key=True)
     subjects: Mapped[list["Subject"]] = relationship(secondary=students_subjects, back_populates="students")
@@ -68,9 +73,10 @@ class Student(User):
         return StudentDataclass(id=self.id, name=self.name, email=self.email)
 
 
+@dataclass()
 class Subject(db.Model):
-    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     name: Mapped[str]
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     teachers: Mapped[list[Teacher]] = relationship(secondary=teachers_subjects, back_populates="subjects")
     students: Mapped[list[Student]] = relationship(secondary=students_subjects, back_populates="subjects")
     projects: Mapped[list["Project"]] = relationship(back_populates="subject")
@@ -79,14 +85,15 @@ class Subject(db.Model):
         return SubjectDataclass(id=self.id, name=self.name)
 
 
+@dataclass()
 class Project(db.Model):
-    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     name: Mapped[str]
     deadline: Mapped[datetime]
     archived: Mapped[bool]
     requirements: Mapped[str]
     visible: Mapped[bool]
     max_students: Mapped[int]
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     subject_id: Mapped[int] = mapped_column(ForeignKey(Subject.id))
     subject: Mapped[Subject] = relationship(back_populates="projects")
     groups: Mapped[list["Group"]] = relationship(back_populates="project")
@@ -104,6 +111,7 @@ class Project(db.Model):
         )
 
 
+@dataclass()
 class Group(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     project_id: Mapped[int] = mapped_column(ForeignKey(Project.id))
@@ -115,15 +123,16 @@ class Group(db.Model):
         return GroupDataclass(id=self.id, project_id=self.project_id)
 
 
+@dataclass()
 class Submission(db.Model):
-    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     date_time: Mapped[datetime]
+    state: Mapped[SubmissionState]
+    message: Mapped[str]
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     group_id: Mapped[int] = mapped_column(ForeignKey(Group.id))
     group: Mapped[Group] = relationship(back_populates="submissions")
     student_id: Mapped[int] = mapped_column(ForeignKey(Student.id))
     student: Mapped[Student] = relationship(back_populates="submissions")
-    state: Mapped[SubmissionState]
-    message: Mapped[str]
 
     def to_domain_model(self) -> SubmissionDataclass:
         return SubmissionDataclass(

@@ -1,9 +1,8 @@
 import dataclasses
-from abc import ABC
 from dataclasses import dataclass
 
 
 @dataclass()
-class JsonRepresentable(ABC):
+class JsonRepresentable:
     def to_dict(self) -> dict:
         return dataclasses.asdict(self)
