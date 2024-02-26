@@ -2,72 +2,70 @@ from db.errors.database_errors import ItemNotFoundError, UniqueConstraintError
 from db.extensions import db
 from db.interface.SubjectDAO import SubjectDAO
 from db.models.models import Student, Subject, Teacher
-from domain.models.models import SubjectDataclass
+from domain.models.SubjectDataclass import SubjectDataclass
 
 
 class SqlSubjectDAO(SubjectDAO):
-    def create_subject(self, subject: SubjectDataclass, teacher_id: int):
-        teacher = Teacher.query.get(teacher_id)
-
-        if not teacher:
-            raise ItemNotFoundError(f"De teacher met id {teacher_id} kon niet in de databank gevonden worden")
-
-        new_subject = Subject()
-        new_subject.name = subject.name
-        new_subject.teachers.append(teacher)
-
+    def create_subject(self, name: str) -> None:
+        new_subject = Subject(name=name)
         db.session.add(new_subject)
         db.session.commit()
 
-        subject.id = new_subject.id
-
-    def get_subject(self, teacher_id: int):
-        subject = Subject.query.get(teacher_id)
+    def get_subject(self, subject_id: int) -> SubjectDataclass:
+        subject: Subject | None = db.session.get(Subject, ident=subject_id)
         if not subject:
-            raise ItemNotFoundError(f"De lesgever met id {teacher_id} kon niet in de databank gevonden worden")
-
+            msg = f"Subject with id {subject_id} not found"
+            raise ItemNotFoundError(msg)
         return subject.to_domain_model()
 
     def get_subjects_of_teacher(self, teacher_id: int) -> list[SubjectDataclass]:
-        teacher: Teacher = Teacher.query.get(ident=teacher_id)
-
+        teacher: Teacher | None = db.session.get(Teacher, ident=teacher_id)
         if not teacher:
-            raise ItemNotFoundError(f"De teacher met id {teacher_id} kon niet in de databank gevonden worden")
-
+            msg = f"Teacher with id {teacher_id} not found"
+            raise ItemNotFoundError(msg)
         subjects: list[Subject] = teacher.subjects
         return [vak.to_domain_model() for vak in subjects]
 
     def get_subjects_of_student(self, student_id: int) -> list[SubjectDataclass]:
-        student: Student = Student.query.get(ident=student_id)
-
+        student: Student | None = db.session.get(Student, ident=student_id)
         if not student:
-            raise ItemNotFoundError(f"De student met id {student_id} kon niet in de databank gevonden worden")
-
+            msg = f"Student with id {student_id} not found"
+            raise ItemNotFoundError(msg)
         subjects: list[Subject] = student.subjects
         return [vak.to_domain_model() for vak in subjects]
 
-    def add_subject_to_student(self, subject_id: int, student_id: int):
-        student: Student = Student.query.get(ident=student_id)
-        subject: Subject = Subject.query.get(ident=subject_id)
+    def add_student_to_subject(self, student_id: int, subject_id: int) -> None:
+        student: Student | None = db.session.get(Student, ident=student_id)
+        subject: Subject | None = db.session.get(Subject, ident=subject_id)
 
         if not student:
-            raise ItemNotFoundError(f"De student met id {student_id} kon niet in de databank gevonden worden")
+            msg = f"Student with id {student_id} not found"
+            raise ItemNotFoundError(msg)
         if not subject:
-            raise ItemNotFoundError(f"Het subject met id {subject_id} kon niet in de databank gevonden worden")
+            msg = f"Subject with id {subject_id} not found"
+            raise ItemNotFoundError(msg)
         if subject in student.subjects:
-            raise UniqueConstraintError(f"De student met id {student_id} volgt het vak met id {student_id} al")
+            msg = f"Student with id {student_id} already has subject with id {subject_id}"
+            raise UniqueConstraintError(msg)
 
         student.subjects.append(subject)
+        db.session.add(student)
+        db.session.commit()
 
-    def add_subject_to_teacher(self, subject_id: int, teacher_id: int):
-        teacher: Teacher = Teacher.query.get(ident=teacher_id)
-        subject: Subject = Subject.query.get(ident=subject_id)
+    def add_teacher_to_subject(self, teacher_id: int, subject_id: int) -> None:
+        teacher: Teacher | None = db.session.get(Teacher, ident=teacher_id)
+        subject: Subject | None = db.session.get(Subject, ident=subject_id)
 
         if not teacher:
-            raise ItemNotFoundError(f"De teacher met id {teacher_id} kon niet in de databank gevonden worden")
+            msg = f"Teacher with id {teacher_id} not found"
+            raise ItemNotFoundError(msg)
         if not subject:
-            raise ItemNotFoundError(f"Het subject met id {subject_id} kon niet in de databank gevonden worden")
+            msg = f"Subject with id {subject_id} not found"
+            raise ItemNotFoundError(msg)
         if subject in teacher.subjects:
-            raise UniqueConstraintError(f"De teacher met id {teacher_id} volgt het vak met id {subject_id} al")
+            msg = f"Teacher with id {teacher_id} already has subject with id {subject_id}"
+            raise UniqueConstraintError(msg)
 
         teacher.subjects.append(subject)
+        db.session.add(teacher)
+        db.session.commit()

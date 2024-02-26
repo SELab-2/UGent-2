@@ -5,13 +5,11 @@ from domain.models.SubjectDataclass import SubjectDataclass
 
 class SubjectDAO(ABC):
     @abstractmethod
-    def create_subject(self, subject: SubjectDataclass) -> None:
+    def create_subject(self, name: str) -> None:
         """
-        Creëert een nieuw SubjectDataclass in de database en associeert het met een TeacherDataclass.
+        Creëert een nieuw SubjectDataclass in de database.
 
-        :param subject: De SubjectDataclass domeinmodel-instantie die aan de database moet worden toegevoegd.
-        :param teacher_id: De identificatie van de TeacherDataclass waarmee het SubjectDataclass geassocieerd wordt.
-        :raises: ItemNotFoundException: Als er geen TeacherDataclass met de opgegeven `teacher_id` in de database is.
+        :param name: De naam van het nieuwe vak.
         """
         raise NotImplementedError
 
@@ -44,26 +42,26 @@ class SubjectDAO(ABC):
         :param student_id: De student waarvan de subjects opgehaald moeten worden.
         :return: Een lijst van subjects die door de gegeven student worden gegeven.
         """
-        raise NotImplementedError()
+        raise NotImplementedError
 
     @abstractmethod
-    def add_subject_to_student(self, subject_id: int, student_id: int):
+    def add_student_to_subject(self, student_id: int, subject_id: int) -> None:
         """
-        Voegt een subject toe aan een student.
+        Voegt een student toe aan een vak.
 
         :param subject_id: De id van subject die door de student wordt gevolgd.
         :param student_id: De student die subject volgt.
         :raises: ItemNotFoundException: Als er geen student/subject met de opgegeven id in de database is.
         """
-        raise NotImplementedError()
+        raise NotImplementedError
 
     @abstractmethod
-    def add_subject_to_teacher(self, subject_id: int, teacher_id: int):
+    def add_teacher_to_subject(self, teacher_id: int, subject_id: int) -> None:
         """
-        Voegt een subject toe aan een teacher.
+        Voegt een teacher toe aan een vak.
 
         :param subject_id: De id van subject die door de teacher gegeven wordt.
         :param teacher_id: De teacher die dit subject geeft.
         :raises: ItemNotFoundException: Als er geen teacher/subject met de opgegeven id in de database is.
         """
-        raise NotImplementedError()
+        raise NotImplementedError
