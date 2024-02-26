@@ -16,7 +16,7 @@ class SqlAdminDAO(AdminDAO):
         return admin.to_domain_model()
 
     def get_all_admins(self) -> list[AdminDataclass]:
-        admins: list[Admin] = db.session.scalars(select(Admin)).all()
+        admins: list[Admin] = list(db.session.scalars(select(Admin)).all())
         return [admin.to_domain_model() for admin in admins]
 
     def create_admin(self, name: str, email: str) -> None:

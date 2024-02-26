@@ -1,38 +1,39 @@
+from datetime import datetime
+
 from db.errors.database_errors import ItemNotFoundError
 from db.extensions import db
 from db.interface.ProjectDAO import ProjectDAO
 from db.models.models import Project, Subject
-from domain.models.models import ProjectDataclass
+from domain.models.ProjectDataclass import ProjectDataclass
 
 
 class SqlProjectDAO(ProjectDAO):
-    def create_project(self, project: ProjectDataclass, subject_id: int):
-        subject = Subject.query.get(subject_id)
+    def create_project(self, subject_id: int, name: str, deadline: datetime, archived: bool, requirements: str,
+                       visible: bool, max_student: int) -> None:
+        subject: Subject | None = db.session.get(Subject, subject_id)
         if not subject:
-            raise ItemNotFoundError(f"Het subject met id {subject_id} kon niet in de databank gevonden worden")
+            msg = f"Subject with id {subject_id} not found"
+            raise ItemNotFoundError(msg)
 
-        new_project = Project()
-        new_project.subject_id = subject_id
-        new_project.name = project.name
-        new_project.deadline = project.deadline
-        new_project.archived = project.archived
-        new_project.requirements = project.requirements
-        new_project.visible = project.visible
-        new_project.max_students = project.max_students
+        new_project: Project = Project(subject_id=subject_id, subject=subject, name=name, deadline=deadline,
+                                       archived=archived, requirements=requirements, visible=visible,
+                                       max_students=max_student)
+
         db.session.add(new_project)
         db.session.commit()
 
-        project.id = new_project.id
 
     def get_project(self, project_id: int) -> ProjectDataclass:
-        project = Project.query.get(project_id)
+        project: Project | None = db.session.get(Project, ident=project_id)
         if not project:
-            raise ItemNotFoundError(f"Het project met id {project_id} kon niet in de databank gevonden worden")
+            msg = f"Project with id {project_id} not found"
+            raise ItemNotFoundError(msg)
         return project.to_domain_model()
 
-    def get_projects(self, subject_id: int) -> list[ProjectDataclass]:
-        subject = Subject.query.get(subject_id)
+    def get_projects_of_subject(self, subject_id: int) -> list[ProjectDataclass]:
+        subject: Subject | None = db.session.get(Subject, ident=subject_id)
         if not subject:
-            raise ItemNotFoundError(f"Het subject met id {subject_id} kon niet in de databank gevonden worden")
+            msg = f"Subject with id {subject_id} not found"
+            raise ItemNotFoundError(msg)
         projects: list[Project] = subject.projects
         return [project.to_domain_model() for project in projects]

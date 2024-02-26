@@ -16,7 +16,7 @@ class SqlStudentDAO(StudentDAO):
         return student.to_domain_model()
 
     def get_all_students(self) -> list[StudentDataclass]:
-        students: list[Student] = db.session.scalars(select(Student)).all()
+        students: list[Student] = list(db.session.scalars(select(Student)).all())
         return [student.to_domain_model() for student in students]
 
     def create_student(self, name: str, email: str) -> None:

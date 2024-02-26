@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from domain.models.models import UserDataclass
+from domain.models.UserDataclass import UserDataclass
 
 
 class UserDAO(ABC):
@@ -13,7 +13,7 @@ class UserDAO(ABC):
         :return: De user die overeenkomt met de gegeven id.
         :raises ItemNotFoundException: Als geen user met het gegeven id gevonden werd.
         """
-        raise NotImplementedError()
+        raise NotImplementedError
 
     @abstractmethod
     def get_all_users(self) -> list[UserDataclass]:
@@ -22,13 +22,14 @@ class UserDAO(ABC):
 
         :return: Een lijst van alle users.
         """
-        raise NotImplementedError()
+        raise NotImplementedError
 
     @abstractmethod
-    def create_user(self, user: UserDataclass):
+    def create_user(self, name: str, email: str) -> None:
         """
         Maakt een nieuwe user aan.
 
-        :param user: De user die aangemaakt moet worden.
+        :param name: De naam van de nieuwe user
+        :param email: De email van de nieuwe user
         """
-        raise NotImplementedError()
+        raise NotImplementedError

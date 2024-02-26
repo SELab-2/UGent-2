@@ -12,13 +12,13 @@ class SqlTeacherDAO(TeacherDAO):
         teacher: Teacher | None = db.session.get(Teacher, ident)
 
         if not teacher:
-            msg = f"Teacher with id {ident}  not found"
+            msg = f"Teacher with id {ident} not found"
             raise ItemNotFoundError(msg)
 
         return teacher.to_domain_model()
 
     def get_all_teachers(self) -> list[TeacherDataclass]:
-        teachers: list[Teacher] = db.session.scalars(select(Teacher)).all()
+        teachers: list[Teacher] = list(db.session.scalars(select(Teacher)).all())
         return [teacher.to_domain_model() for teacher in teachers]
 
     def create_teacher(self, name: str, email: str) -> None:

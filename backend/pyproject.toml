@@ -85,7 +85,9 @@ ignore = [
     "INP001", # File `...` is part of an implicit namespace package
     "S101",   # is nodig voor de testen
     "TCH001", # Move application import `...` into a type-checking block (dit is enkel voor performance)
-    "RUF009"  # Do not perform function call `...` in dataclass defaults but needed for sql alchemy
+    "RUF009",  # Do not perform function call `...` in dataclass defaults but needed for sql alchemy
+    "PLR0913", # Too many arguments in function
+    "FBT001" # Boolean-typed positional argument in function dfinition
 ]
 
 # Allow fix for all enabled rules (when `--fix`) is provided.
