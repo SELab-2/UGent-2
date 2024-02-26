@@ -3,7 +3,7 @@ name = "Delphi"
 version = "0.1.0"
 description = "A Dodona clone"
 authors = [
-    {name = "Mathieu Slypsteen", email = "mathieu.slypsteen@ugent.be"},
+    {name = "Mathieu Strypsteen", email = "mathieu.strypsteen@ugent.be"},
     {name = "Albéric Loos", email = "alberic.loos@ugent.be"},
     {name = "Emma Vandewalle", email = "emma.vandewalle@ugent.be"},
     {name = "Lukas Barragan Torres", email = "lukas.barragantorres@ugent.be"},
