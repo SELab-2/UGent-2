@@ -17,8 +17,8 @@ from db.interface.StudentDAO import StudentDAO
 from db.interface.SubjectDAO import SubjectDAO
 from db.interface.SubmissionDAO import SubmissionDAO
 from db.interface.TeacherDAO import TeacherDAO
-from db.interface.UserDAO import UserDAO
-from domain.models.models import GroupDataclass, ProjectDataclass, SubjectDataclass, SubmissionDataclass, UserDataclass
+from domain.models.SubjectDataclass import SubjectDataclass
+from domain.models.TeacherDataclass import TeacherDataclass
 
 if __name__ == "__main__":
     with app.app_context():

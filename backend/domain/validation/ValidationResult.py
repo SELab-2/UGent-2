@@ -1,11 +1,24 @@
-class ValidationResult:
-    def __init__(self, is_ok: bool = True, errors: list[str] | None = None):
-        self.is_ok = is_ok
-        self.errors = errors if errors is not None else []
+from abc import ABC, abstractmethod
 
-    def add_error(self, error: str):
-        self.is_ok = False
-        self.errors.append(error)
 
-    def __bool__(self):
-        return self.is_ok
+class ValidationResult(ABC):
+
+    errors: list[str]
+
+    @abstractmethod
+    def __bool__(self) -> bool:
+        raise NotImplementedError
+
+
+class ValidationSuccess(ValidationResult):
+
+    def __bool__(self) -> bool:
+        return True
+
+
+class ValidationError(ValidationResult):
+    def __init__(self, errors: list[str]) -> None:
+        self.errors = errors
+
+    def __bool__(self) -> bool:
+        return False

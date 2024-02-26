@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from domain.models.models import TeacherDataclass
+from domain.models.TeacherDataclass import TeacherDataclass
 
 
 class TeacherDAO(ABC):
@@ -13,7 +13,7 @@ class TeacherDAO(ABC):
         :return: De teacher die overeenkomt met de gegeven id.
         :raises ItemNotFoundException: Als geen teacher met het gegeven id gevonden werd.
         """
-        raise NotImplementedError()
+        raise NotImplementedError
 
     @abstractmethod
     def get_all_teachers(self) -> list[TeacherDataclass]:
@@ -22,13 +22,13 @@ class TeacherDAO(ABC):
 
         :return: Een lijst van alle lesgevers.
         """
-        raise NotImplementedError()
+        raise NotImplementedError
 
     @abstractmethod
-    def create_teacher(self, user_id: int):
+    def create_teacher(self, teacher: TeacherDataclass) -> None:
         """
         Maakt een nieuwe teacher aan.
 
-        :param user_id: De id van de user die een teacher moet worden.
+        :param teacher: De teacher die aangemaakt moet worden.
         """
-        raise NotImplementedError()
+        raise NotImplementedError
