@@ -31,7 +31,7 @@ class SubmissionDAO(ABC):
         raise NotImplementedError()
 
     @abstractmethod
-    def get_submissions_student(self, student_id: int) -> list[SubmissionDataclass]:
+    def get_submissions_of_student(self, student_id: int) -> list[SubmissionDataclass]:
         """
         Haalt alle projecten op die bij een bepaalde student horen.
 
@@ -41,7 +41,7 @@ class SubmissionDAO(ABC):
         raise NotImplementedError()
 
     @abstractmethod
-    def get_submissions_group(self, group_id: int) -> list[SubmissionDataclass]:
+    def get_submissions_of_group(self, group_id: int) -> list[SubmissionDataclass]:
         """
         Haalt alle projecten op die bij een bepaalde groep horen.
 

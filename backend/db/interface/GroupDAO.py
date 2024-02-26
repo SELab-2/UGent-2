@@ -27,7 +27,7 @@ class GroupDAO(ABC):
         raise NotImplementedError()
 
     @abstractmethod
-    def get_groups_project(self, project_id: int) -> list[GroupDataclass]:
+    def get_groups_of_project(self, project_id: int) -> list[GroupDataclass]:
         """
         Haalt alle groepen op die bij een bepaald project horen.
 
@@ -37,7 +37,7 @@ class GroupDAO(ABC):
         raise NotImplementedError()
 
     @abstractmethod
-    def get_groups_student(self, student_id: int) -> list[GroupDataclass]:
+    def get_groups_of_student(self, student_id: int) -> list[GroupDataclass]:
         """
         Haalt alle groepen op die bij een bepaalde student horen.
 
@@ -47,7 +47,7 @@ class GroupDAO(ABC):
         raise NotImplementedError()
 
     @abstractmethod
-    def add_student_group(self, student_id: int, group_id: int):
+    def add_student_to_group(self, student_id: int, group_id: int):
         """
         Gaat een student toevoegen aan een groep
 
@@ -57,7 +57,7 @@ class GroupDAO(ABC):
         """
         raise NotImplementedError()
 
-    def get_students_group(self, group_id: int) -> list[StudentDataclass]:
+    def get_students_of_group(self, group_id: int) -> list[StudentDataclass]:
         """
         Gaat alle studenten geven die in een bepaalde groep zitten
 

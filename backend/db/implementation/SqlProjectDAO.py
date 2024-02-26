@@ -28,11 +28,11 @@ class SqlProjectDAO(ProjectDAO):
         project = Project.query.get(project_id)
         if not project:
             raise ItemNotFoundError(f"Het project met id {project_id} kon niet in de databank gevonden worden")
-        return project
+        return project.to_domain_model()
 
     def get_projects(self, subject_id: int) -> list[ProjectDataclass]:
         subject = Subject.query.get(subject_id)
         if not subject:
             raise ItemNotFoundError(f"Het subject met id {subject_id} kon niet in de databank gevonden worden")
         projects: list[Project] = subject.projects
-        return [project.name for project in projects]
+        return [project.to_domain_model() for project in projects]

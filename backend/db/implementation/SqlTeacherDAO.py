@@ -16,7 +16,7 @@ class SqlTeacherDAO(TeacherDAO):
 
     def get_all_teachers(self) -> list[TeacherDataclass]:
         teachers: list[Teacher] = Teacher.query.all()
-        return [lesgever.to_domain_model() for lesgever in teachers]
+        return [teacher.to_domain_model() for teacher in teachers]
 
     def create_teacher(self, user_id: int):
         user: User = User.query.get(ident=user_id)

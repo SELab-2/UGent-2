@@ -10,11 +10,11 @@ class SqlStudentDAO(StudentDAO):
         student: Student = Student.query.get(ident=ident)
         if not student:
             raise ItemNotFoundError("StudentDataclass with given id not found")
-        return student
+        return student.to_domain_model()
 
     def get_all_students(self) -> list[StudentDataclass]:
         students: list[Student] = Student.query.all()
-        return students
+        return [student.to_domain_model() for student in students]
 
     def create_student(self, user_id: int):
         user: User = User.query.get(ident=user_id)

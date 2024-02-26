@@ -7,17 +7,17 @@ from domain.models.models import AdminDataclass
 
 class SqlAdminDAO(AdminDAO):
     def get_admin(self, ident: int) -> AdminDataclass:
-        admin: Admin = Admin.query.get(ident=ident)
+        admin: Admin = db.session.get(Admin, ident=ident)
         if not admin:
             raise ItemNotFoundError("AdminDataclass with given id not found")
         return admin.to_domain_model()
 
     def get_all_admins(self) -> list[AdminDataclass]:
-        admins: list[Admin] = Admin.query.all()
+        admins: list[Admin] = db.session.get(Admin).all()
         return [admin.to_domain_model() for admin in admins]
 
-    def create_admin(self, user_id: int):
-        user: User = User.query.get(ident=user_id)
+    def create_admin(self, name: str, email: str):
+        user: User = db.session.get(ident=user_id)
 
         if not user:
             raise ItemNotFoundError("User with given id not found")

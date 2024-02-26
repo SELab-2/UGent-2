@@ -22,23 +22,23 @@ class SqlGroupDAO(GroupDAO):
         group = Group.query.get(group_id)
         if not group:
             raise ItemNotFoundError(f"De groep met id {group_id} kon niet in de databank gevonden worden")
-        return group
+        return group.to_domain_model()
 
-    def get_groups_project(self, project_id: int) -> list[GroupDataclass]:
+    def get_groups_of_project(self, project_id: int) -> list[GroupDataclass]:
         project = Project.query.get(project_id)
         if not project:
             raise ItemNotFoundError(f"Het project met id {project_id} kon niet in de databank gevonden worden")
         groups: list[Group] = project.groups
-        return groups
+        return [group.to_domain_model() for group in groups]
 
-    def get_groups_student(self, student_id: int) -> list[GroupDataclass]:
+    def get_groups_of_student(self, student_id: int) -> list[GroupDataclass]:
         student = Student.query.get(student_id)
         if not student:
             raise ItemNotFoundError(f"De student met id {student_id} kon niet in de databank gevonden worden")
         groups: list[Group] = student.groups
-        return groups
+        return [group.to_domain_model() for group in groups]
 
-    def add_student_group(self, student_id: int, group_id: int):
+    def add_student_to_group(self, student_id: int, group_id: int):
         student = Student.query.get(student_id)
         group = Group.query.get(group_id)
         if not student:
@@ -50,8 +50,9 @@ class SqlGroupDAO(GroupDAO):
 
         group.students.append(student)
 
-    def get_students_group(self, group_id: int) -> list[StudentDataclass]:
+    def get_students_of_group(self, group_id: int) -> list[StudentDataclass]:
         group = Group.query.get(group_id)
         if not group:
             raise ItemNotFoundError(f"De group met id {group_id} kon niet in de databank gevonden worden")
-        return group.students
+        students: list[Student] = group.students
+        return [student.to_domain_model() for student in students]

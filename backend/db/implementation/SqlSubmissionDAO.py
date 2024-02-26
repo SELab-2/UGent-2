@@ -30,18 +30,18 @@ class SqlSubmissionDAO(SubmissionDAO):
         submission = Submission.query.get(submission_id)
         if not submission:
             raise ItemNotFoundError(f"submission met id {submission_id} kon niet in de databank gevonden worden")
-        return submission
+        return submission.to_domain_model()
 
-    def get_submissions_student(self, student_id: int) -> list[SubmissionDataclass]:
+    def get_submissions_of_student(self, student_id: int) -> list[SubmissionDataclass]:
         student = Student.query.get(student_id)
         if not student:
             raise ItemNotFoundError(f"student met id {student_id} kon niet in de databank gevonden worden")
         submissions: list[SubmissionDataclass] = student.submissions
-        return submissions
+        return [submission.to_domain_model() for submission in submissions]
 
-    def get_submissions_group(self, group_id: int) -> list[SubmissionDataclass]:
+    def get_submissions_of_group(self, group_id: int) -> list[SubmissionDataclass]:
         group = Group.query.get(group_id)
         if not group:
             raise ItemNotFoundError(f"group met id {group_id} kon niet in de databank gevonden worden")
         submissions: list[SubmissionDataclass] = group.submissions
-        return submissions
+        return [submission.to_domain_model() for submission in submissions]

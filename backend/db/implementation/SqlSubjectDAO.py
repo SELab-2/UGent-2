@@ -28,25 +28,25 @@ class SqlSubjectDAO(SubjectDAO):
 
         return subject.to_domain_model()
 
-    def get_subjects_teacher(self, teacher_id: int) -> list[SubjectDataclass]:
+    def get_subjects_of_teacher(self, teacher_id: int) -> list[SubjectDataclass]:
         teacher: Teacher = Teacher.query.get(ident=teacher_id)
 
         if not teacher:
             raise ItemNotFoundError(f"De teacher met id {teacher_id} kon niet in de databank gevonden worden")
 
         subjects: list[Subject] = teacher.subjects
-        return [vak.name for vak in subjects]
+        return [vak.to_domain_model() for vak in subjects]
 
-    def get_subjects_student(self, student_id: int) -> list[SubjectDataclass]:
+    def get_subjects_of_student(self, student_id: int) -> list[SubjectDataclass]:
         student: Student = Student.query.get(ident=student_id)
 
         if not student:
             raise ItemNotFoundError(f"De student met id {student_id} kon niet in de databank gevonden worden")
 
         subjects: list[Subject] = student.subjects
-        return [vak.name for vak in subjects]
+        return [vak.to_domain_model() for vak in subjects]
 
-    def add_subject_student(self, subject_id: int, student_id: int):
+    def add_subject_to_student(self, subject_id: int, student_id: int):
         student: Student = Student.query.get(ident=student_id)
         subject: Subject = Subject.query.get(ident=subject_id)
 
@@ -59,7 +59,7 @@ class SqlSubjectDAO(SubjectDAO):
 
         student.subjects.append(subject)
 
-    def add_subject_teacher(self, subject_id: int, teacher_id: int):
+    def add_subject_to_teacher(self, subject_id: int, teacher_id: int):
         teacher: Teacher = Teacher.query.get(ident=teacher_id)
         subject: Subject = Subject.query.get(ident=subject_id)
 

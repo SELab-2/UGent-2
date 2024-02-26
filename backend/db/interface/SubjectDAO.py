@@ -27,7 +27,7 @@ class SubjectDAO(ABC):
         raise NotImplementedError()
 
     @abstractmethod
-    def get_subjects_teacher(self, teacher_id: int) -> list[SubjectDataclass]:
+    def get_subjects_of_teacher(self, teacher_id: int) -> list[SubjectDataclass]:
         """
         Haalt de subjects op die door een bepaalde teacher worden gegeven.
 
@@ -37,7 +37,7 @@ class SubjectDAO(ABC):
         raise NotImplementedError()
 
     @abstractmethod
-    def get_subjects_student(self, student_id: int) -> list[SubjectDataclass]:
+    def get_subjects_of_student(self, student_id: int) -> list[SubjectDataclass]:
         """
         Haalt de subjects op die door een bepaalde student worden gevolgd.
 
@@ -47,7 +47,7 @@ class SubjectDAO(ABC):
         raise NotImplementedError()
 
     @abstractmethod
-    def add_subject_student(self, subject_id: int, student_id: int):
+    def add_subject_to_student(self, subject_id: int, student_id: int):
         """
         Voegt een subject toe aan een student.
 
@@ -58,7 +58,7 @@ class SubjectDAO(ABC):
         raise NotImplementedError()
 
     @abstractmethod
-    def add_subject_teacher(self, subject_id: int, teacher_id: int):
+    def add_subject_to_teacher(self, subject_id: int, teacher_id: int):
         """
         Voegt een subject toe aan een teacher.
 
