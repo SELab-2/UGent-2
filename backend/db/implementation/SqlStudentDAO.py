@@ -1,29 +1,25 @@
+from sqlalchemy import select
+
 from db.errors.database_errors import ItemNotFoundError
 from db.extensions import db
 from db.interface.StudentDAO import StudentDAO
-from db.models.models import Student, User
-from domain.models.models import StudentDataclass
+from db.models.models import Student
+from domain.models.StudentDataclass import StudentDataclass
 
 
 class SqlStudentDAO(StudentDAO):
     def get_student(self, ident: int) -> StudentDataclass:
-        student: Student = Student.query.get(ident=ident)
+        student: Student | None = db.session.get(Student, ident=ident)
         if not student:
-            raise ItemNotFoundError("StudentDataclass with given id not found")
+            msg = f"Student with id {ident} not found"
+            raise ItemNotFoundError(msg)
         return student.to_domain_model()
 
     def get_all_students(self) -> list[StudentDataclass]:
-        students: list[Student] = Student.query.all()
+        students: list[Student] = db.session.scalars(select(Student)).all()
         return [student.to_domain_model() for student in students]
 
-    def create_student(self, user_id: int):
-        user: User = User.query.get(ident=user_id)
-
-        if not user:
-            raise ItemNotFoundError("User with given id not found.")
-
-        new_student: Student = Student()
-        new_student.id = user_id
-
+    def create_student(self, name: str, email: str) -> None:
+        new_student: Student = Student(name=name, email=email)
         db.session.add(new_student)
         db.session.commit()

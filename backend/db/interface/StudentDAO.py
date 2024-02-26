@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from domain.models.models import StudentDataclass
+from domain.models.StudentDataclass import StudentDataclass
 
 
 class StudentDAO(ABC):
@@ -13,7 +13,7 @@ class StudentDAO(ABC):
         :return: De student die overeenkomt met de gegeven id.
         :raises ItemNotFoundException: Als geen student met het gegeven id gevonden werd.
         """
-        raise NotImplementedError()
+        raise NotImplementedError
 
     @abstractmethod
     def get_all_students(self) -> list[StudentDataclass]:
@@ -22,13 +22,14 @@ class StudentDAO(ABC):
 
         :return: Een lijst van alle studenten.
         """
-        raise NotImplementedError()
+        raise NotImplementedError
 
     @abstractmethod
-    def create_student(self, user_id: int):
+    def create_student(self, name: str, email: str) -> None:
         """
         Maakt een nieuwe student aan.
 
-        :param user_id: De user id van de student die aangemaakt moet worden.
+        :param name: De naam van de nieuwe student
+        :param email: De email van de nieuwe student
         """
-        raise NotImplementedError()
+        raise NotImplementedError
