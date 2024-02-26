@@ -3,7 +3,7 @@ from domain.validation.ValidationResult import ValidationResult
 
 class SubjectValidator:
     @staticmethod
-    def validate(json_data: dict):
+    def validate(json_data: dict) -> ValidationResult:
         result = ValidationResult()
 
         name = json_data.get("name")

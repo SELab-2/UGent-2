@@ -5,7 +5,7 @@ from domain.models.SubjectDataclass import SubjectDataclass
 
 class SubjectDAO(ABC):
     @abstractmethod
-    def create_subject(self, subject: SubjectDataclass, teacher_id: int):
+    def create_subject(self, subject: SubjectDataclass, teacher_id: int) -> None:
         """
         Creëert een nieuw SubjectDataclass in de database en associeert het met een TeacherDataclass.
 
@@ -16,7 +16,7 @@ class SubjectDAO(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def get_subject(self, teacher_id: int):
+    def get_subject(self, teacher_id: int) -> SubjectDataclass:
         """
         Haalt een SubjectDataclass op aan de hand van zijn identificatie.
 

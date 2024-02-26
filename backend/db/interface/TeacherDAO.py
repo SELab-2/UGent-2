@@ -25,7 +25,7 @@ class TeacherDAO(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def create_teacher(self, teacher: TeacherDataclass):
+    def create_teacher(self, teacher: TeacherDataclass) -> None:
         """
         Maakt een nieuwe teacher aan.
 

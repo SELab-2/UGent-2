@@ -6,7 +6,7 @@ from domain.models.TeacherDataclass import TeacherDataclass
 
 
 class SqlTeacherDAO(TeacherDAO):
-    def get_teacher(self, ident: int):
+    def get_teacher(self, ident: int) -> TeacherDataclass:
         teacher: Teacher = Teacher.query.get(ident=ident)
 
         if not teacher:
@@ -18,7 +18,7 @@ class SqlTeacherDAO(TeacherDAO):
         teachers: list[Teacher] = Teacher.query.all()
         return [lesgever.to_domain_model() for lesgever in teachers]
 
-    def create_teacher(self, teacher: TeacherDataclass):
+    def create_teacher(self, teacher: TeacherDataclass) -> None:
         new_teacher = Teacher(name=teacher.name)
 
         db.session.add(new_teacher)
