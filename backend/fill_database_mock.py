@@ -45,7 +45,7 @@ if __name__ == "__main__":
         user_dao.create_user(Rien)
 
         # voeg admin toe aan de databank
-        admin_dao.create_admin(Gunnar.id)
+        admin_dao.create_admin(name="Mario", email="mario@luigi.com")
 
         # voeg teacher toe aan de databank
         teacher_dao.create_teacher(Gunnar.id)
@@ -115,4 +115,6 @@ if __name__ == "__main__":
         submission_dao.create_submission(submission=AD2_project_submission2,
                                          group_id=Group_1_AD2.id,
                                          student_id=Bob.id)
+
+        print(admin_dao.get_admin(Gunnar.id))
 

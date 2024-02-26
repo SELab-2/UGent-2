@@ -29,7 +29,7 @@ class AdminDAO(ABC):
         """
         Maakt een nieuwe admin aan.
 
-        :param name:
-        :param email: De email van de nieuwe admin
+        :param name: De naam van de nieuwe admin.
+        :param email: De email van de nieuwe admin.
         """
         raise NotImplementedError()

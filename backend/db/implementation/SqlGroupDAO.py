@@ -10,7 +10,7 @@ class SqlGroupDAO(GroupDAO):
         project = Project.query.get(project_id)
         if not project:
             raise ItemNotFoundError(f"Het project met id {project_id} kon niet in de databank gevonden worden")
-        new_group: Group = Group()
+        new_group: Group = Group(project_id=project_id, project=project, students=students, )
         new_group.project_id = project_id
         new_group.project = project
         db.session.add(new_group)

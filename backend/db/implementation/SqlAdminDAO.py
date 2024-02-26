@@ -17,14 +17,7 @@ class SqlAdminDAO(AdminDAO):
         return [admin.to_domain_model() for admin in admins]
 
     def create_admin(self, name: str, email: str):
-        user: User = db.session.get(ident=user_id)
-
-        if not user:
-            raise ItemNotFoundError("User with given id not found")
-
-        new_admin: Admin = Admin()
-        new_admin.id = user_id
-
+        new_admin: Admin = Admin(name=name, email=email)
         db.session.add(new_admin)
         db.session.commit()
 
