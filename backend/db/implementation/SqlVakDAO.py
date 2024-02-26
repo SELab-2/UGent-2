@@ -15,10 +15,10 @@ class SqlSubjectDAO(SubjectDAO):
 
         subject.id = new_subject.id
 
-    def get_subject(self, teacher_id: int) -> SubjectDataclass:
-        subject = Subject.query.get(teacher_id)
+    def get_subject(self, subject_id: int) -> SubjectDataclass:
+        subject = Subject.query.get(subject_id)
         if not subject:
-            msg = f"De lesgever met id {teacher_id} kon niet in de databank gevonden worden"
+            msg = f"Het vak met id {subject_id} kon niet in de databank gevonden worden"
             raise ItemNotFoundError(msg)
 
         return subject.to_domain_model()
