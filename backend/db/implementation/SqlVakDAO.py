@@ -6,7 +6,7 @@ from domain.models.SubjectDataclass import SubjectDataclass
 
 
 class SqlSubjectDAO(SubjectDAO):
-    def create_subject(self, subject: SubjectDataclass, teacher_id: int) -> None:
+    def create_subject(self, subject: SubjectDataclass) -> None:
 
         new_subject = Subject(name=subject.name)
 

@@ -5,7 +5,7 @@ from domain.models.SubjectDataclass import SubjectDataclass
 
 class SubjectDAO(ABC):
     @abstractmethod
-    def create_subject(self, subject: SubjectDataclass, teacher_id: int) -> None:
+    def create_subject(self, subject: SubjectDataclass) -> None:
         """
         Creëert een nieuw SubjectDataclass in de database en associeert het met een TeacherDataclass.
 
@@ -16,11 +16,11 @@ class SubjectDAO(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def get_subject(self, teacher_id: int) -> SubjectDataclass:
+    def get_subject(self, subject_id: int) -> SubjectDataclass:
         """
         Haalt een SubjectDataclass op aan de hand van zijn identificatie.
 
-        :param teacher_id: De identificatie van het op te halen SubjectDataclass.
+        :param subject_id: De identificatie van het op te halen SubjectDataclass.
         :raises ItemNotFoundException: Als er geen SubjectDataclass met de opgegeven `ident` in de database bestaat.
         :returns: De domeinmodel-instantie van het opgehaalde SubjectDataclass.
         """
