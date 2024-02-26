@@ -8,7 +8,7 @@ from app import app
 class LesgeverTestCase(unittest.TestCase):
     def setUp(self) -> None:
         self.app = app.test_client()
-        self.app.testing = True
+
 
     def test_create_teacher_bad_request(self) -> None:
         response = self.app.post("/teachers", data=json.dumps({}), content_type="application/json")
