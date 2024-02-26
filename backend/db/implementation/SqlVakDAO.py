@@ -7,11 +7,6 @@ from domain.models.SubjectDataclass import SubjectDataclass
 
 class SqlSubjectDAO(SubjectDAO):
     def create_subject(self, subject: SubjectDataclass, teacher_id: int) -> None:
-        teacher = Teacher.query.get(teacher_id)
-
-        if not teacher:
-            msg = f"De teacher met id {teacher_id} kon niet in de databank gevonden worden"
-            raise ItemNotFoundError(msg)
 
         new_subject = Subject(name=subject.name)
 
