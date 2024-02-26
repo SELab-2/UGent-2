@@ -13,7 +13,7 @@ class SqlSubjectDAO(SubjectDAO):
             msg = f"De teacher met id {teacher_id} kon niet in de databank gevonden worden"
             raise ItemNotFoundError(msg)
 
-        new_subject = Subject(name=subject.name, teacher=teacher)
+        new_subject = Subject(name=subject.name)
 
         db.session.add(new_subject)
         db.session.commit()

@@ -20,7 +20,7 @@ class SqlTeacherDAO(TeacherDAO):
         return [lesgever.to_domain_model() for lesgever in teachers]
 
     def create_teacher(self, teacher: TeacherDataclass) -> None:
-        new_teacher = Teacher(name=teacher.name)
+        new_teacher = Teacher(name=teacher.name, email=teacher.email)
 
         db.session.add(new_teacher)
         db.session.commit()
