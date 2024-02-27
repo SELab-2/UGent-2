@@ -1,4 +1,3 @@
-
 from db.extensions import DBSession
 
 

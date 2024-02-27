@@ -1,15 +1,10 @@
-import json
-from http import HTTPStatus
 
-from fastapi import APIRouter, Response, Request
+from fastapi import APIRouter
 
 from db.implementation.SqlTeacherDAO import SqlTeacherDAO
 from db.interface.TeacherDAO import TeacherDAO
 from domain.models.TeacherDataclass import TeacherDataclass
-from domain.validation.TeacherValidator import TeacherValidator
-from domain.validation.ValidationResult import ValidationResult
 
-# teachers_blueprint = Blueprint("teachers", __name__)
 teachers_router = APIRouter()
 
 
@@ -20,7 +15,7 @@ def get_teachers():
     teachers: list[TeacherDataclass] = dao.get_all_teachers()
     teachers_json = [teacher.to_dict() for teacher in teachers]
 
-    return Response(json.dumps(teachers_json, indent=4), content_type="application/json")
+    return teachers_json
 
 
 @teachers_router.get("/teachers/{teacher_id}")
@@ -34,19 +29,20 @@ def get_teacher(teacher_id: int):
 
 
 @teachers_router.post("/teachers")
-def create_teacher(request: Request):
-    teacher_data: dict = request.get_json()
+def create_teacher(teacher_data: TeacherDataclass):
 
-    if not teacher_data:
-        return Response(json.dumps({"error": "Foute JSON of Content-Type"}), status=HTTPStatus.BAD_REQUEST)
+    # can be commented because of the validation that happens through pydantic and FastAPI
+    # if not teacher_data:
+    #     return Response(json.dumps({"error": "Foute JSON of Content-Type"}), status=HTTPStatus.BAD_REQUEST)
 
-    validation_result: ValidationResult = TeacherValidator.validate(teacher_data)
-
-    if not validation_result:
-        return Response(json.dumps({"error": validation_result.errors}), status=HTTPStatus.BAD_REQUEST)
+    # validation_result: ValidationResult = TeacherValidator.validate(teacher_data)
+    #
+    # if not validation_result:
+    #     return Response(json.dumps({"error": validation_result.errors}), status=HTTPStatus.BAD_REQUEST)
 
     dao: TeacherDAO = SqlTeacherDAO()
-    lesgever = TeacherDataclass(**teacher_data)  # Vul alle velden van het dataobject in met de json
-    dao.create_teacher(lesgever.name, lesgever.email)
+    # is niet meer nodig omdat teacher_data een instance is van TeacherDataclass
+    # lesgever = TeacherDataclass(**teacher_data)  # Vul alle velden van het dataobject in met de json
+    dao.create_teacher(teacher_data.name, teacher_data.email)
 
-    return Response(json.dumps(lesgever.to_dict()), status=HTTPStatus.CREATED)
+    return teacher_data
