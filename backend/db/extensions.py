@@ -1,7 +1,7 @@
 import os
 
-from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 
 db_host = os.getenv("DB_HOST", "localhost")
 db_port = os.getenv("DB_PORT", "5432")
