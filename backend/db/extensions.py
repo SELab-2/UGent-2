@@ -3,7 +3,6 @@ import os
 from fastapi_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine
 
-
 db_host = os.getenv("DB_HOST", "localhost")
 db_port = os.getenv("DB_PORT", "5432")
 db_user = os.getenv("DB_USERNAME", "postgres")
