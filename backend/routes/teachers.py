@@ -1,7 +1,7 @@
 import json
 from http import HTTPStatus
 
-from flask import Blueprint, Response, request
+from fastapi import APIRouter, Response, Request
 
 from db.implementation.SqlLesgeverDAO import SqlTeacherDAO
 from db.interface.TeacherDAO import TeacherDAO
@@ -9,10 +9,11 @@ from domain.models.TeacherDataclass import TeacherDataclass
 from domain.validation.TeacherValidator import TeacherValidator
 from domain.validation.ValidationResult import ValidationResult
 
-teachers_blueprint = Blueprint("teachers", __name__)
+# teachers_blueprint = Blueprint("teachers", __name__)
+teachers_router = APIRouter()
 
 
-@teachers_blueprint.route("/teachers")
+@teachers_router.get("/teachers")
 def get_teachers():
     dao: TeacherDAO = SqlTeacherDAO()
 
@@ -22,18 +23,18 @@ def get_teachers():
     return Response(json.dumps(teachers_json, indent=4), content_type="application/json")
 
 
-@teachers_blueprint.route("/teachers/<int:teacher_id>")
-def get_teacher(teacher_id):
+@teachers_router.get("/teachers/{teacher_id}")
+def get_teacher(teacher_id: int):
     dao: TeacherDAO = SqlTeacherDAO()
 
     teacher: TeacherDataclass = dao.get_teacher(teacher_id)
     teacher_json = teacher.to_dict()
 
-    return Response(json.dumps(teacher_json, indent=4), content_type="application/json")
+    return teacher_json
 
 
-@teachers_blueprint.route("/teachers", methods=["POST"])
-def create_teacher():
+@teachers_router.post("/teachers")
+def create_teacher(request: Request):
     teacher_data: dict = request.get_json()
 
     if not teacher_data:
