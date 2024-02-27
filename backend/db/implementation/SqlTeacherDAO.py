@@ -1,8 +1,8 @@
 from sqlalchemy import select
 
 from db.errors.database_errors import ItemNotFoundError
-from db.extensions import db
 from db.interface.TeacherDAO import TeacherDAO
+from db.extensions import db
 from db.models.models import Teacher
 from domain.models.TeacherDataclass import TeacherDataclass
 

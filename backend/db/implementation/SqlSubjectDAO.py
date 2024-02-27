@@ -1,8 +1,8 @@
 from db.errors.database_errors import ItemNotFoundError, UniqueConstraintError
-from db.extensions import db
 from db.interface.SubjectDAO import SubjectDAO
 from db.models.models import Student, Subject, Teacher
 from domain.models.SubjectDataclass import SubjectDataclass
+from db.extensions import db
 
 
 class SqlSubjectDAO(SubjectDAO):
