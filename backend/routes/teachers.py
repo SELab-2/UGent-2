@@ -3,7 +3,7 @@ from http import HTTPStatus
 
 from fastapi import APIRouter, Response, Request
 
-from db.implementation.SqlLesgeverDAO import SqlTeacherDAO
+from db.implementation.SqlTeacherDAO import SqlTeacherDAO
 from db.interface.TeacherDAO import TeacherDAO
 from domain.models.TeacherDataclass import TeacherDataclass
 from domain.validation.TeacherValidator import TeacherValidator
@@ -38,15 +38,15 @@ def create_teacher(request: Request):
     teacher_data: dict = request.get_json()
 
     if not teacher_data:
-        return json.dumps({"error": "Foute JSON of Content-Type"}), HTTPStatus.BAD_REQUEST
+        return Response(json.dumps({"error": "Foute JSON of Content-Type"}), status=HTTPStatus.BAD_REQUEST)
 
     validation_result: ValidationResult = TeacherValidator.validate(teacher_data)
 
-    if not validation_result.is_ok:
-        return json.dumps({"error": validation_result.errors}), HTTPStatus.BAD_REQUEST
+    if not validation_result:
+        return Response(json.dumps({"error": validation_result.errors}), status=HTTPStatus.BAD_REQUEST)
 
     dao: TeacherDAO = SqlTeacherDAO()
     lesgever = TeacherDataclass(**teacher_data)  # Vul alle velden van het dataobject in met de json
-    dao.create_teacher(lesgever)
+    dao.create_teacher(lesgever.name, lesgever.email)
 
-    return json.dumps(lesgever.to_dict()), HTTPStatus.CREATED
+    return Response(json.dumps(lesgever.to_dict()), status=HTTPStatus.CREATED)

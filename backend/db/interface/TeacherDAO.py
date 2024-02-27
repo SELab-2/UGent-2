@@ -13,7 +13,7 @@ class TeacherDAO(ABC):
         :return: De teacher die overeenkomt met de gegeven id.
         :raises ItemNotFoundException: Als geen teacher met het gegeven id gevonden werd.
         """
-        raise NotImplementedError()
+        raise NotImplementedError
 
     @abstractmethod
     def get_all_teachers(self) -> list[TeacherDataclass]:
@@ -22,13 +22,15 @@ class TeacherDAO(ABC):
 
         :return: Een lijst van alle lesgevers.
         """
-        raise NotImplementedError()
+        raise NotImplementedError
 
     @abstractmethod
-    def create_teacher(self, teacher: TeacherDataclass):
+    def create_teacher(self, name: str, email: str) -> TeacherDataclass:
         """
         Maakt een nieuwe teacher aan.
 
-        :param teacher: De teacher die aangemaakt moet worden.
+        :param name: De naam van de nieuwe teacher.
+        :param email: De email van de nieuwe teacher.
+        :returns: De nieuw aangemaakte teacher.
         """
-        raise NotImplementedError()
+        raise NotImplementedError

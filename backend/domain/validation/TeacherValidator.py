@@ -1,14 +1,17 @@
-from domain.validation.ValidationResult import ValidationResult
+from domain.validation.ValidationResult import ValidationError, ValidationResult, ValidationSuccess
 
 
 class TeacherValidator:
     @staticmethod
-    def validate(json_data: dict):
-        result = ValidationResult()
+    def validate(json_data: dict) -> ValidationResult:
 
         name = json_data.get("name")
 
+        errors: list[str] = []
         if not name:
-            result.add_error("Veld 'name' ontbreekt.")
+            errors.append("Veld 'name' ontbreekt.")
 
-        return result
+        if len(errors) > 0:
+            return ValidationError(errors)
+
+        return ValidationSuccess()
