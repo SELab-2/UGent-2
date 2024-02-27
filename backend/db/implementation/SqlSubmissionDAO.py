@@ -19,7 +19,7 @@ class SqlSubmissionDAO(SubmissionDAO):
         if not group:
             msg = f"Group with id {group_id} not found"
             raise ItemNotFoundError(msg)
-        new_submission: Submission = Submission(student=student, group=group, student_id=student_id,
+        new_submission: Submission = Submission(student_id=student_id,
                                                 group_id=group_id, message=message, state=state, date_time=date_time)
         db.session.add(new_submission)
         db.session.commit()

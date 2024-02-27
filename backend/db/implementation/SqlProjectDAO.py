@@ -15,7 +15,7 @@ class SqlProjectDAO(ProjectDAO):
             msg = f"Subject with id {subject_id} not found"
             raise ItemNotFoundError(msg)
 
-        new_project: Project = Project(subject_id=subject_id, subject=subject, name=name, deadline=deadline,
+        new_project: Project = Project(subject_id=subject_id, name=name, deadline=deadline,
                                        archived=archived, requirements=requirements, visible=visible,
                                        max_students=max_students)
 

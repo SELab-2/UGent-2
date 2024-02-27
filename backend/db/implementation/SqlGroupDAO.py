@@ -12,7 +12,7 @@ class SqlGroupDAO(GroupDAO):
         if not project:
             msg = f"Project with id {project} not found"
             raise ItemNotFoundError(msg)
-        new_group: Group = Group(project_id=project_id, project=project)
+        new_group: Group = Group(project_id=project_id)
         db.session.add(new_group)
         db.session.commit()
         return new_group.to_domain_model()
