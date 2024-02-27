@@ -50,7 +50,6 @@ class SqlSubjectDAO(SubjectDAO):
             raise UniqueConstraintError(msg)
 
         student.subjects.append(subject)
-        db.session.add(student)
         db.session.commit()
 
     def add_teacher_to_subject(self, teacher_id: int, subject_id: int) -> None:
@@ -68,5 +67,4 @@ class SqlSubjectDAO(SubjectDAO):
             raise UniqueConstraintError(msg)
 
         teacher.subjects.append(subject)
-        db.session.add(teacher)
         db.session.commit()

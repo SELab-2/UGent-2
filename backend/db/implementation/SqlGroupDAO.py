@@ -54,7 +54,6 @@ class SqlGroupDAO(GroupDAO):
             raise UniqueConstraintError(msg)
 
         group.students.append(student)
-        db.session.add(group)
         db.session.commit()
 
     def get_students_of_group(self, group_id: int) -> list[StudentDataclass]:
