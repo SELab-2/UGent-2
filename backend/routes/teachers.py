@@ -3,7 +3,7 @@ from http import HTTPStatus
 
 from flask import Blueprint, Response, request
 
-from db.implementation.SqlLesgeverDAO import SqlTeacherDAO
+from db.implementation.SqlTeacherDAO import SqlTeacherDAO
 from db.interface.TeacherDAO import TeacherDAO
 from domain.models.TeacherDataclass import TeacherDataclass
 from domain.validation.TeacherValidator import TeacherValidator
@@ -46,6 +46,6 @@ def create_teacher() -> Response:
 
     dao: TeacherDAO = SqlTeacherDAO()
     lesgever = TeacherDataclass(**teacher_data)  # Vul alle velden van het dataobject in met de json
-    dao.create_teacher(lesgever)
+    dao.create_teacher(lesgever.name, lesgever.email)
 
     return Response(json.dumps(lesgever.to_dict()), status=HTTPStatus.CREATED)
