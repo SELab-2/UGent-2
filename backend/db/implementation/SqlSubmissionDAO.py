@@ -9,7 +9,7 @@ from domain.models.SubmissionDataclass import SubmissionDataclass, SubmissionSta
 
 class SqlSubmissionDAO(SubmissionDAO):
     def create_submission(self, student_id: int, group_id: int, message: str,state: SubmissionState,
-                          date_time: datetime) -> None:
+                          date_time: datetime) -> SubmissionDataclass:
 
         student: Student | None = db.session.get(Student, ident=student_id)
         group: Group | None = db.session.get(Group, ident=group_id)
@@ -23,6 +23,7 @@ class SqlSubmissionDAO(SubmissionDAO):
                                                 group_id=group_id, message=message, state=state, date_time=date_time)
         db.session.add(new_submission)
         db.session.commit()
+        return new_submission.to_domain_model()
 
     def get_submission(self, submission_id: int) -> SubmissionDataclass:
         submission: Submission | None = db.session.get(Submission, ident=submission_id)

@@ -7,11 +7,11 @@ from domain.models.ProjectDataclass import ProjectDataclass
 class ProjectDAO(ABC):
     @abstractmethod
     def create_project(self, subject_id: int, name: str, deadline: datetime, archived: bool, requirements: str,
-                       visible: bool, max_student: int) -> None:
+                       visible: bool, max_students: int) -> ProjectDataclass:
         """
         Creëert een nieuw ProjectDataClass in de database en associeert het met een SubjectDataClass.
 
-        :param max_student: maximaal aantal studenten per groep per project
+        :param max_students: maximaal aantal studenten per groep per project
         :param visible: of het project zichtbaar is voor de studenten
         :param requirements: Uitleg van het project
         :param archived: Of het project gearchiveerd is
@@ -19,6 +19,7 @@ class ProjectDAO(ABC):
         :param deadline: De deadline van het project
         :param subject_id: De identificatie van de SubjectDataClass waarmee het ProjectDataClass geassocieerd wordt.
         :raises: ItemNotFoundException: Als er geen SubjectDataClass met de opgegeven `teacher_id` in de database is.
+        :returns: Het nieuw aangemaakte project
         """
         raise NotImplementedError
 

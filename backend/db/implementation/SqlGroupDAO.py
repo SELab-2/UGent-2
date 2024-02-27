@@ -7,7 +7,7 @@ from domain.models.StudentDataclass import StudentDataclass
 
 
 class SqlGroupDAO(GroupDAO):
-    def create_group(self, project_id: int) -> None:
+    def create_group(self, project_id: int) -> GroupDataclass:
         project: Project | None = db.session.get(Project, ident=project_id)
         if not project:
             msg = f"Project with id {project} not found"
@@ -15,6 +15,7 @@ class SqlGroupDAO(GroupDAO):
         new_group: Group = Group(project_id=project_id, project=project)
         db.session.add(new_group)
         db.session.commit()
+        return new_group.to_domain_model()
 
     def get_group(self, group_id: int) -> GroupDataclass:
         group: Group | None = db.session.get(Group, ident=group_id)

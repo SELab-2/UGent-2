@@ -25,11 +25,12 @@ class StudentDAO(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def create_student(self, name: str, email: str) -> None:
+    def create_student(self, name: str, email: str) -> StudentDataclass:
         """
         Maakt een nieuwe student aan.
 
         :param name: De naam van de nieuwe student
         :param email: De email van de nieuwe student
+        :returns: De nieuw aangemaakte student
         """
         raise NotImplementedError

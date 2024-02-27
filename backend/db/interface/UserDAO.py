@@ -23,13 +23,3 @@ class UserDAO(ABC):
         :return: Een lijst van alle users.
         """
         raise NotImplementedError
-
-    @abstractmethod
-    def create_user(self, name: str, email: str) -> None:
-        """
-        Maakt een nieuwe user aan.
-
-        :param name: De naam van de nieuwe user
-        :param email: De email van de nieuwe user
-        """
-        raise NotImplementedError

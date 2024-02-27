@@ -5,11 +5,12 @@ from domain.models.SubjectDataclass import SubjectDataclass
 
 class SubjectDAO(ABC):
     @abstractmethod
-    def create_subject(self, name: str) -> None:
+    def create_subject(self, name: str) -> SubjectDataclass:
         """
         Creëert een nieuw SubjectDataclass in de database.
 
         :param name: De naam van het nieuwe vak.
+        :returns: Het nieuw aangemaakte subject.
         """
         raise NotImplementedError
 

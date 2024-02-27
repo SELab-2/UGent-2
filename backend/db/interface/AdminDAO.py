@@ -25,11 +25,12 @@ class AdminDAO(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def create_admin(self, name: str, email: str) -> None:
+    def create_admin(self, name: str, email: str) -> AdminDataclass:
         """
         Maakt een nieuwe admin aan.
 
         :param name: De naam van de nieuwe admin.
         :param email: De email van de nieuwe admin.
+        :return: De nieuwe admin
         """
         raise NotImplementedError

@@ -25,11 +25,12 @@ class TeacherDAO(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def create_teacher(self, name: str, email: str) -> None:
+    def create_teacher(self, name: str, email: str) -> TeacherDataclass:
         """
         Maakt een nieuwe teacher aan.
 
         :param name: De naam van de nieuwe teacher.
         :param email: De email van de nieuwe teacher.
+        :returns: De nieuw aangemaakte teacher.
         """
         raise NotImplementedError

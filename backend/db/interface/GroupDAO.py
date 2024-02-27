@@ -6,12 +6,13 @@ from domain.models.StudentDataclass import StudentDataclass
 
 class GroupDAO(ABC):
     @abstractmethod
-    def create_group(self, project_id: int) -> None:
+    def create_group(self, project_id: int) -> GroupDataclass:
         """
         Creëert een nieuw GroupDataClass in de database en associeert het met een ProjectDataClass.
 
         :param project_id: Id van het project dat gelinkt is aan de groep
         :raises: ItemNotFoundException: Als er geen ProjectDataClass met de opgegeven `project_id` in de database is.
+        :returns: De nieuw aangemaakte groep
         """
         raise NotImplementedError
 

@@ -19,7 +19,3 @@ class SqlUserDAO(UserDAO):
         users: list[User] = list(db.session.scalars(select(User)).all())
         return [user.to_domain_model() for user in users]
 
-    def create_user(self, name: str, email: str) -> None:
-        new_user: User = User(name=name, email=email)
-        db.session.add(new_user)
-        db.session.commit()

@@ -21,7 +21,8 @@ class SqlTeacherDAO(TeacherDAO):
         teachers: list[Teacher] = list(db.session.scalars(select(Teacher)).all())
         return [teacher.to_domain_model() for teacher in teachers]
 
-    def create_teacher(self, name: str, email: str) -> None:
+    def create_teacher(self, name: str, email: str) -> TeacherDataclass:
         new_teacher = Teacher(name=name, email=email)
         db.session.add(new_teacher)
         db.session.commit()
+        return new_teacher.to_domain_model()

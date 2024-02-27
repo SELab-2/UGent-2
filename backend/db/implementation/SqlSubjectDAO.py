@@ -6,10 +6,11 @@ from domain.models.SubjectDataclass import SubjectDataclass
 
 
 class SqlSubjectDAO(SubjectDAO):
-    def create_subject(self, name: str) -> None:
+    def create_subject(self, name: str) -> SubjectDataclass:
         new_subject = Subject(name=name)
         db.session.add(new_subject)
         db.session.commit()
+        return new_subject.to_domain_model()
 
     def get_subject(self, subject_id: int) -> SubjectDataclass:
         subject: Subject | None = db.session.get(Subject, ident=subject_id)

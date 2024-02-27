@@ -9,7 +9,7 @@ from domain.models.ProjectDataclass import ProjectDataclass
 
 class SqlProjectDAO(ProjectDAO):
     def create_project(self, subject_id: int, name: str, deadline: datetime, archived: bool, requirements: str,
-                       visible: bool, max_student: int) -> None:
+                       visible: bool, max_students: int) -> ProjectDataclass:
         subject: Subject | None = db.session.get(Subject, subject_id)
         if not subject:
             msg = f"Subject with id {subject_id} not found"
@@ -17,10 +17,11 @@ class SqlProjectDAO(ProjectDAO):
 
         new_project: Project = Project(subject_id=subject_id, subject=subject, name=name, deadline=deadline,
                                        archived=archived, requirements=requirements, visible=visible,
-                                       max_students=max_student)
+                                       max_students=max_students)
 
         db.session.add(new_project)
         db.session.commit()
+        return new_project.to_domain_model()
 
 
     def get_project(self, project_id: int) -> ProjectDataclass:

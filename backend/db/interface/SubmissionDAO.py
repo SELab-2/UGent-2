@@ -7,7 +7,7 @@ from domain.models.SubmissionDataclass import SubmissionDataclass, SubmissionSta
 class SubmissionDAO(ABC):
     @abstractmethod
     def create_submission(self, student_id: int, group_id: int, message: str,
-                          state: SubmissionState, date_time: datetime) -> None:
+                          state: SubmissionState, date_time: datetime) -> SubmissionDataclass:
         """
         Creëert een nieuw SubmissionDataClass in de database en associeert het met een StudentDataclass en een
         GroupDataClass.
@@ -16,6 +16,7 @@ class SubmissionDAO(ABC):
         :param group_id: De identificatie van de GroupDataClass waarmee het SubmissionDataClass geassocieerd wordt
         :raises: ItemNotFoundException: Als er geen StudentDataclass of GroupDataClass met de opgegeven `student_id` of
         `group_id` in de database is.
+        :return: De nieuw aangemaakte submission
         """
         raise NotImplementedError
 
