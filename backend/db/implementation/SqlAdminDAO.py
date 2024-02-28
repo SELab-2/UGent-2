@@ -7,7 +7,9 @@ from db.models.models import Admin
 from domain.models.AdminDataclass import AdminDataclass
 
 
-class SqlAdminDAO(AdminDAO, SqlAbstractDAO[Admin, AdminDataclass]):
+class SqlAdminDAO(SqlAbstractDAO[Admin, AdminDataclass], AdminDAO):
+    def __init__(self) -> None:
+        self.model_class = Admin
 
     def create_admin(self, name: str, email: str) -> AdminDataclass:
         with Session(engine) as session:

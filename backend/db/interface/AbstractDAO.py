@@ -7,12 +7,10 @@ D = TypeVar("D")
 
 class AbstractDAO(Generic[T, D], ABC):
 
-    @staticmethod
     @abstractmethod
-    def get_object(ident: int) -> D:
+    def get_object(self, ident: int) -> D:
         raise NotImplementedError
 
-    @staticmethod
     @abstractmethod
-    def get_all() -> list[D]:
+    def get_all(self) -> list[D]:
         raise NotImplementedError

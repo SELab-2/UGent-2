@@ -10,9 +10,11 @@ from db.models.models import Group, Student, Submission
 from domain.models.SubmissionDataclass import SubmissionDataclass, SubmissionState
 
 
-class SqlSubmissionDAO(SubmissionDAO, SqlAbstractDAO[Submission, SubmissionDataclass]):
-    @staticmethod
-    def create_submission(student_id: int, group_id: int, message: str, state: SubmissionState,
+class SqlSubmissionDAO(SqlAbstractDAO[Submission, SubmissionDataclass], SubmissionDAO):
+    def __init__(self) -> None:
+        self.model_class = Submission
+
+    def create_submission(self, student_id: int, group_id: int, message: str, state: SubmissionState,
                           date_time: datetime) -> SubmissionDataclass:
         with Session(engine) as session:
             student: Student | None = session.get(Student, ident=student_id)
@@ -30,8 +32,7 @@ class SqlSubmissionDAO(SubmissionDAO, SqlAbstractDAO[Submission, SubmissionDatac
             session.commit()
             return new_submission.to_domain_model()
 
-    @staticmethod
-    def get_submissions_of_student(student_id: int) -> list[SubmissionDataclass]:
+    def get_submissions_of_student(self, student_id: int) -> list[SubmissionDataclass]:
         with Session(engine) as session:
             student: Student | None = session.get(Student, ident=student_id)
             if not student:
@@ -40,8 +41,7 @@ class SqlSubmissionDAO(SubmissionDAO, SqlAbstractDAO[Submission, SubmissionDatac
             submissions: list[Submission] = student.submissions
             return [submission.to_domain_model() for submission in submissions]
 
-    @staticmethod
-    def get_submissions_of_group(group_id: int) -> list[SubmissionDataclass]:
+    def get_submissions_of_group(self, group_id: int) -> list[SubmissionDataclass]:
         with Session(engine) as session:
             group: Group | None = session.get(Group, ident=group_id)
             if not group:

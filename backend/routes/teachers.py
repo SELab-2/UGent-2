@@ -1,9 +1,8 @@
-
 from fastapi import APIRouter
 
 from db.implementation.SqlTeacherDAO import SqlTeacherDAO
 from db.interface.TeacherDAO import TeacherDAO
-from domain.models.TeacherDataclass import TeacherDataclass, TeacherDataClassRequest
+from domain.models.TeacherDataclass import TeacherDataclass
 
 teachers_router = APIRouter()
 
@@ -20,9 +19,9 @@ def get_teacher(teacher_id: int) -> TeacherDataclass:
     return dao.get_object(teacher_id)
 
 
+"""
 @teachers_router.post("/teachers")
 def create_teacher(teacher_data: TeacherDataClassRequest) -> TeacherDataclass:
-
     # can be commented because of the validation that happens through pydantic and FastAPI
     # woordjes if not teacher_data:
     # woordjes    return Response(json.dumps({"error": "Foute JSON of Content-Type"}), status=HTTPStatus.BAD_REQUEST)
@@ -36,3 +35,4 @@ def create_teacher(teacher_data: TeacherDataClassRequest) -> TeacherDataclass:
     # is niet meer nodig omdat teacher_data een instance is van TeacherDataclass
     # woordjes lesgever = TeacherDataclass(**teacher_data)  # Vul alle velden van het dataobject in met de json
     return dao.create_teacher(teacher_data.name, teacher_data.email)
+"""

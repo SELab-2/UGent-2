@@ -1,4 +1,4 @@
-from abc import ABC, abstractmethod
+from abc import abstractmethod
 from datetime import datetime
 
 from db.interface.AbstractDAO import AbstractDAO
@@ -6,11 +6,10 @@ from db.models.models import Project
 from domain.models.ProjectDataclass import ProjectDataclass
 
 
-class ProjectDAO(AbstractDAO[Project, ProjectDataclass], ABC):
+class ProjectDAO(AbstractDAO[Project, ProjectDataclass]):
 
-    @staticmethod
     @abstractmethod
-    def create_project(subject_id: int, name: str, deadline: datetime, archived: bool, requirements: str,
+    def create_project(self, subject_id: int, name: str, deadline: datetime, archived: bool, requirements: str,
                        visible: bool, max_students: int) -> ProjectDataclass:
         """
         Creëert een nieuw ProjectDataClass in de database en associeert het met een SubjectDataClass.
@@ -27,9 +26,8 @@ class ProjectDAO(AbstractDAO[Project, ProjectDataclass], ABC):
         """
         raise NotImplementedError
 
-    @staticmethod
     @abstractmethod
-    def get_projects_of_subject(subject_id: int) -> list[ProjectDataclass]:
+    def get_projects_of_subject(self, subject_id: int) -> list[ProjectDataclass]:
         """
         Haalt alle projecten op die bij een bepaald subject horen.
 

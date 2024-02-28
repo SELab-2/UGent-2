@@ -7,18 +7,11 @@ from db.models.models import Teacher
 from domain.models.TeacherDataclass import TeacherDataclass
 
 
-class SqlTeacherDAO(TeacherDAO, SqlAbstractDAO[Teacher, TeacherDataclass]):
+class SqlTeacherDAO(SqlAbstractDAO[Teacher, TeacherDataclass], TeacherDAO):
+    def __init__(self) -> None:
+        self.model_class = Teacher
 
-    @staticmethod
-    def get_all() -> list[TeacherDataclass]:
-        return SqlAbstractDAO.get_all()
-
-    @staticmethod
-    def get_object(ident: int) -> TeacherDataclass:
-        return SqlAbstractDAO.get_object(ident)
-
-    @staticmethod
-    def create_teacher(name: str, email: str) -> TeacherDataclass:
+    def create_teacher(self, name: str, email: str) -> TeacherDataclass:
         with Session(engine) as session:
             new_teacher = Teacher(name=name, email=email)
             session.add(new_teacher)

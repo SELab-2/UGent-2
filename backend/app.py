@@ -6,7 +6,7 @@ from routes.teachers import teachers_router
 app = FastAPI()
 
 # Koppel routes uit andere modules.
-app.include_router(teachers_router, prefix="/teachers")
+app.include_router(teachers_router)
 
 if __name__ == "__main__":
-    uvicorn.run("fastapi_code:app")
+    uvicorn.run("app:app")

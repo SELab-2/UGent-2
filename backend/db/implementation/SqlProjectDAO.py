@@ -10,18 +10,11 @@ from db.models.models import Project, Subject
 from domain.models.ProjectDataclass import ProjectDataclass
 
 
-class SqlProjectDAO(ProjectDAO, SqlAbstractDAO[Project, ProjectDataclass]):
+class SqlProjectDAO(SqlAbstractDAO[Project, ProjectDataclass], ProjectDAO):
+    def __init__(self) -> None:
+        self.model_class = Project
 
-    @staticmethod
-    def get_all() -> list[ProjectDataclass]:
-        return SqlAbstractDAO.get_all()
-
-    @staticmethod
-    def get_object(ident: int) -> ProjectDataclass:
-        return SqlAbstractDAO.get_object(ident)
-
-    @staticmethod
-    def create_project(subject_id: int, name: str, deadline: datetime, archived: bool, requirements: str,
+    def create_project(self, subject_id: int, name: str, deadline: datetime, archived: bool, requirements: str,
                        visible: bool, max_students: int) -> ProjectDataclass:
         with Session(engine) as session:
             subject: Subject | None = session.get(Subject, subject_id)
@@ -37,8 +30,7 @@ class SqlProjectDAO(ProjectDAO, SqlAbstractDAO[Project, ProjectDataclass]):
             session.commit()
             return new_project.to_domain_model()
 
-    @staticmethod
-    def get_projects_of_subject(subject_id: int) -> list[ProjectDataclass]:
+    def get_projects_of_subject(self, subject_id: int) -> list[ProjectDataclass]:
         with Session(engine) as session:
             subject: Subject | None = session.get(Subject, ident=subject_id)
             if not subject:

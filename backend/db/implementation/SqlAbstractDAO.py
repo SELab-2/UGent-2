@@ -1,4 +1,3 @@
-from abc import ABC
 from typing import Generic, TypeVar
 
 from sqlalchemy import select
@@ -7,17 +6,19 @@ from sqlalchemy.orm import Session
 from db.errors.database_errors import ItemNotFoundError
 from db.extensions import engine
 from db.models.models import AbstractModel
+from domain.models.base_model import JsonRepresentable
 
 T = TypeVar("T", bound=AbstractModel)
-D = TypeVar("D")
+D = TypeVar("D", bound=JsonRepresentable)
 
 
-class SqlAbstractDAO(Generic[T, D], ABC):
+class SqlAbstractDAO(Generic[T, D]):
+    def __init__(self) -> None:
+        self.model_class: type[T]
 
-    @staticmethod
-    def get_object(ident: int) -> D:
+    def get_object(self, ident: int) -> D:
         with Session(engine) as session:
-            generic_object: T | None = session.get(T, ident)
+            generic_object: T | None = session.get(self.model_class, ident)
 
             if not generic_object:
                 msg = f"object with id {ident} not found"
@@ -25,10 +26,7 @@ class SqlAbstractDAO(Generic[T, D], ABC):
 
             return generic_object.to_domain_model()
 
-    @staticmethod
-    def get_all() -> list[D]:
+    def get_all(self) -> list[D]:
         with Session(engine) as session:
-            generic_objects: list[T] = list(session.scalars(select(T)).all())
+            generic_objects: list[T] = list(session.scalars(select(self.model_class)).all())
             return [generic_object.to_domain_model() for generic_object in generic_objects]
-
-

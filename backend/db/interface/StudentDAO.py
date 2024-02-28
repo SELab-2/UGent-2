@@ -1,14 +1,13 @@
-from abc import ABC, abstractmethod
+from abc import abstractmethod
 
 from db.interface.AbstractDAO import AbstractDAO
 from db.models.models import Student
 from domain.models.StudentDataclass import StudentDataclass
 
 
-class StudentDAO(AbstractDAO[Student, StudentDataclass], ABC):
-    @staticmethod
+class StudentDAO(AbstractDAO[Student, StudentDataclass]):
     @abstractmethod
-    def create_student(name: str, email: str) -> StudentDataclass:
+    def create_student(self, name: str, email: str) -> StudentDataclass:
         """
         Maakt een nieuwe student aan.
 

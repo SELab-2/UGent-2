@@ -7,17 +7,11 @@ from db.models.models import Student
 from domain.models.StudentDataclass import StudentDataclass
 
 
-class SqlStudentDAO(StudentDAO, SqlAbstractDAO[Student, StudentDataclass]):
-    @staticmethod
-    def get_all() -> list[StudentDataclass]:
-        return SqlAbstractDAO.get_all()
+class SqlStudentDAO(SqlAbstractDAO[Student, StudentDataclass], StudentDAO):
+    def __init__(self) -> None:
+        self.model_class = Student
 
-    @staticmethod
-    def get_object(ident: int) -> StudentDataclass:
-        return SqlAbstractDAO.get_object(ident)
-
-    @staticmethod
-    def create_student(name: str, email: str) -> StudentDataclass:
+    def create_student(self, name: str, email: str) -> StudentDataclass:
         with Session(engine) as session:
             new_student: Student = Student(name=name, email=email)
             session.add(new_student)

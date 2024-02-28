@@ -8,26 +8,18 @@ from db.models.models import Student, Subject, Teacher
 from domain.models.SubjectDataclass import SubjectDataclass
 
 
-class SqlSubjectDAO(SubjectDAO, SqlAbstractDAO[Subject, SubjectDataclass]):
+class SqlSubjectDAO(SqlAbstractDAO[Subject, SubjectDataclass], SubjectDAO):
+    def __init__(self) -> None:
+        self.model_class = Subject
 
-    @staticmethod
-    def get_all() -> list[SubjectDataclass]:
-        return SqlAbstractDAO.get_all()
-
-    @staticmethod
-    def get_object(ident: int) -> SubjectDataclass:
-        return SqlAbstractDAO.get_object(ident)
-
-    @staticmethod
-    def create_subject(name: str) -> SubjectDataclass:
+    def create_subject(self, name: str) -> SubjectDataclass:
         with Session(engine) as session:
             new_subject = Subject(name=name)
             session.add(new_subject)
             session.commit()
             return new_subject.to_domain_model()
 
-    @staticmethod
-    def get_subjects_of_teacher(teacher_id: int) -> list[SubjectDataclass]:
+    def get_subjects_of_teacher(self, teacher_id: int) -> list[SubjectDataclass]:
         with Session(engine) as session:
             teacher: Teacher | None = session.get(Teacher, ident=teacher_id)
             if not teacher:
@@ -36,8 +28,7 @@ class SqlSubjectDAO(SubjectDAO, SqlAbstractDAO[Subject, SubjectDataclass]):
             subjects: list[Subject] = teacher.subjects
             return [vak.to_domain_model() for vak in subjects]
 
-    @staticmethod
-    def add_student_to_subject(student_id: int, subject_id: int) -> None:
+    def add_student_to_subject(self, student_id: int, subject_id: int) -> None:
         with Session(engine) as session:
             student: Student | None = session.get(Student, ident=student_id)
             subject: Subject | None = session.get(Subject, ident=subject_id)
@@ -55,8 +46,7 @@ class SqlSubjectDAO(SubjectDAO, SqlAbstractDAO[Subject, SubjectDataclass]):
             student.subjects.append(subject)
             session.commit()
 
-    @staticmethod
-    def add_teacher_to_subject(teacher_id: int, subject_id: int) -> None:
+    def add_teacher_to_subject(self, teacher_id: int, subject_id: int) -> None:
         with Session(engine) as session:
             teacher: Teacher | None = session.get(Teacher, ident=teacher_id)
             subject: Subject | None = session.get(Subject, ident=subject_id)
@@ -74,8 +64,7 @@ class SqlSubjectDAO(SubjectDAO, SqlAbstractDAO[Subject, SubjectDataclass]):
             teacher.subjects.append(subject)
             session.commit()
 
-    @staticmethod
-    def get_subjects_of_student(student_id: int) -> list[SubjectDataclass]:
+    def get_subjects_of_student(self, student_id: int) -> list[SubjectDataclass]:
         with Session(engine) as session:
             student: Student | None = session.get(Student, ident=student_id)
             if not student:

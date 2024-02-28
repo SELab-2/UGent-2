@@ -9,9 +9,11 @@ from domain.models.GroupDataclass import GroupDataclass
 from domain.models.StudentDataclass import StudentDataclass
 
 
-class SqlGroupDAO(GroupDAO, SqlAbstractDAO[Group, GroupDataclass]):
-    @staticmethod
-    def create_group(project_id: int) -> GroupDataclass:
+class SqlGroupDAO(SqlAbstractDAO[Group, GroupDataclass], GroupDAO):
+    def __init__(self) -> None:
+        self.model_class = Group
+
+    def create_group(self, project_id: int) -> GroupDataclass:
         with Session(engine) as session:
             project: Project | None = session.get(Project, ident=project_id)
             if not project:
@@ -22,8 +24,7 @@ class SqlGroupDAO(GroupDAO, SqlAbstractDAO[Group, GroupDataclass]):
             session.commit()
             return new_group.to_domain_model()
 
-    @staticmethod
-    def get_groups_of_project(project_id: int) -> list[GroupDataclass]:
+    def get_groups_of_project(self, project_id: int) -> list[GroupDataclass]:
         with Session(engine) as session:
             project: Project | None = session.get(Project, ident=project_id)
             if not project:
@@ -32,8 +33,7 @@ class SqlGroupDAO(GroupDAO, SqlAbstractDAO[Group, GroupDataclass]):
             groups: list[Group] = project.groups
             return [group.to_domain_model() for group in groups]
 
-    @staticmethod
-    def get_groups_of_student(student_id: int) -> list[GroupDataclass]:
+    def get_groups_of_student(self, student_id: int) -> list[GroupDataclass]:
         with Session(engine) as session:
             student: Student | None = session.get(Student, ident=student_id)
             if not student:
@@ -42,8 +42,7 @@ class SqlGroupDAO(GroupDAO, SqlAbstractDAO[Group, GroupDataclass]):
             groups: list[Group] = student.groups
             return [group.to_domain_model() for group in groups]
 
-    @staticmethod
-    def add_student_to_group(student_id: int, group_id: int) -> None:
+    def add_student_to_group(self, student_id: int, group_id: int) -> None:
         with Session(engine) as session:
             student: Student | None = session.get(Student, ident=student_id)
             group: Group | None = session.get(Group, ident=group_id)
@@ -60,8 +59,7 @@ class SqlGroupDAO(GroupDAO, SqlAbstractDAO[Group, GroupDataclass]):
             group.students.append(student)
             session.commit()
 
-    @staticmethod
-    def get_students_of_group(group_id: int) -> list[StudentDataclass]:
+    def get_students_of_group(self, group_id: int) -> list[StudentDataclass]:
         with Session(engine) as session:
             group: Group | None = session.get(Group, ident=group_id)
             if not group:
