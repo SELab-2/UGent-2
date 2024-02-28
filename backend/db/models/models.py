@@ -1,10 +1,11 @@
+from abc import abstractmethod
 from dataclasses import dataclass
 from datetime import datetime
+from typing import Any
 
 from sqlalchemy import Column, ForeignKey, Table
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
-from db.extensions import db
 from domain.models.AdminDataclass import AdminDataclass
 from domain.models.GroupDataclass import GroupDataclass
 from domain.models.ProjectDataclass import ProjectDataclass
@@ -16,7 +17,14 @@ from domain.models.UserDataclass import UserDataclass
 
 
 @dataclass()
-class User(db.Model):
+class AbstractModel:
+    @abstractmethod
+    def to_domain_model(self) -> Any:
+        pass
+
+
+@dataclass()
+class User(DeclarativeBase, AbstractModel):
     name: Mapped[str]
     email: Mapped[str]
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
@@ -35,19 +43,19 @@ class Admin(User):
 
 teachers_subjects = Table(
     "teachers_subjects",
-    db.Model.metadata,
+    DeclarativeBase.metadata,
     Column("teacher_id", ForeignKey("teacher.id"), primary_key=True),
     Column("subject_id", ForeignKey("subject.id"), primary_key=True),
 )
 students_subjects = Table(
     "students_subjects",
-    db.Model.metadata,
+    DeclarativeBase.metadata,
     Column("student_id", ForeignKey("student.id"), primary_key=True),
     Column("subject_id", ForeignKey("subject.id"), primary_key=True),
 )
 students_groups = Table(
     "students_groups",
-    db.Model.metadata,
+    DeclarativeBase.metadata,
     Column("student_id", ForeignKey("student.id"), primary_key=True),
     Column("group_id", ForeignKey("group.id"), primary_key=True),
 )
@@ -74,7 +82,7 @@ class Student(User):
 
 
 @dataclass()
-class Subject(db.Model):
+class Subject(DeclarativeBase, AbstractModel):
     name: Mapped[str]
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     teachers: Mapped[list[Teacher]] = relationship(secondary=teachers_subjects, back_populates="subjects")
@@ -86,7 +94,7 @@ class Subject(db.Model):
 
 
 @dataclass()
-class Project(db.Model):
+class Project(DeclarativeBase, AbstractModel):
     name: Mapped[str]
     deadline: Mapped[datetime]
     archived: Mapped[bool]
@@ -112,7 +120,7 @@ class Project(db.Model):
 
 
 @dataclass()
-class Group(db.Model):
+class Group(DeclarativeBase, AbstractModel):
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     project_id: Mapped[int] = mapped_column(ForeignKey(Project.id))
     project: Mapped[Project] = relationship(back_populates="groups")
@@ -124,7 +132,7 @@ class Group(db.Model):
 
 
 @dataclass()
-class Submission(db.Model):
+class Submission(DeclarativeBase, AbstractModel):
     date_time: Mapped[datetime]
     state: Mapped[SubmissionState]
     message: Mapped[str]

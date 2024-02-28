@@ -11,13 +11,13 @@ teachers_router = APIRouter()
 @teachers_router.get("/teachers")
 def get_teachers() -> list[TeacherDataclass]:
     dao: TeacherDAO = SqlTeacherDAO()
-    return dao.get_all_teachers()
+    return dao.get_all()
 
 
 @teachers_router.get("/teachers/{teacher_id}")
 def get_teacher(teacher_id: int) -> TeacherDataclass:
     dao: TeacherDAO = SqlTeacherDAO()
-    return dao.get_teacher(teacher_id)
+    return dao.get_object(teacher_id)
 
 
 @teachers_router.post("/teachers")

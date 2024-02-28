@@ -1,31 +1,14 @@
 from abc import ABC, abstractmethod
 
+from db.interface.AbstractDAO import AbstractDAO
+from db.models.models import Student
 from domain.models.StudentDataclass import StudentDataclass
 
 
-class StudentDAO(ABC):
+class StudentDAO(AbstractDAO[Student, StudentDataclass], ABC):
+    @staticmethod
     @abstractmethod
-    def get_student(self, ident: int) -> StudentDataclass:
-        """
-        Haalt een student op aan de hand van zijn identificatie.
-
-        :param ident: Het id van de te zoeken student.
-        :return: De student die overeenkomt met de gegeven id.
-        :raises ItemNotFoundException: Als geen student met het gegeven id gevonden werd.
-        """
-        raise NotImplementedError
-
-    @abstractmethod
-    def get_all_students(self) -> list[StudentDataclass]:
-        """
-        Haalt alle studenten op.
-
-        :return: Een lijst van alle studenten.
-        """
-        raise NotImplementedError
-
-    @abstractmethod
-    def create_student(self, name: str, email: str) -> StudentDataclass:
+    def create_student(name: str, email: str) -> StudentDataclass:
         """
         Maakt een nieuwe student aan.
 

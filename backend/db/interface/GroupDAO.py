@@ -5,8 +5,9 @@ from domain.models.StudentDataclass import StudentDataclass
 
 
 class GroupDAO(ABC):
+    @staticmethod
     @abstractmethod
-    def create_group(self, project_id: int) -> GroupDataclass:
+    def create_group(project_id: int) -> GroupDataclass:
         """
         Creëert een nieuw GroupDataClass in de database en associeert het met een ProjectDataClass.
 
@@ -16,19 +17,9 @@ class GroupDAO(ABC):
         """
         raise NotImplementedError
 
+    @staticmethod
     @abstractmethod
-    def get_group(self, group_id: int) -> GroupDataclass:
-        """
-        Haalt een GroupDataClass op aan de hand van zijn identificatie.
-
-        :param group_id: De identificatie van het op te halen GroupDataClass.
-        :raises ItemNotFoundException: Als er geen GroupDataClass met de opgegeven `group_id` in de database bestaat.
-        :returns: De domeinmodel-instantie van het opgehaalde GroupDataClass.
-        """
-        raise NotImplementedError
-
-    @abstractmethod
-    def get_groups_of_project(self, project_id: int) -> list[GroupDataclass]:
+    def get_groups_of_project(project_id: int) -> list[GroupDataclass]:
         """
         Haalt alle groepen op die bij een bepaald project horen.
 
@@ -37,8 +28,9 @@ class GroupDAO(ABC):
         """
         raise NotImplementedError
 
+    @staticmethod
     @abstractmethod
-    def get_groups_of_student(self, student_id: int) -> list[GroupDataclass]:
+    def get_groups_of_student(student_id: int) -> list[GroupDataclass]:
         """
         Haalt alle groepen op die bij een bepaalde student horen.
 
@@ -47,8 +39,9 @@ class GroupDAO(ABC):
         """
         raise NotImplementedError
 
+    @staticmethod
     @abstractmethod
-    def add_student_to_group(self, student_id: int, group_id: int) -> None:
+    def add_student_to_group(student_id: int, group_id: int) -> None:
         """
         Gaat een student toevoegen aan een groep
 
@@ -58,7 +51,8 @@ class GroupDAO(ABC):
         """
         raise NotImplementedError
 
-    def get_students_of_group(self, group_id: int) -> list[StudentDataclass]:
+    @staticmethod
+    def get_students_of_group(group_id: int) -> list[StudentDataclass]:
         """
         Gaat alle studenten geven die in een bepaalde groep zitten
 

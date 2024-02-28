@@ -1,12 +1,15 @@
 from abc import ABC, abstractmethod
 from datetime import datetime
 
+from db.interface.AbstractDAO import AbstractDAO
+from db.models.models import Submission
 from domain.models.SubmissionDataclass import SubmissionDataclass, SubmissionState
 
 
-class SubmissionDAO(ABC):
+class SubmissionDAO(AbstractDAO[Submission, SubmissionDataclass], ABC):
+    @staticmethod
     @abstractmethod
-    def create_submission(self, student_id: int, group_id: int, message: str,
+    def create_submission(student_id: int, group_id: int, message: str,
                           state: SubmissionState, date_time: datetime) -> SubmissionDataclass:
         """
         Creëert een nieuw SubmissionDataClass in de database en associeert het met een StudentDataclass en een
@@ -20,20 +23,9 @@ class SubmissionDAO(ABC):
         """
         raise NotImplementedError
 
+    @staticmethod
     @abstractmethod
-    def get_submission(self, submission_id: int) -> SubmissionDataclass:
-        """
-        Haalt een SubmissionDataClass op aan de hand van zijn identificatie.
-
-        :param submission_id: De identificatie van het op te halen SubmissionDataClass.
-        :raises ItemNotFoundException: Als er geen SubmissionDataclass met de opgegeven `project_id` in de database
-        bestaat.
-        :returns: De domeinmodel-instantie van het opgehaalde SubmissionDataClass.
-        """
-        raise NotImplementedError
-
-    @abstractmethod
-    def get_submissions_of_student(self, student_id: int) -> list[SubmissionDataclass]:
+    def get_submissions_of_student(student_id: int) -> list[SubmissionDataclass]:
         """
         Haalt alle projecten op die bij een bepaalde student horen.
 
@@ -42,8 +34,9 @@ class SubmissionDAO(ABC):
         """
         raise NotImplementedError
 
+    @staticmethod
     @abstractmethod
-    def get_submissions_of_group(self, group_id: int) -> list[SubmissionDataclass]:
+    def get_submissions_of_group(group_id: int) -> list[SubmissionDataclass]:
         """
         Haalt alle projecten op die bij een bepaalde groep horen.
 

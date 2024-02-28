@@ -1,27 +1,17 @@
-from sqlalchemy import select
+from sqlalchemy.orm import Session
 
-from db.errors.database_errors import ItemNotFoundError
-from db.extensions import db
+from db.extensions import engine
+from db.implementation.SqlAbstractDAO import SqlAbstractDAO
 from db.interface.AdminDAO import AdminDAO
 from db.models.models import Admin
 from domain.models.AdminDataclass import AdminDataclass
 
 
-class SqlAdminDAO(AdminDAO):
-    def get_admin(self, ident: int) -> AdminDataclass:
-        admin: Admin | None = db.session.get(Admin, ident=ident)
-        if not admin:
-            msg = f"Admin with id {ident} not found"
-            raise ItemNotFoundError(msg)
-        return admin.to_domain_model()
-
-    def get_all_admins(self) -> list[AdminDataclass]:
-        admins: list[Admin] = list(db.session.scalars(select(Admin)).all())
-        return [admin.to_domain_model() for admin in admins]
+class SqlAdminDAO(AdminDAO, SqlAbstractDAO[Admin, AdminDataclass]):
 
     def create_admin(self, name: str, email: str) -> AdminDataclass:
-        new_admin: Admin = Admin(name=name, email=email)
-        db.session.add(new_admin)
-        db.session.commit()
-        return new_admin.to_domain_model()
-
+        with Session(engine) as session:
+            new_admin: Admin = Admin(name=name, email=email)
+            session.add(new_admin)
+            session.commit()
+            return new_admin.to_domain_model()

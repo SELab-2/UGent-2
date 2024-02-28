@@ -1,11 +1,14 @@
 from abc import ABC, abstractmethod
 
+from db.interface.AbstractDAO import AbstractDAO
+from db.models.models import Subject
 from domain.models.SubjectDataclass import SubjectDataclass
 
 
-class SubjectDAO(ABC):
+class SubjectDAO(AbstractDAO[Subject, SubjectDataclass], ABC):
+    @staticmethod
     @abstractmethod
-    def create_subject(self, name: str) -> SubjectDataclass:
+    def create_subject(name: str) -> SubjectDataclass:
         """
         Creëert een nieuw SubjectDataclass in de database.
 
@@ -14,19 +17,9 @@ class SubjectDAO(ABC):
         """
         raise NotImplementedError
 
+    @staticmethod
     @abstractmethod
-    def get_subject(self, subject_id: int) -> SubjectDataclass:
-        """
-        Haalt een SubjectDataclass op aan de hand van zijn identificatie.
-
-        :param subject_id: De identificatie van het op te halen SubjectDataclass.
-        :raises ItemNotFoundException: Als er geen SubjectDataclass met de opgegeven `ident` in de database bestaat.
-        :returns: De domeinmodel-instantie van het opgehaalde SubjectDataclass.
-        """
-        raise NotImplementedError
-
-    @abstractmethod
-    def get_subjects_of_teacher(self, teacher_id: int) -> list[SubjectDataclass]:
+    def get_subjects_of_teacher(teacher_id: int) -> list[SubjectDataclass]:
         """
         Haalt de subjects op die door een bepaalde teacher worden gegeven.
 
@@ -35,8 +28,9 @@ class SubjectDAO(ABC):
         """
         raise NotImplementedError
 
+    @staticmethod
     @abstractmethod
-    def get_subjects_of_student(self, student_id: int) -> list[SubjectDataclass]:
+    def get_subjects_of_student(student_id: int) -> list[SubjectDataclass]:
         """
         Haalt de subjects op die door een bepaalde student worden gevolgd.
 
@@ -45,8 +39,9 @@ class SubjectDAO(ABC):
         """
         raise NotImplementedError
 
+    @staticmethod
     @abstractmethod
-    def add_student_to_subject(self, student_id: int, subject_id: int) -> None:
+    def add_student_to_subject(student_id: int, subject_id: int) -> None:
         """
         Voegt een student toe aan een vak.
 
@@ -56,8 +51,9 @@ class SubjectDAO(ABC):
         """
         raise NotImplementedError
 
+    @staticmethod
     @abstractmethod
-    def add_teacher_to_subject(self, teacher_id: int, subject_id: int) -> None:
+    def add_teacher_to_subject(teacher_id: int, subject_id: int) -> None:
         """
         Voegt een teacher toe aan een vak.
 
