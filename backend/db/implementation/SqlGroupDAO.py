@@ -19,6 +19,7 @@ class SqlGroupDAO(GroupDAO, SqlAbstractDAO[Group, GroupDataclass]):
                 raise ItemNotFoundError(msg)
             new_group: Group = Group(project_id=project_id)
             session.add(new_group)
+            session.commit()
             return new_group.to_domain_model()
 
     @staticmethod

@@ -1,7 +1,6 @@
 from datetime import datetime
 
 from psycopg2 import tz
-from sqlalchemy.orm import Session
 
 from db.extensions import Base, engine
 from db.implementation.SqlAdminDAO import SqlAdminDAO
@@ -12,7 +11,6 @@ from db.implementation.SqlSubjectDAO import SqlSubjectDAO
 from db.implementation.SqlTeacherDAO import SqlTeacherDAO
 
 if __name__ == "__main__":
-    session = Session(engine)
     Base.metadata.create_all(engine)
 
     admin_dao = SqlAdminDAO()
@@ -26,16 +24,18 @@ if __name__ == "__main__":
     objeprog = subject_dao.create_subject(name="OBJECTGERICHTPROGRAMMEREN")
 
     # maak een project voor dat vak
-    objeprog_project = project_dao.create_project(subject_id=objeprog.id,
-                                                  name="PROJECT",
-                                                  archived=False,
-                                                  visible=True,
-                                                  requirements="Maak iets in javafx",
-                                                  max_students=2,
-                                                  deadline=datetime(2000, 1, 1, 0, 0, 0, tzinfo=tz.LOCAL))
+    objprog_project = project_dao.create_project(
+        subject_id=objeprog.id,
+        name="PROJECT",
+        archived=False,
+        visible=True,
+        requirements="Maak iets in javafx",
+        max_students=2,
+        deadline=datetime(2000, 1, 1, 0, 0, 0, tzinfo=tz.LOCAL),
+    )
 
     # maak een groepje voor het project van objeprog
-    groep1 = group_dao.create_group(objeprog_project.id)
+    groep1 = group_dao.create_group(objprog_project.id)
 
     # maak studenten
     student1 = student_dao.create_student("Student1", "Student1@gmail.com")

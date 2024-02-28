@@ -3,8 +3,9 @@ from dataclasses import dataclass
 from datetime import datetime
 
 from sqlalchemy import Column, ForeignKey, Table
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
+from db.extensions import Base
 from domain.models.AdminDataclass import AdminDataclass
 from domain.models.base_model import JsonRepresentable
 from domain.models.GroupDataclass import GroupDataclass
@@ -24,7 +25,8 @@ class AbstractModel:
 
 
 @dataclass()
-class User(DeclarativeBase, AbstractModel):
+class User(Base, AbstractModel):
+    __tablename__ = "users"
     name: Mapped[str]
     email: Mapped[str]
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
@@ -35,6 +37,7 @@ class User(DeclarativeBase, AbstractModel):
 
 @dataclass()
 class Admin(User):
+    __tablename__ = "admins"
     id: Mapped[int] = mapped_column(ForeignKey(User.id), primary_key=True)
 
     def to_domain_model(self) -> AdminDataclass:
@@ -43,26 +46,27 @@ class Admin(User):
 
 teachers_subjects = Table(
     "teachers_subjects",
-    DeclarativeBase.metadata,
-    Column("teacher_id", ForeignKey("teacher.id"), primary_key=True),
-    Column("subject_id", ForeignKey("subject.id"), primary_key=True),
+    Base.metadata,
+    Column("teacher_id", ForeignKey("teachers.id"), primary_key=True),
+    Column("subject_id", ForeignKey("subjects.id"), primary_key=True),
 )
 students_subjects = Table(
     "students_subjects",
-    DeclarativeBase.metadata,
-    Column("student_id", ForeignKey("student.id"), primary_key=True),
-    Column("subject_id", ForeignKey("subject.id"), primary_key=True),
+    Base.metadata,
+    Column("student_id", ForeignKey("students.id"), primary_key=True),
+    Column("subject_id", ForeignKey("subjects.id"), primary_key=True),
 )
 students_groups = Table(
     "students_groups",
-    DeclarativeBase.metadata,
-    Column("student_id", ForeignKey("student.id"), primary_key=True),
-    Column("group_id", ForeignKey("group.id"), primary_key=True),
+    Base.metadata,
+    Column("student_id", ForeignKey("students.id"), primary_key=True),
+    Column("group_id", ForeignKey("groups.id"), primary_key=True),
 )
 
 
 @dataclass()
 class Teacher(User):
+    __tablename__ = "teachers"
     id: Mapped[int] = mapped_column(ForeignKey(User.id), primary_key=True)
     subjects: Mapped[list["Subject"]] = relationship(secondary=teachers_subjects, back_populates="teachers")
 
@@ -72,6 +76,7 @@ class Teacher(User):
 
 @dataclass()
 class Student(User):
+    __tablename__ = "students"
     id: Mapped[int] = mapped_column(ForeignKey(User.id), primary_key=True)
     subjects: Mapped[list["Subject"]] = relationship(secondary=students_subjects, back_populates="students")
     groups: Mapped[list["Group"]] = relationship(secondary=students_groups, back_populates="students")
@@ -82,7 +87,8 @@ class Student(User):
 
 
 @dataclass()
-class Subject(DeclarativeBase, AbstractModel):
+class Subject(Base, AbstractModel):
+    __tablename__ = "subjects"
     name: Mapped[str]
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     teachers: Mapped[list[Teacher]] = relationship(secondary=teachers_subjects, back_populates="subjects")
@@ -94,7 +100,8 @@ class Subject(DeclarativeBase, AbstractModel):
 
 
 @dataclass()
-class Project(DeclarativeBase, AbstractModel):
+class Project(Base, AbstractModel):
+    __tablename__ = "projects"
     name: Mapped[str]
     deadline: Mapped[datetime]
     archived: Mapped[bool]
@@ -120,7 +127,8 @@ class Project(DeclarativeBase, AbstractModel):
 
 
 @dataclass()
-class Group(DeclarativeBase, AbstractModel):
+class Group(Base, AbstractModel):
+    __tablename__ = "groups"
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     project_id: Mapped[int] = mapped_column(ForeignKey(Project.id))
     project: Mapped[Project] = relationship(back_populates="groups")
@@ -132,7 +140,8 @@ class Group(DeclarativeBase, AbstractModel):
 
 
 @dataclass()
-class Submission(DeclarativeBase, AbstractModel):
+class Submission(Base, AbstractModel):
+    __tablename__ = "submissions"
     date_time: Mapped[datetime]
     state: Mapped[SubmissionState]
     message: Mapped[str]

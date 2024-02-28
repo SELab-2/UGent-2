@@ -1,4 +1,3 @@
-
 from sqlalchemy.orm import Session
 
 from db.extensions import engine
@@ -9,7 +8,6 @@ from domain.models.StudentDataclass import StudentDataclass
 
 
 class SqlStudentDAO(StudentDAO, SqlAbstractDAO[Student, StudentDataclass]):
-
     @staticmethod
     def get_all() -> list[StudentDataclass]:
         return SqlAbstractDAO.get_all()
