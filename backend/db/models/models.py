@@ -1,13 +1,14 @@
 from abc import abstractmethod
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Any
+from typing import Generic, TypeVar
 
 from sqlalchemy import Column, ForeignKey, Table
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from db.extensions import Base
 from domain.models.AdminDataclass import AdminDataclass
+from domain.models.base_model import JsonRepresentable
 from domain.models.GroupDataclass import GroupDataclass
 from domain.models.ProjectDataclass import ProjectDataclass
 from domain.models.StudentDataclass import StudentDataclass
@@ -16,11 +17,12 @@ from domain.models.SubmissionDataclass import SubmissionDataclass, SubmissionSta
 from domain.models.TeacherDataclass import TeacherDataclass
 from domain.models.UserDataclass import UserDataclass
 
+D = TypeVar("D", bound=JsonRepresentable)
 
 @dataclass()
-class AbstractModel:
+class AbstractModel(Generic[D]):
     @abstractmethod
-    def to_domain_model(self) -> Any:
+    def to_domain_model(self) -> D:
         pass
 
 
