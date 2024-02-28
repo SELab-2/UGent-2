@@ -1,9 +1,8 @@
-from db.errors.database_errors import ItemNotFoundError, UniqueConstraintError
 from sqlalchemy.orm import Session
 
+from db.errors.database_errors import ItemNotFoundError, UniqueConstraintError
 from db.extensions import engine
 from db.implementation.SqlAbstractDAO import SqlAbstractDAO
-from db.interface.AbstractDAO import D
 from db.interface.SubjectDAO import SubjectDAO
 from db.models.models import Student, Subject, Teacher
 from domain.models.SubjectDataclass import SubjectDataclass

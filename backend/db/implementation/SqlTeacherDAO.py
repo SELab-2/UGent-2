@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
+
 from db.extensions import engine
 from db.implementation.SqlAbstractDAO import SqlAbstractDAO
-from db.interface.AbstractDAO import D
 from db.interface.TeacherDAO import TeacherDAO
 from db.models.models import Teacher
 from domain.models.TeacherDataclass import TeacherDataclass

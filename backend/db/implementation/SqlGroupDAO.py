@@ -1,7 +1,7 @@
-from db.errors.database_errors import ItemNotFoundError, UniqueConstraintError
-from db.extensions import engine
 from sqlalchemy.orm import Session
 
+from db.errors.database_errors import ItemNotFoundError, UniqueConstraintError
+from db.extensions import engine
 from db.implementation.SqlAbstractDAO import SqlAbstractDAO
 from db.interface.GroupDAO import GroupDAO
 from db.models.models import Group, Project, Student

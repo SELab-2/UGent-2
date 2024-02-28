@@ -1,9 +1,9 @@
 from datetime import datetime
 
 from psycopg2 import tz
-
-from db.extensions import engine, Base
 from sqlalchemy.orm import Session
+
+from db.extensions import Base, engine
 from db.implementation.SqlAdminDAO import SqlAdminDAO
 from db.implementation.SqlGroupDAO import SqlGroupDAO
 from db.implementation.SqlProjectDAO import SqlProjectDAO

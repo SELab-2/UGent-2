@@ -1,11 +1,8 @@
-from sqlalchemy import select
 
-from db.errors.database_errors import ItemNotFoundError
-from db.extensions import engine
 from sqlalchemy.orm import Session
 
+from db.extensions import engine
 from db.implementation.SqlAbstractDAO import SqlAbstractDAO
-from db.interface.AbstractDAO import D
 from db.interface.StudentDAO import StudentDAO
 from db.models.models import Student
 from domain.models.StudentDataclass import StudentDataclass

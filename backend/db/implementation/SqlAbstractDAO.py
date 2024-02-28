@@ -1,12 +1,11 @@
-from sqlalchemy import select
 from abc import ABC
+from typing import Generic, TypeVar
 
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from db.errors.database_errors import ItemNotFoundError
 from db.extensions import engine
-from typing import Generic, TypeVar, Type
-
 from db.models.models import AbstractModel
 
 T = TypeVar("T", bound=AbstractModel)

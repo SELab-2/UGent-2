@@ -1,8 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import Generic, TypeVar
 
-from db.models.models import AbstractModel
-
 T = TypeVar("T")
 D = TypeVar("D")
 

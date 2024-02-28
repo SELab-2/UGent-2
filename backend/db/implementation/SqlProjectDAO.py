@@ -1,11 +1,10 @@
 from datetime import datetime
 
-from db.errors.database_errors import ItemNotFoundError
 from sqlalchemy.orm import Session
 
+from db.errors.database_errors import ItemNotFoundError
 from db.extensions import engine
 from db.implementation.SqlAbstractDAO import SqlAbstractDAO
-from db.interface.AbstractDAO import D
 from db.interface.ProjectDAO import ProjectDAO
 from db.models.models import Project, Subject
 from domain.models.ProjectDataclass import ProjectDataclass

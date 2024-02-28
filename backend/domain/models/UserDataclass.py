@@ -1,17 +1,10 @@
 from dataclasses import dataclass
 
-from pydantic import BaseModel
+from domain.models.base_model import JsonRepresentable
 
 
 @dataclass()
-class UserDataclass(BaseModel):
+class UserDataclass(JsonRepresentable):
     id: int
-    # pydanitc will throw an error when creating a new user
-    name: str
-    email: str
-
-
-@dataclass()
-class UserDataClassRequest(BaseModel):
     name: str
     email: str
