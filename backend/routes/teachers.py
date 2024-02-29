@@ -16,7 +16,7 @@ def get_teachers() -> list[TeacherDataclass]:
 @teachers_router.get("/teachers/{teacher_id}")
 def get_teacher(teacher_id: int) -> TeacherDataclass:
     dao: TeacherDAO = SqlTeacherDAO()
-    return dao.get_object(teacher_id)
+    return dao.get(teacher_id)
 
 
 """

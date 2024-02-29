@@ -8,7 +8,7 @@ D = TypeVar("D")
 class AbstractDAO(Generic[T, D], ABC):
 
     @abstractmethod
-    def get_object(self, ident: int) -> D:
+    def get(self, ident: int) -> D:
         raise NotImplementedError
 
     @abstractmethod

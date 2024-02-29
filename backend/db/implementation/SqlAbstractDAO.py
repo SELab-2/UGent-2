@@ -16,7 +16,7 @@ class SqlAbstractDAO(Generic[T, D]):
     def __init__(self) -> None:
         self.model_class: type[T]
 
-    def get_object(self, ident: int) -> D:
+    def get(self, ident: int) -> D:
         with Session(engine) as session:
             generic_object: T | None = session.get(self.model_class, ident)
 
