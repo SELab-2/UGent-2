@@ -10,6 +10,7 @@ class ProjectDataclass(JsonRepresentable):
     name: str
     deadline: datetime
     archived: bool
+    description: str
     requirements: str
     visible: bool
     max_students: int

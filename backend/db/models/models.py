@@ -19,6 +19,7 @@ from domain.models.UserDataclass import UserDataclass
 
 D = TypeVar("D", bound=JsonRepresentable)
 
+
 @dataclass()
 class AbstractModel(Generic[D]):
     @abstractmethod
@@ -107,6 +108,7 @@ class Project(Base, AbstractModel):
     name: Mapped[str]
     deadline: Mapped[datetime]
     archived: Mapped[bool]
+    description: Mapped[str]
     requirements: Mapped[str]
     visible: Mapped[bool]
     max_students: Mapped[int]
@@ -121,6 +123,7 @@ class Project(Base, AbstractModel):
             name=self.name,
             deadline=self.deadline,
             archived=self.archived,
+            description=self.description,
             requirements=self.requirements,
             visible=self.visible,
             max_students=self.max_students,

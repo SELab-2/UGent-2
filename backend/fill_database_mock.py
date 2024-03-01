@@ -29,7 +29,8 @@ if __name__ == "__main__":
         name="PROJECT",
         archived=False,
         visible=True,
-        requirements="Maak iets in javafx",
+        description="Maak iets in javafx",
+        requirements="Een zip bestand met java-code",
         max_students=2,
         deadline=datetime(2000, 1, 1, 0, 0, 0, tzinfo=tz.LOCAL),
     )
