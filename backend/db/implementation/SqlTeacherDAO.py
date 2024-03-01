@@ -1,28 +1,19 @@
-from sqlalchemy import select
+from sqlalchemy.orm import Session
 
-from db.errors.database_errors import ItemNotFoundError
-from db.extensions import db
+from db.extensions import engine
+from db.implementation.SqlAbstractDAO import SqlAbstractDAO
 from db.interface.TeacherDAO import TeacherDAO
 from db.models.models import Teacher
 from domain.models.TeacherDataclass import TeacherDataclass
 
 
-class SqlTeacherDAO(TeacherDAO):
-    def get_teacher(self, ident: int) -> TeacherDataclass:
-        teacher: Teacher | None = db.session.get(Teacher, ident)
-
-        if not teacher:
-            msg = f"Teacher with id {ident} not found"
-            raise ItemNotFoundError(msg)
-
-        return teacher.to_domain_model()
-
-    def get_all_teachers(self) -> list[TeacherDataclass]:
-        teachers: list[Teacher] = list(db.session.scalars(select(Teacher)).all())
-        return [teacher.to_domain_model() for teacher in teachers]
+class SqlTeacherDAO(SqlAbstractDAO[Teacher, TeacherDataclass], TeacherDAO):
+    def __init__(self) -> None:
+        self.model_class = Teacher
 
     def create_teacher(self, name: str, email: str) -> TeacherDataclass:
-        new_teacher = Teacher(name=name, email=email)
-        db.session.add(new_teacher)
-        db.session.commit()
-        return new_teacher.to_domain_model()
+        with Session(engine) as session:
+            new_teacher = Teacher(name=name, email=email)
+            session.add(new_teacher)
+            session.commit()
+            return new_teacher.to_domain_model()

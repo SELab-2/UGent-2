@@ -1,10 +1,12 @@
-from abc import ABC, abstractmethod
+from abc import abstractmethod
 from datetime import datetime
 
+from db.interface.AbstractDAO import AbstractDAO
+from db.models.models import Submission
 from domain.models.SubmissionDataclass import SubmissionDataclass, SubmissionState
 
 
-class SubmissionDAO(ABC):
+class SubmissionDAO(AbstractDAO[Submission, SubmissionDataclass]):
     @abstractmethod
     def create_submission(self, student_id: int, group_id: int, message: str,
                           state: SubmissionState, date_time: datetime) -> SubmissionDataclass:
@@ -17,18 +19,6 @@ class SubmissionDAO(ABC):
         :raises: ItemNotFoundException: Als er geen StudentDataclass of GroupDataClass met de opgegeven `student_id` of
         `group_id` in de database is.
         :return: De nieuw aangemaakte submission
-        """
-        raise NotImplementedError
-
-    @abstractmethod
-    def get_submission(self, submission_id: int) -> SubmissionDataclass:
-        """
-        Haalt een SubmissionDataClass op aan de hand van zijn identificatie.
-
-        :param submission_id: De identificatie van het op te halen SubmissionDataClass.
-        :raises ItemNotFoundException: Als er geen SubmissionDataclass met de opgegeven `project_id` in de database
-        bestaat.
-        :returns: De domeinmodel-instantie van het opgehaalde SubmissionDataClass.
         """
         raise NotImplementedError
 

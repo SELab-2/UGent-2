@@ -16,7 +16,8 @@ python = ">=3.12"
 
 [tool.pyright]
 exclude = [
-    ".venv"
+    ".venv",
+    "venv"
 ]
 
 [tool.ruff]

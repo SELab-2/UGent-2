@@ -1,10 +1,12 @@
-from abc import ABC, abstractmethod
+from abc import abstractmethod
 
+from db.interface.AbstractDAO import AbstractDAO
+from db.models.models import Group
 from domain.models.GroupDataclass import GroupDataclass
 from domain.models.StudentDataclass import StudentDataclass
 
 
-class GroupDAO(ABC):
+class GroupDAO(AbstractDAO[Group, GroupDataclass]):
     @abstractmethod
     def create_group(self, project_id: int) -> GroupDataclass:
         """
@@ -13,17 +15,6 @@ class GroupDAO(ABC):
         :param project_id: Id van het project dat gelinkt is aan de groep
         :raises: ItemNotFoundException: Als er geen ProjectDataClass met de opgegeven `project_id` in de database is.
         :returns: De nieuw aangemaakte groep
-        """
-        raise NotImplementedError
-
-    @abstractmethod
-    def get_group(self, group_id: int) -> GroupDataclass:
-        """
-        Haalt een GroupDataClass op aan de hand van zijn identificatie.
-
-        :param group_id: De identificatie van het op te halen GroupDataClass.
-        :raises ItemNotFoundException: Als er geen GroupDataClass met de opgegeven `group_id` in de database bestaat.
-        :returns: De domeinmodel-instantie van het opgehaalde GroupDataClass.
         """
         raise NotImplementedError
 
@@ -58,6 +49,7 @@ class GroupDAO(ABC):
         """
         raise NotImplementedError
 
+    @abstractmethod
     def get_students_of_group(self, group_id: int) -> list[StudentDataclass]:
         """
         Gaat alle studenten geven die in een bepaalde groep zitten

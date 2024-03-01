@@ -1,29 +1,11 @@
-from abc import ABC, abstractmethod
+from abc import abstractmethod
 
+from db.interface.AbstractDAO import AbstractDAO
+from db.models.models import Admin
 from domain.models.AdminDataclass import AdminDataclass
 
 
-class AdminDAO(ABC):
-    @abstractmethod
-    def get_admin(self, ident: int) -> AdminDataclass:
-        """
-        Haalt een admin op aan de hand van zijn identificatie.
-
-        :param ident: Het id van de te zoeken admin.
-        :return: De admin die overeenkomt met de gegeven id.
-        :raises ItemNotFoundException: Als geen admin met het gegeven id gevonden werd.
-        """
-        raise NotImplementedError
-
-    @abstractmethod
-    def get_all_admins(self) -> list[AdminDataclass]:
-        """
-        Haalt alle admins op.
-
-        :return: Een lijst van alle admins.
-        """
-        raise NotImplementedError
-
+class AdminDAO(AbstractDAO[Admin, AdminDataclass]):
     @abstractmethod
     def create_admin(self, name: str, email: str) -> AdminDataclass:
         """

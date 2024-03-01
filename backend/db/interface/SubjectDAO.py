@@ -1,9 +1,11 @@
-from abc import ABC, abstractmethod
+from abc import abstractmethod
 
+from db.interface.AbstractDAO import AbstractDAO
+from db.models.models import Subject
 from domain.models.SubjectDataclass import SubjectDataclass
 
 
-class SubjectDAO(ABC):
+class SubjectDAO(AbstractDAO[Subject, SubjectDataclass]):
     @abstractmethod
     def create_subject(self, name: str) -> SubjectDataclass:
         """
@@ -11,17 +13,6 @@ class SubjectDAO(ABC):
 
         :param name: De naam van het nieuwe vak.
         :returns: Het nieuw aangemaakte subject.
-        """
-        raise NotImplementedError
-
-    @abstractmethod
-    def get_subject(self, subject_id: int) -> SubjectDataclass:
-        """
-        Haalt een SubjectDataclass op aan de hand van zijn identificatie.
-
-        :param subject_id: De identificatie van het op te halen SubjectDataclass.
-        :raises ItemNotFoundException: Als er geen SubjectDataclass met de opgegeven `ident` in de database bestaat.
-        :returns: De domeinmodel-instantie van het opgehaalde SubjectDataclass.
         """
         raise NotImplementedError
 

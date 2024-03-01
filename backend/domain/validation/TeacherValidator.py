@@ -1,6 +1,7 @@
 from domain.validation.ValidationResult import ValidationError, ValidationResult, ValidationSuccess
 
 
+# deze klassen zijn niet meer nodig omdat we gebruik maken van pydantic en FastAPI
 class TeacherValidator:
     @staticmethod
     def validate(json_data: dict) -> ValidationResult:
