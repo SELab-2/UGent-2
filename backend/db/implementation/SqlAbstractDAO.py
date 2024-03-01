@@ -1,14 +1,12 @@
 from typing import Generic, TypeVar
 
+from pydantic import BaseModel
 from sqlalchemy import select
 from sqlalchemy.orm import Session
-
-from pydantic import BaseModel
 
 from db.errors.database_errors import ItemNotFoundError
 from db.extensions import engine
 from db.models.models import AbstractModel
-
 
 T = TypeVar("T", bound=AbstractModel)
 D = TypeVar("D", bound=BaseModel)
