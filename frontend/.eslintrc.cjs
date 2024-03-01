@@ -23,4 +23,10 @@ module.exports = {
     project: ['./tsconfig.json', './tsconfig.node.json'],
     tsconfigRootDir: __dirname,
   },
+  settings: {
+    "react": {
+      "version": "detect", // React version
+      "flowVersion": "0.53" // Flow version
+    },
+  }
 }
