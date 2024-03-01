@@ -1,9 +1,9 @@
 from dataclasses import dataclass
 
-from domain.models.base_model import JsonRepresentable
+from pydantic import BaseModel
 
 
 @dataclass()
-class GroupDataclass(JsonRepresentable):
+class GroupDataclass(BaseModel):
     id: int
     project_id: int

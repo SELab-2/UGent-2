@@ -1,10 +1,10 @@
 from dataclasses import dataclass
 
-from domain.models.base_model import JsonRepresentable
+from pydantic import BaseModel, EmailStr
 
 
 @dataclass()
-class UserDataclass(JsonRepresentable):
+class UserDataclass(BaseModel):
     id: int
     name: str
-    email: str
+    email: EmailStr
