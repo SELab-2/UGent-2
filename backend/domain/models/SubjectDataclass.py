@@ -1,9 +1,9 @@
 from dataclasses import dataclass
 
-from domain.models.base_model import JsonRepresentable
+from pydantic import BaseModel
 
 
 @dataclass()
-class SubjectDataclass(JsonRepresentable):
+class SubjectDataclass(BaseModel):
     id: int
     name: str

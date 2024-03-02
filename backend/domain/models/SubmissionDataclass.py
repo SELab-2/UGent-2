@@ -2,7 +2,7 @@ import enum
 from dataclasses import dataclass
 from datetime import datetime
 
-from domain.models.base_model import JsonRepresentable
+from pydantic import BaseModel
 
 
 class SubmissionState(enum.Enum):
@@ -12,7 +12,7 @@ class SubmissionState(enum.Enum):
 
 
 @dataclass()
-class SubmissionDataclass(JsonRepresentable):
+class SubmissionDataclass(BaseModel):
     id: int
     date_time: datetime
     group_id: int

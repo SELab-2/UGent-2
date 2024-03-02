@@ -1,15 +1,15 @@
 from typing import Generic, TypeVar
 
+from pydantic import BaseModel
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from db.errors.database_errors import ItemNotFoundError
 from db.extensions import engine
 from db.models.models import AbstractModel
-from domain.models.base_model import JsonRepresentable
 
 T = TypeVar("T", bound=AbstractModel)
-D = TypeVar("D", bound=JsonRepresentable)
+D = TypeVar("D", bound=BaseModel)
 
 
 class SqlAbstractDAO(Generic[T, D]):
