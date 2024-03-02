@@ -1,5 +1,4 @@
 import enum
-from dataclasses import dataclass
 from datetime import datetime
 
 from pydantic import BaseModel
@@ -11,7 +10,6 @@ class SubmissionState(enum.Enum):
     Rejected = 3
 
 
-@dataclass()
 class SubmissionDataclass(BaseModel):
     id: int
     date_time: datetime

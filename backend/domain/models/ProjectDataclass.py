@@ -1,10 +1,8 @@
-from dataclasses import dataclass
 from datetime import datetime
 
 from pydantic import BaseModel, PositiveInt
 
 
-@dataclass()
 class ProjectDataclass(BaseModel):
     id: int
     name: str
