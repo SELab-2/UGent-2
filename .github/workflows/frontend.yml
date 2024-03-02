@@ -12,6 +12,6 @@ jobs:
       - name: Install dependencies
         run: cd frontend && npm install
       - name: Lint code
-        run: cd frontend && npx eslint
+        run: cd frontend && npx eslint .
       - name: Run TypeScript checks
         run: cd frontend && npx tsc --noEmit
