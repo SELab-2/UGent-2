@@ -10,7 +10,7 @@ jobs:
         with:
           node-version: '20'
       - name: Install dependencies
-        run: npm install --prefix frontend
+        run: cd frontend && npm install
       - name: Lint code
         run: cd frontend && npx eslint
       - name: Run TypeScript checks
