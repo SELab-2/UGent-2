@@ -8,6 +8,7 @@ from db.errors.database_errors import ActionAlreadyPerformedError, ItemNotFoundE
 from routes.errors.authentication import InvalidRoleCredentialsError, NoAccessToSubjectError
 from routes.group import group_router
 from routes.project import project_router
+from routes.session import session_router
 from routes.student import student_router
 from routes.subject import subject_router
 from routes.teacher import teacher_router
@@ -22,11 +23,13 @@ app.include_router(users_router, prefix="/api")
 app.include_router(project_router, prefix="/api")
 app.include_router(subject_router, prefix="/api")
 app.include_router(group_router, prefix="/api")
+app.include_router(session_router)
 
-DEBUG = False # Should always be false in repo
+DEBUG = False  # Should always be false in repo
 
 if DEBUG:
     from fastapi.middleware.cors import CORSMiddleware
+
     origins = [
         "https://localhost",
         "https://localhost:8080",
@@ -40,6 +43,7 @@ if DEBUG:
         allow_methods=["*"],
         allow_headers=["*"],
     )
+
 
 # Koppel de exception handlers
 @app.exception_handler(InvalidRoleCredentialsError)
