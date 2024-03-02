@@ -10,7 +10,9 @@ jobs:
         with:
           node-version: '20'
       - name: Install dependencies
-        run: npm install --prefix frontend
+        run: |
+          npm install --prefix frontend
+          npm install typescript --prefix frontend
       - name: Lint code
         run: npx eslint frontend
       - name: Run TypeScript checks
