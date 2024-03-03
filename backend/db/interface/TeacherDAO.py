@@ -1,13 +1,15 @@
 from abc import abstractmethod
+from typing import TYPE_CHECKING
 
 from db.interface.AbstractDAO import AbstractDAO
-from db.models.models import Teacher
-from domain.models.TeacherDataclass import TeacherDataclass
+
+if TYPE_CHECKING:
+    from domain.models.TeacherDataclass import TeacherDataclass
 
 
-class TeacherDAO(AbstractDAO[Teacher, TeacherDataclass]):
+class TeacherDAO(AbstractDAO):
     @abstractmethod
-    def create_teacher(self, name: str, email: str) -> TeacherDataclass:
+    def create_teacher(self, name: str, email: str) -> "TeacherDataclass":
         """
         Maakt een nieuwe teacher aan.
 

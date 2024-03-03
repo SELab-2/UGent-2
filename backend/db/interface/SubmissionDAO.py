@@ -1,15 +1,18 @@
 from abc import abstractmethod
 from datetime import datetime
+from typing import TYPE_CHECKING
 
 from db.interface.AbstractDAO import AbstractDAO
-from db.models.models import Submission
-from domain.models.SubmissionDataclass import SubmissionDataclass, SubmissionState
+
+if TYPE_CHECKING:
+    from domain.models.SubmissionDataclass import SubmissionDataclass, SubmissionState
 
 
-class SubmissionDAO(AbstractDAO[Submission, SubmissionDataclass]):
+class SubmissionDAO(AbstractDAO):
     @abstractmethod
-    def create_submission(self, student_id: int, group_id: int, message: str,
-                          state: SubmissionState, date_time: datetime) -> SubmissionDataclass:
+    def create_submission(
+        self, student_id: int, group_id: int, message: str, state: "SubmissionState", date_time: datetime
+    ) -> "SubmissionDataclass":
         """
         Creëert een nieuw SubmissionDataClass in de database en associeert het met een StudentDataclass en een
         GroupDataClass.
@@ -23,7 +26,7 @@ class SubmissionDAO(AbstractDAO[Submission, SubmissionDataclass]):
         raise NotImplementedError
 
     @abstractmethod
-    def get_submissions_of_student(self, student_id: int) -> list[SubmissionDataclass]:
+    def get_submissions_of_student(self, student_id: int) -> list["SubmissionDataclass"]:
         """
         Haalt alle projecten op die bij een bepaalde student horen.
 
@@ -33,7 +36,7 @@ class SubmissionDAO(AbstractDAO[Submission, SubmissionDataclass]):
         raise NotImplementedError
 
     @abstractmethod
-    def get_submissions_of_group(self, group_id: int) -> list[SubmissionDataclass]:
+    def get_submissions_of_group(self, group_id: int) -> list["SubmissionDataclass"]:
         """
         Haalt alle projecten op die bij een bepaalde groep horen.
 

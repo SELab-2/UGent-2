@@ -1,13 +1,15 @@
 from abc import abstractmethod
+from typing import TYPE_CHECKING
 
 from db.interface.AbstractDAO import AbstractDAO
-from db.models.models import Student
-from domain.models.StudentDataclass import StudentDataclass
+
+if TYPE_CHECKING:
+    from domain.models.StudentDataclass import StudentDataclass
 
 
-class StudentDAO(AbstractDAO[Student, StudentDataclass]):
+class StudentDAO(AbstractDAO):
     @abstractmethod
-    def create_student(self, name: str, email: str) -> StudentDataclass:
+    def create_student(self, name: str, email: str) -> "StudentDataclass":
         """
         Maakt een nieuwe student aan.
 
