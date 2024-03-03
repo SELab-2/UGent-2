@@ -5,10 +5,11 @@ from typing import TYPE_CHECKING
 from db.interface.AbstractDAO import AbstractDAO
 
 if TYPE_CHECKING:
+    from db.models.models import Project  # noqa: F401
     from domain.models.ProjectDataclass import ProjectDataclass
 
 
-class ProjectDAO(AbstractDAO):
+class ProjectDAO(AbstractDAO["Project", "ProjectDataclass"]):
     @abstractmethod
     def create_project(
         self,

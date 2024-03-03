@@ -5,13 +5,19 @@ from typing import TYPE_CHECKING
 from db.interface.AbstractDAO import AbstractDAO
 
 if TYPE_CHECKING:
+    from db.models.models import Submission  # noqa: F401
     from domain.models.SubmissionDataclass import SubmissionDataclass, SubmissionState
 
 
-class SubmissionDAO(AbstractDAO):
+class SubmissionDAO(AbstractDAO["Submission", "SubmissionDataclass"]):
     @abstractmethod
     def create_submission(
-        self, student_id: int, group_id: int, message: str, state: "SubmissionState", date_time: datetime,
+        self,
+        student_id: int,
+        group_id: int,
+        message: str,
+        state: "SubmissionState",
+        date_time: datetime,
     ) -> "SubmissionDataclass":
         """
         Creëert een nieuw SubmissionDataClass in de database en associeert het met een StudentDataclass en een

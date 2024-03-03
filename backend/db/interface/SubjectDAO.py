@@ -4,10 +4,11 @@ from typing import TYPE_CHECKING
 from db.interface.AbstractDAO import AbstractDAO
 
 if TYPE_CHECKING:
+    from db.models.models import Subject  # noqa: F401
     from domain.models.SubjectDataclass import SubjectDataclass
 
 
-class SubjectDAO(AbstractDAO):
+class SubjectDAO(AbstractDAO["Subject", "SubjectDataclass"]):
     @abstractmethod
     def create_subject(self, name: str) -> "SubjectDataclass":
         """

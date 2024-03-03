@@ -4,11 +4,12 @@ from typing import TYPE_CHECKING
 from db.interface.AbstractDAO import AbstractDAO
 
 if TYPE_CHECKING:
+    from db.models.models import Group  # noqa: F401
     from domain.models.GroupDataclass import GroupDataclass
     from domain.models.StudentDataclass import StudentDataclass
 
 
-class GroupDAO(AbstractDAO):
+class GroupDAO(AbstractDAO["Group", "GroupDataclass"]):
     @abstractmethod
     def create_group(self, project_id: int) -> "GroupDataclass":
         """
