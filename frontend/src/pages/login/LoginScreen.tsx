@@ -1,6 +1,6 @@
 import {JSX} from "react";
 
-export function LoginScreen(): JSX.Element {
+export default function LoginScreen(): JSX.Element {
     return (
         <>Login screen</>
     )
