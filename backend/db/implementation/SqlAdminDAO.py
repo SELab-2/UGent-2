@@ -17,3 +17,8 @@ class SqlAdminDAO(SqlAbstractDAO[Admin, AdminDataclass], AdminDAO):
             session.add(new_admin)
             session.commit()
             return new_admin.to_domain_model()
+
+    def is_user_admin(self, user_id: int) -> bool:
+        with Session(engine) as session:
+            admin = session.get(Admin, user_id)
+            return admin is not None

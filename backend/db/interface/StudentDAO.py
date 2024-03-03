@@ -16,3 +16,7 @@ class StudentDAO(AbstractDAO[Student, StudentDataclass]):
         :returns: De nieuw aangemaakte student
         """
         raise NotImplementedError
+
+    @abstractmethod
+    def is_user_student(self, user_id: int) -> bool:
+        raise NotImplementedError

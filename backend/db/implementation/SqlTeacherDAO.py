@@ -17,3 +17,8 @@ class SqlTeacherDAO(SqlAbstractDAO[Teacher, TeacherDataclass], TeacherDAO):
             session.add(new_teacher)
             session.commit()
             return new_teacher.to_domain_model()
+
+    def is_user_teacher(self, user_id: int) -> bool:
+        with Session(engine) as session:
+            teacher = session.get(Teacher, user_id)
+            return teacher is not None

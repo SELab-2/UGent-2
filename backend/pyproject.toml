@@ -88,7 +88,9 @@ ignore = [
     "TCH001", # Move application import `...` into a type-checking block (dit is enkel voor performance)
     "RUF009",  # Do not perform function call `...` in dataclass defaults but needed for sql alchemy
     "PLR0913", # Too many arguments in function
-    "FBT001" # Boolean-typed positional argument in function dfinition
+    "FBT001", # Boolean-typed positional argument in function dfinition
+    "FBT002",
+    "B008"
 ]
 
 # Allow fix for all enabled rules (when `--fix`) is provided.
