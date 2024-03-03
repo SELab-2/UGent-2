@@ -1,8 +1,6 @@
 from pydantic import BaseModel, EmailStr
 
-from db.implementation.SqlAdminDAO import SqlAdminDAO
-from db.implementation.SqlStudentDAO import SqlStudentDAO
-from db.implementation.SqlTeacherDAO import SqlTeacherDAO
+from db.interface.DAOProvider import DAOProvider
 from domain.models.UserDataclass import UserDataclass
 
 
@@ -13,15 +11,12 @@ class APIUser(BaseModel):
     roles: list[str]
 
 
-def convert_user(user: UserDataclass) -> APIUser:
+def convert_user(user: UserDataclass, dao_provider: DAOProvider) -> APIUser:
     result = APIUser(id=user.id, name=user.name, email=user.email, roles=[])
-    teacher_dao = SqlTeacherDAO()
-    admin_dao = SqlAdminDAO()
-    student_dao = SqlStudentDAO()
-    if teacher_dao.is_user_teacher(user.id):
+    if dao_provider.get_teacher_dao().is_user_teacher(user.id):
         result.roles.append("teacher")
-    if admin_dao.is_user_admin(user.id):
+    if dao_provider.get_admin_dao().is_user_admin(user.id):
         result.roles.append("admin")
-    if student_dao.is_user_student(user.id):
+    if dao_provider.get_student_dao().is_user_student(user.id):
         result.roles.append("student")
     return result
