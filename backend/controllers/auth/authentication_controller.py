@@ -1,15 +1,14 @@
 import httpx
 from defusedxml.ElementTree import fromstring
 
-# test url: https://login.ugent.be/login?service=https://localhost:8080/session
-# TODO: get information out of a properties file
-SERVICE = "https://localhost:8080/session"
-DOMAIN = "localhost"
-MAX_AGE = 24 * 60 * 60
+from controllers.properties.Properties import Properties
+
+props: Properties = Properties()
 
 
-def get_user_information(ticket: str) -> dict | None:
-    user_information = httpx.get(f"https://login.ugent.be/serviceValidate?service={SERVICE}&ticket={ticket}"
+def authenticate_user(ticket: str) -> dict | None:
+    service = props.get("session", "service")
+    user_information = httpx.get(f"https://login.ugent.be/serviceValidate?service={service}&ticket={ticket}"
                                  , headers={"Accept": "application/json,text/html"},
                                  )
     user: dict | None = parse_cas_xml(user_information.text)
@@ -31,11 +30,6 @@ def parse_cas_xml(xml: str) -> dict | None:
         mail = attributes_xml.find(f"{namespace}mail").text
 
         user["name"] = f"{givenname} {surname}"
-        user["mail"] = mail
+        user["mail"] = mail.lower()
         return user
     return None
-
-
-# TODO: create a session_id for the given user, create the user if it doesn't exist already
-def login_user(user_information: dict) -> str:
-    return "TestValueCookie"

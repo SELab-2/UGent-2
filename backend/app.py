@@ -5,10 +5,10 @@ from starlette.requests import Request
 from starlette.responses import JSONResponse
 
 from db.errors.database_errors import ActionAlreadyPerformedError, ItemNotFoundError, NoSuchRelationError
+from routes.authentication import session_router
 from routes.errors.authentication import InvalidRoleCredentialsError, NoAccessToSubjectError
 from routes.group import group_router
 from routes.project import project_router
-from routes.session import session_router
 from routes.student import student_router
 from routes.subject import subject_router
 from routes.teacher import teacher_router
