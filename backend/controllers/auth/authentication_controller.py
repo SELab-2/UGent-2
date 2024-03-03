@@ -6,6 +6,7 @@ from controllers.properties.Properties import Properties
 props: Properties = Properties()
 
 
+# TODO: Should return a user object instead of a dict
 def authenticate_user(ticket: str) -> dict | None:
     service = props.get("session", "service")
     user_information = httpx.get(f"https://login.ugent.be/serviceValidate?service={service}&ticket={ticket}"

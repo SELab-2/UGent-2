@@ -1,12 +1,13 @@
 from fastapi import Request, Response
+from starlette.responses import JSONResponse
 
-from controllers.auth.encryption_controller import encrypt, generate_keys
+from controllers.auth.encryption_controller import encrypt
 from controllers.properties.Properties import Properties
 
 props: Properties = Properties()
 
 
-def set_cookies(response: Response, key: str, value: str) -> Response:
+def set_session_cookies(response: JSONResponse, key: str, value: str) -> JSONResponse:
     value: str = encrypt(value)
     max_age: int = int(props.get("session", "max_cookie_age"))
     domain: str = props.get("session", "cookie_domain")
