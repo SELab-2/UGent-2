@@ -6,8 +6,10 @@ repos:
         entry: ruff check
         language: system
         types: [python]
+        always_run: true
       - id: pyright
         name: pyright
         entry: pyright
         language: node
         types: [python]
+        always_run: true
