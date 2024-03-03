@@ -8,6 +8,7 @@ greenlet==3.0.3
 h11==0.14.0
 idna==3.6
 nodeenv==1.8.0
+pre-commit==3.6.2
 psycopg2-binary==2.9.9
 pydantic==2.6.3
 pydantic_core==2.16.3
