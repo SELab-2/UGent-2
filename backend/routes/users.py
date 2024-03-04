@@ -1,7 +1,8 @@
 from fastapi import APIRouter, HTTPException
 
 from db.errors.database_errors import ItemNotFoundError
-from domain.models.APIUser import APIUser, convert_user
+from domain.logic.UserLogic import convert_user
+from domain.models.APIUser import APIUser
 from routes.db import get_dao_provider
 from routes.login import get_authenticated_user, is_user_admin
 
