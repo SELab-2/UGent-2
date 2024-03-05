@@ -1,16 +1,13 @@
 from abc import abstractmethod
-from typing import TYPE_CHECKING
 
 from db.interface.AbstractDAO import AbstractDAO
-
-if TYPE_CHECKING:
-    from db.models.models import Subject  # noqa: F401
-    from domain.models.SubjectDataclass import SubjectDataclass
+from db.models.models import Subject
+from domain.models.SubjectDataclass import SubjectDataclass
 
 
-class SubjectDAO(AbstractDAO["Subject", "SubjectDataclass"]):
+class SubjectDAO(AbstractDAO[Subject, SubjectDataclass]):
     @abstractmethod
-    def create_subject(self, name: str) -> "SubjectDataclass":
+    def create_subject(self, name: str) -> SubjectDataclass:
         """
         Creëert een nieuw SubjectDataclass in de database.
 
@@ -20,7 +17,7 @@ class SubjectDAO(AbstractDAO["Subject", "SubjectDataclass"]):
         raise NotImplementedError
 
     @abstractmethod
-    def get_subjects_of_teacher(self, teacher_id: int) -> list["SubjectDataclass"]:
+    def get_subjects_of_teacher(self, teacher_id: int) -> list[SubjectDataclass]:
         """
         Haalt de subjects op die door een bepaalde teacher worden gegeven.
 
@@ -30,7 +27,7 @@ class SubjectDAO(AbstractDAO["Subject", "SubjectDataclass"]):
         raise NotImplementedError
 
     @abstractmethod
-    def get_subjects_of_student(self, student_id: int) -> list["SubjectDataclass"]:
+    def get_subjects_of_student(self, student_id: int) -> list[SubjectDataclass]:
         """
         Haalt de subjects op die door een bepaalde student worden gevolgd.
 

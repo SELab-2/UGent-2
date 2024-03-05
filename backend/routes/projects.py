@@ -27,7 +27,7 @@ def get_subjects(teacher: bool = False) -> list[ProjectDataclass]:
     return projects
 
 
-@projects_router.get("/projects/{subject_id}")
+@projects_router.get("/projects/{project_id}")
 def get_project(project_id: int) -> ProjectDataclass:
     project_dao = get_dao_provider().get_project_dao()
     subject_dao = get_dao_provider().get_subject_dao()

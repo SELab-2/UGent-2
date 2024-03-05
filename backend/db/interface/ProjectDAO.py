@@ -1,15 +1,12 @@
 from abc import abstractmethod
 from datetime import datetime
-from typing import TYPE_CHECKING
 
 from db.interface.AbstractDAO import AbstractDAO
-
-if TYPE_CHECKING:
-    from db.models.models import Project  # noqa: F401
-    from domain.models.ProjectDataclass import ProjectDataclass
+from db.models.models import Project
+from domain.models.ProjectDataclass import ProjectDataclass
 
 
-class ProjectDAO(AbstractDAO["Project", "ProjectDataclass"]):
+class ProjectDAO(AbstractDAO[Project, ProjectDataclass]):
     @abstractmethod
     def create_project(
         self,
@@ -21,7 +18,7 @@ class ProjectDAO(AbstractDAO["Project", "ProjectDataclass"]):
         requirements: str,
         visible: bool,
         max_students: int,
-    ) -> "ProjectDataclass":
+    ) -> ProjectDataclass:
         """
         Creëert een nieuw ProjectDataClass in de database en associeert het met een SubjectDataClass.
 
@@ -39,7 +36,7 @@ class ProjectDAO(AbstractDAO["Project", "ProjectDataclass"]):
         raise NotImplementedError
 
     @abstractmethod
-    def get_projects_of_subject(self, subject_id: int) -> list["ProjectDataclass"]:
+    def get_projects_of_subject(self, subject_id: int) -> list[ProjectDataclass]:
         """
         Haalt alle projecten op die bij een bepaald subject horen.
 

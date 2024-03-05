@@ -1,17 +1,14 @@
 from abc import abstractmethod
-from typing import TYPE_CHECKING
 
 from db.interface.AbstractDAO import AbstractDAO
-
-if TYPE_CHECKING:
-    from db.models.models import Group  # noqa: F401
-    from domain.models.GroupDataclass import GroupDataclass
-    from domain.models.StudentDataclass import StudentDataclass
+from db.models.models import Group
+from domain.models.GroupDataclass import GroupDataclass
+from domain.models.StudentDataclass import StudentDataclass
 
 
-class GroupDAO(AbstractDAO["Group", "GroupDataclass"]):
+class GroupDAO(AbstractDAO[Group, GroupDataclass]):
     @abstractmethod
-    def create_group(self, project_id: int) -> "GroupDataclass":
+    def create_group(self, project_id: int) -> GroupDataclass:
         """
         Creëert een nieuw GroupDataClass in de database en associeert het met een ProjectDataClass.
 
@@ -22,7 +19,7 @@ class GroupDAO(AbstractDAO["Group", "GroupDataclass"]):
         raise NotImplementedError
 
     @abstractmethod
-    def get_groups_of_project(self, project_id: int) -> list["GroupDataclass"]:
+    def get_groups_of_project(self, project_id: int) -> list[GroupDataclass]:
         """
         Haalt alle groepen op die bij een bepaald project horen.
 
@@ -32,7 +29,7 @@ class GroupDAO(AbstractDAO["Group", "GroupDataclass"]):
         raise NotImplementedError
 
     @abstractmethod
-    def get_groups_of_student(self, student_id: int) -> list["GroupDataclass"]:
+    def get_groups_of_student(self, student_id: int) -> list[GroupDataclass]:
         """
         Haalt alle groepen op die bij een bepaalde student horen.
 
@@ -53,7 +50,7 @@ class GroupDAO(AbstractDAO["Group", "GroupDataclass"]):
         raise NotImplementedError
 
     @abstractmethod
-    def get_students_of_group(self, group_id: int) -> list["StudentDataclass"]:
+    def get_students_of_group(self, group_id: int) -> list[StudentDataclass]:
         """
         Gaat alle studenten geven die in een bepaalde groep zitten
 

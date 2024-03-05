@@ -1,16 +1,13 @@
 from abc import abstractmethod
-from typing import TYPE_CHECKING
 
 from db.interface.AbstractDAO import AbstractDAO
-
-if TYPE_CHECKING:
-    from db.models.models import Admin  # noqa: F401
-    from domain.models.AdminDataclass import AdminDataclass
+from db.models.models import Admin
+from domain.models.AdminDataclass import AdminDataclass
 
 
-class AdminDAO(AbstractDAO["Admin", "AdminDataclass"]):
+class AdminDAO(AbstractDAO[Admin, AdminDataclass]):
     @abstractmethod
-    def create_admin(self, name: str, email: str) -> "AdminDataclass":
+    def create_admin(self, name: str, email: str) -> AdminDataclass:
         """
         Maakt een nieuwe admin aan.
 
