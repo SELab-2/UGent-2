@@ -1,7 +1,8 @@
 from fastapi import APIRouter, HTTPException, status
 
 from db.errors.database_errors import ItemNotFoundError
-from domain.logic.SubjectLogic import is_user_authorized_for_subject
+from domain.logic.ProjectLogic import is_user_authorized_for_project
+from domain.models.GroupDataclass import GroupDataclass
 from domain.models.ProjectDataclass import ProjectDataclass
 from routes.db import get_dao_provider
 from routes.login import get_authenticated_user
@@ -27,16 +28,30 @@ def get_projects(teacher: bool = False) -> list[ProjectDataclass]:
     return projects
 
 
+def ensure_project_authorized(project: ProjectDataclass) -> None:
+    user = get_authenticated_user()
+    if not is_user_authorized_for_project(project, user, get_dao_provider()):
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not allowed to access this project")
+
+
 @projects_router.get("/projects/{project_id}")
 def get_project(project_id: int) -> ProjectDataclass:
     project_dao = get_dao_provider().get_project_dao()
-    subject_dao = get_dao_provider().get_subject_dao()
-    user = get_authenticated_user()
     try:
         project = project_dao.get(project_id)
     except ItemNotFoundError as err:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(err)) from err
-    subject = subject_dao.get(project.subject_id)
-    if not is_user_authorized_for_subject(subject, user, get_dao_provider()):
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not allowed to access this project")
+    ensure_project_authorized(project)
     return project
+
+
+@projects_router.get("/projects/{project_id}/groups")
+def get_project_groups(project_id: int) -> list[GroupDataclass]:
+    project_dao = get_dao_provider().get_project_dao()
+    group_dao = get_dao_provider().get_group_dao()
+    try:
+        project = project_dao.get(project_id)
+    except ItemNotFoundError as err:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(err)) from err
+    ensure_project_authorized(project)
+    return group_dao.get_groups_of_project(project.id)

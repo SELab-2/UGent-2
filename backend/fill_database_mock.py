@@ -48,6 +48,7 @@ if __name__ == "__main__":
 
     # voeg teacher toe aan objeprog
     subject_dao.add_teacher_to_subject(teacher1.id, objeprog.id)
+    subject_dao.add_student_to_subject(student1.id, objeprog.id)
 
     # voeg studenten toe aan de groep
     group_dao.add_student_to_group(student1.id, groep1.id)
