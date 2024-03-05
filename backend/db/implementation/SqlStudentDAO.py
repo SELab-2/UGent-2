@@ -17,3 +17,8 @@ class SqlStudentDAO(SqlAbstractDAO[Student, StudentDataclass], StudentDAO):
             session.add(new_student)
             session.commit()
             return new_student.to_domain_model()
+
+    def is_user_student(self, user_id: int) -> bool:
+        with Session(engine) as session:
+            student = session.get(Student, user_id)
+            return student is not None

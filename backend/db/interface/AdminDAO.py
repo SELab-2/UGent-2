@@ -16,3 +16,7 @@ class AdminDAO(AbstractDAO[Admin, AdminDataclass]):
         :return: De nieuwe admin
         """
         raise NotImplementedError
+
+    @abstractmethod
+    def is_user_admin(self, user_id: int) -> bool:
+        raise NotImplementedError

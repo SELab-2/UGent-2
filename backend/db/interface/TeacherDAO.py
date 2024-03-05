@@ -16,3 +16,7 @@ class TeacherDAO(AbstractDAO[Teacher, TeacherDataclass]):
         :returns: De nieuw aangemaakte teacher.
         """
         raise NotImplementedError
+
+    @abstractmethod
+    def is_user_teacher(self, user_id: int) -> bool:
+        raise NotImplementedError
