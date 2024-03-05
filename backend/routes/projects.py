@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, status
 
 from db.errors.database_errors import ItemNotFoundError
 from domain.logic.SubjectLogic import is_user_authorized_for_subject
@@ -23,7 +23,7 @@ def get_subjects(teacher: bool = False) -> list[ProjectDataclass]:
         for i in subjects:
             projects += project_dao.get_projects_of_subject(i.id)
     except ItemNotFoundError as err:
-        raise HTTPException(status_code=404) from err
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND) from err
     return projects
 
 
@@ -35,8 +35,8 @@ def get_project(project_id: int) -> ProjectDataclass:
     try:
         project = project_dao.get(project_id)
     except ItemNotFoundError as err:
-        raise HTTPException(status_code=404) from err
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND) from err
     subject = subject_dao.get(project.subject_id)
     if not is_user_authorized_for_subject(subject, user, get_dao_provider()):
-        raise HTTPException(status_code=403)
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN)
     return project

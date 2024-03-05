@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, status
 
 from db.errors.database_errors import ItemNotFoundError
 from domain.logic.UserLogic import convert_user
@@ -18,7 +18,7 @@ def get_current_user() -> APIUser:
 @users_router.get("/users")
 def get_users() -> list[APIUser]:
     if not is_user_admin():
-        raise HTTPException(status_code=403)
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN)
     user_dao = get_dao_provider().get_user_dao()
     users = user_dao.get_all()
     return [convert_user(user, get_dao_provider()) for user in users]
@@ -27,10 +27,10 @@ def get_users() -> list[APIUser]:
 @users_router.get("/users/{uid}")
 def get_user(uid: int) -> APIUser:
     if not is_user_admin():
-        raise HTTPException(status_code=403)
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN)
     user_dao = get_dao_provider().get_user_dao()
     try:
         user = user_dao.get(uid)
     except ItemNotFoundError as err:
-        raise HTTPException(status_code=404) from err
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND) from err
     return convert_user(user, get_dao_provider())
