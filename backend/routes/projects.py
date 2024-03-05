@@ -10,7 +10,7 @@ projects_router = APIRouter()
 
 
 @projects_router.get("/projects")
-def get_subjects(teacher: bool = False) -> list[ProjectDataclass]:
+def get_projects(teacher: bool = False) -> list[ProjectDataclass]:
     user = get_authenticated_user()
     project_dao = get_dao_provider().get_project_dao()
     subject_dao = get_dao_provider().get_subject_dao()
@@ -23,7 +23,7 @@ def get_subjects(teacher: bool = False) -> list[ProjectDataclass]:
         for i in subjects:
             projects += project_dao.get_projects_of_subject(i.id)
     except ItemNotFoundError as err:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND) from err
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(err)) from err
     return projects
 
 
@@ -35,8 +35,8 @@ def get_project(project_id: int) -> ProjectDataclass:
     try:
         project = project_dao.get(project_id)
     except ItemNotFoundError as err:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND) from err
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(err)) from err
     subject = subject_dao.get(project.subject_id)
     if not is_user_authorized_for_subject(subject, user, get_dao_provider()):
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN)
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not allowed to access this project")
     return project
