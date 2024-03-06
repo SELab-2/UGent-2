@@ -1,8 +1,10 @@
 from pydantic import BaseModel, EmailStr
 
+from domain.logic.role_enum import Role
+
 
 class APIUser(BaseModel):
     id: int
     name: str
     email: EmailStr
-    roles: list[str]
+    roles: list[Role]
