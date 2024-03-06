@@ -8,6 +8,8 @@ import LoginScreen from "./pages/login/LoginScreen.tsx";
 import HomeAdmin from "./pages/admin/HomeAdmin.tsx";
 import HomeStudent from "./pages/student/HomeStudent.tsx";
 import HomeTeacher from "./pages/teacher/HomeTeacher.tsx";
+import 'bulma/css/bulma.min.css';
+import './assets/styles/mainpage.css'
 
 const router = createBrowserRouter([
     {
@@ -33,7 +35,7 @@ const router = createBrowserRouter([
     }
 ]);
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <RouterProvider router={router}/>
-  </React.StrictMode>,
+    <React.StrictMode>
+        <RouterProvider router={router}/>
+    </React.StrictMode>,
 )
