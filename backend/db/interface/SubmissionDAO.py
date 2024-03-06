@@ -8,8 +8,14 @@ from domain.models.SubmissionDataclass import SubmissionDataclass, SubmissionSta
 
 class SubmissionDAO(AbstractDAO[Submission, SubmissionDataclass]):
     @abstractmethod
-    def create_submission(self, student_id: int, group_id: int, message: str,
-                          state: SubmissionState, date_time: datetime) -> SubmissionDataclass:
+    def create_submission(
+        self,
+        student_id: int,
+        group_id: int,
+        message: str,
+        state: SubmissionState,
+        date_time: datetime,
+    ) -> SubmissionDataclass:
         """
         Creëert een nieuw SubmissionDataClass in de database en associeert het met een StudentDataclass en een
         GroupDataClass.
