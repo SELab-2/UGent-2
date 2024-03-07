@@ -4,10 +4,11 @@ from sqlalchemy.orm import Session
 from db.sessions import get_session
 from domain.logic.admin import get_admin, is_user_admin
 from domain.logic.student import get_student, is_user_student
-from domain.logic.subject import get_subjects_of_student
+from domain.logic.subject import get_subjects_of_student, get_subjects_of_teacher
 from domain.logic.teacher import get_teacher, is_user_teacher
 from domain.models.AdminDataclass import AdminDataclass
 from domain.models.StudentDataclass import StudentDataclass
+from domain.models.SubjectDataclass import SubjectDataclass
 from domain.models.TeacherDataclass import TeacherDataclass
 from routes.errors.authentication import (
     InvalidAdminCredentialsError,
@@ -40,6 +41,19 @@ def get_authenticated_student(session: Session = Depends(get_session)) -> Studen
     if not is_user_student(session, user_id):
         raise InvalidStudentCredentialsError
     return get_student(session, user_id)
+
+
+def is_user_authorized_for_subject(session: Session, subject_id: int) -> bool:
+    user_id = get_authenticated_user()
+    if is_user_teacher(session, user_id):
+        subjects_of_teacher: list[SubjectDataclass] = get_subjects_of_teacher(session, subject_id)
+        return subject_id in [subject.id for subject in subjects_of_teacher]
+
+    if is_user_student(session, user_id):
+        subjects_of_student: list[SubjectDataclass] = get_subjects_of_student(session, subject_id)
+        return subject_id in [subject.id for subject in subjects_of_student]
+
+    return False
 
 
 def get_authenticated_student_for_subject(
