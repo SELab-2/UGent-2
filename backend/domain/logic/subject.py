@@ -3,22 +3,7 @@ from sqlalchemy.orm import Session
 from db.errors.database_errors import ActionAlreadyPerformedError
 from db.models.models import Student, Subject, Teacher
 from domain.logic.basic_operations import get, get_all
-from domain.logic.student import is_user_student
-from domain.logic.teacher import is_user_teacher
 from domain.models.SubjectDataclass import SubjectDataclass
-from domain.models.UserDataclass import UserDataclass
-
-
-def is_user_authorized_for_subject(session: Session, subject: SubjectDataclass, user: UserDataclass) -> bool:
-    if is_user_teacher(session, user.id):
-        subjects_of_teacher: list[SubjectDataclass] = get_subjects_of_teacher(session, subject.id)
-        return subject in subjects_of_teacher
-
-    if is_user_student(session, user.id):
-        subjects_of_student: list[SubjectDataclass] = get_subjects_of_student(session, subject.id)
-        return subject in subjects_of_student
-
-    return False
 
 
 def create_subject(session: Session, name: str) -> SubjectDataclass:
