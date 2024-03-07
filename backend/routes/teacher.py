@@ -19,7 +19,7 @@ def subjects_of_teacher_get(
     return get_subjects_of_teacher(session, teacher.id)
 
 
-@teacher_router.post("teacher/subjects")
+@teacher_router.post("teacher/subjects", dependencies=[Depends(get_authenticated_teacher)])
 def create_subject_post(
     subject: SubjectDataclass,
     session: Session = Depends(get_session),
