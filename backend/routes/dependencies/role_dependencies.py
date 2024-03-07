@@ -43,7 +43,7 @@ def get_authenticated_student(session: Session = Depends(get_session)) -> Studen
     return get_student(session, user_id)
 
 
-def is_user_authorized_for_subject(session: Session, subject_id: int) -> bool:
+def is_user_authorized_for_subject(subject_id: int, session: Session = Depends(get_session)) -> bool:
     user_id = get_authenticated_user()
     if is_user_teacher(session, user_id):
         subjects_of_teacher: list[SubjectDataclass] = get_subjects_of_teacher(session, subject_id)
