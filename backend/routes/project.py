@@ -4,10 +4,13 @@ from sqlalchemy.orm import Session
 from db.sessions import get_session
 from domain.logic.project import get_project
 from domain.models.ProjectDataclass import ProjectDataclass
+from routes.dependencies.role_dependencies import is_user_authorized_for_subject
 
 project_router = APIRouter()
 
 
 @project_router.get("/projects/{project_id}")
 def get_subject_project(project_id: int, session: Session = Depends(get_session)) -> ProjectDataclass:
-    return get_project(session, project_id)
+    project: ProjectDataclass = get_project(session, project_id)
+    is_user_authorized_for_subject(session, project.subject_id)
+    return project
