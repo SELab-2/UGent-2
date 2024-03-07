@@ -1,28 +1,11 @@
-import uvicorn
-from fastapi import FastAPI
-from starlette import status
-from starlette.requests import Request
-from starlette.responses import JSONResponse
+from fastapi import Request, status
+from fastapi.responses import JSONResponse
 
+from app import app
 from db.errors.database_errors import ActionAlreadyPerformedError, ItemNotFoundError
 from routes.errors.authentication import InvalidRoleCredentialsError, StudentNotEnrolledError
-from routes.project import project_router
-from routes.student import student_router
-from routes.subject import subject_router
-from routes.teacher import teacher_router
-from routes.user import users_router
-
-app = FastAPI()
-
-# Koppel routes uit andere modules.
-app.include_router(student_router, prefix="/api")
-app.include_router(teacher_router, prefix="/api")
-app.include_router(users_router, prefix="/api")
-app.include_router(project_router, prefix="/api")
-app.include_router(subject_router, prefix="/api")
 
 
-# Koppel de exception handlers
 @app.exception_handler(InvalidRoleCredentialsError)
 def invalid_admin_credentials_error_handler(request: Request, exc: InvalidRoleCredentialsError) -> JSONResponse:
     return JSONResponse(
@@ -53,7 +36,3 @@ def action_already_performed_error_handler(request: Request, exc: ActionAlreadyP
         status_code=status.HTTP_400_BAD_REQUEST,
         content={"detail": str(exc)},
     )
-
-
-if __name__ == "__main__":
-    uvicorn.run("app:app")
