@@ -5,7 +5,7 @@ from starlette.requests import Request
 from starlette.responses import JSONResponse
 
 from db.errors.database_errors import ActionAlreadyPerformedError, ItemNotFoundError
-from routes.errors.authentication import InvalidRoleCredentialsError, StudentNotEnrolledError
+from routes.errors.authentication import InvalidRoleCredentialsError, NoAccessToSubjectError
 from routes.project import project_router
 from routes.student import student_router
 from routes.subject import subject_router
@@ -39,10 +39,10 @@ def item_not_found_error_handler(request: Request, exc: ItemNotFoundError) -> JS
     )
 
 
-@app.exception_handler(StudentNotEnrolledError)
-def student_already_enrolled_error_handler(request: Request, exc: StudentNotEnrolledError) -> JSONResponse:
+@app.exception_handler(NoAccessToSubjectError)
+def no_access_to_subject_error_handler(request: Request, exc: NoAccessToSubjectError) -> JSONResponse:
     return JSONResponse(
-        status_code=status.HTTP_400_BAD_REQUEST,
+        status_code=status.HTTP_403_FORBIDDEN,
         content={"detail": str(exc)},
     )
 
