@@ -1,0 +1,41 @@
+.main-header {
+    width: 100vw;
+    height: 8vh;
+    background-color: #9c9afd;
+}
+
+.main-nav {
+    height: 100%;
+
+    img {
+        background-color: #5f63c8;
+        height: 100%;
+    }
+}
+
+.main-content {
+    width: 100vw;
+    height: 92vh;
+}
+
+.side-bar {
+    width: 4.15vw;
+    background-color: #6a74ce;
+
+    li {
+        height: 10vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 5%;
+    }
+}
+
+.icon {
+    height: 50%;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
