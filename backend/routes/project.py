@@ -12,5 +12,5 @@ project_router = APIRouter()
 @project_router.get("/projects/{project_id}")
 def get_subject_project(project_id: int, session: Session = Depends(get_session)) -> ProjectDataclass:
     project: ProjectDataclass = get_project(session, project_id)
-    is_user_authorized_for_subject(session, project.subject_id)
+    is_user_authorized_for_subject(project.subject_id)
     return project
