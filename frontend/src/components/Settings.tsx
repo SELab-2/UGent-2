@@ -1,8 +1,9 @@
 import { BiLogOut } from "react-icons/bi";
 import '../assets/styles/small_components.css'
+import {JSX} from "react";
 
 
-export default function Settings() {
+export default function Settings(): JSX.Element  {
     return (
         <>
             <div className={"popup px-5 py-5 card"}>
