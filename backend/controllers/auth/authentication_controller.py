@@ -2,6 +2,8 @@ import httpx
 from defusedxml.ElementTree import fromstring
 
 from controllers.properties.Properties import Properties
+from db.interface.UserDAO import UserDAO
+from domain.models.UserDataclass import UserDataclass
 
 props: Properties = Properties()
 
@@ -9,14 +11,12 @@ props: Properties = Properties()
 # TODO: Should return a user object instead of a dict
 def authenticate_user(ticket: str) -> dict | None:
     service = props.get("session", "service")
-    user_information = httpx.get(f"https://login.ugent.be/serviceValidate?service={service}&ticket={ticket}"
-                                 , headers={"Accept": "application/json,text/html"},
-                                 )
-    user: dict | None = parse_cas_xml(user_information.text)
+    user_information = httpx.get(f"https://login.ugent.be/serviceValidate?service={service}&ticket={ticket}")
+    user: UserDataclass | None = parse_cas_xml(user_information.text)
     return user
 
 
-def parse_cas_xml(xml: str) -> dict | None:
+def parse_cas_xml(xml: str) -> UserDataclass | None:
     namespace = "{http://www.yale.edu/tp/cas}"
     user = {}
 
@@ -32,5 +32,6 @@ def parse_cas_xml(xml: str) -> dict | None:
 
         user["name"] = f"{givenname} {surname}"
         user["mail"] = mail.lower()
+        user_dataclass = UserDAO.createUser(user["name"], user["mail"])
         return user
     return None

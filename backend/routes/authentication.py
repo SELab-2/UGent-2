@@ -5,6 +5,7 @@ from controllers.auth.authentication_controller import authenticate_user
 from controllers.auth.cookie_controller import delete_cookie, set_session_cookies
 from controllers.auth.encryption_controller import delete_key
 from controllers.auth.login_controller import verify_session
+from controllers.auth.token_controller import get_token
 
 session_router = APIRouter()
 
@@ -22,10 +23,9 @@ def login(ticket: str) -> Response:
     """
     user: dict = authenticate_user(ticket)  # TODO: This should be a user object
     if user:
-        response: JSONResponse = JSONResponse(content=user)
-        # TODO: Change mail to user id
-        return set_session_cookies(response, "session_id", user["mail"])
-    return JSONResponse(status_code=401, content="Invalid Ticket")
+        token = get_token(user)
+        return token
+    return Response(status_code=401, content="Invalid Ticket")
 
 
 @session_router.get("/api/logout/{user_id}")
