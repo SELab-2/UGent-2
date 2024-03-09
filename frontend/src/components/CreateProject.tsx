@@ -18,6 +18,8 @@ export function CreateProject(): JSX.Element {
     // waardes van de deadline
     const [calenderValue, handleCalenderChange] = useState<Value>(new Date());
 
+    // waarde van de description
+    const [description, setDescription] = useState("");
     //helper
     const hours = Array.from({length: 24}, (_, index) =>
         index.toString().padStart(2, '0')
@@ -81,7 +83,9 @@ export function CreateProject(): JSX.Element {
                 <div className="field-body">
                     <div className="field">
                         <div style={{width: "33%"}}>
-                            <textarea className="textarea" placeholder="beschrijving"/>
+                            <textarea className="textarea" placeholder="Geef een korte beschrijving van het project"
+                                      value={description}
+                                      onChange={e => setDescription(e.target.value)}/>
                         </div>
                     </div>
                 </div>
