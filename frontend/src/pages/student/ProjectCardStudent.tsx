@@ -4,8 +4,8 @@ import {JSX} from "react";
 export default function ProjectCardStudent(): JSX.Element {
     // as for now I'm not sure how the info will come in, so using
     // static values for now (change to true and true/false to see how they'll look like):
-    let has_submission: boolean = true;
-    let isSuccess: boolean = true;
+    const has_submission: boolean = false;
+    const isSuccess: boolean = true;
 
     return (
         <div
