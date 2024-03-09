@@ -6,7 +6,7 @@ import {JSX} from "react";
 export default function Settings(): JSX.Element  {
     return (
         <>
-            <div className={"popup px-5 py-5 card"}>
+            <div className={"card popup px-5 py-5"}>
                 <p className={"title is-flex is-justify-content-center"}>Settings</p>
                 <img src={"/delphi_full.png"} alt={"image"}/>
                 <div className={"is-flex px-5 py-1 is-align-items-center"}>
