@@ -1,9 +1,10 @@
-import { BiLogOut } from "react-icons/bi";
+import {BiLogOut} from "react-icons/bi";
 import '../assets/styles/small_components.css'
 import {JSX} from "react";
+import {Link} from "react-router-dom";
 
 
-export default function Settings(): JSX.Element  {
+export default function Settings(): JSX.Element {
     return (
         <>
             <div className={"card popup px-5 py-5"}>
@@ -16,8 +17,12 @@ export default function Settings(): JSX.Element  {
                 <div>
                     <p className={"py-2"}>Select workstation: </p>
                     <div className={"is-flex is-justify-content-space-evenly"}>
-                        <button className={"button is-success"}>teacher</button>
-                        <button className={"button is-danger"}>admin</button>
+                        <Link to={"/teacher"}>
+                            <button className={"button is-success"}>teacher</button>
+                        </Link>
+                        <Link to={"/admin"}>
+                            <button className={"button is-danger"}>admin</button>
+                        </Link>
                     </div>
                 </div>
             </div>
