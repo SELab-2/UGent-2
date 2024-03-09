@@ -14,7 +14,19 @@ export function CreateProject(): JSX.Element {
     };
     type ValuePiece = Date | null;
     type Value = ValuePiece | [ValuePiece, ValuePiece];
+
+    // waardes van de deadline
     const [calenderValue, handleCalenderChange] = useState<Value>(new Date());
+
+    //helper
+    const hours = Array.from({length: 24}, (_, index) =>
+        index.toString().padStart(2, '0')
+    );
+
+    //helper
+    const minutes = Array.from({length: 60}, (_, index) =>
+        index.toString().padStart(2, '0')
+    );
 
     return (
         <>
@@ -45,8 +57,33 @@ export function CreateProject(): JSX.Element {
                 <div className="field-body">
                     <label className="checkbox">
                         <input type="checkbox" onChange={handleCheckboxChange}/>
-                        {showDate && <Calendar onChange={handleCalenderChange} value={calenderValue}/>}
+                        {showDate &&
+                            <>
+                                <Calendar onChange={handleCalenderChange} value={calenderValue}/>
+                                <div className="is-horizontal">
+                                    <div className="field">
+                                        <SelectionBox options={hours}/>
+                                        <label className={"title ml-3 mr-3"}>:</label>
+                                        <SelectionBox options={minutes}/>
+
+                                    </div>
+                                </div>
+
+                            </>
+                        }
                     </label>
+                </div>
+            </div>
+            <div className="field is-horizontal">
+                <div className="field-label">
+                    <label className="label">Beschrijving:</label>
+                </div>
+                <div className="field-body">
+                    <div className="field">
+                        <div style={{width: "33%"}}>
+                            <textarea className="textarea" placeholder="beschrijving"/>
+                        </div>
+                    </div>
                 </div>
             </div>
 
