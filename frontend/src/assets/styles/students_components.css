@@ -11,9 +11,9 @@
 }
 
 .p-negative {
-    color: red !important;
+    color: red;
 }
 
 .p-positive {
-    color: green !important;
+    color: green;
 }
