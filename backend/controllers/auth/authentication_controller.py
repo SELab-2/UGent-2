@@ -1,4 +1,4 @@
-from _elementtree import Element
+from typing import TYPE_CHECKING
 
 import httpx
 from defusedxml.ElementTree import fromstring
@@ -9,6 +9,9 @@ from domain.logic.student import create_student
 from domain.logic.teacher import create_teacher
 from domain.logic.user import get_user_with_email
 from domain.models.UserDataclass import UserDataclass
+
+if TYPE_CHECKING:
+    from _elementtree import Element
 
 props: Properties = Properties()
 
