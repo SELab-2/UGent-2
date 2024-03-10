@@ -36,7 +36,6 @@ def get_user_with_email(session: Session, email: str) -> UserDataclass | None:
     users = [r.to_domain_model() for r in result.scalars()]
 
     if len(users) > 1:
-        # TODO good error for more than 1 user with same email
         raise NotImplementedError
 
     if len(users) == 1:

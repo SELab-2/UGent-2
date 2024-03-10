@@ -33,7 +33,6 @@ def login(
     return Response(status_code=401, content="Invalid Ticket!")
 
 
-# TODO proper handle logout
 @login_router.get("/logout")
 def logout() -> Response:
     """

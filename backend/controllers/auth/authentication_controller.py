@@ -11,7 +11,6 @@ from domain.models.UserDataclass import UserDataclass
 props: Properties = Properties()
 
 
-# TODO: Should return a user object instead of a dict
 def authenticate_user(session: Session, ticket: str) -> UserDataclass | None:
     """
     This function will authenticate the user.
@@ -60,7 +59,6 @@ def parse_cas_xml(xml: str) -> dict | None:
         email: str = attributes_xml.find(f"{namespace}mail").text
         role: str = attributes_xml.findall(f"{namespace}objectClass")
 
-        # TODO: Checking if there are other roles that need to be added
         role_str: str = ""
         for r in role:
             if r.text == "ugentStudent" and role_str == "":

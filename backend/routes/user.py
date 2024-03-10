@@ -21,7 +21,7 @@ def get_current_user(
     session: Session = Depends(get_session),
 ) -> APIUser | None:
     token: str | None = request.cookies.get("token")
-    if token == "undefined":
+    if token is None:
         response.status_code = 401
         return None
     user_id: int | None = verify_token(token)
