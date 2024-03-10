@@ -54,7 +54,7 @@ def parse_cas_xml(xml: str) -> dict | None:
                           .find(f"{namespace}attributes")
                           )
 
-        givenname: str = attributes_xml.find(f"{namespace}givenname").text
+        givenname: str = attributes_xml.find(f"{namespace}givenname")
         surname: str = attributes_xml.find(f"{namespace}surname").text
         email: str = attributes_xml.find(f"{namespace}mail").text
         role: str = attributes_xml.findall(f"{namespace}objectClass")
@@ -65,7 +65,6 @@ def parse_cas_xml(xml: str) -> dict | None:
                 role_str = "student"
             elif r.text == "ugentEmployee":
                 role_str = "teacher"
-
         return {
             "email": email.lower(),
             "name": f"{givenname} {surname}",
