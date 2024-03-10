@@ -1,5 +1,3 @@
-import logging
-
 import httpx
 from defusedxml.ElementTree import fromstring
 from sqlalchemy.orm import Session
@@ -15,6 +13,15 @@ props: Properties = Properties()
 
 # TODO: Should return a user object instead of a dict
 def authenticate_user(session: Session, ticket: str) -> UserDataclass | None:
+    """
+    This function will authenticate the user.
+    If the use doesn't yet exist in the database, it will create an entry.
+    a
+
+    :param session: Session with the database
+    :param ticket: A ticket from login.ugent.be/login?service=https://localhost:8080/login
+    :return: None if the authentication failed, user: UseDataclass is the authentication was successful
+    """
     service = props.get("session", "service")
     user_information = httpx.get(f"https://login.ugent.be/serviceValidate?service={service}&ticket={ticket}")
     user_dict: dict | None = parse_cas_xml(user_information.text)
@@ -32,6 +39,14 @@ def authenticate_user(session: Session, ticket: str) -> UserDataclass | None:
 
 
 def parse_cas_xml(xml: str) -> dict | None:
+    """
+    The authentication with CAS returns a xml-object.
+    This function will read the necessary attributes and return them in a dictionary.
+
+    :param xml: str: response xml from CAS
+    :return: None if the authentication failed else dict
+    """
+
     namespace = "{http://www.yale.edu/tp/cas}"
     root = fromstring(xml)
     if root.find(f"{namespace}authenticationSuccess"):
