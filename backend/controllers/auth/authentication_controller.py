@@ -1,3 +1,5 @@
+from _elementtree import Element
+
 import httpx
 from defusedxml.ElementTree import fromstring
 from sqlalchemy.orm import Session
@@ -24,7 +26,6 @@ def authenticate_user(session: Session, ticket: str) -> UserDataclass | None:
     service = props.get("session", "service")
     user_information = httpx.get(f"https://login.ugent.be/serviceValidate?service={service}&ticket={ticket}")
     user_dict: dict | None = parse_cas_xml(user_information.text)
-
     if user_dict is None:
         return None
 
@@ -47,27 +48,28 @@ def parse_cas_xml(xml: str) -> dict | None:
     """
 
     namespace = "{http://www.yale.edu/tp/cas}"
-    root = fromstring(xml)
-    if root.find(f"{namespace}authenticationSuccess"):
-        attributes_xml = (root
-                          .find(f"{namespace}authenticationSuccess")
-                          .find(f"{namespace}attributes")
-                          )
+    root: Element | None = fromstring(xml).find(f"{namespace}authenticationSuccess")
+    if root is not None:
+        user_information: Element | None = root.find(f"{namespace}attributes")
+        if user_information:
+            givenname: str | None = user_information.find(f"{namespace}givenname")
+            surname: str | None = user_information.find(f"{namespace}surname")
+            email: str | None = user_information.find(f"{namespace}mail")
+            role: list | None = user_information.find(f"{namespace}objectClass")
+            if (role is not None
+                    and givenname is not None
+                    and surname is not None
+                    and email is not None):
+                role_str: str = ""
+                for r in role:
+                    if r.text == "ugentStudent" and role_str == "":
+                        role_str = "student"
+                    elif r.text == "ugentEmployee":
+                        role_str = "teacher"
 
-        givenname: str = attributes_xml.find(f"{namespace}givenname").text
-        surname: str = attributes_xml.find(f"{namespace}surname").text
-        email: str = attributes_xml.find(f"{namespace}mail").text
-        role: str = attributes_xml.findall(f"{namespace}objectClass").text
-
-        role_str: str = ""
-        for r in role:
-            if r.text == "ugentStudent" and role_str == "":
-                role_str = "student"
-            elif r.text == "ugentEmployee":
-                role_str = "teacher"
-        return {
-            "email": email.lower(),
-            "name": f"{givenname} {surname}",
-            "role": role_str,
-        }
+                return {
+                    "email": email.text.lower(),
+                    "name": f"{givenname.text} {surname.text}",
+                    "role": role_str,
+            }
     return None
