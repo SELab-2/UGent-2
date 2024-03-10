@@ -39,12 +39,13 @@ class User(Base, AbstractModel):
 
 
 @dataclass()
-class Admin(User):
+class Admin(Base, AbstractModel):
     __tablename__ = "admins"
     id: Mapped[int] = mapped_column(ForeignKey(User.id), primary_key=True)
+    user: Mapped[User] = relationship()
 
     def to_domain_model(self) -> AdminDataclass:
-        return AdminDataclass(id=self.id, name=self.name, email=self.email)
+        return AdminDataclass(id=self.id, name=self.user.name, email=self.user.email)
 
 
 teachers_subjects = Table(
@@ -68,25 +69,27 @@ students_groups = Table(
 
 
 @dataclass()
-class Teacher(User):
+class Teacher(Base, AbstractModel):
     __tablename__ = "teachers"
     id: Mapped[int] = mapped_column(ForeignKey(User.id), primary_key=True)
+    user: Mapped[User] = relationship()
     subjects: Mapped[list["Subject"]] = relationship(secondary=teachers_subjects, back_populates="teachers")
 
     def to_domain_model(self) -> TeacherDataclass:
-        return TeacherDataclass(id=self.id, name=self.name, email=self.email)
+        return TeacherDataclass(id=self.id, name=self.user.name, email=self.user.email)
 
 
 @dataclass()
-class Student(User):
+class Student(Base, AbstractModel):
     __tablename__ = "students"
     id: Mapped[int] = mapped_column(ForeignKey(User.id), primary_key=True)
+    user: Mapped[User] = relationship()
     subjects: Mapped[list["Subject"]] = relationship(secondary=students_subjects, back_populates="students")
     groups: Mapped[list["Group"]] = relationship(secondary=students_groups, back_populates="students")
     submissions: Mapped[list["Submission"]] = relationship(back_populates="student")
 
     def to_domain_model(self) -> StudentDataclass:
-        return StudentDataclass(id=self.id, name=self.name, email=self.email)
+        return StudentDataclass(id=self.id, name=self.user.name, email=self.user.email)
 
 
 @dataclass()

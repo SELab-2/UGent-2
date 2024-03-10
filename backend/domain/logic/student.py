@@ -1,12 +1,15 @@
 from sqlalchemy.orm import Session
 
-from db.models.models import Student
+from db.models.models import Student, User
 from domain.logic.basic_operations import get, get_all
 from domain.models.StudentDataclass import StudentDataclass
 
 
 def create_student(session: Session, name: str, email: str) -> StudentDataclass:
-    new_student: Student = Student(name=name, email=email)
+    new_user: User = User(name=name, email=email)
+    session.add(new_user)
+    session.commit()
+    new_student: Student = Student(id=new_user.id)
     session.add(new_student)
     session.commit()
     return new_student.to_domain_model()
