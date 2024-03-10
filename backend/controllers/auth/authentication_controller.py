@@ -55,9 +55,9 @@ def parse_cas_xml(xml: str) -> dict | None:
     if root is not None:
         user_information: Element | None = root.find(f"{namespace}attributes")
         if user_information:
-            givenname: str | None = user_information.find(f"{namespace}givenname")
-            surname: str | None = user_information.find(f"{namespace}surname")
-            email: str | None = user_information.find(f"{namespace}mail")
+            givenname: Element | None = user_information.find(f"{namespace}givenname")
+            surname: Element | None = user_information.find(f"{namespace}surname")
+            email: Element | None = user_information.find(f"{namespace}mail")
             role: list | None = user_information.find(f"{namespace}objectClass")
             if (role is not None
                     and givenname is not None
