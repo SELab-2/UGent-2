@@ -65,3 +65,14 @@ def get_authenticated_student_for_subject(
     if subject_id not in [subject.id for subject in subjects_of_student]:
         raise NoAccessToSubjectError
     return student
+
+
+def get_authenticated_teacher_for_subject(
+    subject_id: int,
+    session: Session = Depends(get_session),
+    teacher: TeacherDataclass = Depends(get_authenticated_teacher),
+) -> TeacherDataclass:
+    subjects_of_teacher = get_subjects_of_teacher(session, teacher.id)
+    if subject_id not in [subject.id for subject in subjects_of_teacher]:
+        raise NoAccessToSubjectError
+    return teacher
