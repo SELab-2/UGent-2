@@ -54,10 +54,10 @@ def parse_cas_xml(xml: str) -> dict | None:
                           .find(f"{namespace}attributes")
                           )
 
-        givenname: str = attributes_xml.find(f"{namespace}givenname")
+        givenname: str = attributes_xml.find(f"{namespace}givenname").text
         surname: str = attributes_xml.find(f"{namespace}surname").text
         email: str = attributes_xml.find(f"{namespace}mail").text
-        role: str = attributes_xml.findall(f"{namespace}objectClass")
+        role: str = attributes_xml.findall(f"{namespace}objectClass").text
 
         role_str: str = ""
         for r in role:
