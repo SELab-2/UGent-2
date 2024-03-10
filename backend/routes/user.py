@@ -1,6 +1,7 @@
-from fastapi import APIRouter, Depends, Response, status
+from fastapi import APIRouter, Depends, Request, Response, status
 from sqlalchemy.orm import Session
 
+from controllers.auth.token_controller import verify_token
 from db.models.models import User
 from db.sessions import get_session
 from domain.logic.basic_operations import get, get_all
@@ -8,16 +9,25 @@ from domain.logic.role_enum import Role
 from domain.logic.user import convert_user, modify_user_roles
 from domain.models.APIUser import APIUser
 from domain.models.UserDataclass import UserDataclass
-from routes.dependencies.role_dependencies import get_authenticated_admin, get_authenticated_user
+from routes.dependencies.role_dependencies import get_authenticated_admin
 
 users_router = APIRouter()
 
 
 @users_router.get("/user")
 def get_current_user(
+    response: Response,
+    request: Request,
     session: Session = Depends(get_session),
-    user_id: int = Depends(get_authenticated_user),
-) -> APIUser:
+) -> APIUser | None:
+    token: str | None = request.cookies.get("token")
+    if token == "undefined":
+        response.status_code = 401
+        return None
+    user_id: int | None = verify_token(token)
+    if user_id is None:
+        response.status_code = 401
+        return None
     user: UserDataclass = get(session, User, user_id).to_domain_model()
     return convert_user(session, user)
 

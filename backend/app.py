@@ -1,13 +1,14 @@
 import uvicorn
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from starlette import status
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 
 from db.errors.database_errors import ActionAlreadyPerformedError, ItemNotFoundError, NoSuchRelationError
-from routes.authentication import session_router
 from routes.errors.authentication import InvalidRoleCredentialsError, NoAccessToSubjectError
 from routes.group import group_router
+from routes.login import login_router
 from routes.project import project_router
 from routes.student import student_router
 from routes.subject import subject_router
@@ -17,13 +18,13 @@ from routes.user import users_router
 app = FastAPI()
 
 # Koppel routes uit andere modules.
+app.include_router(login_router, prefix="/api")
 app.include_router(student_router, prefix="/api")
 app.include_router(teacher_router, prefix="/api")
 app.include_router(users_router, prefix="/api")
 app.include_router(project_router, prefix="/api")
 app.include_router(subject_router, prefix="/api")
 app.include_router(group_router, prefix="/api")
-app.include_router(session_router)
 
 DEBUG = False  # Should always be false in repo
 
@@ -43,6 +44,19 @@ if DEBUG:
         allow_methods=["*"],
         allow_headers=["*"],
     )
+
+origins = [
+    "https://localhost",
+    "https://localhost:8080",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 # Koppel de exception handlers
