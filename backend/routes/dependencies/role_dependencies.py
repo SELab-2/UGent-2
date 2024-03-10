@@ -3,8 +3,9 @@ from sqlalchemy.orm import Session
 
 from db.sessions import get_session
 from domain.logic.admin import get_admin, is_user_admin
+from domain.logic.project import get_project
 from domain.logic.student import get_student, is_user_student
-from domain.logic.subject import get_subjects_of_student, get_subjects_of_teacher
+from domain.logic.subject import get_subjects_of_student, get_subjects_of_teacher, is_user_authorized_for_subject
 from domain.logic.teacher import get_teacher, is_user_teacher
 from domain.models.AdminDataclass import AdminDataclass
 from domain.models.StudentDataclass import StudentDataclass
@@ -47,12 +48,17 @@ def ensure_user_authorized_for_subject(
     session: Session = Depends(get_session),
     uid: int = Depends(get_authenticated_user),
 ) -> None:
-    subjects = []
-    if is_user_teacher(session, uid):
-        subjects += get_subjects_of_teacher(session, uid)
-    if is_user_student(session, uid):
-        subjects += get_subjects_of_student(session, uid)
-    if subject_id not in [subject.id for subject in subjects]:
+    if not is_user_authorized_for_subject(subject_id, session, uid):
+        raise NoAccessToSubjectError
+
+
+def ensure_user_authorized_for_project(
+    project_id: int,
+    session: Session = Depends(get_session),
+    uid: int = Depends(get_authenticated_user),
+) -> None:
+    project = get_project(session, project_id)
+    if not is_user_authorized_for_subject(project.subject_id, session, uid):
         raise NoAccessToSubjectError
 
 
