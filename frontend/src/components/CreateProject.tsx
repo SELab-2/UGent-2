@@ -113,6 +113,27 @@ export function CreateProject(): JSX.Element {
             </div>
             <div className="field is-horizontal">
                 <div className="field-label">
+                    <label className="label">Indiening files:</label>
+                </div>
+                <div className="field-body">
+                    <div className="field">
+                        <label>Specifieer welke files de ingediende zip moet bevatten. Splits per komma.</label>
+                        <br/>
+                        <Inputfield placeholder="vb: diagram.dgr,verslag.pdf,textbestand.txt"/>
+                        <br/>
+                        <div className="field is-horizontal">
+                            <div className="field-label">
+                                <input type="checkbox"/> {/*TODO doe iets*/}
+                            </div>
+                            <div className="field-body">
+                                <label className="label is-fullwidth">ook andere files toegelaten</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className="field is-horizontal">
+                <div className="field-label">
                     <label className="label">Groepswerk:</label>
                 </div>
                 <div className="field-body">
@@ -122,9 +143,7 @@ export function CreateProject(): JSX.Element {
                             <>
                                 <div className="field is-horizontal">
                                     <div className="field-label">
-                                        <label className="checkbox">
-                                            <input type="checkbox"/>
-                                        </label>
+                                        <input type="checkbox"/>
                                     </div>
                                     <div className="field-body">
                                         <label className="label is-fullwidth">verwisselingen toestaan</label>
@@ -139,9 +158,7 @@ export function CreateProject(): JSX.Element {
                                 <div className="field-body">
                                     <div className="field is-horizontal">
                                         <div className="field-label">
-                                            <label className="checkbox">
-                                                <input type="checkbox"/>
-                                            </label>
+                                            <input type="checkbox"/>
                                         </div>
                                         <div className="field-body">
                                             <label className="label is-fullwidth">random</label>
@@ -150,9 +167,7 @@ export function CreateProject(): JSX.Element {
                                 </div>
                                 <div className="field is-horizontal">
                                     <div className="field-label">
-                                        <label className="checkbox">
-                                            <input type="checkbox"/>
-                                        </label>
+                                        <input type="checkbox"/>
                                     </div>
                                     <div className="field-body">
 
