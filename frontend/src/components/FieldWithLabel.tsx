@@ -6,10 +6,8 @@ export default function FieldWithLabel(props: { fieldLabel: string, fieldBody: s
             <div className="field-label">
                 <label className="label">{props.arrow && "> "} {props.fieldLabel}: </label>
             </div>
-            <div className="field-body">
-                <div className="field">
-                    <label>{props.fieldBody}</label>
-                </div>
+            <div className="field-body field">
+                <label>{props.fieldBody}</label>
             </div>
         </div>
     );

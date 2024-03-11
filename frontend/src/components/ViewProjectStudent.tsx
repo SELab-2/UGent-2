@@ -14,10 +14,8 @@ export default function ViewProjectStudent(): JSX.Element {
                 <div className="field-label">
                     <label className="label">{"> "}Status: </label>
                 </div>
-                <div className="field-body">
-                    <div className="field">
-                        <label className={"has-text-danger"}>Failed</label>
-                    </div>
+                <div className="field-body field">
+                    <label className={"has-text-danger"}>Failed</label>
                 </div>
             </div>
             <FieldWithLabel fieldLabel={"Beschrijving"}
@@ -28,7 +26,7 @@ export default function ViewProjectStudent(): JSX.Element {
                     <label className="label">Indiening moet bevatten:</label>
                 </div>
                 <div className="field-body">
-                    <div className="field">
+                    <div className="field"> {/*Deze moet blijven, anders gaan de elementen in elkaar*/}
                         <li>Diagram.dgr</li>
                         <li>verslag.pdf</li>
                     </div>
@@ -38,36 +36,33 @@ export default function ViewProjectStudent(): JSX.Element {
                 <div className="field-label">
                     <label className="label">Groepsleden(3/4): </label>
                 </div>
-                <div className="field-body">
-                    <div className="field">
-                        <table className={"table is-fullwidth"}>
-                            <thead>
-                            <tr>
-                                <th>Naam</th>
-                                <th>Email</th>
-                                <th>Laatste indiening</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td>Jan</td>
-                                <td>jan@ugent.be</td>
-                                <td> -</td>
-                            </tr>
-                            <tr>
-                                <td>Peter</td>
-                                <td>peter@ugent.be</td>
-                                <td> -</td>
-                            </tr>
-                            <tr>
-                                <td>Erik</td>
-                                <td>erik@ugent.be</td>
-                                <td><FaCheck/></td>
-                            </tr>
-
-                            </tbody>
-                        </table>
-                    </div>
+                <div className="field-body field">
+                    <table className={"table is-fullwidth"}>
+                        <thead>
+                        <tr>
+                            <th>Naam</th>
+                            <th>Email</th>
+                            <th>Laatste indiening</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>Jan</td>
+                            <td>jan@ugent.be</td>
+                            <td> -</td>
+                        </tr>
+                        <tr>
+                            <td>Peter</td>
+                            <td>peter@ugent.be</td>
+                            <td> -</td>
+                        </tr>
+                        <tr>
+                            <td>Erik</td>
+                            <td>erik@ugent.be</td>
+                            <td><FaCheck/></td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
             <div className="field is-horizontal">
@@ -75,8 +70,7 @@ export default function ViewProjectStudent(): JSX.Element {
                     <label className="label">Indiening(zip)</label>
                 </div>
                 <div className="field-body">
-                    <div className="field">
-
+                    <div className="field"> {/* Deze moet blijven */}
                         <li className={"mb-3"}>
                             <label className={"mr-3"}>My_files.zip </label>
                             <button className="button">
@@ -89,22 +83,14 @@ export default function ViewProjectStudent(): JSX.Element {
                                     <label className="file-label">
                                         <input className="file-input" type="file" name="resume"/>
                                         <span className="file-cta">
-                                        <span className="file-icon">
-                                            <FaUpload/>
+                                            <span className="file-icon"><FaUpload/></span>
+                                            <span className="file-label">Kies een bestand</span>
                                         </span>
-                                            <span className="file-label">
-                                                Kies een bestand
-                                            </span>
-                                    </span>
-                                        <span className="file-name">
-                                        This_is_the_file.zip
-                                    </span>
+                                        <span className="file-name">This_is_the_file.zip</span>
                                     </label>
                                 </div>
                                 <div className="field-body">
-                                    <button className="button">
-                                        <FaDownload/>
-                                    </button>
+                                    <button className="button"><FaDownload/></button>
                                 </div>
 
                             </div>
@@ -112,12 +98,8 @@ export default function ViewProjectStudent(): JSX.Element {
                     </div>
                 </div>
             </div>
-            <div className="columns is-mobile is-centered">
-                <div className="column is-half">
-                    <button className="button is-medium is-center" style={{backgroundColor: "#9c9afd"}}>Bevestigen
-                    </button>
-                </div>
-
+            <div className="columns is-mobile is-centered column is-half">
+                <button className="button is-medium is-center" style={{backgroundColor: "#9c9afd"}}>Bevestigen</button>
             </div>
         </>
     );
