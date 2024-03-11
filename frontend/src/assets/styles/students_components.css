@@ -1,0 +1,19 @@
+.student-main {
+    width: 60vw;
+    flex-wrap: wrap;
+    overflow-y: scroll;
+}
+
+.project-card {
+    background-color: #9c9afd !important;
+    width: 25vw;
+    height: 25vh;
+}
+
+.p-negative {
+    color: red;
+}
+
+.p-positive {
+    color: green;
+}
