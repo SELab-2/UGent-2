@@ -28,7 +28,7 @@ def projects_of_student_get(
     return get_projects_of_student(session, student.id)
 
 
-@student_router.post("/student/subjects{subject_id}/join")
+@student_router.post("/student/subjects/{subject_id}/join")
 def student_subject_join(
     subject_id: int,
     session: Session = Depends(get_session),
