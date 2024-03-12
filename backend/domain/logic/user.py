@@ -34,6 +34,8 @@ def get_all_users(session: Session) -> list[UserDataclass]:
 
 
 def modify_user_roles(session: Session, uid: int, roles: list[Role]) -> None:
+    # Er is geen ondersteuning om een student/teacher role af te nemen,
+    # want dit zou problemen geven met relaties in de databank
     if Role.STUDENT in roles and session.get(Student, uid) is None:
         student = Student(id=uid)
         session.add(student)
