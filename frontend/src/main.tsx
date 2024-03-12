@@ -1,5 +1,5 @@
 import React from 'react'
-import ReactDOM from 'react-dom/client'
+import {createRoot} from 'react-dom/client'
 import {createBrowserRouter, RouterProvider,} from "react-router-dom";
 import './index.css'
 import Root from './pages/root.tsx'
@@ -10,6 +10,7 @@ import HomeStudent from "./pages/student/HomeStudent.tsx";
 import HomeTeacher from "./pages/teacher/HomeTeacher.tsx";
 import 'bulma/css/bulma.min.css';
 import './assets/styles/mainpage.css'
+import studentLoader from "./dataloaders/StudentLoader.ts";
 
 const router = createBrowserRouter([
     {
@@ -27,14 +28,17 @@ const router = createBrowserRouter([
     },
     {
         path: "/student",
-        element: <HomeStudent/>
+        element: <HomeStudent/>,
+        id: "student",
+        loader: studentLoader
     },
     {
         path: "/teacher",
         element: <HomeTeacher/>
     }
 ]);
-ReactDOM.createRoot(document.getElementById('root')!).render(
+
+createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
         <RouterProvider router={router}/>
     </React.StrictMode>,

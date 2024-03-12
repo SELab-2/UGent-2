@@ -3,8 +3,15 @@ import {Header} from "../../components/Header.tsx";
 import {Sidebar} from "../../components/Sidebar.tsx";
 import ProjectCardStudent from "./ProjectCardStudent.tsx";
 import '../../assets/styles/students_components.css'
+import {useRouteLoaderData} from "react-router-dom";
+import {studentLoaderObject} from "../../dataloaders/StudentLoader.ts";
 
 export default function HomeStudent(): JSX.Element {
+
+    // data contains a list of Project in data.projects (i think)
+    const data: studentLoaderObject = useRouteLoaderData("student") as studentLoaderObject
+    console.log(data) // TODO: remove
+
     return (
         <>
             <div className={"main-header"}>
