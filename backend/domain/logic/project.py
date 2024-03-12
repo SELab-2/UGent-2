@@ -2,7 +2,7 @@ from datetime import datetime
 
 from sqlalchemy.orm import Session
 
-from db.models.models import Project, Student, Subject
+from db.models.models import Project, Student, Subject, Teacher
 from domain.logic.basic_operations import get, get_all
 from domain.models.ProjectDataclass import ProjectDataclass
 
@@ -53,6 +53,15 @@ def get_projects_of_subject(session: Session, subject_id: int) -> list[ProjectDa
 def get_projects_of_student(session: Session, user_id: int) -> list[ProjectDataclass]:
     student = get(session, Student, ident=user_id)
     subjects = student.subjects
+    projects = []
+    for i in subjects:
+        projects += i.projects
+    return [project.to_domain_model() for project in projects]
+
+
+def get_projects_of_teacher(session: Session, user_id: int) -> list[ProjectDataclass]:
+    teacher = get(session, Teacher, ident=user_id)
+    subjects = teacher.subjects
     projects = []
     for i in subjects:
         projects += i.projects

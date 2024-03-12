@@ -7,8 +7,8 @@ from domain.logic.subject import get_subject
 from domain.models.ProjectDataclass import ProjectDataclass, ProjectInput
 from domain.models.SubjectDataclass import SubjectDataclass
 from routes.dependencies.role_dependencies import (
+    ensure_teacher_authorized_for_subject,
     ensure_user_authorized_for_subject,
-    get_authenticated_teacher_for_subject,
     get_authenticated_user,
 )
 
@@ -25,7 +25,7 @@ def get_subject_projects(subject_id: int, session: Session = Depends(get_session
     return get_projects_of_subject(session, subject_id)
 
 
-@subject_router.post("/subjects/{subject_id}/projects", dependencies=[Depends(get_authenticated_teacher_for_subject)])
+@subject_router.post("/subjects/{subject_id}/projects", dependencies=[Depends(ensure_teacher_authorized_for_subject)])
 def new_project(
     subject_id: int,
     project: ProjectInput,

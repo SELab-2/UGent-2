@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 
 from db.sessions import get_session
 from domain.logic.admin import get_admin, is_user_admin
-from domain.logic.project import get_project
+from domain.logic.project import get_project, get_projects_of_teacher
 from domain.logic.student import get_student, is_user_student
 from domain.logic.subject import get_subjects_of_student, get_subjects_of_teacher, is_user_authorized_for_subject
 from domain.logic.teacher import get_teacher, is_user_teacher
@@ -62,7 +62,7 @@ def ensure_user_authorized_for_project(
         raise NoAccessToSubjectError
 
 
-def get_authenticated_student_for_subject(
+def ensure_student_authorized_for_subject(
     subject_id: int,
     session: Session = Depends(get_session),
     student: StudentDataclass = Depends(get_authenticated_student),
@@ -73,12 +73,23 @@ def get_authenticated_student_for_subject(
     return student
 
 
-def get_authenticated_teacher_for_subject(
+def ensure_teacher_authorized_for_subject(
     subject_id: int,
     session: Session = Depends(get_session),
     teacher: TeacherDataclass = Depends(get_authenticated_teacher),
 ) -> TeacherDataclass:
     subjects_of_teacher = get_subjects_of_teacher(session, teacher.id)
     if subject_id not in [subject.id for subject in subjects_of_teacher]:
+        raise NoAccessToSubjectError
+    return teacher
+
+
+def ensure_teacher_authorized_for_project(
+    project_id: int,
+    session: Session = Depends(get_session),
+    teacher: TeacherDataclass = Depends(get_authenticated_teacher),
+) -> TeacherDataclass:
+    projects_of_teacher = get_projects_of_teacher(session, teacher.id)
+    if project_id not in [project.id for project in projects_of_teacher]:
         raise NoAccessToSubjectError
     return teacher
