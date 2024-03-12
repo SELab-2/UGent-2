@@ -23,6 +23,23 @@ app.include_router(project_router, prefix="/api")
 app.include_router(subject_router, prefix="/api")
 app.include_router(group_router, prefix="/api")
 
+DEBUG = False # Should always be false in repo
+
+if DEBUG:
+    from fastapi.middleware.cors import CORSMiddleware
+    origins = [
+        "https://localhost",
+        "https://localhost:8080",
+        "http://localhost:5173"
+    ]
+
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=origins,
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
 
 # Koppel de exception handlers
 @app.exception_handler(InvalidRoleCredentialsError)
