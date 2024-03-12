@@ -1,4 +1,3 @@
-
 from sqlalchemy.orm import Session
 
 from db.errors.database_errors import ActionAlreadyPerformedError
@@ -48,6 +47,18 @@ def add_student_to_group(session: Session, student_id: int, group_id: int) -> No
         raise ActionAlreadyPerformedError(msg)
 
     group.students.append(student)
+    session.commit()
+
+
+def remove_student_from_group(session: Session, student_id: int, group_id: int) -> None:
+    student: Student = get(session, Student, ident=student_id)
+    group: Group = get(session, Group, ident=group_id)
+
+    if student not in group.students:
+        msg = f"Student with id {student_id} is not in group with id {group_id}"
+        raise ActionAlreadyPerformedError(msg)
+
+    group.students.remove(student)
     session.commit()
 
 

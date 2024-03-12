@@ -6,6 +6,7 @@ from starlette.responses import JSONResponse
 
 from db.errors.database_errors import ActionAlreadyPerformedError, ItemNotFoundError
 from routes.errors.authentication import InvalidRoleCredentialsError, NoAccessToSubjectError
+from routes.group import group_router
 from routes.project import project_router
 from routes.student import student_router
 from routes.subject import subject_router
@@ -20,6 +21,7 @@ app.include_router(teacher_router, prefix="/api")
 app.include_router(users_router, prefix="/api")
 app.include_router(project_router, prefix="/api")
 app.include_router(subject_router, prefix="/api")
+app.include_router(group_router, prefix="/api")
 
 
 # Koppel de exception handlers

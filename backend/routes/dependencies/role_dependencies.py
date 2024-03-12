@@ -3,7 +3,8 @@ from sqlalchemy.orm import Session
 
 from db.sessions import get_session
 from domain.logic.admin import get_admin, is_user_admin
-from domain.logic.project import get_project, get_projects_of_teacher
+from domain.logic.group import get_group
+from domain.logic.project import get_project, get_projects_of_student, get_projects_of_teacher
 from domain.logic.student import get_student, is_user_student
 from domain.logic.subject import get_subjects_of_student, get_subjects_of_teacher, is_user_authorized_for_subject
 from domain.logic.teacher import get_teacher, is_user_teacher
@@ -93,3 +94,15 @@ def ensure_teacher_authorized_for_project(
     if project_id not in [project.id for project in projects_of_teacher]:
         raise NoAccessToSubjectError
     return teacher
+
+
+def ensure_student_authorized_for_group(
+    group_id: int,
+    session: Session = Depends(get_session),
+    student: StudentDataclass = Depends(get_authenticated_student),
+) -> StudentDataclass:
+    group = get_group(session, group_id)
+    projects_of_student = get_projects_of_student(session, student.id)
+    if group.project_id not in [project.id for project in projects_of_student]:
+        raise NoAccessToSubjectError
+    return student
