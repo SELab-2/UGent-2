@@ -1,7 +1,6 @@
-
 from sqlalchemy.orm import Session
 
-from db.errors.database_errors import ActionAlreadyPerformedError
+from db.errors.database_errors import ActionAlreadyPerformedError, NoSuchRelationError
 from db.models.models import Group, Project, Student
 from domain.logic.basic_operations import get, get_all
 from domain.models.GroupDataclass import GroupDataclass
@@ -48,6 +47,18 @@ def add_student_to_group(session: Session, student_id: int, group_id: int) -> No
         raise ActionAlreadyPerformedError(msg)
 
     group.students.append(student)
+    session.commit()
+
+
+def remove_student_from_group(session: Session, student_id: int, group_id: int) -> None:
+    student: Student = get(session, Student, ident=student_id)
+    group: Group = get(session, Group, ident=group_id)
+
+    if student not in group.students:
+        msg = f"Student with id {student_id} is not in group with id {group_id}"
+        raise NoSuchRelationError(msg)
+
+    group.students.remove(student)
     session.commit()
 
 

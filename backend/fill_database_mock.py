@@ -8,7 +8,7 @@ from domain.logic.admin import create_admin
 from domain.logic.group import add_student_to_group, create_group
 from domain.logic.project import create_project
 from domain.logic.student import create_student
-from domain.logic.subject import add_teacher_to_subject, create_subject
+from domain.logic.subject import add_student_to_subject, add_teacher_to_subject, create_subject
 from domain.logic.teacher import create_teacher
 
 if __name__ == "__main__":
@@ -82,6 +82,8 @@ if __name__ == "__main__":
     add_teacher_to_subject(session, teacher1.id, objeprog.id)
     add_teacher_to_subject(session, teacher2.id, algoritmen.id)
     add_teacher_to_subject(session, teacher3.id, webtech.id)
+
+    add_student_to_subject(session, student1.id, objeprog.id)
 
     # Add students to groups
     add_student_to_group(session, student1.id, groep1_objprog.id)

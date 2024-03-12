@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 
-from db.models.models import User
+from db.models.models import Admin, Student, Teacher, User
 from domain.logic.admin import is_user_admin
 from domain.logic.basic_operations import get, get_all
 from domain.logic.role_enum import Role
@@ -31,3 +31,20 @@ def get_user(session: Session, user_id: int) -> UserDataclass:
 
 def get_all_users(session: Session) -> list[UserDataclass]:
     return [user.to_domain_model() for user in get_all(session, User)]
+
+
+def modify_user_roles(session: Session, uid: int, roles: list[Role]) -> None:
+    # Er is geen ondersteuning om een student/teacher role af te nemen,
+    # want dit zou problemen geven met relaties in de databank
+    if Role.STUDENT in roles and session.get(Student, uid) is None:
+        student = Student(id=uid)
+        session.add(student)
+    if Role.TEACHER in roles and session.get(Teacher, uid) is None:
+        teacher = Teacher(id=uid)
+        session.add(teacher)
+    if Role.ADMIN in roles and session.get(Admin, uid) is None:
+        admin = Admin(id=uid)
+        session.add(admin)
+    if Role.ADMIN not in roles and session.get(Admin, uid) is not None:
+        session.delete(get(session, Admin, uid))
+    session.commit()
