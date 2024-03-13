@@ -1,28 +1,24 @@
 import contextlib
+import os
 from datetime import UTC, datetime, timedelta
 
 import jwt
 
-from controllers.properties.Properties import Properties
 from domain.models.UserDataclass import UserDataclass
 
-props: Properties = Properties()
+jwt_secret = os.getenv("JWT_SECRET", "secret")
 
 
 def verify_token(token: str) -> int | None:
-    secret = props.get("session", "secret_key")
-    algorithm = props.get("session", "algorithm")
     with contextlib.suppress(jwt.ExpiredSignatureError, jwt.DecodeError):
-        payload = jwt.decode(token, secret, algorithms=[algorithm])
+        payload = jwt.decode(token, jwt_secret)
         return payload.get("userid", None)
 
 
 def create_token(user: UserDataclass) -> str:
-    exprire = datetime.now(UTC) + timedelta(minutes=int(props.get("session", "access_token_expire_minutes")))
+    exprire = datetime.now(UTC) + timedelta(days=1)
     to_encode: dict = {
         "userid": user.id,
         "exp": exprire,
     }
-    algorithm: str = props.get("session", "algorithm")
-    secret: str = props.get("session", "secret_key")
-    return jwt.encode(to_encode, secret, algorithm=algorithm)
+    return jwt.encode(to_encode, jwt_secret)

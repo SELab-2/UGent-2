@@ -3,19 +3,17 @@ from sqlalchemy.orm import Session
 
 from controllers.auth.authentication_controller import authenticate_user
 from controllers.auth.token_controller import create_token
-from controllers.properties.Properties import Properties
 from db.sessions import get_session
 from domain.models.UserDataclass import UserDataclass
 
 # test url: https://login.ugent.be/login?service=https://localhost:8080/api/login
 login_router = APIRouter()
-props: Properties = Properties()
 
 
 @login_router.get("/login")
 def login(
-        ticket: str,
-        session: Session = Depends(get_session),
+    ticket: str,
+    session: Session = Depends(get_session),
 ) -> Response:
     """
     This function starts a session for the user.

@@ -4,7 +4,6 @@ import httpx
 from defusedxml.ElementTree import fromstring
 from sqlalchemy.orm import Session
 
-from controllers.properties.Properties import Properties
 from domain.logic.student import create_student
 from domain.logic.teacher import create_teacher
 from domain.logic.user import get_user_with_email
@@ -13,7 +12,7 @@ from domain.models.UserDataclass import UserDataclass
 if TYPE_CHECKING:
     from _elementtree import Element
 
-props: Properties = Properties()
+cas_service = "https://localhost:8080/login"
 
 
 def authenticate_user(session: Session, ticket: str) -> UserDataclass | None:
@@ -26,8 +25,7 @@ def authenticate_user(session: Session, ticket: str) -> UserDataclass | None:
     :param ticket: A ticket from login.ugent.be/login?service=https://localhost:8080/login
     :return: None if the authentication failed, user: UseDataclass is the authentication was successful
     """
-    service = props.get("session", "service")
-    user_information = httpx.get(f"https://login.ugent.be/serviceValidate?service={service}&ticket={ticket}")
+    user_information = httpx.get(f"https://login.ugent.be/serviceValidate?service={cas_service}&ticket={ticket}")
     user_dict: dict | None = parse_cas_xml(user_information.text)
     if user_dict is None:
         return None
@@ -59,10 +57,7 @@ def parse_cas_xml(xml: str) -> dict | None:
             surname: Element | None = user_information.find(f"{namespace}surname")
             email: Element | None = user_information.find(f"{namespace}mail")
             role: list | None = user_information.find(f"{namespace}objectClass")
-            if (role is not None
-                    and givenname is not None
-                    and surname is not None
-                    and email is not None):
+            if role is not None and givenname is not None and surname is not None and email is not None:
                 role_str: str = ""
                 for r in role:
                     if r.text == "ugentStudent" and role_str == "":
@@ -74,5 +69,5 @@ def parse_cas_xml(xml: str) -> dict | None:
                     "email": email.text.lower(),
                     "name": f"{givenname.text} {surname.text}",
                     "role": role_str,
-            }
+                }
     return None
