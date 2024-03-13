@@ -1,35 +1,24 @@
-from fastapi import APIRouter, Depends, Request, Response, status
+from fastapi import APIRouter, Depends, Response, status
 from sqlalchemy.orm import Session
 
-from controllers.auth.token_controller import verify_token
 from db.models.models import User
 from db.sessions import get_session
 from domain.logic.basic_operations import get, get_all
 from domain.logic.role_enum import Role
-from domain.logic.user import convert_user, modify_user_roles
+from domain.logic.user import convert_user, get_user, modify_user_roles
 from domain.models.APIUser import APIUser
 from domain.models.UserDataclass import UserDataclass
-from routes.dependencies.role_dependencies import get_authenticated_admin
+from routes.dependencies.role_dependencies import get_authenticated_admin, get_authenticated_user
 
 users_router = APIRouter()
 
 
 @users_router.get("/user")
 def get_current_user(
-    response: Response,
-    request: Request,
     session: Session = Depends(get_session),
-) -> APIUser | None:
-    token: str | None = request.cookies.get("token")
-    if token is None:
-        response.status_code = 401
-        return None
-    user_id: int | None = verify_token(token)
-    if user_id is None:
-        response.status_code = 401
-        return None
-    user: UserDataclass = get(session, User, user_id).to_domain_model()
-    return convert_user(session, user)
+    uid: int = Depends(get_authenticated_user),
+) -> APIUser:
+    return convert_user(session, get_user(session, uid))
 
 
 @users_router.get("/users", dependencies=[Depends(get_authenticated_admin)])
@@ -39,7 +28,7 @@ def get_users(session: Session = Depends(get_session)) -> list[APIUser]:
 
 
 @users_router.get("/users/{uid}", dependencies=[Depends(get_authenticated_admin)])
-def get_user(uid: int, session: Session = Depends(get_session)) -> APIUser:
+def admin_get_user(uid: int, session: Session = Depends(get_session)) -> APIUser:
     user: UserDataclass = get(session, User, uid).to_domain_model()
     return convert_user(session, user)
 
