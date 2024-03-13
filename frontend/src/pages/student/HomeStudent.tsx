@@ -5,6 +5,7 @@ import ProjectCardStudent from "./ProjectCardStudent.tsx";
 import '../../assets/styles/students_components.css'
 import {useRouteLoaderData} from "react-router-dom";
 import {STUDENT_ROUTER_ID, studentLoaderObject} from "../../dataloaders/StudentLoader.ts";
+import DeadlineTable from "./DeadlineTable.tsx";
 
 export default function HomeStudent(): JSX.Element {
 
@@ -21,18 +22,23 @@ export default function HomeStudent(): JSX.Element {
                 <div className={"side-bar is-flex is-justify-content-center"}>
                     <Sidebar/>
                 </div>
-                <div className={"student-main px-5 py-5 mx-5 my-5 is-flex is-justify-content-space-evenly"}>
-                    <ProjectCardStudent/>
-                    <ProjectCardStudent/>
-                    <ProjectCardStudent/>
-                    <ProjectCardStudent/>
-                    <ProjectCardStudent/>
-                    <ProjectCardStudent/>
-                    <ProjectCardStudent/>
-                    <ProjectCardStudent/>
-                    <ProjectCardStudent/>
-                    <ProjectCardStudent/>
-                    <ProjectCardStudent/>
+                <div className={"student-main is-flex"}>
+                    <div className={"student-left px-5 py-5 mx-5 my-5 is-flex is-justify-content-space-evenly"}>
+                        <ProjectCardStudent/>
+                        <ProjectCardStudent/>
+                        <ProjectCardStudent/>
+                        <ProjectCardStudent/>
+                        <ProjectCardStudent/>
+                        <ProjectCardStudent/>
+                        <ProjectCardStudent/>
+                        <ProjectCardStudent/>
+                        <ProjectCardStudent/>
+                        <ProjectCardStudent/>
+                        <ProjectCardStudent/>
+                    </div>
+                    <div className={"student-right is-flex is-justify-content-center is-align-items-center"}>
+                        <DeadlineTable/>
+                    </div>
                 </div>
             </div>
         </>
