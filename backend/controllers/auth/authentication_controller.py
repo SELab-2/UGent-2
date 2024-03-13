@@ -1,3 +1,4 @@
+import string
 from typing import TYPE_CHECKING
 
 import httpx
@@ -25,6 +26,9 @@ def authenticate_user(session: Session, ticket: str) -> UserDataclass | None:
     :param ticket: A ticket from login.ugent.be/login?service=https://localhost:8080/login
     :return: None if the authentication failed, user: UseDataclass is the authentication was successful
     """
+    allowed_chars = set(string.ascii_letters + string.digits + "-")
+    if not all(c in allowed_chars for c in ticket):
+        return None
     user_information = httpx.get(f"https://login.ugent.be/serviceValidate?service={cas_service}&ticket={ticket}")
     user_dict: dict | None = parse_cas_xml(user_information.text)
     if user_dict is None:
