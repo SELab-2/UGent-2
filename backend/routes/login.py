@@ -29,15 +29,3 @@ def login(
     if user:
         return Response(content=create_token(user))
     return Response(status_code=401, content="Invalid Ticket!")
-
-
-@login_router.get("/logout")
-def logout() -> Response:
-    """
-    This function will log a user out, by removing the session from storage
-
-    :return: A confirmation that the logout was successful, and it tells the browser to remove the cookie.
-    """
-    response: Response = Response(content="You've been successfully logged out")
-    response.set_cookie("token", "")
-    return response
