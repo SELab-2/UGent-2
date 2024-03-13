@@ -1,4 +1,8 @@
 .student-main {
+    width: 96vw;
+}
+
+.student-left {
     width: 60vw;
     flex-wrap: wrap;
     overflow-y: scroll;
@@ -16,4 +20,31 @@
 
 .p-positive {
     color: green;
+}
+
+.student-right {
+    width: 36vw;
+}
+
+.deadline {
+    background-color: #e0e3ff;
+    width: 15vw;
+    height: 75vh;
+    border-radius: 0.50rem;
+}
+
+.deadline-head {
+    background-color: #5f63c8;
+    border-radius: 0.50rem 0.50rem 0 0;
+}
+
+.deadline-elements {
+    height: 100%;
+    overflow-y: scroll;
+    border-radius: 0 0 0.50rem 0.50rem;
+}
+
+.deadline-card {
+    background-color: #9c9afd;
+    border-bottom: thin solid;
 }
