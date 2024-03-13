@@ -12,6 +12,6 @@ export interface Project {
     requirements: string,
     visible: string,
     max_students: number,
-    subject_id: number
+    subject_id: number,
     subject_name: string | undefined | null
 }

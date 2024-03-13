@@ -13,5 +13,6 @@ export default async function studentLoader(): Promise<studentLoaderObject> {
             projects[i].subject_name = subject.name;
         }
     }
+    // TODO: add submission data
     return {"projects": projects};
 }
