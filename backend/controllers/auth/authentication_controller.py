@@ -55,24 +55,26 @@ def parse_cas_xml(xml: str) -> dict | None:
 
     namespace = "{http://www.yale.edu/tp/cas}"
     root: Element | None = fromstring(xml).find(f"{namespace}authenticationSuccess")
-    if root is not None:
-        user_information: Element | None = root.find(f"{namespace}attributes")
-        if user_information:
-            givenname: Element | None = user_information.find(f"{namespace}givenname")
-            surname: Element | None = user_information.find(f"{namespace}surname")
-            email: Element | None = user_information.find(f"{namespace}mail")
-            role: list | None = user_information.find(f"{namespace}objectClass")
-            if role is not None and givenname is not None and surname is not None and email is not None:
-                role_str: str = ""
-                for r in role:
-                    if r.text == "ugentStudent" and role_str == "":
-                        role_str = "student"
-                    elif r.text == "ugentEmployee":
-                        role_str = "teacher"
+    if root is None:
+        return None
+    user_information: Element | None = root.find(f"{namespace}attributes")
+    if user_information is None:
+        return None
+    givenname: Element | None = user_information.find(f"{namespace}givenname")
+    surname: Element | None = user_information.find(f"{namespace}surname")
+    email: Element | None = user_information.find(f"{namespace}mail")
+    role: list | None = user_information.findall(f"{namespace}objectClass")
+    if role is not None and givenname is not None and surname is not None and email is not None:
+        role_str = ""
+        for r in role:
+            if r.text == "ugentStudent" and role_str == "":
+                role_str = "student"
+            elif r.text == "ugentEmployee":
+                role_str = "teacher"
 
-                return {
-                    "email": email.text.lower(),
-                    "name": f"{givenname.text} {surname.text}",
-                    "role": role_str,
-                }
+        return {
+            "email": email.text.lower(),
+            "name": f"{givenname.text} {surname.text}",
+            "role": role_str,
+        }
     return None

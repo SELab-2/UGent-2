@@ -6,7 +6,7 @@ from starlette.requests import Request
 from starlette.responses import JSONResponse
 
 from db.errors.database_errors import ActionAlreadyPerformedError, ItemNotFoundError, NoSuchRelationError
-from routes.errors.authentication import InvalidRoleCredentialsError, InvalidTokenError, NoAccessToSubjectError
+from routes.errors.authentication import InvalidAuthenticationError, InvalidRoleCredentialsError, NoAccessToSubjectError
 from routes.group import group_router
 from routes.login import login_router
 from routes.project import project_router
@@ -87,8 +87,8 @@ def no_such_relation_error_handler(request: Request, exc: NoSuchRelationError) -
     )
 
 
-@app.exception_handler(InvalidTokenError)
-def invalid_token_error_handler(request: Request, exc: NoSuchRelationError) -> JSONResponse:
+@app.exception_handler(InvalidAuthenticationError)
+def invalid_authentication_error_handler(request: Request, exc: NoSuchRelationError) -> JSONResponse:
     return JSONResponse(
         status_code=status.HTTP_401_UNAUTHORIZED,
         content={"detail": str(exc)},

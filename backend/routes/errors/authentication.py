@@ -18,5 +18,5 @@ class NoAccessToSubjectError(Exception):
     ERROR_MESSAGE = "User doesn't have access to subject"
 
 
-class InvalidTokenError(Exception):
+class InvalidAuthenticationError(Exception):
     ERROR_MESSAGE = "User is not authenticated"

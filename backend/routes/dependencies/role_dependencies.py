@@ -15,9 +15,9 @@ from domain.models.StudentDataclass import StudentDataclass
 from domain.models.TeacherDataclass import TeacherDataclass
 from routes.errors.authentication import (
     InvalidAdminCredentialsError,
+    InvalidAuthenticationError,
     InvalidStudentCredentialsError,
     InvalidTeacherCredentialsError,
-    InvalidTokenError,
     NoAccessToSubjectError,
 )
 
@@ -27,7 +27,7 @@ auth_scheme = APIKeyHeader(name="cas")
 def get_authenticated_user(token: str = Depends(auth_scheme)) -> int:
     uid = verify_token(token)
     if uid is None:
-        raise InvalidTokenError
+        raise InvalidAuthenticationError
     return uid
 
 

@@ -8,3 +8,7 @@ class APIUser(BaseModel):
     name: str
     email: EmailStr
     roles: list[Role]
+
+
+class LoginResponse(BaseModel):
+    token: str

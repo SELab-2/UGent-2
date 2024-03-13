@@ -1,10 +1,12 @@
-from fastapi import APIRouter, Depends, Response
+from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from controllers.auth.authentication_controller import authenticate_user
 from controllers.auth.token_controller import create_token
 from db.sessions import get_session
+from domain.models.APIUser import LoginResponse
 from domain.models.UserDataclass import UserDataclass
+from routes.errors.authentication import InvalidAuthenticationError
 
 # test url: https://login.ugent.be/login?service=https://localhost:8080/api/login
 login_router = APIRouter()
@@ -14,7 +16,7 @@ login_router = APIRouter()
 def login(
     ticket: str,
     session: Session = Depends(get_session),
-) -> Response:
+) -> LoginResponse:
     """
     This function starts a session for the user.
     For authentication, it uses the given ticket and the UGent CAS server (https://login.ugent.be).
@@ -26,6 +28,6 @@ def login(
         - Invalid Ticket: Response: with status_code 401 (unauthenticated) and an error message
     """
     user: UserDataclass | None = authenticate_user(session, ticket)
-    if user:
-        return Response(content=create_token(user))
-    return Response(status_code=401, content="Invalid Ticket!")
+    if not user:
+        raise InvalidAuthenticationError
+    return LoginResponse(token=create_token(user))
