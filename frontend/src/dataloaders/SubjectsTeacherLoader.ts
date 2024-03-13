@@ -5,7 +5,7 @@ export interface subjectsTeacherLoaderObject {
     subjects: properSubject[]
 }
 
-export let SUBJECT_TEACHER_ID = "subjectTeacher";
+export const SUBJECT_TEACHER_ROUTER_ID = "subjectTeacher";
 
 export default async function subjectsTeacherLoader(): Promise<subjectsTeacherLoaderObject> {
     const temp: projectsAndSubjects = await getAllProjectsAndSubjects(teacherStudentRole.TEACHER);

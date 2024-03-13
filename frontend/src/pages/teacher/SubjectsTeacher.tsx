@@ -1,10 +1,10 @@
 import {JSX} from "react";
-import {SUBJECT_TEACHER_ID, subjectsTeacherLoaderObject} from "../../dataloaders/SubjectsTeacherLoader.ts";
+import {SUBJECT_TEACHER_ROUTER_ID, subjectsTeacherLoaderObject} from "../../dataloaders/SubjectsTeacherLoader.ts";
 import {useRouteLoaderData} from "react-router-dom";
 
 export default function SubjectsTeacher(): JSX.Element {
 
-    const data: subjectsTeacherLoaderObject = useRouteLoaderData(SUBJECT_TEACHER_ID) as subjectsTeacherLoaderObject;
+    const data= useRouteLoaderData(SUBJECT_TEACHER_ROUTER_ID) as subjectsTeacherLoaderObject;
     console.log(data);
 
     return(
