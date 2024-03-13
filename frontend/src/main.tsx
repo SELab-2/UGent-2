@@ -11,6 +11,7 @@ import HomeTeacher from "./pages/teacher/HomeTeacher.tsx";
 import 'bulma/css/bulma.min.css';
 import './assets/styles/mainpage.css'
 import studentLoader from "./dataloaders/StudentLoader.ts";
+import teacherLoader from "./dataloaders/TeacherLoader.ts";
 
 const router = createBrowserRouter([
     {
@@ -34,7 +35,9 @@ const router = createBrowserRouter([
     },
     {
         path: "/teacher",
-        element: <HomeTeacher/>
+        element: <HomeTeacher/>,
+        id: "teacher",
+        loader: teacherLoader
     }
 ]);
 
