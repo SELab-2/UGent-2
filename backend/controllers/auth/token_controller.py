@@ -6,6 +6,7 @@ import jwt
 
 from domain.models.UserDataclass import UserDataclass
 
+# Zeker aanpassen in production
 jwt_secret = os.getenv("JWT_SECRET", "secret")
 
 

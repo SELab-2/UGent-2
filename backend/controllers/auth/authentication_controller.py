@@ -1,3 +1,4 @@
+import os
 import string
 from typing import TYPE_CHECKING
 
@@ -13,7 +14,7 @@ from domain.models.UserDataclass import UserDataclass
 if TYPE_CHECKING:
     from _elementtree import Element
 
-cas_service = "https://localhost:8080/login"
+cas_service = os.getenv("CAS_URL", "https://localhost:8080/login")
 
 
 def authenticate_user(session: Session, ticket: str) -> UserDataclass | None:
