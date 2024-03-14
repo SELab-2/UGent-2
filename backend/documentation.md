@@ -14,7 +14,7 @@ For test purposes, mockup data is available in [fill_database_mock.py]. A visual
 
 #### II) tables
 
-Using our EER diagram, we now want to create the corresponding tables. We use SQLAlchemy's declarative base pattern. Start by defining a Base class. This class contains the necessary functionality to interact with the database. Next, we create a python class for each table we need, and make it inherit the Base class. We call this a model (see [db/models/models.py]). For specifics on how to define these models, see [this link](https://docs.sqlalchemy.org/en/13/orm/extensions/declarative/basic_use.html). 
+Using our EER diagram, we now want to create the corresponding tables. We use SQLAlchemy's declarative base pattern. Start by defining a Base class. This class contains the necessary functionality to interact with the database. Next, we create a python class for each table we need, and make it inherit the Base class. We call this a model (see [db/models/models.py]). For specifics on how to define these models, see [this link](https://docs.sqlalchemy.org/en/20/orm/declarative_styles.html#using-a-declarative-base-class). 
 
 An important thing to notice in this file is that other than the Base class, all models also inherit a class named AbstractModel. It makes sure that each model implements *to_domain_model*. We will come back to this function later on.
 
@@ -50,8 +50,8 @@ We use **FastAPI** as framework. FastAPI follows the OpenAPI Specification. Its 
 
 Every route recieves a session object as a dependency injection, to forward to the corresponding logic operation. Dependencies are components that need to be executed before the route operation function is called. We let FastAPI handle this for us. Other than a database connection through the session object, we sometimes also inject some authentication/authorization logic (see [routes/dependencies/role_dependencies.py]) with corresponding errors in [routes/errors/authentication.py].
 
-For specific documentation about the API-endpoints, start the app and go to /docs.
+For specific documentation about the API-endpoints, start the app and go to /api/docs.
 
 ## 4) Running the app
 
-We start by defining app = FastAPI() in [app.py]. Next, we add our routers from the previous section. We also add some exception handlers using the corresponding tag. FastAPI calls these handlers for us if needed. this way, we only have to return a corresponding JSONResponse. Finally, we start the app using a **uvicorn** server. This is the standard for FastApi. "app:app" specifies the location of the FastApi object. The first "app" refers to the module (i.e., app.py), and the second "app" refers to the variable (i.e., the FastAPI application object). By default, Uvicorn will run on the localhost port 8000. Another thing to note in this file is that we provide [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) functionality in production.
+We start by defining app = FastAPI() in [app.py]. Next, we add our routers from the previous section. We also add some exception handlers using the corresponding tag. FastAPI calls these handlers for us if needed. this way, we only have to return a corresponding JSONResponse. Finally, we start the app using a **uvicorn** server. This is the standard for FastApi. "app:app" specifies the location of the FastApi object. The first "app" refers to the module (i.e., app.py), and the second "app" refers to the variable (i.e., the FastAPI application object). By default, Uvicorn will run on the localhost port 8000. Another thing to note in this file is that we provide [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) functionality for the local version only.
