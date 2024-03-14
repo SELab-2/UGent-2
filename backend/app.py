@@ -1,12 +1,14 @@
 import uvicorn
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from starlette import status
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 
 from db.errors.database_errors import ActionAlreadyPerformedError, ItemNotFoundError, NoSuchRelationError
-from routes.errors.authentication import InvalidRoleCredentialsError, NoAccessToSubjectError
+from routes.errors.authentication import InvalidAuthenticationError, InvalidRoleCredentialsError, NoAccessToSubjectError
 from routes.group import group_router
+from routes.login import login_router
 from routes.project import project_router
 from routes.student import student_router
 from routes.subject import subject_router
@@ -16,6 +18,7 @@ from routes.user import users_router
 app = FastAPI()
 
 # Koppel routes uit andere modules.
+app.include_router(login_router, prefix="/api")
 app.include_router(student_router, prefix="/api")
 app.include_router(teacher_router, prefix="/api")
 app.include_router(users_router, prefix="/api")
@@ -23,10 +26,11 @@ app.include_router(project_router, prefix="/api")
 app.include_router(subject_router, prefix="/api")
 app.include_router(group_router, prefix="/api")
 
-DEBUG = False # Should always be false in repo
+DEBUG = False  # Should always be false in repo
 
 if DEBUG:
     from fastapi.middleware.cors import CORSMiddleware
+
     origins = [
         "https://localhost",
         "https://localhost:8080",
@@ -40,6 +44,7 @@ if DEBUG:
         allow_methods=["*"],
         allow_headers=["*"],
     )
+
 
 # Koppel de exception handlers
 @app.exception_handler(InvalidRoleCredentialsError)
@@ -78,6 +83,14 @@ def action_already_performed_error_handler(request: Request, exc: ActionAlreadyP
 def no_such_relation_error_handler(request: Request, exc: NoSuchRelationError) -> JSONResponse:
     return JSONResponse(
         status_code=status.HTTP_400_BAD_REQUEST,
+        content={"detail": str(exc)},
+    )
+
+
+@app.exception_handler(InvalidAuthenticationError)
+def invalid_authentication_error_handler(request: Request, exc: NoSuchRelationError) -> JSONResponse:
+    return JSONResponse(
+        status_code=status.HTTP_401_UNAUTHORIZED,
         content={"detail": str(exc)},
     )
 

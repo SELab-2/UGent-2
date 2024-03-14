@@ -5,7 +5,7 @@ from db.models.models import User
 from db.sessions import get_session
 from domain.logic.basic_operations import get, get_all
 from domain.logic.role_enum import Role
-from domain.logic.user import convert_user, modify_user_roles
+from domain.logic.user import convert_user, get_user, modify_user_roles
 from domain.models.APIUser import APIUser
 from domain.models.UserDataclass import UserDataclass
 from routes.dependencies.role_dependencies import get_authenticated_admin, get_authenticated_user
@@ -16,10 +16,9 @@ users_router = APIRouter()
 @users_router.get("/user")
 def get_current_user(
     session: Session = Depends(get_session),
-    user_id: int = Depends(get_authenticated_user),
+    uid: int = Depends(get_authenticated_user),
 ) -> APIUser:
-    user: UserDataclass = get(session, User, user_id).to_domain_model()
-    return convert_user(session, user)
+    return convert_user(session, get_user(session, uid))
 
 
 @users_router.get("/users", dependencies=[Depends(get_authenticated_admin)])
@@ -29,7 +28,7 @@ def get_users(session: Session = Depends(get_session)) -> list[APIUser]:
 
 
 @users_router.get("/users/{uid}", dependencies=[Depends(get_authenticated_admin)])
-def get_user(uid: int, session: Session = Depends(get_session)) -> APIUser:
+def admin_get_user(uid: int, session: Session = Depends(get_session)) -> APIUser:
     user: UserDataclass = get(session, User, uid).to_domain_model()
     return convert_user(session, user)
 
