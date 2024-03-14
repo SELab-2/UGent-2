@@ -4,9 +4,7 @@
 
 #### I) setup
 
-- step 1: Install and set up **PostgreSQL**. We refer to the [official documentation](https://www.postgresql.org/docs/16/admin.html).
-- step 2: Start a PostgreSQL server.
-- step 3: Create a database on this server.
+Check the README.md for installation.
 
 We use **SQLAlchemy** to access this database in our backend app. SQLAlchemy allows us to start defining tables, performing queries, etc.. The setup of SQLAlchemy happens in [db/extensions.py]. Here, an SQLAlchemy engine is created. This engine is the component that manages connections to the database. A [database URI](https://docs.sqlalchemy.org/en/20/core/engines.html) is needed to create such an engine. Because we host the backend app and the database in the same place, we use localhost in the URI as default. This is not mandatory; the database and backend app are two seperate things.
 
