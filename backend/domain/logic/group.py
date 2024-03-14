@@ -37,7 +37,7 @@ def get_groups_of_project(session: Session, project_id: int) -> list[GroupDatacl
 
 def get_groups_of_student(session: Session, student_id: int) -> list[GroupDataclass]:
     student: Student = get(session, Student, ident=student_id)
-    groups: list[Group] = student.groupsget_groups_of_student
+    groups: list[Group] = student.groups
     return [group.to_domain_model() for group in groups]
 
 
