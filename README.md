@@ -103,9 +103,10 @@ Volg deze stappen om de backend van het project op te zetten:
     ```bash
     npm install
     ```
-4. Build de frontend:
+4. Build en run de frontend:
    ```bash
    npm run build
+   npm run dev
    ```
    De gecompileerde html/css/js bevindt zich nu in de `dist` folder
    
