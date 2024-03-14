@@ -8,7 +8,7 @@ class ItemNotFoundError(Exception):
 
 class ActionAlreadyPerformedError(Exception):
     """
-    The specified action was already performed on the database once before 
+    The specified action was already performed on the database once before
     and may not be performed again as to keep consistency.
     """
     def __init__(self, message: str) -> None:
