@@ -58,7 +58,7 @@ Volg deze stappen om de backend van het project op te zetten:
     ```bash
     python app.py
     ```
-8. Om meer Info te krijgen over de mogelijke requests die je kan maken naar de API, kan je de swagger documentatie raadplegen op de `/docs` route.
+8. Om meer Info te krijgen over de mogelijke requests die je kan maken naar de API, kan je de swagger documentatie raadplegen op de `/api/docs` route.
 9. De testen kunnen uitgevoerd worden met het volgende commando:
     ```bash
     python -m unittest discover tests
