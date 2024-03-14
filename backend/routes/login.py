@@ -12,7 +12,7 @@ from routes.errors.authentication import InvalidAuthenticationError
 login_router = APIRouter()
 
 
-@login_router.get("/login")
+@login_router.post("/login")
 def login(
     ticket: str,
     session: Session = Depends(get_session),
