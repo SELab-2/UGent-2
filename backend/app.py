@@ -13,7 +13,7 @@ from routes.subject import subject_router
 from routes.teacher import teacher_router
 from routes.user import users_router
 
-app = FastAPI()
+app = FastAPI(docs_url="/api/docs")
 
 # Koppel routes uit andere modules.
 app.include_router(student_router, prefix="/api")
@@ -23,10 +23,11 @@ app.include_router(project_router, prefix="/api")
 app.include_router(subject_router, prefix="/api")
 app.include_router(group_router, prefix="/api")
 
-DEBUG = False # Should always be false in repo
+DEBUG = False  # Should always be false in repo
 
 if DEBUG:
     from fastapi.middleware.cors import CORSMiddleware
+
     origins = [
         "https://localhost",
         "https://localhost:8080",
@@ -40,6 +41,7 @@ if DEBUG:
         allow_methods=["*"],
         allow_headers=["*"],
     )
+
 
 # Koppel de exception handlers
 @app.exception_handler(InvalidRoleCredentialsError)
