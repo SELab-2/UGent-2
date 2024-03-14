@@ -7,7 +7,7 @@ from domain.models.StudentDataclass import StudentDataclass
 
 def create_student(session: Session, name: str, email: str) -> StudentDataclass:
     """
-    This function is meant creating a new user that is a student. It does not change the role of an existing user.
+    This function is meant to create a new user that is a student. It does not change the role of an existing user.
     """
     new_user: User = User(name=name, email=email)
     session.add(new_user)

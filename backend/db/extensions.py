@@ -30,5 +30,5 @@ engine = create_engine(DB_URI)
 class Base(DeclarativeBase):
     """
     This class is meant to be inherited from to define the database tables, see [db/models/models.py].
-    For usage, please check https://docs.sqlalchemy.org/en/13/orm/extensions/declarative/basic_use.html.
+    For usage, please check https://docs.sqlalchemy.org/en/20/orm/declarative_styles.html#using-a-declarative-base-class.
     """
