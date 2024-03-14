@@ -18,6 +18,9 @@ def create_project(
     visible: bool,
     max_students: int,
 ) -> ProjectDataclass:
+    """
+    Create a project for a certain subject.
+    """
     subject: Subject = get(session, Subject, subject_id)
 
     new_project: Project = Project(

@@ -8,6 +8,9 @@ from domain.models.StudentDataclass import StudentDataclass
 
 
 def create_group(session: Session, project_id: int) -> GroupDataclass:
+    """
+    Create an empty group for a certain project.
+    """
     project: Project = get(session, Project, project_id)
     new_group: Group = Group(project_id=project_id)
     project.groups.append(new_group)
@@ -34,7 +37,7 @@ def get_groups_of_project(session: Session, project_id: int) -> list[GroupDatacl
 
 def get_groups_of_student(session: Session, student_id: int) -> list[GroupDataclass]:
     student: Student = get(session, Student, ident=student_id)
-    groups: list[Group] = student.groups
+    groups: list[Group] = student.groupsget_groups_of_student
     return [group.to_domain_model() for group in groups]
 
 
