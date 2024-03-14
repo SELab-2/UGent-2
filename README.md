@@ -10,6 +10,7 @@ gevonden worden.
     ```
 ## Backend
 
+De backend gebruikt Python 3.12.
 Volg deze stappen om de backend van het project op te zetten:
 
 
@@ -46,9 +47,10 @@ Volg deze stappen om de backend van het project op te zetten:
     sudo systemctl start postgresql.service
     sudo systemctl enable postgresql.service
     ```
-5. Maak een nieuwe database genaamd `delphi`:
+5. Maak een nieuwe database genaamd `delphi` en stel het standaardwachtwoord in:
     ```bash
     sudo -u postgres psql -c "CREATE DATABASE delphi;"
+    sudo -u postgres psql -c "ALTER USER postgres PASSWORD 'postgres';"
     ```
 6. Voer het `fill_database_mock.py` script uit om de database te vullen met mock data:
     ```bash
@@ -73,7 +75,7 @@ Volg deze stappen om de backend van het project op te zetten:
     ```bash
     cd UGent-2/frontend
     ```
-2. Instaleer Node:
+2. Installeer Node:
 
     **Ubuntu**
     ```bash
@@ -97,7 +99,7 @@ Volg deze stappen om de backend van het project op te zetten:
     ```bash
     sudo pacman -S nodejs-lts-iron
     ```
-3. Installeer alle npm dependecies
+3. Installeer alle npm dependencies
     ```bash
     npm install
     ```
@@ -109,9 +111,9 @@ Volg deze stappen om de backend van het project op te zetten:
    
 5. Deploy:
    
-   Zet de de inhoud van de `dist` folder op de juiste plaats, zodat het geserveerd kan worden.
+   Zet de inhoud van de `dist` folder op de juiste plaats, zodat het geserveerd kan worden.
    
-6. De testen kunnen uitgevoerd worden met: (nog niet geimplementeerd)
+6. De testen kunnen uitgevoerd worden met: (nog niet geïmplementeerd)
    ```bash
    npm run tests
    ```
