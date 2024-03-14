@@ -1,5 +1,5 @@
 from abc import abstractmethod
-from dataclasses import dataclass
+from dataclasses import dataclass # automatically add special methods as __init__() and __repr__()
 from datetime import datetime
 from typing import Generic, TypeVar
 
@@ -17,15 +17,26 @@ from domain.models.SubmissionDataclass import SubmissionDataclass, SubmissionSta
 from domain.models.TeacherDataclass import TeacherDataclass
 from domain.models.UserDataclass import UserDataclass
 
+# Create a generic type variable bound to subclasses of BaseModel.
 D = TypeVar("D", bound=BaseModel)
 
 
 @dataclass()
 class AbstractModel(Generic[D]):
+    """
+    This class is meant to be inherited by the python classes for the database tables.
+    It makes sure that every child implements the to_domain_model function 
+    and receives Pydantic data validation.
+    """
     @abstractmethod
     def to_domain_model(self) -> D:
+        """
+        Change to an actual easy-to-use dataclass defined in [domain/models/*].
+        This prevents working with instances of SQLAlchemy's Base class.
+        """
         pass
 
+# See the EER diagram for a more visual representation.
 
 @dataclass()
 class User(Base, AbstractModel):
