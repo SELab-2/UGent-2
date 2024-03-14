@@ -12,6 +12,9 @@ from domain.models.UserDataclass import UserDataclass
 
 
 def convert_user(session: Session, user: UserDataclass) -> APIUser:
+    """
+    Given a UserDataclass, check what roles that user has and fill those in to convert it to an APIUser.
+    """
     api_user = APIUser(id=user.id, name=user.name, email=user.email, roles=[])
 
     if is_user_teacher(session, user.id):
