@@ -7,6 +7,10 @@ import Settings from "./Settings.tsx";
 export function Sidebar(): JSX.Element {
     const [isOpen, setIsOpen] = useState(false);
 
+    const handleSettings: () => void = () => {
+        setIsOpen(!isOpen)
+    }
+
     return (
         <>
             <aside className={"menu is-flex is-flex-direction-column is-justify-content-space-between"}>
@@ -16,11 +20,11 @@ export function Sidebar(): JSX.Element {
                     <li><a><PiFolder size={30}/></a></li>
                 </ul>
                 <ul className={"menu-list"}>
-                    <li><a className={"is-transparent"} onClick={() => setIsOpen(!isOpen)}><IoMdSettings size={30}/></a>
+                    <li><a className={"is-transparent"} onClick={handleSettings}><IoMdSettings size={30}/></a>
                     </li>
                 </ul>
             </aside>
-                {isOpen && <Settings/>}
+            {isOpen && <Settings closeSettings={handleSettings}/>}
         </>
     )
 }
