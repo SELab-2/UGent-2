@@ -5,7 +5,6 @@ import "../assets/styles/small_components.css";
 
 export default function ErrorPage(): JSX.Element {
     const error = useRouteError();
-    console.error(error);
 
     return (
         <div id="error-page" className={"container is-max-desktop mt-6"}>
@@ -17,10 +16,11 @@ export default function ErrorPage(): JSX.Element {
                       </span>
                       <span>Oops, an unexpected error has occurred!</span>
                     </span>
-
                 </div>
                 <div className="message-body">
                     {errorMessage(error)}
+                    <br/>
+                    <a href={"/"}>Go back to the homepage</a>
                 </div>
             </article>
         </div>
@@ -49,7 +49,7 @@ function errorMessage(error: unknown): string {
     } else if (typeof error === 'string') {
         return error
     } else {
-        console.error(error)
+        console.error(error) //TODO doe weg
         return 'Unknown error'
     }
 }
