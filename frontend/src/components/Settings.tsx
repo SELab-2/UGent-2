@@ -45,7 +45,7 @@ function DropdownLanguage(props: { language: Language, changeLanguage: (language
 function Settings(props: { closeSettings: () => void }): JSX.Element {
 
     // TODO: get current language from user
-    let currLang: Language = "NL";
+    const currLang: Language = "NL";
     const [language, setLanguage] = useState<Language>(currLang);
 
     const changeLanguage = (newLang: Language): void => {
