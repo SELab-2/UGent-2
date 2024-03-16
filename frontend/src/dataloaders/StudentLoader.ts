@@ -1,12 +1,42 @@
-import apiFetch from "../utils/ApiFetch.ts";
+import authenticatedApiFetch from "../utils/AuthenticatedApiFetch.ts";
 import {Project, Subject} from "../utils/ApiInterfaces.ts";
+import {useEffect, useState} from "react";
+import useAuth from "../hooks/useAuth.ts";
 
 export interface studentLoaderObject {
-    projects: Project[]
+    projects?: Project[]
 }
-export default async function studentLoader(): Promise<studentLoaderObject> {
-    const projects: Project[] = await (await apiFetch("/api/student/projects")).json() as Project[];
-    const subjects: Subject[] = await (await apiFetch("/api/student/subjects")).json() as Subject[];
+
+const StudentLoader = (): studentLoaderObject => {
+    const {token} = useAuth()
+    const [projects, setProjects] = useState<Project[]>([])
+    const [subjects, setSubjects] = useState<Subject[]>([]);
+
+    useEffect(() => {
+        async function fetchProjects() {
+            await authenticatedApiFetch("/api/student/projects", token)
+                .then(async response => await response.json() as Project[])
+                .then(projects => setProjects(projects));
+        }
+
+        if (token) {
+            void fetchProjects()
+        }
+
+    }, [token]);
+
+    useEffect(() => {
+        async function fetchSubjects() {
+            await authenticatedApiFetch("/api/student/subjects", token)
+                .then(async response => await response.json() as Subject[])
+                .then(subjects => setSubjects(subjects));
+        }
+        if (token){
+            void fetchSubjects()
+        }
+
+    }, [token]);
+
     for (let i = 0; i < projects.length; i++) {
         const subject: Subject | undefined = subjects.find(subject => subject.id === projects[i].subject_id);
         if (subject !== undefined) {
@@ -14,5 +44,7 @@ export default async function studentLoader(): Promise<studentLoaderObject> {
         }
     }
     // TODO: add submission data
-    return {"projects": projects};
+    return {projects};
 }
+
+export default StudentLoader
