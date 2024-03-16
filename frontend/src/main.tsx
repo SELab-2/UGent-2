@@ -4,10 +4,10 @@ import {BrowserRouter, Route, Routes} from "react-router-dom";
 import './index.css'
 import 'bulma/css/bulma.min.css';
 import './assets/styles/mainpage.css'
-import {AuthProvider} from "./context/AuthProvider.tsx";
+import {AuthProvider} from "./components/authentication/AuthProvider.tsx";
 import Root from "./pages/root.tsx";
 import LoginScreen from "./pages/login/LoginScreen.tsx";
-import RequireAuth from "./components/RequireAuth.tsx";
+import RequireAuth from "./components/authentication/RequireAuth.tsx";
 import HomeAdmin from "./pages/admin/HomeAdmin.tsx";
 import HomeStudent from "./pages/student/HomeStudent.tsx";
 import HomeTeacher from "./pages/teacher/HomeTeacher.tsx";

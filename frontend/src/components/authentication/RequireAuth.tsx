@@ -1,4 +1,4 @@
-import useAuth from "../hooks/useAuth.ts";
+import useAuth from "../../hooks/useAuth.ts";
 import {useLocation, Outlet, Navigate} from "react-router-dom";
 
 interface Props {
