@@ -13,6 +13,7 @@ import HomeStudent from "./pages/student/HomeStudent.tsx";
 import HomeTeacher from "./pages/teacher/HomeTeacher.tsx";
 import ErrorPage from "./pages/error.tsx";
 import studentLoader from "./dataloaders/StudentLoader.ts";
+import Unauthorized from "./components/authentication/Unauthorized.tsx";
 
 createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
@@ -21,7 +22,7 @@ createRoot(document.getElementById('root')!).render(
                 <Routes>
                     {/* Public routes */}
                     <Route path={"/login"} element={<LoginScreen/>}/>
-                    <Route path={"/unauthorized"} element={<header>Unauthorized</header>}/>
+                    <Route path={"/unauthorized"} element={<Unauthorized/>}/>
 
                     {/* Protected routes */}
                     <Route element={<RequireAuth allowedRoles={['ADMIN', 'STUDENT', 'TEACHER']}/>}>
