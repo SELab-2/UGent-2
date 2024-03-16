@@ -15,3 +15,14 @@ export interface Project {
     subject_id: number,
     subject_name: string | undefined | null
 }
+
+export interface Token {
+    token?: string
+}
+
+export default interface User {
+    id: number,
+    name: string,
+    email: string,
+    roles: string[]
+}

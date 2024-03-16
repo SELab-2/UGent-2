@@ -1,9 +1,9 @@
-import IUser from "../api_responses/IUser.ts"
+import User from "../utils/ApiInterfaces.ts";
 
 export type AuthContextType = {
     isAuthenticated: boolean,
-    user?: IUser,
+    user?: User,
     token?: string,
-    login: (user?: IUser, token?: string) => void,
+    login: (user?: User, token?: string) => void,
     logout: () => void
 };

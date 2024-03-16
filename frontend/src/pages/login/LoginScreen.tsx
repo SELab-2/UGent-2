@@ -1,9 +1,8 @@
 import {JSX, useEffect, useState} from "react";
 import {Navigate, useLocation, useNavigate} from 'react-router-dom';
 import delphi_full from '../../assets/images/delphi_full.png';
-import userResponse from "../../api_responses/IUser.ts";
-import tokenResponse from "../../api_responses/IToken.ts";
 import useAuth from "../../hooks/useAuth.ts";
+import User, {Token} from "../../utils/ApiInterfaces.ts";
 
 interface location_type {
     search?: { ticket?: string },
@@ -41,7 +40,7 @@ export default function LoginScreen(): JSX.Element {
                     'Content-Type': 'application/json',
                 },
             })
-                .then(async response => (await response.json() as tokenResponse))
+                .then(async response => (await response.json() as Token))
                 .then(data => setToken(data.token))
         }
 
@@ -62,7 +61,7 @@ export default function LoginScreen(): JSX.Element {
                     'cas': "" + token
                 },
             })
-                .then(async response => (await response.json()) as userResponse)
+                .then(async response => (await response.json()) as User)
                 .then(user => {
                     login({id: user.id, name: user.name, email: user.email, roles: user.roles}, token)
                 })
