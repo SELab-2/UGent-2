@@ -1,15 +1,67 @@
+import {JSX, useState} from "react";
 import {BiLogOut} from "react-icons/bi";
 import '../assets/styles/small_components.css'
-import {JSX} from "react";
 import {Link} from "react-router-dom";
-import { IoMdClose } from "react-icons/io";
+import {IoMdClose} from "react-icons/io";
+import {MdLanguage, MdOutlineKeyboardArrowDown} from "react-icons/md";
+
+export type Language = "NL" | "EN";
+
+function DropdownLanguage(props: { language: Language, changeLanguage: (language: Language) => void }): JSX.Element {
+
+    const [isOpen, setIsOpen] = useState<boolean>(false);
+
+    const toggle = (): void => {
+        setIsOpen(!isOpen);
+    }
+
+    return (
+        <div className={`dropdown ${isOpen ? 'is-active' : ''}`}>
+            <div className="dropdown-trigger">
+                <button className="button" aria-haspopup="true" aria-controls="dropdown-menu" onClick={toggle}>
+                    <span className={"is-flex is-align-items-center px"}>
+                        <MdLanguage className={"mr-2"}/><p>{props.language}</p>
+                    </span>
+                    <span className="icon is-small">
+                        <MdOutlineKeyboardArrowDown/>
+                    </span>
+                </button>
+            </div>
+            <div className={"dropdown-menu"}>
+                <div className="dropdown-content">
+                    <a href="#" className="dropdown-item" onClick={() => props.changeLanguage("EN")}>
+                        English
+                    </a>
+                    <a className="dropdown-item" onClick={() => props.changeLanguage("NL")}>
+                        Nederlands
+                    </a>
+                </div>
+            </div>
+        </div>
+    )
+}
 
 
-export default function Settings(props: {closeSettings: () => void}): JSX.Element {
+function Settings(props: { closeSettings: () => void }): JSX.Element {
+
+    // TODO: get current language from user
+    let currLang: Language = "NL";
+    const [language, setLanguage] = useState<Language>(currLang);
+
+    const changeLanguage = (newLang: Language): void => {
+        if (language !== newLang) {
+            // TODO: send it to the database
+            setLanguage(newLang);
+        }
+    }
+
     return (
         <div className={"card popup"}>
             <div className={"is-flex is-align-items-center is-justify-content-right"}>
-                <button className={"px-1 py-1 mx-1 my-1"} onClick={props.closeSettings}><IoMdClose/></button>
+                <span className={"py-2"}>
+                    <DropdownLanguage language={language} changeLanguage={changeLanguage}/>
+                </span>
+                <button className={"button mx-2 my-1"} onClick={props.closeSettings}><IoMdClose/></button>
             </div>
             <div className={"px-5 pb-5"}>
                 <p className={"title is-flex is-justify-content-center"}>Settings</p>
@@ -33,3 +85,5 @@ export default function Settings(props: {closeSettings: () => void}): JSX.Elemen
         </div>
     )
 }
+
+export default Settings;
