@@ -3,7 +3,7 @@ import {useLocation, Outlet, Navigate} from "react-router-dom";
 
 interface Props {
     allowedRoles?: string[]
-};
+}
 const RequireAuth = ({allowedRoles}: Props) => {
     const {isAuthenticated, user} = useAuth()
     const location = useLocation();
