@@ -1,6 +1,6 @@
 import {ReactNode, useState} from "react";
-import IUser from "../../api_responses/IUser.ts";
 import {AuthContext} from "../../context/AuthContext.ts";
+import User from "../../utils/ApiInterfaces.ts";
 
 interface Props {
     children?: ReactNode
@@ -8,10 +8,10 @@ interface Props {
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({children}: Props) => {
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
-    const [user, setUser] = useState<IUser | undefined>(undefined)
+    const [user, setUser] = useState<User | undefined>(undefined)
     const [token, setToken] = useState<string | undefined>(undefined)
 
-    const login = (user?: IUser, token?: string) => {
+    const login = (user?: User, token?: string) => {
         if (user && token) {
             setUser(user);
             setToken(token);
