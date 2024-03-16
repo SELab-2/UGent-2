@@ -29,10 +29,10 @@ function DropdownLanguage(props: { language: Language, changeLanguage: (language
             </div>
             <div className={"dropdown-menu"}>
                 <div className="dropdown-content">
-                    <a href="#" className="dropdown-item" onClick={() => props.changeLanguage("EN")}>
+                    <a href="#" className="dropdown-item" onClick={() => {props.changeLanguage("EN"); toggle()}}>
                         English
                     </a>
-                    <a className="dropdown-item" onClick={() => props.changeLanguage("NL")}>
+                    <a className="dropdown-item" onClick={() => {props.changeLanguage("NL"); toggle()}}>
                         Nederlands
                     </a>
                 </div>
