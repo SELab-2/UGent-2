@@ -1,7 +1,6 @@
 import {isRouteErrorResponse, useRouteError} from "react-router-dom";
 import {JSX} from 'react';
 import {BiError} from "react-icons/bi";
-import "../assets/styles/small_components.css";
 
 export default function ErrorPage(): JSX.Element {
     const error = useRouteError();
