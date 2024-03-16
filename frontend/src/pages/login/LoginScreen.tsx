@@ -17,7 +17,7 @@ export default function LoginScreen(): JSX.Element {
     if (location.state?.from?.pathname) {
         from = location.state.from.pathname
     }
-    console.log(from)
+    console.log("from: "+from)
     const navigate = useNavigate();
     const [ticket, setTicket] = useState('');
     const [token, setToken] = useState<string | undefined>('')

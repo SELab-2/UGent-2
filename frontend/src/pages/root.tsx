@@ -5,7 +5,6 @@ import {Navigate} from "react-router-dom";
 export default function Root(): JSX.Element {
     const {user} = useAuth()
     let to: string = "/error"
-    console.log(user?.roles.includes('STUDENT'))
     if (!user){
         to = "/login"
     }
@@ -18,6 +17,5 @@ export default function Root(): JSX.Element {
             to = "/admin";
         }
     }
-    console.log(to);
     return (<Navigate to={to}/>)
 }
