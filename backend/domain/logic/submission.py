@@ -15,6 +15,9 @@ def create_submission(
         state: SubmissionState,
         date_time: datetime,
 ) -> SubmissionDataclass:
+    """
+    Create a submission for a certain project by a certain group.
+    """
     student: Student = get(session, Student, ident=student_id)
     group: Group = get(session, Group, ident=group_id)
 

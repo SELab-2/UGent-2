@@ -16,3 +16,7 @@ class InvalidStudentCredentialsError(InvalidRoleCredentialsError):
 
 class NoAccessToSubjectError(Exception):
     ERROR_MESSAGE = "User doesn't have access to subject"
+
+
+class InvalidAuthenticationError(Exception):
+    ERROR_MESSAGE = "User is not authenticated"

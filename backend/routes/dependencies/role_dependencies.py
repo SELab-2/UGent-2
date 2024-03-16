@@ -1,6 +1,8 @@
 from fastapi import Depends
+from fastapi.security import APIKeyHeader
 from sqlalchemy.orm import Session
 
+from controllers.auth.token_controller import verify_token
 from db.sessions import get_session
 from domain.logic.admin import get_admin, is_user_admin
 from domain.logic.group import get_group
@@ -13,35 +15,47 @@ from domain.models.StudentDataclass import StudentDataclass
 from domain.models.TeacherDataclass import TeacherDataclass
 from routes.errors.authentication import (
     InvalidAdminCredentialsError,
+    InvalidAuthenticationError,
     InvalidStudentCredentialsError,
     InvalidTeacherCredentialsError,
     NoAccessToSubjectError,
 )
 
-
-def get_authenticated_user() -> int:
-    return 1  # Checken of een user bestaat en/of hij de juiste credentials heeft.
+auth_scheme = APIKeyHeader(name="cas")
 
 
-def get_authenticated_admin(session: Session = Depends(get_session)) -> AdminDataclass:
-    user_id = get_authenticated_user()
-    if not is_user_admin(session, user_id):
+def get_authenticated_user(token: str = Depends(auth_scheme)) -> int:
+    uid = verify_token(token)
+    if uid is None:
+        raise InvalidAuthenticationError
+    return uid
+
+
+def get_authenticated_admin(
+    session: Session = Depends(get_session),
+    uid: int = Depends(get_authenticated_user),
+) -> AdminDataclass:
+    if not is_user_admin(session, uid):
         raise InvalidAdminCredentialsError
-    return get_admin(session, user_id)
+    return get_admin(session, uid)
 
 
-def get_authenticated_teacher(session: Session = Depends(get_session)) -> TeacherDataclass:
-    user_id = get_authenticated_user()
-    if not is_user_teacher(session, user_id):
+def get_authenticated_teacher(
+    session: Session = Depends(get_session),
+    uid: int = Depends(get_authenticated_user),
+) -> TeacherDataclass:
+    if not is_user_teacher(session, uid):
         raise InvalidTeacherCredentialsError
-    return get_teacher(session, user_id)
+    return get_teacher(session, uid)
 
 
-def get_authenticated_student(session: Session = Depends(get_session)) -> StudentDataclass:
-    user_id = get_authenticated_user()
-    if not is_user_student(session, user_id):
+def get_authenticated_student(
+    session: Session = Depends(get_session),
+    uid: int = Depends(get_authenticated_user),
+) -> StudentDataclass:
+    if not is_user_student(session, uid):
         raise InvalidStudentCredentialsError
-    return get_student(session, user_id)
+    return get_student(session, uid)
 
 
 def ensure_user_authorized_for_subject(

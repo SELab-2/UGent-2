@@ -91,7 +91,11 @@ ignore = [
     "PLR0913", # Too many arguments in function
     "FBT001", # Boolean-typed positional argument in function dfinition
     "FBT002",
-    "B008"
+    "B008",
+    "PT009",
+    "PT027",
+    "FBT003",
+    "DTZ005",
 ]
 
 # Allow fix for all enabled rules (when `--fix`) is provided.

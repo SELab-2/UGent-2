@@ -1,3 +1,4 @@
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from db.models.models import Admin, Student, Teacher, User
@@ -11,6 +12,9 @@ from domain.models.UserDataclass import UserDataclass
 
 
 def convert_user(session: Session, user: UserDataclass) -> APIUser:
+    """
+    Given a UserDataclass, check what roles that user has and fill those in to convert it to an APIUser.
+    """
     api_user = APIUser(id=user.id, name=user.name, email=user.email, roles=[])
 
     if is_user_teacher(session, user.id):
@@ -27,6 +31,20 @@ def convert_user(session: Session, user: UserDataclass) -> APIUser:
 
 def get_user(session: Session, user_id: int) -> UserDataclass:
     return get(session, User, user_id).to_domain_model()
+
+
+def get_user_with_email(session: Session, email: str) -> UserDataclass | None:
+    stmt = select(User).where(User.email == email)
+    result = session.execute(stmt)
+    users = [r.to_domain_model() for r in result.scalars()]
+
+    if len(users) > 1:
+        raise NotImplementedError
+
+    if len(users) == 1:
+        return users[0]
+
+    return None
 
 
 def get_all_users(session: Session) -> list[UserDataclass]:

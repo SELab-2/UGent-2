@@ -8,6 +8,9 @@ from domain.models.StudentDataclass import StudentDataclass
 
 
 def create_group(session: Session, project_id: int) -> GroupDataclass:
+    """
+    Create an empty group for a certain project.
+    """
     project: Project = get(session, Project, project_id)
     new_group: Group = Group(project_id=project_id)
     project.groups.append(new_group)

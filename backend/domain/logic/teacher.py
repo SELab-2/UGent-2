@@ -6,6 +6,9 @@ from domain.models.TeacherDataclass import TeacherDataclass
 
 
 def create_teacher(session: Session, name: str, email: str) -> TeacherDataclass:
+    """
+    This function is meant to create a new user that is a teacher. It does not change the role of an existing user.
+    """
     new_user: User = User(name=name, email=email)
     session.add(new_user)
     session.commit()
