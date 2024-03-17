@@ -1,6 +1,3 @@
-import tempfile
-
-from domain.simple_submission_checks.constraints.directory_constraint import DirectoryConstraint
 from domain.simple_submission_checks.constraints.zip_constraint import ZipConstraint
 
 json_string = {
