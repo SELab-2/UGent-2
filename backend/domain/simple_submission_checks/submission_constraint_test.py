@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from domain.simple_submission_checks.constraints.zip_constraint import ZipConstraint
 
 json_string = {
@@ -10,17 +12,17 @@ json_string = {
       "sub_constraints": [
         {
           "type": "file_constraint",
-          "name": "Resume.pdf"
+          "name": "Resume.pdf",
         },
         {
           "type": "file_constraint",
-          "name": "CoverLetter.docx"
+          "name": "CoverLetter.docx",
         },
         {
           "type": "file_constraint",
-          "name": "Transcript.pdf"
-        }
-      ]
+          "name": "Transcript.pdf",
+        },
+      ],
     },
     {
       "type": "directory_constraint",
@@ -28,13 +30,13 @@ json_string = {
       "sub_constraints": [
         {
           "type": "file_constraint",
-          "name": "Vacation.jpg"
+          "name": "Vacation.jpg",
         },
         {
           "type": "file_constraint",
-          "name": "ProfilePicture.jpg"
-        }
-      ]
+          "name": "ProfilePicture.jpg",
+        },
+      ],
     },
     {
       "type": "directory_constraint",
@@ -42,22 +44,21 @@ json_string = {
       "sub_constraints": [
         {
           "type": "file_constraint",
-          "name": "Graduation.mp4"
-        }
-      ]
+          "name": "Graduation.mp4",
+        },
+      ],
     },
     {
       "type": "not_present_constraint",
-      "name": "file4.txt"
-    }
-  ]
+      "name": "file4.txt",
+    },
+  ],
 }
 
 # Parse the JSON to a Pydantic model
 constraint = ZipConstraint.parse_obj(json_string)
 
 # Path to the directory to validate
-path_to_directory = "/home/lukasbt/"
+path_to_directory = Path("/home/lukasbt/")
 # Validate the directory and print the result
 validation_result = constraint.validate_constraint(path_to_directory)
-print(validation_result)
