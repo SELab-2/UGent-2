@@ -8,11 +8,13 @@ import "../assets/styles/small_components.css";
 
 
 export function CreateProject(): JSX.Element {
+    const [projectName, setProjectName] = useState('');
     const [showCalender, setCalender] = useState(false);
     type ValuePiece = Date | null; // nodig voor de deadline
     type Value = ValuePiece | [ValuePiece, ValuePiece]; // nodig voor de deadline
     const [deadlineValue, deadlineChange] = useState<Value>(new Date());
     const [description, setDescription] = useState('');
+    const [requiredFiles, setRequiredFiles] = useState('');
     const [showGroup, setGroup] = useState(false);
 
     const expandDeadline = () => {
@@ -34,7 +36,7 @@ export function CreateProject(): JSX.Element {
                     <label className="label">Project naam:</label>
                 </div>
                 <div className="field-body field">
-                    <Inputfield placeholder="Geef een naam in"/>
+                    <Inputfield placeholder="Geef een naam in" value={projectName} setValue={setProjectName}/>
                 </div>
             </div>
             <div className="field is-horizontal">
@@ -106,7 +108,8 @@ export function CreateProject(): JSX.Element {
                     <div className="field"> {/* Deze moet er blijven, anders doet css raar*/}
                         <label>Specifieer welke files de ingediende zip moet bevatten. Splits per komma.</label>
                         <br/>
-                        <Inputfield placeholder="vb: diagram.dgr,verslag.pdf,textbestand.txt"/>
+                        <Inputfield placeholder="vb: diagram.dgr,verslag.pdf,textbestand.txt" value={requiredFiles}
+                                    setValue={setRequiredFiles}/>
                         <br/>
                         <div className="field is-horizontal">
                             <div className="field-label">
