@@ -4,17 +4,17 @@ from typing import Literal
 
 from pydantic import BaseModel
 
-from domain.simple_submission_checks.validation_result import ErrorResult, OkResult, ValidationResult
+from domain.simple_submission_checks.constraints.constraint_result import FileConstraintResult
 
 
 class FileConstraint(BaseModel):
     type: Literal["file_constraint"]
     name: str
 
-    def validate_constraint(self, path: Path) -> ValidationResult:
+    def validate_constraint(self, path: Path) -> FileConstraintResult:
         directory = os.listdir(path)
 
         if self.name not in directory:
-            return ErrorResult(f"File '{self.name}' not present.")
+            return FileConstraintResult(name=self.name, is_ok=False, sub_constraint_results=[])
 
-        return OkResult(f"File '{self.name}' present.", [])
+        return FileConstraintResult(name=self.name, is_ok=True, sub_constraint_results=[])
