@@ -1,5 +1,4 @@
 import {JSX, useState} from "react";
-import { IoHomeSharp } from "react-icons/io5";
 import { PiProjectorScreen, PiFolder } from "react-icons/pi";
 import { IoMdSettings } from "react-icons/io";
 import Settings from "./Settings.tsx";
@@ -15,7 +14,6 @@ export function Sidebar(): JSX.Element {
         <>
             <aside className={"menu is-flex is-flex-direction-column is-justify-content-space-between"}>
                 <ul className={"menu-list"}>
-                    <li><a><IoHomeSharp size={30}/></a></li>
                     <li><a><PiProjectorScreen size={30}/></a></li>
                     <li><a><PiFolder size={30}/></a></li>
                 </ul>
