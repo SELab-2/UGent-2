@@ -17,18 +17,21 @@ export function ViewProjectTeaderComponent(props: {
     deadline: Value, setDeadline: React.Dispatch<React.SetStateAction<Value>>, // TODO dit aanpassen naar Date of iets anders
     description: string, setDescription: React.Dispatch<React.SetStateAction<string>>,
     requiredFiles: string, setRequiredFiles: React.Dispatch<React.SetStateAction<string>>,
+    otherFilesAllow: boolean, setOtherFilesAllow: React.Dispatch<React.SetStateAction<boolean>>,
+    groupProject: boolean, setGroupProject: React.Dispatch<React.SetStateAction<boolean>>
 }): JSX.Element {
 
     // helpers
-    const [showCalender, setCalender] = useState(false);
-    const [showGroup, setGroup] = useState(false);
+    const [showCalender, setCalender] = useState(props.deadline !== null);
+    const [showGroup, setGroup] = useState(props.groupProject);
 
     const expandDeadline = () => {
         setCalender(!showCalender);
     };
 
-    const expandGroup = () => {
+    const expandGroup = (checked: boolean) => {
         setGroup(!showGroup);
+        props.setGroupProject(checked);
     };
 
     const hours_array = Array.from({length: 24}, (_, index) => index.toString().padStart(2, '0'));
@@ -64,7 +67,7 @@ export function ViewProjectTeaderComponent(props: {
                 </div>
                 <div className="field-body">
                     <label>
-                        <input type="checkbox" onChange={expandDeadline}/>
+                        <input type="checkbox" onChange={expandDeadline} checked={showCalender}/>
                         {showCalender &&
                             <>
                                 <Calendar onChange={e => props.setDeadline(e)} value={props.deadline}/>
@@ -126,7 +129,8 @@ export function ViewProjectTeaderComponent(props: {
                         <br/>
                         <div className="field is-horizontal">
                             <div className="field-label">
-                                <input type="checkbox"/> {/*TODO doe iets*/}
+                                <input type="checkbox" onChange={e => props.setOtherFilesAllow(e.target.checked)}
+                                       checked={props.otherFilesAllow}/>
                             </div>
                             <div className="field-body">
                                 <label className="label is-fullwidth">ook andere files toegelaten</label>
@@ -141,7 +145,8 @@ export function ViewProjectTeaderComponent(props: {
                 </div>
                 <div className="field-body">
                     <label>
-                        <input type="checkbox" onChange={expandGroup}/>
+                        <input type="checkbox" onChange={e => expandGroup(e.target.checked)}
+                               checked={props.groupProject}/>
                         {showGroup &&
                             <>
                                 <div className="field is-horizontal">
