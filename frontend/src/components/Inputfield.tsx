@@ -1,7 +1,7 @@
 import React, {ChangeEvent} from 'react';
 
 export default function Inputfield(props: {
-    placeholder: string,
+    placeholder?: string,
     value: string,
     setValue: React.Dispatch<React.SetStateAction<string>>
 }) {

@@ -6,15 +6,21 @@ import 'react-calendar/dist/Calendar.css';
 import {FaUpload} from "react-icons/fa";
 import "../assets/styles/small_components.css";
 
+type ValuePiece = Date | null; // nodig voor de deadline
+type Value = ValuePiece | [ValuePiece, ValuePiece]; // nodig voor de deadline
 
-export function CreateProject(): JSX.Element {
-    const [projectName, setProjectName] = useState('');
+export function ViewProjectTeaderComponent(props: {
+    projectName: string, setProjectName: React.Dispatch<React.SetStateAction<string>>,
+    courseName: string, setCourseName: React.Dispatch<React.SetStateAction<string>>,
+    hours: string, setHours: React.Dispatch<React.SetStateAction<string>>, //TODO dit aanpassen naar number
+    minutes: string, setMinutes: React.Dispatch<React.SetStateAction<string>>, //TODO dit aanpassen naar number
+    deadline: Value, setDeadline: React.Dispatch<React.SetStateAction<Value>>, // TODO dit aanpassen naar Date of iets anders
+    description: string, setDescription: React.Dispatch<React.SetStateAction<string>>,
+    requiredFiles: string, setRequiredFiles: React.Dispatch<React.SetStateAction<string>>,
+}): JSX.Element {
+
+    // helpers
     const [showCalender, setCalender] = useState(false);
-    type ValuePiece = Date | null; // nodig voor de deadline
-    type Value = ValuePiece | [ValuePiece, ValuePiece]; // nodig voor de deadline
-    const [deadlineValue, deadlineChange] = useState<Value>(new Date());
-    const [description, setDescription] = useState('');
-    const [requiredFiles, setRequiredFiles] = useState('');
     const [showGroup, setGroup] = useState(false);
 
     const expandDeadline = () => {
@@ -25,28 +31,33 @@ export function CreateProject(): JSX.Element {
         setGroup(!showGroup);
     };
 
-    const hours = Array.from({length: 24}, (_, index) => index.toString().padStart(2, '0'));
-    const minutes = Array.from({length: 60}, (_, index) => index.toString().padStart(2, '0'));
+    const hours_array = Array.from({length: 24}, (_, index) => index.toString().padStart(2, '0'));
+    const minutes_array = Array.from({length: 60}, (_, index) => index.toString().padStart(2, '0'));
 
 
     return (
         <>
+            {/* PROJECT NAME FIELD */}
             <div className="field is-horizontal">
                 <div className="field-label">
                     <label className="label">Project naam:</label>
                 </div>
                 <div className="field-body field">
-                    <Inputfield placeholder="Geef een naam in" value={projectName} setValue={setProjectName}/>
+                    <Inputfield placeholder="Geef een naam in" value={props.projectName}
+                                setValue={props.setProjectName}/>
                 </div>
             </div>
+            {/* COURSE NAME FIELD */}
             <div className="field is-horizontal">
                 <div className="field-label">
                     <label className="label">Vak:</label>
                 </div>
                 <div className="field-body field">
-                    <SelectionBox options={["vak1", "vak2", "vak3"]}/>
+                    <SelectionBox options={["vak1", "vak2", "vak3"]} value={props.courseName}
+                                  setValue={props.setCourseName}/>
                 </div>
             </div>
+            {/* DEADLINE FIELD */}
             <div className="field is-horizontal">
                 <div className="field-label">
                     <label className="label">Deadline:</label>
@@ -56,11 +67,12 @@ export function CreateProject(): JSX.Element {
                         <input type="checkbox" onChange={expandDeadline}/>
                         {showCalender &&
                             <>
-                                <Calendar onChange={e => deadlineChange(e)} value={deadlineValue}/>
+                                <Calendar onChange={e => props.setDeadline(e)} value={props.deadline}/>
                                 <div className="is-horizontal field">
-                                    <SelectionBox options={hours}/>
+                                    <SelectionBox options={hours_array} value={props.hours} setValue={props.setHours}/>
                                     <label className={"title ml-3 mr-3"}>:</label>
-                                    <SelectionBox options={minutes}/>
+                                    <SelectionBox options={minutes_array} value={props.minutes}
+                                                  setValue={props.setMinutes}/>
                                 </div>
                             </>
                         }
@@ -74,8 +86,8 @@ export function CreateProject(): JSX.Element {
                 <div className="field-body field">
                     <div style={{width: "33%"}}> {/* Deze moet er blijven, anders doet css raar*/}
                         <textarea className="textarea" placeholder="Optionele beschrijving van het project"
-                                  value={description}
-                                  onChange={e => setDescription(e.target.value)}/>
+                                  value={props.description}
+                                  onChange={e => props.setDescription(e.target.value)}/>
                     </div>
                 </div>
             </div>
@@ -108,8 +120,9 @@ export function CreateProject(): JSX.Element {
                     <div className="field"> {/* Deze moet er blijven, anders doet css raar*/}
                         <label>Specifieer welke files de ingediende zip moet bevatten. Splits per komma.</label>
                         <br/>
-                        <Inputfield placeholder="vb: diagram.dgr,verslag.pdf,textbestand.txt" value={requiredFiles}
-                                    setValue={setRequiredFiles}/>
+                        <Inputfield placeholder="vb: diagram.dgr,verslag.pdf,textbestand.txt"
+                                    value={props.requiredFiles}
+                                    setValue={props.setRequiredFiles}/>
                         <br/>
                         <div className="field is-horizontal">
                             <div className="field-label">
