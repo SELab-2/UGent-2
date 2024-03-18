@@ -5,7 +5,7 @@ from db.models.models import User
 from db.sessions import get_session
 from domain.logic.basic_operations import get, get_all
 from domain.logic.role_enum import Role
-from domain.logic.user import convert_user, get_user, modify_user_roles
+from domain.logic.user import convert_user, get_user, modify_language, modify_user_roles
 from domain.models.APIUser import APIUser
 from domain.models.UserDataclass import UserDataclass
 from routes.dependencies.role_dependencies import get_authenticated_admin, get_authenticated_user
@@ -19,6 +19,16 @@ def get_current_user(
     uid: int = Depends(get_authenticated_user),
 ) -> APIUser:
     return convert_user(session, get_user(session, uid))
+
+
+@users_router.patch("/user")
+def modify_current_user(
+    language: str,
+    session: Session = Depends(get_session),
+    uid: int = Depends(get_authenticated_user),
+) -> Response:
+    modify_language(session, uid, language)
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
 @users_router.get("/users", dependencies=[Depends(get_authenticated_admin)])

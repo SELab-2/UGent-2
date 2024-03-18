@@ -15,7 +15,7 @@ def convert_user(session: Session, user: UserDataclass) -> APIUser:
     """
     Given a UserDataclass, check what roles that user has and fill those in to convert it to an APIUser.
     """
-    api_user = APIUser(id=user.id, name=user.name, email=user.email, roles=[])
+    api_user = APIUser(id=user.id, name=user.name, email=user.email, language=user.language, roles=[])
 
     if is_user_teacher(session, user.id):
         api_user.roles.append(Role.TEACHER)
@@ -65,4 +65,10 @@ def modify_user_roles(session: Session, uid: int, roles: list[Role]) -> None:
         session.add(admin)
     if Role.ADMIN not in roles and session.get(Admin, uid) is not None:
         session.delete(get(session, Admin, uid))
+    session.commit()
+
+
+def modify_language(session: Session, user_id: int, language: str) -> None:
+    user = get(session, User, user_id)
+    user.language = language
     session.commit()
