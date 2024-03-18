@@ -1,14 +1,14 @@
 import {JSX} from "react";
 import {Header} from "../../components/Header.tsx";
 import {Sidebar} from "../../components/Sidebar.tsx";
-import ViewProjectStudent from "../../components/ViewProjectStudent.tsx";
+import ViewProjectStudent from "../../components/ViewProjectStudentComponent.tsx";
 
 export enum ProjectStatus {
     FAILED = "Failed",
     SUCCESS = "Succes",
 }
 
-export default function ProjectView(): JSX.Element {
+export default function ProjectViewStudent(): JSX.Element {
     const projectName: string = "Markov Decision Diagram"
     const courseName: string = "Automaten, berekenbaarheid en complexiteit"
     const deadline: string = "17:00 - 23/02/2024"

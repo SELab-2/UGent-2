@@ -2,9 +2,9 @@ import {JSX} from "react";
 import FieldWithLabel from "./FieldWithLabel.tsx";
 import {FaCheck, FaUpload} from "react-icons/fa";
 import {FaDownload} from "react-icons/fa6";
-import {ProjectStatus} from "../pages/student/ProjectView.tsx";
+import {ProjectStatus} from "../pages/student/ProjectViewStudent.tsx";
 
-export default function ViewProjectStudent(props: {
+export default function ViewProjectStudentComponent(props: {
     projectName: string,
     courseName: string,
     deadline: string,
