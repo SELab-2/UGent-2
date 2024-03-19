@@ -29,4 +29,4 @@ class DirectoryConstraint(BaseModel):
 
 
 # Needed to enable self-referencing model
-DirectoryConstraint.update_forward_refs()
+DirectoryConstraint.model_rebuild()
