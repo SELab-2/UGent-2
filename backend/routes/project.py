@@ -16,10 +16,10 @@ project_router = APIRouter()
 
 
 @project_router.get(
-    "/projects/{project_id}", 
-    dependencies=[Depends(ensure_user_authorized_for_project)], 
+    "/projects/{project_id}",
+    dependencies=[Depends(ensure_user_authorized_for_project)],
     tags=[Tags.PROJECT],
-    summary="Get a certain project."
+    summary="Get a certain project.",
 )
 def project_get(
     project_id: int,
@@ -30,10 +30,10 @@ def project_get(
 
 
 @project_router.get(
-    "/projects/{project_id}/groups", 
-    dependencies=[Depends(ensure_user_authorized_for_project)], 
+    "/projects/{project_id}/groups",
+    dependencies=[Depends(ensure_user_authorized_for_project)],
     tags=[Tags.PROJECT],
-    summary="Get all formed groups of a certain project."
+    summary="Get all formed groups of a certain project.",
 )
 def project_get_groups(
     project_id: int,
@@ -43,10 +43,10 @@ def project_get_groups(
 
 
 @project_router.post(
-    "/projects/{project_id}/groups", 
-    dependencies=[Depends(ensure_teacher_authorized_for_project)], 
+    "/projects/{project_id}/groups",
+    dependencies=[Depends(ensure_teacher_authorized_for_project)],
     tags=[Tags.PROJECT],
-    summary="Create an empty group for a certain project."
+    summary="Create an empty group for a certain project.",
 )
 def project_create_group(
     project_id: int,

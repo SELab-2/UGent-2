@@ -1,5 +1,6 @@
 from enum import Enum
 
+
 class Tags(Enum):
     GROUP   = "Group methods"
     LOGIN   = "Login methods"
