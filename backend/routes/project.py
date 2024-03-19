@@ -10,11 +10,17 @@ from routes.dependencies.role_dependencies import (
     ensure_teacher_authorized_for_project,
     ensure_user_authorized_for_project,
 )
+from routes.tags.swagger_tags import Tags
 
 project_router = APIRouter()
 
 
-@project_router.get("/projects/{project_id}", dependencies=[Depends(ensure_user_authorized_for_project)])
+@project_router.get(
+    "/projects/{project_id}", 
+    dependencies=[Depends(ensure_user_authorized_for_project)], 
+    tags=[Tags.PROJECT],
+    summary="Get a certain project."
+)
 def project_get(
     project_id: int,
     session: Session = Depends(get_session),
@@ -23,7 +29,12 @@ def project_get(
     return project
 
 
-@project_router.get("/projects/{project_id}/groups", dependencies=[Depends(ensure_user_authorized_for_project)])
+@project_router.get(
+    "/projects/{project_id}/groups", 
+    dependencies=[Depends(ensure_user_authorized_for_project)], 
+    tags=[Tags.PROJECT],
+    summary="Get all formed groups of a certain project."
+)
 def project_get_groups(
     project_id: int,
     session: Session = Depends(get_session),
@@ -31,7 +42,12 @@ def project_get_groups(
     return get_groups_of_project(session, project_id)
 
 
-@project_router.post("/projects/{project_id}/groups", dependencies=[Depends(ensure_teacher_authorized_for_project)])
+@project_router.post(
+    "/projects/{project_id}/groups", 
+    dependencies=[Depends(ensure_teacher_authorized_for_project)], 
+    tags=[Tags.PROJECT],
+    summary="Create an empty group for a certain project."
+)
 def project_create_group(
     project_id: int,
     session: Session = Depends(get_session),

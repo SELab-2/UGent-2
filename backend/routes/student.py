@@ -8,11 +8,12 @@ from domain.models.ProjectDataclass import ProjectDataclass
 from domain.models.StudentDataclass import StudentDataclass
 from domain.models.SubjectDataclass import SubjectDataclass
 from routes.dependencies.role_dependencies import get_authenticated_student
+from routes.tags.swagger_tags import Tags
 
 student_router = APIRouter()
 
 
-@student_router.get("/student/subjects")
+@student_router.get("/student/subjects", tags=[Tags.STUDENT], summary="Get all subjects of the student.")
 def subjects_of_student_get(
     session: Session = Depends(get_session),
     student: StudentDataclass = Depends(get_authenticated_student),
@@ -20,7 +21,7 @@ def subjects_of_student_get(
     return get_subjects_of_student(session, student.id)
 
 
-@student_router.get("/student/projects")
+@student_router.get("/student/projects", tags=[Tags.STUDENT], summary="Get all projects of the student.")
 def projects_of_student_get(
     session: Session = Depends(get_session),
     student: StudentDataclass = Depends(get_authenticated_student),
@@ -28,7 +29,7 @@ def projects_of_student_get(
     return get_projects_of_student(session, student.id)
 
 
-@student_router.post("/student/subjects/{subject_id}/join")
+@student_router.post("/student/subjects/{subject_id}/join", tags=[Tags.STUDENT], summary="Join a certain subject (for student).")
 def student_subject_join(
     subject_id: int,
     session: Session = Depends(get_session),

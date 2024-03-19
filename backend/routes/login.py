@@ -7,12 +7,13 @@ from db.sessions import get_session
 from domain.models.APIUser import LoginResponse
 from domain.models.UserDataclass import UserDataclass
 from routes.errors.authentication import InvalidAuthenticationError
+from routes.tags.swagger_tags import Tags
 
 # test url: https://login.ugent.be/login?service=https://localhost:8080/api/login
 login_router = APIRouter()
 
 
-@login_router.post("/login")
+@login_router.post("/login", tags=[Tags.LOGIN], summary="Starts a session for the user.")
 def login(
     ticket: str,
     session: Session = Depends(get_session),

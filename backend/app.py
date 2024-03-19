@@ -14,8 +14,9 @@ from routes.student import student_router
 from routes.subject import subject_router
 from routes.teacher import teacher_router
 from routes.user import users_router
+from routes.tags.swagger_tags import tags_metadata
 
-app = FastAPI(docs_url="/api/docs")
+app = FastAPI(docs_url="/api/docs", openapi_tags=tags_metadata)
 
 # Koppel routes uit andere modules.
 app.include_router(login_router, prefix="/api")
