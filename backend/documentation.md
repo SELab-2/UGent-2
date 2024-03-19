@@ -49,7 +49,7 @@ These universal dataclasses inherit the **Pydantic** BaseModel. It allows for au
 
 These constraints can be nested indefinitely. 
 
-The frontend should send a json file containing a `SubmissionConstraint`. Such a submission constraint hase a `root_constraint`
+The frontend should send a json file containing a `SubmissionConstraint`. Such a submission constraint has a `root_constraint`
 which is one of two things: A `FileConstraint` or a `Zipconstraint`, as a submission is OR a file, OR a zip file.
 A `FileConstraint` simply checks if a file with a certain name is present. The `ZipConstraint` also contains a name field specifying the name of the zip file, along
 with a list of either `FileConstrainst`, `DirectoryConstraint` or `NotPresentConstraints`. These can be mixed.
