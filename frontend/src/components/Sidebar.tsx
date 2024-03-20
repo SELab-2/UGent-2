@@ -14,11 +14,16 @@ export function Sidebar(): JSX.Element {
         <>
             <aside className={"menu is-flex is-flex-direction-column is-justify-content-space-between"}>
                 <ul className={"menu-list"}>
-                    <li><a><PiProjectorScreen/></a></li>
-                    <li><a><PiFolder/></a></li>
+                    <li>
+                        <a><PiProjectorScreen/></a>
+                    </li>
+                    <li>
+                        <a><PiFolder/></a>
+                    </li>
                 </ul>
                 <ul className={"menu-list"}>
-                    <li><a className={"is-transparent"} onClick={handleSettings}><IoMdSettings/></a>
+                    <li>
+                        <a className={"is-transparent"} onClick={handleSettings}><IoMdSettings/></a>
                     </li>
                 </ul>
             </aside>
