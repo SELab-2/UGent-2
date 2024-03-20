@@ -6,11 +6,12 @@ from domain.logic.subject import add_teacher_to_subject, create_subject, get_sub
 from domain.models.SubjectDataclass import SubjectDataclass, SubjectInput
 from domain.models.TeacherDataclass import TeacherDataclass
 from routes.dependencies.role_dependencies import get_authenticated_teacher
+from routes.tags.swagger_tags import Tags
 
 teacher_router = APIRouter()
 
 
-@teacher_router.get("/teacher/subjects")
+@teacher_router.get("/teacher/subjects", tags=[Tags.TEACHER], summary="Get all subjects the teacher manages.")
 def subjects_of_teacher_get(
     session: Session = Depends(get_session),
     teacher: TeacherDataclass = Depends(get_authenticated_teacher),
@@ -18,7 +19,7 @@ def subjects_of_teacher_get(
     return get_subjects_of_teacher(session, teacher.id)
 
 
-@teacher_router.post("/teacher/subjects")
+@teacher_router.post("/teacher/subjects", tags=[Tags.TEACHER], summary="Create a new subject.")
 def create_subject_post(
     subject: SubjectInput,
     teacher: TeacherDataclass = Depends(get_authenticated_teacher),
