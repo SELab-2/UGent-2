@@ -1,6 +1,6 @@
 import {useState} from "react";
 import {ViewProjectTeacherComponent} from "../../components/ViewProjectTeacherComponent.tsx";
-import {Project} from "../../types/project.ts";
+import {ProjectTeacher} from "../../types/project.ts";
 
 export function CreateProject() {
     const [projectName, setProjectName] = useState('');
@@ -14,7 +14,7 @@ export function CreateProject() {
     const [requiredFiles, setRequiredFiles] = useState('');
     const [otherFilesAllow, setOtherFilesAllow] = useState(false);
     const [groupProject, setGroupProject] = useState(false);
-    const project: Project = {
+    const project: ProjectTeacher = {
         projectName: projectName, setProjectName: setProjectName,
         courseName: courseName,
         setCourseName: setCourseName, hours: hours, setHours: setHours,

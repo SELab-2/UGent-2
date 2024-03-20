@@ -2,43 +2,33 @@ import {JSX} from "react";
 import FieldWithLabel from "./FieldWithLabel.tsx";
 import {FaCheck, FaUpload} from "react-icons/fa";
 import {FaDownload} from "react-icons/fa6";
-import {ProjectStatus} from "../pages/student/ProjectViewStudent.tsx";
+import {ProjectStatus, ProjectStudent} from "../types/project.ts";
 
-export default function ViewProjectStudentComponent(props: {
-    projectName: string,
-    courseName: string,
-    deadline: string,
-    status: ProjectStatus,
-    description: string,
-    requiredFiles: string[],
-    groupMembers: { name: string, email: string, lastSubmission: boolean }[],
-    maxGroupMembers: number,
-    submission: string | null
-}): JSX.Element {
+export default function ViewProjectStudentComponent(props: { project: ProjectStudent }): JSX.Element {
     return (
         <>
-            <FieldWithLabel fieldLabel={"Naam"} fieldBody={props.projectName} arrow={true}/>
-            <FieldWithLabel fieldLabel={"Vak"} fieldBody={props.courseName} arrow={true}/>
-            <FieldWithLabel fieldLabel={"Deadline"} fieldBody={props.deadline} arrow={true}/>
+            <FieldWithLabel fieldLabel={"Naam"} fieldBody={props.project.projectName} arrow={true}/>
+            <FieldWithLabel fieldLabel={"Vak"} fieldBody={props.project.courseName} arrow={true}/>
+            <FieldWithLabel fieldLabel={"Deadline"} fieldBody={props.project.deadline} arrow={true}/>
             <div className="field is-horizontal">
                 <div className="field-label">
                     <label className="label">{"> "}Status: </label>
                 </div>
                 <div className="field-body field">
-                    {props.status == ProjectStatus.FAILED &&
-                        <label className={"has-text-danger"}>{props.status}</label>}
-                    {props.status == ProjectStatus.SUCCESS &&
-                        <label className={"has-text-success"}>{props.status}</label>}
+                    {props.project.status == ProjectStatus.FAILED &&
+                        <label className={"has-text-danger"}>{props.project.status}</label>}
+                    {props.project.status == ProjectStatus.SUCCESS &&
+                        <label className={"has-text-success"}>{props.project.status}</label>}
                 </div>
             </div>
-            <FieldWithLabel fieldLabel={"Beschrijving"} fieldBody={props.description} arrow={false}/>
+            <FieldWithLabel fieldLabel={"Beschrijving"} fieldBody={props.project.description} arrow={false}/>
             <div className="field is-horizontal">
                 <div className="field-label">
                     <label className="label">Indiening(zip) moet bevatten:</label>
                 </div>
                 <div className="field-body">
                     <div className="field"> {/*Deze moet blijven, anders gaan de elementen in elkaar*/}
-                        {props.requiredFiles.map((file, index) => {
+                        {props.project.requiredFiles.map((file, index) => {
                             return <li key={index}>{file}</li>
                         })}
                     </div>
@@ -46,7 +36,8 @@ export default function ViewProjectStudentComponent(props: {
             </div>
             <div className="field is-horizontal">
                 <div className="field-label">
-                    <label className="label">Groepsleden({props.groupMembers.length}/{props.maxGroupMembers}): </label>
+                    <label
+                        className="label">Groepsleden({props.project.groupMembers.length}/{props.project.maxGroupMembers}): </label>
                 </div>
                 <div className="field-body field">
                     <table className={"table is-fullwidth"}>
@@ -58,7 +49,7 @@ export default function ViewProjectStudentComponent(props: {
                         </tr>
                         </thead>
                         <tbody>
-                        {props.groupMembers.map((member, index) => {
+                        {props.project.groupMembers.map((member, index) => {
                             return (<tr key={index}>
                                 <td>{member.name}</td>
                                 <td>{member.email}</td>
@@ -75,9 +66,9 @@ export default function ViewProjectStudentComponent(props: {
                 </div>
                 <div className="field-body">
                     <ul className="field"> {/* Deze moet blijven */}
-                        {props.submission != null &&
+                        {props.project.submission != null &&
                             <li className={"mb-3"}>
-                                <label className={"mr-3"}>{props.submission}</label>
+                                <label className={"mr-3"}>{props.project.submission}</label>
                                 <button className="button">
                                     <FaDownload/>
                                 </button>
@@ -90,7 +81,7 @@ export default function ViewProjectStudentComponent(props: {
                                     <span className="file-cta">
                                             <span className="file-icon"><FaUpload/></span>
                                             <span className="file-label">Kies een bestand</span>
-                                        </span>
+                                    </span>
                                     <span className="file-name">This_is_the_file.zip</span>
                                 </label>
                             </div>

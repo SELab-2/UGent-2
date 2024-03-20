@@ -5,10 +5,10 @@ import Calendar from "react-calendar";
 import 'react-calendar/dist/Calendar.css';
 import {FaUpload} from "react-icons/fa";
 import "../assets/styles/small_components.css";
-import {Project} from "../types/project.ts";
+import {ProjectTeacher} from "../types/project.ts";
 
 export function ViewProjectTeacherComponent(props: {
-    project: Project
+    project: ProjectTeacher
 }): JSX.Element {
 
     // helpers

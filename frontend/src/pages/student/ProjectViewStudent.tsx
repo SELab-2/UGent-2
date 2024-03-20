@@ -2,11 +2,7 @@ import {JSX} from "react";
 import {Header} from "../../components/Header.tsx";
 import {Sidebar} from "../../components/Sidebar.tsx";
 import ViewProjectStudent from "../../components/ViewProjectStudentComponent.tsx";
-
-export enum ProjectStatus {
-    FAILED = "Failed",
-    SUCCESS = "Succes",
-}
+import {ProjectStatus, ProjectStudent} from "../../types/project.ts";
 
 export default function ProjectViewStudent(): JSX.Element {
     const projectName: string = "Markov Decision Diagram"
@@ -21,6 +17,19 @@ export default function ProjectViewStudent(): JSX.Element {
         {name: "peter", email: "peter@ugent.be", lastSubmission: true}]
     const maxGroupMembers: number = 4
     const submission: string | null = "submission.zip"
+
+    const project: ProjectStudent = {
+        courseName: courseName,
+        deadline: deadline,
+        status: status,
+        description: description,
+        groupMembers: groupMembers,
+        maxGroupMembers: maxGroupMembers,
+        projectName: projectName,
+        requiredFiles: requiredFiles,
+        submission: submission
+    }
+
     return (
         <>
             <div className={"main-header"}>
@@ -31,14 +40,7 @@ export default function ProjectViewStudent(): JSX.Element {
                     <Sidebar/>
                 </div>
                 <div className={"student-main mt-6 mr-6"}>
-                    <ViewProjectStudent projectName={projectName} courseName={courseName} deadline={deadline}
-                                        status={status}
-                                        description={description}
-                                        requiredFiles={requiredFiles}
-                                        groupMembers={groupMembers}
-                                        maxGroupMembers={maxGroupMembers}
-                                        submission={submission}
-                    />
+                    <ViewProjectStudent project={project}/>
                 </div>
             </div>
         </>
