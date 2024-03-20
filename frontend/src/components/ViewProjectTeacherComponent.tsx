@@ -9,7 +9,7 @@ import "../assets/styles/small_components.css";
 type ValuePiece = Date | null; // nodig voor de deadline
 type Value = ValuePiece | [ValuePiece, ValuePiece]; // nodig voor de deadline
 
-export function ViewProjectTeaderComponent(props: {
+export function ViewProjectTeacherComponent(props: {
     projectName: string, setProjectName: React.Dispatch<React.SetStateAction<string>>,
     courseName: string, setCourseName: React.Dispatch<React.SetStateAction<string>>,
     hours: string, setHours: React.Dispatch<React.SetStateAction<string>>, //TODO dit aanpassen naar number
