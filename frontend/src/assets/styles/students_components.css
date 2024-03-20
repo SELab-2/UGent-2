@@ -1,5 +1,5 @@
 .student-main {
-    width: 96vw;
+    width: calc(100vw - var(--sidebar-width));
 }
 
 .student-left {

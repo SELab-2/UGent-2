@@ -1,26 +1,37 @@
+:root {
+    --sidebar-width: 8vh;
+}
+
 .main-header {
     width: 100vw;
     height: 8vh;
     background-color: #9c9afd;
+    overflow: hidden;
 }
 
 .main-nav {
     height: 100%;
+}
+
+.logo-div {
+    background-color: #3f63c8;
+    height: 100%;
+    width: var(--sidebar-width);
 
     img {
-        background-color: #5f63c8;
-        width: 4vw;
+        display: block;
+        width: 100%;
         height: 100%;
     }
 }
 
 .main-content {
     width: 100vw;
-    height: 92vh;
+    height: calc(100vh - var(--sidebar-width));
 }
 
 .side-bar {
-    width: 4vw;
+    width: var(--sidebar-width);
     background-color: #6a74ce;
 
     li {
