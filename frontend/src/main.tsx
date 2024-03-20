@@ -10,7 +10,10 @@ import HomeStudent from "./pages/student/HomeStudent.tsx";
 import HomeTeacher from "./pages/teacher/HomeTeacher.tsx";
 import 'bulma/css/bulma.min.css';
 import './assets/styles/mainpage.css'
-import studentLoader from "./dataloaders/StudentLoader.ts";
+import studentLoader, {STUDENT_ROUTER_ID} from "./dataloaders/StudentLoader.ts";
+import teacherLoader, {TEACHER_ROUTER_ID} from "./dataloaders/TeacherLoader.ts";
+import SubjectsTeacher from "./pages/teacher/SubjectsTeacher.tsx";
+import subjectsTeacherLoader, {SUBJECT_TEACHER_ROUTER_ID} from "./dataloaders/SubjectsTeacherLoader.ts";
 
 const router = createBrowserRouter([
     {
@@ -29,12 +32,20 @@ const router = createBrowserRouter([
     {
         path: "/student",
         element: <HomeStudent/>,
-        id: "student",
+        id: STUDENT_ROUTER_ID,
         loader: studentLoader
     },
     {
         path: "/teacher",
-        element: <HomeTeacher/>
+        element: <HomeTeacher/>,
+        id: TEACHER_ROUTER_ID,
+        loader: teacherLoader
+    },
+    {
+        path: "/teacher/courses",
+        element: <SubjectsTeacher/>,
+        id: SUBJECT_TEACHER_ROUTER_ID,
+        loader: subjectsTeacherLoader
     }
 ]);
 

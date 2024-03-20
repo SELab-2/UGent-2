@@ -4,6 +4,7 @@ export default function apiFetch(url: string, options?: RequestInit) {
     if (typeof options === 'undefined') {
         options = {}
     }
+    url = "/api" + url;
     if (DEBUG) {
         url = "http://127.0.0.1:8000" + url;
     }
