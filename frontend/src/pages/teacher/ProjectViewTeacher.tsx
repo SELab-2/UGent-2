@@ -1,7 +1,8 @@
 import {Header} from "../../components/Header.tsx";
 import {Sidebar} from "../../components/Sidebar.tsx";
 import {useState} from "react";
-import {ViewProjectTeaderComponent} from "../../components/ViewProjectTeaderComponent.tsx";
+import {ViewProjectTeacherComponent} from "../../components/ViewProjectTeacherComponent.tsx";
+import {Project} from "../../types/project.ts";
 
 export default function ProjecctViewTeacher() {
     const [projectName, setProjectName] = useState<string>("Markov Decision Diagram")
@@ -15,6 +16,21 @@ export default function ProjecctViewTeacher() {
     const [requiredFiles, setRequiredFiles] = useState('Diagram.dgr,verslag.pdf');
     const [otherFilesAllow, setOtherFilesAllow] = useState(true);
     const [groupProject, setGroupProject] = useState(true);
+    const project: Project = {
+        projectName: projectName, setProjectName: setProjectName,
+        courseName: courseName,
+        setCourseName: setCourseName, hours: hours, setHours: setHours,
+        minutes: minutes,
+        setMinutes: setMinutes,
+        deadline: deadlineValue,
+        setDeadline: deadlineChange, description: description,
+        setDescription: setDescription, requiredFiles: requiredFiles,
+        setRequiredFiles: setRequiredFiles,
+        otherFilesAllow: otherFilesAllow,
+        setOtherFilesAllow: setOtherFilesAllow,
+        groupProject: groupProject, setGroupProject: setGroupProject
+    }
+
     return (
         <>
             <div className={"main-header"}>
@@ -26,18 +42,7 @@ export default function ProjecctViewTeacher() {
                 </div>
                 <div className={"student-main mt-6 mr-6"}>
 
-                    <ViewProjectTeaderComponent projectName={projectName} setProjectName={setProjectName}
-                                                courseName={courseName}
-                                                setCourseName={setCourseName} hours={hours} setHours={setHours}
-                                                minutes={minutes}
-                                                setMinutes={setMinutes}
-                                                deadline={deadlineValue}
-                                                setDeadline={deadlineChange} description={description}
-                                                setDescription={setDescription} requiredFiles={requiredFiles}
-                                                setRequiredFiles={setRequiredFiles}
-                                                otherFilesAllow={otherFilesAllow}
-                                                setOtherFilesAllow={setOtherFilesAllow}
-                                                groupProject={groupProject} setGroupProject={setGroupProject}/>
+                    <ViewProjectTeacherComponent project={project}/>
 
                 </div>
             </div>

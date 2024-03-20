@@ -5,25 +5,15 @@ import Calendar from "react-calendar";
 import 'react-calendar/dist/Calendar.css';
 import {FaUpload} from "react-icons/fa";
 import "../assets/styles/small_components.css";
-
-type ValuePiece = Date | null; // nodig voor de deadline
-type Value = ValuePiece | [ValuePiece, ValuePiece]; // nodig voor de deadline
+import {Project} from "../types/project.ts";
 
 export function ViewProjectTeacherComponent(props: {
-    projectName: string, setProjectName: React.Dispatch<React.SetStateAction<string>>,
-    courseName: string, setCourseName: React.Dispatch<React.SetStateAction<string>>,
-    hours: string, setHours: React.Dispatch<React.SetStateAction<string>>, //TODO dit aanpassen naar number
-    minutes: string, setMinutes: React.Dispatch<React.SetStateAction<string>>, //TODO dit aanpassen naar number
-    deadline: Value, setDeadline: React.Dispatch<React.SetStateAction<Value>>, // TODO dit aanpassen naar Date of iets anders
-    description: string, setDescription: React.Dispatch<React.SetStateAction<string>>,
-    requiredFiles: string, setRequiredFiles: React.Dispatch<React.SetStateAction<string>>,
-    otherFilesAllow: boolean, setOtherFilesAllow: React.Dispatch<React.SetStateAction<boolean>>,
-    groupProject: boolean, setGroupProject: React.Dispatch<React.SetStateAction<boolean>>
+    project: Project
 }): JSX.Element {
 
     // helpers
-    const [showCalender, setCalender] = useState(props.deadline !== null);
-    const [showGroup, setGroup] = useState(props.groupProject);
+    const [showCalender, setCalender] = useState(props.project.deadline !== null);
+    const [showGroup, setGroup] = useState(props.project.groupProject);
 
     const expandDeadline = () => {
         setCalender(!showCalender);
@@ -31,7 +21,7 @@ export function ViewProjectTeacherComponent(props: {
 
     const expandGroup = (checked: boolean) => {
         setGroup(!showGroup);
-        props.setGroupProject(checked);
+        props.project.setGroupProject(checked);
     };
 
     const hours_array = Array.from({length: 24}, (_, index) => index.toString().padStart(2, '0'));
@@ -46,8 +36,8 @@ export function ViewProjectTeacherComponent(props: {
                     <label className="label">Project naam:</label>
                 </div>
                 <div className="field-body field">
-                    <Inputfield placeholder="Geef een naam in" value={props.projectName}
-                                setValue={props.setProjectName}/>
+                    <Inputfield placeholder="Geef een naam in" value={props.project.projectName}
+                                setValue={props.project.setProjectName}/>
                 </div>
             </div>
             {/* COURSE NAME FIELD */}
@@ -56,8 +46,8 @@ export function ViewProjectTeacherComponent(props: {
                     <label className="label">Vak:</label>
                 </div>
                 <div className="field-body field">
-                    <SelectionBox options={["vak1", "vak2", "vak3"]} value={props.courseName}
-                                  setValue={props.setCourseName}/>
+                    <SelectionBox options={["vak1", "vak2", "vak3"]} value={props.project.courseName}
+                                  setValue={props.project.setCourseName}/>
                 </div>
             </div>
             {/* DEADLINE FIELD */}
@@ -70,12 +60,13 @@ export function ViewProjectTeacherComponent(props: {
                         <input type="checkbox" onChange={expandDeadline} checked={showCalender}/>
                         {showCalender &&
                             <>
-                                <Calendar onChange={e => props.setDeadline(e)} value={props.deadline}/>
+                                <Calendar onChange={e => props.project.setDeadline(e)} value={props.project.deadline}/>
                                 <div className="is-horizontal field">
-                                    <SelectionBox options={hours_array} value={props.hours} setValue={props.setHours}/>
+                                    <SelectionBox options={hours_array} value={props.project.hours}
+                                                  setValue={props.project.setHours}/>
                                     <label className={"title ml-3 mr-3"}>:</label>
-                                    <SelectionBox options={minutes_array} value={props.minutes}
-                                                  setValue={props.setMinutes}/>
+                                    <SelectionBox options={minutes_array} value={props.project.minutes}
+                                                  setValue={props.project.setMinutes}/>
                                 </div>
                             </>
                         }
@@ -89,8 +80,8 @@ export function ViewProjectTeacherComponent(props: {
                 <div className="field-body field">
                     <div style={{width: "33%"}}> {/* Deze moet er blijven, anders doet css raar*/}
                         <textarea className="textarea" placeholder="Optionele beschrijving van het project"
-                                  value={props.description}
-                                  onChange={e => props.setDescription(e.target.value)}/>
+                                  value={props.project.description}
+                                  onChange={e => props.project.setDescription(e.target.value)}/>
                     </div>
                 </div>
             </div>
@@ -124,13 +115,14 @@ export function ViewProjectTeacherComponent(props: {
                         <label>Specifieer welke files de ingediende zip moet bevatten. Splits per komma.</label>
                         <br/>
                         <Inputfield placeholder="vb: diagram.dgr,verslag.pdf,textbestand.txt"
-                                    value={props.requiredFiles}
-                                    setValue={props.setRequiredFiles}/>
+                                    value={props.project.requiredFiles}
+                                    setValue={props.project.setRequiredFiles}/>
                         <br/>
                         <div className="field is-horizontal">
                             <div className="field-label">
-                                <input type="checkbox" onChange={e => props.setOtherFilesAllow(e.target.checked)}
-                                       checked={props.otherFilesAllow}/>
+                                <input type="checkbox"
+                                       onChange={e => props.project.setOtherFilesAllow(e.target.checked)}
+                                       checked={props.project.otherFilesAllow}/>
                             </div>
                             <div className="field-body">
                                 <label className="label is-fullwidth">ook andere files toegelaten</label>
@@ -146,7 +138,7 @@ export function ViewProjectTeacherComponent(props: {
                 <div className="field-body">
                     <label>
                         <input type="checkbox" onChange={e => expandGroup(e.target.checked)}
-                               checked={props.groupProject}/>
+                               checked={props.project.groupProject}/>
                         {showGroup &&
                             <>
                                 <div className="field is-horizontal">

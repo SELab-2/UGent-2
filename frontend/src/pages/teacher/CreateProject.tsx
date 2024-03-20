@@ -1,5 +1,6 @@
 import {useState} from "react";
-import {ViewProjectTeaderComponent} from "../../components/ViewProjectTeaderComponent.tsx";
+import {ViewProjectTeacherComponent} from "../../components/ViewProjectTeacherComponent.tsx";
+import {Project} from "../../types/project.ts";
 
 export function CreateProject() {
     const [projectName, setProjectName] = useState('');
@@ -13,15 +14,21 @@ export function CreateProject() {
     const [requiredFiles, setRequiredFiles] = useState('');
     const [otherFilesAllow, setOtherFilesAllow] = useState(false);
     const [groupProject, setGroupProject] = useState(false);
+    const project: Project = {
+        projectName: projectName, setProjectName: setProjectName,
+        courseName: courseName,
+        setCourseName: setCourseName, hours: hours, setHours: setHours,
+        minutes: minutes,
+        setMinutes: setMinutes,
+        deadline: deadlineValue,
+        setDeadline: deadlineChange, description: description,
+        setDescription: setDescription, requiredFiles: requiredFiles,
+        setRequiredFiles: setRequiredFiles,
+        otherFilesAllow: otherFilesAllow,
+        setOtherFilesAllow: setOtherFilesAllow,
+        groupProject: groupProject, setGroupProject: setGroupProject
+    }
     return (
-        <ViewProjectTeaderComponent projectName={projectName} setProjectName={setProjectName} courseName={courseName}
-                                    setCourseName={setCourseName} hours={hours} setHours={setHours} minutes={minutes}
-                                    setMinutes={setMinutes}
-                                    deadline={deadlineValue}
-                                    setDeadline={deadlineChange} description={description}
-                                    setDescription={setDescription} requiredFiles={requiredFiles}
-                                    setRequiredFiles={setRequiredFiles}
-                                    otherFilesAllow={otherFilesAllow} setOtherFilesAllow={setOtherFilesAllow}
-                                    groupProject={groupProject} setGroupProject={setGroupProject}/>
+        <ViewProjectTeacherComponent project={project}/>
     )
 }
