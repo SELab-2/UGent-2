@@ -9,7 +9,7 @@
 }
 
 .project-card {
-    background-color: #9c9afd !important;
+    background-color: var(--primary-light) !important;
     width: 25vw;
     height: 25vh;
 }
@@ -34,7 +34,7 @@
 }
 
 .deadline-head {
-    background-color: #5f63c8;
+    background-color: var(--primary-dark);
     border-radius: 0.50rem 0.50rem 0 0;
 }
 
@@ -45,6 +45,6 @@
 }
 
 .deadline-card {
-    background-color: #9c9afd;
+    background-color: var(--primary-light);
     border-bottom: thin solid;
 }

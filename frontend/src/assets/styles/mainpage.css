@@ -1,11 +1,13 @@
 :root {
     --sidebar-width: 8vh;
+    --primary-dark: #6a74ce;
+    --primary-light: #9c9afd;
 }
 
 .main-header {
     width: 100vw;
     height: 8vh;
-    background-color: #9c9afd;
+    background-color: var(--primary-light);
     overflow: hidden;
 }
 
@@ -32,7 +34,7 @@
 
 .side-bar {
     width: var(--sidebar-width);
-    background-color: #6a74ce;
+    background-color: var(--primary-dark);
 
     li {
         height: 10vh;
