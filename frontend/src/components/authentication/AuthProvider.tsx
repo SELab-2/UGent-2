@@ -9,7 +9,7 @@ interface Props {
 }
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({children}: Props) => {
-    const [user, setUser] = useState<User | undefined>({id: -1, name: "", email: "", roles: []})
+    const [user, setUser] = useState<User | undefined>(undefined)
     const [loading, setLoading] = useState(false)
 
     /*
