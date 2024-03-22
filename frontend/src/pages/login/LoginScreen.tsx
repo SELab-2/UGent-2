@@ -1,102 +1,59 @@
-import {JSX, useEffect, useState} from "react";
-import {Navigate, useLocation, useNavigate} from 'react-router-dom';
+import {JSX} from "react";
+import {Navigate, useLocation} from 'react-router-dom';
 import delphi_full from '../../assets/images/delphi_full.png';
 import useAuth from "../../hooks/useAuth.ts";
-import User, {Token} from "../../utils/ApiInterfaces.ts";
 
 interface location_type {
     search?: { ticket?: string },
-    state?: { from?: { pathname: string } }
+    state?: { from?: { pathname: string } },
+    pathname: string
 }
 
 export default function LoginScreen(): JSX.Element {
-    const {isAuthenticated, login} = useAuth();
     const location = useLocation() as location_type;
+    const params = new URLSearchParams(location.search);
 
-    let from = "/"
-    if (location.state?.from?.pathname) {
-        from = location.state.from.pathname
+    const next: string = location.state?.from?.pathname || localStorage.getItem("to") || '/'
+    const ticket = params.get('ticket');
+    const {ticketLogin, user, login, loading} = useAuth();
+
+    localStorage.setItem('to', next)
+    if (!loading && localStorage.getItem('token')) {
+        login()
+    } else if (!loading && !user && ticket) {
+        localStorage.setItem('to', next)
+        ticketLogin(ticket)
     }
-    console.log("from: "+from)
-    const navigate = useNavigate();
-    const [ticket, setTicket] = useState('');
-    const [token, setToken] = useState<string | undefined>('')
 
-    useEffect(() => {
-        // console.log('hello from', location);
-        const params = new URLSearchParams(location.search);
-        const ticket = params.get('ticket');
-        if (ticket) {
-            setTicket(ticket);
-        }
-    }, [location]);
+    return <div>
+        {loading && <h1>You will be redirected soon, please wait.</h1>}
+        {(!loading && user) &&
+            <div><Navigate to={next}/></div>}
+        {(!user && !loading) &&
+            <div className="card">
+                <div className="card-image">
+                    <figure className="image is-128x128">
+                        <img src={delphi_full} alt="Delphi logo"/>
+                    </figure>
+                </div>
+                <section className="section">
+                    <h1 className="title">Welcome to Delphi!</h1>
+                    <h2 className="subtitle">
+                        This page is still work in progress. But if you click <strong>the big green button
+                        below </strong>to
+                        log in with your UGent account, it will display your token :)
+                    </h2>
+                    <a className="button is-primary"
+                        // href="https://login.ugent.be/login?service=https://sel2-2.ugent.be/login"
+                       href="https://login.ugent.be/login?service=https://localhost:8080/login"
+                    >Log in</a>
 
-    useEffect(() => {
-        async function loginUser() {
-            //await apiFetch(`/api/login?ticket=${ticket}`, {
-            await fetch(`http://127.0.0.1:8000/api/login?ticket=${ticket}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            })
-                .then(async response => (await response.json() as Token))
-                .then(data => setToken(data.token))
-        }
-
-        if (ticket) {
-            void loginUser()
-        }
-
-    }, [ticket]);
-
-    useEffect(() => {
-        async function retrieveUser() {
-            //await fetch(`/api/login?ticket=${ticket}`, {
-
-            await fetch(`http://127.0.0.1:8000/api/user`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'cas': "" + token
-                },
-            })
-                .then(async response => (await response.json()) as User)
-                .then(user => {
-                    login({id: user.id, name: user.name, email: user.email, roles: user.roles}, token)
-                })
-        }
-
-        if (token) {
-            void retrieveUser()
-        }
-    }, [from, login, navigate, token]);
-
-    return (
-        <div className="card">
-            <div className="card-image">
-                <figure className="image is-128x128">
-                    <img src={delphi_full} alt="Delphi logo"/>
-                </figure>
+                    <a className="button is-ghost"
+                        // href="https://login.ugent.be/login?service=https://sel2-2.ugent.be/login"
+                       href="/student"
+                    >Take me straight to the student page instead</a>
+                </section>
             </div>
-            <section className="section">
-                <h1 className="title">Welcome to Delphi!</h1>
-                <h2 className="subtitle">
-                    This page is still work in progress. But if you click <strong>the big green button
-                    below </strong>to
-                    log in with your UGent account, it will display your token :)
-                </h2>
-                <a className="button is-primary"
-                    // href="https://login.ugent.be/login?service=https://sel2-2.ugent.be/login"
-                   href="https://login.ugent.be/login?service=https://localhost:8080/login"
-                >Log in</a>
-
-                <a className="button is-ghost"
-                    // href="https://login.ugent.be/login?service=https://sel2-2.ugent.be/login"
-                   href="/student"
-                >Take me straight to the student page instead</a>
-            </section>
-            {isAuthenticated && <Navigate to={from}/>}
-        </div>
-    )
+        }
+    </div>
 }

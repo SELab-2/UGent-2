@@ -16,12 +16,12 @@ import studentLoader from "./dataloaders/StudentLoader.ts";
 
 createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
-        <AuthProvider>
-            <BrowserRouter>
+        <BrowserRouter>
+            <AuthProvider>
                 <Routes>
                     {/* Public routes */}
-                    <Route path={"/login"} element={<LoginScreen/>}/>
-                    <Route path={"/unauthorized"} element={<header>Unauthorized</header>}/>
+                    <Route path={"login"} element={<LoginScreen/>}/>
+                    <Route path={"unauthorized"} element={<header>Unauthorized</header>}/>
 
                     {/* Protected routes */}
                     <Route element={<RequireAuth allowedRoles={['ADMIN', 'STUDENT', 'TEACHER']}/>}>
@@ -40,9 +40,9 @@ createRoot(document.getElementById('root')!).render(
                         <Route path={"teacher"} element={<HomeTeacher/>}/>
                     </Route>
 
-                    <Route path={"*"} errorElement={<ErrorPage/>}/>
+                    <Route path={"*"} element={<ErrorPage/>}/>
                 </Routes>
-            </BrowserRouter>
-        </AuthProvider>
+            </AuthProvider>
+        </BrowserRouter>
     </React.StrictMode>,
 )

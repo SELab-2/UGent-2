@@ -4,11 +4,8 @@ import {Sidebar} from "../../components/Sidebar.tsx";
 import ProjectCardStudent from "./ProjectCardStudent.tsx";
 import '../../assets/styles/students_components.css'
 import DeadlineTable from "./DeadlineTable.tsx";
-import useAuth from "../../hooks/useAuth.ts";
 
 export default function HomeStudent(): JSX.Element {
-    const {user} = useAuth()
-    console.log(user?.name)
     // data contains a list of Project in data.projects (i think)
     //const data: studentLoaderObject = useRouteLoaderData("student") as studentLoaderObject
     //console.log(data) // TODO: remove

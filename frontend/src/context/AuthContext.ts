@@ -3,9 +3,10 @@ import {AuthContextType} from "../types/auth.ts";
 
 export const AuthContext = createContext<AuthContextType>(
     {
-        isAuthenticated: false,
+        loading: false,
         login: () => {},
-        logout: () => {}
+        logout: () => {},
+        ticketLogin: () => {}
     });
 
 
