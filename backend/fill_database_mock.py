@@ -49,7 +49,7 @@ if __name__ == "__main__":
                     + "twee spelers om de bedenktijd te meten. Een speler moet een aantal zetten binnen een bepaalde"
                     + "tijd doen, of alle zetten binnen de aangegeven tijd, of eerst een aantal zetten binnen een"
                     + "bepaalde tijd en de resterende zetten binnen een bepaalde tijd. Een speler die zijn tijd"
-                    + "overschrijdt, verliest de partij. Hij ging \"door zijn vlag\".\n"
+                    + "overschrijdt, verliest de partij. Hij ging \"door zijn vlag\".\n\n\n"
                     + "Een wedstrijdklok kan worden gebruikt bij dammen, go, schaken en andere bordspellen."
                     + "Men kan dus ook van schaakklok, damklok, goklok of iets anders spreken, maar het gaat om"
                     + "hetzelfde apparaat en wedstrijdklok is de gebruikelijke benaming.",
@@ -196,7 +196,7 @@ if __name__ == "__main__":
         group_id=groep6_algo.id,
         message="Nog wat werk",
         state=SubmissionState.Rejected,
-        date_time=datetime(2024, 3, 22, 23, 57, 34, tz.LOCAL),
+        date_time=datetime(2024, 3, 22, 23, 57, 34, tzinfo=tz.LOCAL),
     )
 
     # make a student an assistant
