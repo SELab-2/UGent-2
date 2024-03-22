@@ -118,6 +118,8 @@ if __name__ == "__main__":
     add_teacher_to_subject(session, teacher3.id, objeprog.id)
 
     # Add students to subjects
+
+    # noinspection DuplicatedCode
     add_student_to_subject(session, student1.id, objeprog.id)
     add_student_to_subject(session, student2.id, objeprog.id)
     add_student_to_subject(session, student3.id, objeprog.id)
@@ -126,6 +128,7 @@ if __name__ == "__main__":
     add_student_to_subject(session, student6.id, objeprog.id)
     add_student_to_subject(session, student1.id, algoritmen.id)
     add_student_to_subject(session, student2.id, algoritmen.id)
+    # noinspection DuplicatedCode
     add_student_to_subject(session, student3.id, algoritmen.id)
     add_student_to_subject(session, student4.id, algoritmen.id)
     add_student_to_subject(session, student5.id, algoritmen.id)
@@ -136,6 +139,7 @@ if __name__ == "__main__":
     add_student_to_subject(session, student4.id, webtech.id)
 
     # Add students to groups
+    # noinspection DuplicatedCode
     add_student_to_group(session, student1.id, groep1_objprog.id)
     add_student_to_group(session, student2.id, groep1_objprog.id)
     add_student_to_group(session, student3.id, groep1_objprog.id)
@@ -144,6 +148,8 @@ if __name__ == "__main__":
 
     add_student_to_group(session, student4.id, groep1_algo.id)
     add_student_to_group(session, student5.id, groep2_algo.id)
+
+    # noinspection DuplicatedCode
     add_student_to_group(session, student6.id, groep3_algo.id)
     add_student_to_group(session, student1.id, groep4_algo.id)
     add_student_to_group(session, student2.id, groep5_algo.id)
