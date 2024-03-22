@@ -11,7 +11,7 @@ export function Header(props: { page_title: string }): JSX.Element {
                     <img src={"/logo.png"} alt={"image"}/>
                 </Link>
             </div>
-            <p className={"is-align-self-center"}><p>props.page_title</p></p>
+            <p className={"is-align-self-center"}><p>{props.page_title}</p></p>
             <button className={"button mx-2 is-transparent"}>
                 <div className={"icon-text"}>
                     <p>Username</p>
