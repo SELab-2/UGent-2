@@ -7,9 +7,13 @@ from db.extensions import Base, engine
 from domain.logic.admin import create_admin
 from domain.logic.group import add_student_to_group, create_group
 from domain.logic.project import create_project
+from domain.logic.role_enum import Role
 from domain.logic.student import create_student
 from domain.logic.subject import add_student_to_subject, add_teacher_to_subject, create_subject
 from domain.logic.teacher import create_teacher
+from domain.logic.submission import create_submission
+from domain.models.SubmissionDataclass import SubmissionState
+from domain.logic.user import modify_user_roles
 
 if __name__ == "__main__":
     Base.metadata.create_all(engine)
@@ -30,8 +34,28 @@ if __name__ == "__main__":
         visible=True,
         description="Maak iets in JavaFX",
         requirements="Een zip bestand met Java-code",
-        max_students=2,
+        max_students=3,
         deadline=datetime(2024, 12, 31, 23, 59, 59, tzinfo=tz.LOCAL),
+    )
+
+    objprog_project_2 = create_project(
+        session=session,
+        subject_id=objeprog.id,
+        name="Schaakklok",
+        archived=True,
+        visible=True,
+        description="Een wedstrijdklok is een apparaat waarbij in één behuizing twee uurwerken zijn aangebracht zodanig"
+                    + "dat er slechts één tegelijk kan lopen. Een wedstrijdklok wordt gebruikt bij een bordspel voor"
+                    + "twee spelers om de bedenktijd te meten. Een speler moet een aantal zetten binnen een bepaalde"
+                    + "tijd doen, of alle zetten binnen de aangegeven tijd, of eerst een aantal zetten binnen een"
+                    + "bepaalde tijd en de resterende zetten binnen een bepaalde tijd. Een speler die zijn tijd"
+                    + "overschrijdt, verliest de partij. Hij ging \"door zijn vlag\".\n"
+                    + "Een wedstrijdklok kan worden gebruikt bij dammen, go, schaken en andere bordspellen."
+                    + "Men kan dus ook van schaakklok, damklok, goklok of iets anders spreken, maar het gaat om"
+                    + "hetzelfde apparaat en wedstrijdklok is de gebruikelijke benaming.",
+        requirements="Een bestand genaamd klok.java",
+        max_students=999,
+        deadline=datetime(2024, 2, 29, 00, tzinfo=tz.LOCAL),
     )
 
     algo_project = create_project(
@@ -42,7 +66,7 @@ if __name__ == "__main__":
         visible=True,
         description="Implementeer verschillende sorteeralgoritmen",
         requirements="Code in Python",
-        max_students=3,
+        max_students=1,
         deadline=datetime(2024, 11, 15, 23, 59, 59, tzinfo=tz.LOCAL),
     )
 
@@ -60,8 +84,16 @@ if __name__ == "__main__":
 
     # Create groups for projects
     groep1_objprog = create_group(session, objprog_project.id)
+    groep2_objprog = create_group(session, objprog_project.id)
+    groep3_objprog = create_group(session, objprog_project.id)
+    groep1_algo = create_group(session, algo_project.id)
     groep2_algo = create_group(session, algo_project.id)
-    groep3_web = create_group(session, web_project.id)
+    groep3_algo = create_group(session, algo_project.id)
+    groep4_algo = create_group(session, algo_project.id)
+    groep5_algo = create_group(session, algo_project.id)
+    groep6_algo = create_group(session, algo_project.id)
+    groep1_web = create_group(session, web_project.id)
+    groep2_web = create_group(session, web_project.id) # empty group
 
     # Create students
     student1 = create_student(session, "Lukas", "lukas@gmail.com")
@@ -69,6 +101,7 @@ if __name__ == "__main__":
     student3 = create_student(session, "Matthias", "matthias@gmail.com")
     student4 = create_student(session, "Eva", "eva@gmail.com")
     student5 = create_student(session, "Emma", "emma@gmail.com")
+    student6 = create_student(session, "Robbe", "robbe@gmail.com")
 
     # Create teachers
     teacher1 = create_teacher(session, "Kris Coolsaet", "kris.coolsaet@ugent.be")
@@ -82,19 +115,92 @@ if __name__ == "__main__":
     add_teacher_to_subject(session, teacher1.id, objeprog.id)
     add_teacher_to_subject(session, teacher2.id, algoritmen.id)
     add_teacher_to_subject(session, teacher3.id, webtech.id)
+    add_teacher_to_subject(session, teacher3.id, objeprog.id)
 
+    # Add students to subjects
     add_student_to_subject(session, student1.id, objeprog.id)
+    add_student_to_subject(session, student2.id, objeprog.id)
+    add_student_to_subject(session, student3.id, objeprog.id)
+    add_student_to_subject(session, student4.id, objeprog.id)
+    add_student_to_subject(session, student5.id, objeprog.id)
+    add_student_to_subject(session, student6.id, objeprog.id)
+    add_student_to_subject(session, student1.id, algoritmen.id)
+    add_student_to_subject(session, student2.id, algoritmen.id)
+    add_student_to_subject(session, student3.id, algoritmen.id)
+    add_student_to_subject(session, student4.id, algoritmen.id)
+    add_student_to_subject(session, student5.id, algoritmen.id)
+    add_student_to_subject(session, student6.id, algoritmen.id)
+    add_student_to_subject(session, student1.id, webtech.id)
+    add_student_to_subject(session, student2.id, webtech.id)
+    add_student_to_subject(session, student3.id, webtech.id)
+    add_student_to_subject(session, student4.id, webtech.id)
 
     # Add students to groups
     add_student_to_group(session, student1.id, groep1_objprog.id)
     add_student_to_group(session, student2.id, groep1_objprog.id)
     add_student_to_group(session, student3.id, groep1_objprog.id)
+    add_student_to_group(session, student4.id, groep2_objprog.id)
+    add_student_to_group(session, student5.id, groep2_objprog.id)
 
-    add_student_to_group(session, student4.id, groep2_algo.id)
+    add_student_to_group(session, student4.id, groep1_algo.id)
     add_student_to_group(session, student5.id, groep2_algo.id)
+    add_student_to_group(session, student6.id, groep3_algo.id)
+    add_student_to_group(session, student1.id, groep4_algo.id)
+    add_student_to_group(session, student2.id, groep5_algo.id)
+    add_student_to_group(session, student3.id, groep6_algo.id)
 
-    add_student_to_group(session, student1.id, groep3_web.id)
-    add_student_to_group(session, student3.id, groep3_web.id)
-    add_student_to_group(session, student5.id, groep3_web.id)
+    add_student_to_group(session, student1.id, groep1_web.id)
+    add_student_to_group(session, student3.id, groep1_web.id)
+    add_student_to_group(session, student5.id, groep1_web.id)
+
+    # Create submissions (one per group)
+    create_submission(
+        session=session,
+        student_id=student1.id,
+        group_id=groep1_objprog.id,
+        message="Eerste versie",
+        state=SubmissionState.Rejected,
+        date_time=datetime(2024, 3, 22, 22, 55, 3, tzinfo=tz.LOCAL),
+    )
+
+    create_submission(
+        session=session,
+        student_id=student5.id,
+        group_id=groep2_objprog.id,
+        message="",
+        state=SubmissionState.Pending,
+        date_time=datetime(2024, 3, 22, 22, 57, 34, tzinfo=tz.LOCAL),
+    )
+
+    create_submission(
+        session=session,
+        student_id=student4.id,
+        group_id=groep1_algo.id,
+        message="Optimalisatie + enkele bug fixes",
+        state=SubmissionState.Approved,
+        date_time=datetime(2024, 3, 21, 7, 59, 13, tzinfo=tz.LOCAL),
+    )
+
+    create_submission(
+        session=session,
+        student_id=student2.id,
+        group_id=groep5_algo.id,
+        message="Klaar is kees!",
+        state=SubmissionState.Approved,
+        date_time=datetime(2024, 2, 1, 12, 20, 45, tzinfo=tz.LOCAL),
+    )
+
+    create_submission(
+        session=session,
+        student_id=student3.id,
+        group_id=groep6_algo.id,
+        message="Nog wat werk",
+        state=SubmissionState.Rejected,
+        date_time=datetime(2024, 3, 22, 23, 57, 34, tz.LOCAL),
+    )
+
+    # make a student an assistant
+    modify_user_roles(session, student6.id, [Role.TEACHER])
+    add_teacher_to_subject(session, student6.id, webtech.id)
 
     session.commit()
