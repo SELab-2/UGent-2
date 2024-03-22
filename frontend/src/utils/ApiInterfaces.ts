@@ -20,9 +20,16 @@ export interface Token {
     token?: string
 }
 
-export default interface User {
+export interface User {
     id: number,
     name: string,
     email: string,
     roles: string[]
+}
+
+export interface properSubject {
+    id: number,
+    name: string,
+    active_projects: number,
+    first_deadline: Date | null | string
 }

@@ -16,9 +16,11 @@ const ApiFetch = async (url: string, options?: RequestInit,) => {
         }
     }
 
+    //url = "/api" + url;
     if (DEBUG) {
         url = "http://127.0.0.1:8000" + url;
     }
+  
     return fetch(url, options).then(response => {
         if (response.status == 401){
             logout()
