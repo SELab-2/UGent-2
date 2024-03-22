@@ -1,6 +1,6 @@
 import React, {ReactNode, useState} from "react";
 import {AuthContext} from "../../context/AuthContext.ts";
-import User, {Token} from "../../utils/ApiInterfaces.ts";
+import {Token, User} from "../../utils/ApiInterfaces.ts";
 import apiFetch from "../../utils/ApiFetch.ts";
 import {DEBUG} from "../../pages/root.tsx";
 
@@ -9,7 +9,7 @@ interface Props {
 }
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({children}: Props) => {
-    const [user, setUser] = useState<User | undefined>(undefined)
+    const [user, setUser] = useState<User | undefined>({id: -1, name: "", email: "", roles: []})
     const [loading, setLoading] = useState(false)
 
     /*

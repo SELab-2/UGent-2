@@ -9,7 +9,7 @@ export function Header(props: { page_title: string }): JSX.Element {
             <Link to={"/"} className={"main-nav"}>
                 <img src={"/logo.png"} alt={"image"}/>
             </Link>
-            <p className={"is-align-self-center"}><p>Home</p></p>
+            <p className={"is-align-self-center"}><p>{props.page_title}</p></p>
             <button className={"button mx-2 is-transparent"}>
                 <div className={"icon-text"}>
                     <p>Username</p>

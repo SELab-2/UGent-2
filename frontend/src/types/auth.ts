@@ -1,4 +1,4 @@
-import User from "../utils/ApiInterfaces.ts";
+import {User} from "../utils/ApiInterfaces.ts";
 
 export type AuthContextType = {
     user?: User,

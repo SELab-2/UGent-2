@@ -1,3 +1,4 @@
+import {isRouteErrorResponse, useRouteError} from "react-router-dom";
 import {JSX} from 'react';
 import {BiError} from "react-icons/bi";
 
@@ -24,4 +25,30 @@ export default function ErrorPage(): JSX.Element {
         </div>
     )
         ;
+}
+
+interface RouterError extends Error {
+}
+
+function isRouterError(object: unknown): object is RouterError {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
+    return 'message' in object;
+}
+
+function errorMessage(error: unknown): string {
+    if (isRouteErrorResponse(error)) {
+        if (error.status === 404) {
+            return "404: The page you are looking for does not exist."
+        } else {
+            return `${error.status} ${error.statusText}`
+        }
+    } else if (error != undefined && isRouterError(error)) {
+        return error.message;
+    } else if (typeof error === 'string') {
+        return error
+    } else {
+        console.error(error) //TODO doe weg
+        return 'Unknown error'
+    }
 }
