@@ -1,34 +1,52 @@
+:root {
+    --sidebar-width: 80px;
+    --primary-dark: #6a74ce;
+    --primary-light: #9c9afd;
+}
+
 .main-header {
     width: 100vw;
-    height: 8vh;
-    background-color: #9c9afd;
+    height: var(--sidebar-width);
+    background-color: var(--primary-light);
+    overflow: hidden;
 }
 
 .main-nav {
     height: 100%;
+}
+
+.logo-div {
+    background-color: #5f63c8;
+    height: 100%;
+    width: var(--sidebar-width);
 
     img {
-        background-color: #5f63c8;
-        width: 4vw;
+        display: block;
+        width: 100%;
         height: 100%;
     }
 }
 
 .main-content {
     width: 100vw;
-    height: 92vh;
+    height: calc(100vh - var(--sidebar-width));
 }
 
 .side-bar {
-    width: 4vw;
-    background-color: #6a74ce;
+    width: var(--sidebar-width);
+    background-color: var(--primary-dark);
 
     li {
-        height: 10vh;
+        height: 100%;
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: 5%;
+        /*padding: 5%;*/
+
+        a {
+            transform: scale(1.5);
+            font-size: 1em;
+        }
     }
 }
 
