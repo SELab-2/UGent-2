@@ -9,6 +9,7 @@ class ConstraintType(Enum):
     FILE = "FILE"
     NOT_PRESENT = "NOT_PRESENT"
     DIRECTORY = "DIRECTORY"
+    ONLY_PRESENT = "ONLY_PRESENT"
     ZIP = "ZIP"
     SUBMISSION = "SUBMISSION"
 
@@ -39,6 +40,13 @@ class NotPresentConstraintResult(ConstraintResult):
 class DirectoryConstraintResult(ConstraintResult):
     type: ConstraintType = ConstraintType.DIRECTORY
     sub_constraint_results: list[ConstraintResult]
+
+
+class OnlyPresentDirectoryConstraintResult(ConstraintResult):
+    type: ConstraintType = ConstraintType.ONLY_PRESENT
+    sub_constraint_results: list[ConstraintResult]
+    should_be_in_but_are_not: list[str]
+    should_not_be_in_but_are: list[str]
 
 
 class ZipConstraintResult(ConstraintResult):

@@ -8,7 +8,8 @@ from domain.simple_submission_checks.constraints.constraint_result import FileCo
 
 
 class FileConstraint(BaseModel):
-    type: Literal["file_constraint"]
+    type: Literal["file_constraint"] = "file_constraint"
+    sub_constraints: list = []
     name: str
 
     def validate_constraint(self, path: Path) -> FileConstraintResult:

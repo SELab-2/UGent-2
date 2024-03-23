@@ -10,12 +10,13 @@ from domain.simple_submission_checks.constraints.constraint_result import Constr
 from domain.simple_submission_checks.constraints.directory_constraint import DirectoryConstraint
 from domain.simple_submission_checks.constraints.file_constraint import FileConstraint
 from domain.simple_submission_checks.constraints.not_present_constraint import NotPresentConstraint
+from domain.simple_submission_checks.constraints.only_present_constraint import OnlyPresentConstraint
 
 
 class ZipConstraint(BaseModel):
-    type: Literal["zip_constraint"]
+    type: Literal["zip_constraint"] = "zip_constraint"
     name: str
-    sub_constraints: list[DirectoryConstraint | FileConstraint | NotPresentConstraint]
+    sub_constraints: list[DirectoryConstraint | FileConstraint | NotPresentConstraint | OnlyPresentConstraint]
 
     def validate_constraint(self, path: Path) -> ConstraintResult:
         directory = os.listdir(path)

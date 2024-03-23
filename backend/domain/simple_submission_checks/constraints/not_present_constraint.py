@@ -8,7 +8,8 @@ from domain.simple_submission_checks.constraints.constraint_result import Constr
 
 
 class NotPresentConstraint(BaseModel):
-    type: Literal["not_present_constraint"]
+    type: Literal["not_present_constraint"] = "not_present_constraint"
+    sub_constraints: list = []
     name: str
 
     def validate_constraint(self, path: Path) -> ConstraintResult:

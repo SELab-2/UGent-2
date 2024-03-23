@@ -9,7 +9,7 @@ from domain.simple_submission_checks.constraints.zip_constraint import ZipConstr
 
 
 class SubmissionConstraint(BaseModel):
-    type: Literal["submission_constraint"]
+    type: Literal["submission_constraint"] = "submission_constraint"
     root_constraint: ZipConstraint | FileConstraint  # Submission can be a file or a zip.
 
     def validate_constraint(self, path: Path) -> ConstraintResult:
