@@ -68,17 +68,17 @@ For the frontend people: If you want to know how to make a `Submissionconstraint
       "sub_constraints": [
         {
           "type": "file_constraint",
-          "name": "Resume.pdf",
+          "name": "Resume.pdf"
         },
         {
           "type": "file_constraint",
-          "name": "CoverLetter.docx",
+          "name": "CoverLetter.docx"
         },
         {
           "type": "file_constraint",
-          "name": "Transcript.pdf",
-        },
-      ],
+          "name": "Transcript.pdf"
+        }
+      ]
     },
     {
       "type": "directory_constraint",
@@ -86,13 +86,13 @@ For the frontend people: If you want to know how to make a `Submissionconstraint
       "sub_constraints": [
         {
           "type": "file_constraint",
-          "name": "Vacation.jpg",
+          "name": "Vacation.jpg"
         },
         {
           "type": "file_constraint",
-          "name": "ProfilePicture.jpg",
-        },
-      ],
+          "name": "ProfilePicture.jpg"
+        }
+      ]
     },
     {
       "type": "directory_constraint",
@@ -100,15 +100,15 @@ For the frontend people: If you want to know how to make a `Submissionconstraint
       "sub_constraints": [
         {
           "type": "file_constraint",
-          "name": "Graduation.mp4",
-        },
-      ],
+          "name": "Graduation.mp4"
+        }
+      ]
     },
     {
       "type": "not_present_constraint",
-      "name": "file4.txt",
-    },
-  ],
+      "name": "file4.txt"
+    }
+  ]
 }
 ```
 
