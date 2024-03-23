@@ -42,7 +42,7 @@ class DirectoryConstraintResult(ConstraintResult):
     sub_constraint_results: list[ConstraintResult]
 
 
-class OnlyPresentDirectoryConstraintResult(ConstraintResult):
+class OnlyPresentConstraintResult(ConstraintResult):
     type: ConstraintType = ConstraintType.ONLY_PRESENT
     sub_constraint_results: list[ConstraintResult]
     should_be_in_but_are_not: list[str]

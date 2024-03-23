@@ -9,7 +9,7 @@ from pydantic import BaseModel
 from domain.simple_submission_checks.constraints.constraint_result import (
     ConstraintResult,
     DirectoryConstraintResult,
-    OnlyPresentDirectoryConstraintResult,
+    OnlyPresentConstraintResult,
 )
 from domain.simple_submission_checks.constraints.directory_constraint import DirectoryConstraint
 from domain.simple_submission_checks.constraints.file_constraint import FileConstraint
@@ -35,7 +35,7 @@ class OnlyPresentConstraint(BaseModel):
         names_of_folder = set(os.listdir(dir_path))  # present files.
 
         if names_sub_constraints != names_of_folder:  # Contents should match exactly.
-            return OnlyPresentDirectoryConstraintResult(
+            return OnlyPresentConstraintResult(
                 name=self.name,
                 is_ok=False,
                 should_be_in_but_are_not=list(names_sub_constraints - names_of_folder),
@@ -46,7 +46,7 @@ class OnlyPresentConstraint(BaseModel):
         sub_results: list[ConstraintResult]
         sub_results = [constraint.validate_constraint(dir_path) for constraint in self.sub_constraints]
 
-        return OnlyPresentDirectoryConstraintResult(
+        return OnlyPresentConstraintResult(
             name=self.name,
             is_ok=True,
             should_be_in_but_are_not=[],
