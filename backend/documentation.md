@@ -46,14 +46,16 @@ These universal dataclasses inherit the **Pydantic** BaseModel. It allows for au
 - Is a file with a certain name
 - Contains a certain file or folder
 - Does not contain a certain file or folder
+- Only contains files with certain names
 
 These constraints can be nested indefinitely. 
 
 The frontend should send a json file containing a `SubmissionConstraint`. Such a submission constraint has a `root_constraint`
 which is one of two things: A `FileConstraint` or a `Zipconstraint`, as a submission is OR a file, OR a zip file.
 A `FileConstraint` simply checks if a file with a certain name is present. The `ZipConstraint` also contains a name field specifying the name of the zip file, along
-with a list of either `FileConstrainst`, `DirectoryConstraint` or `NotPresentConstraints`. These can be mixed.
+with a list of either `FileConstrainst`, `DirectoryConstraint`, `NotPresentConstraints` or `OnlyPresentConstraints`. These can be mixed.
 A `DirectoryConstraint` also has a name field and a list of constraints. The `NotPresentConstraint` specifies that a certain file may not be present in that directory or zip.
+The `FileConstraint` specifies that a file with a certain name must be present. The `OnlyPresentConstraint` specifies that only files with certain names may be present in that directory or zip, and no other.
 
 For the frontend people: If you want to know how to make a `Submissionconstraint` you can look at the models in the [simple_submission_checks](domain/simple_submission_checks) folder. The following is an example:
 
