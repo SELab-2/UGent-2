@@ -16,7 +16,7 @@ export default function HomeStudent(): JSX.Element {
     return (
         <>
             <div className={"main-header"}>
-                <Header/>
+                <Header title="Home"/>
             </div>
             <div className={"main-content is-flex is-flex-direction-row"}>
                 <div className={"side-bar is-flex is-justify-content-center"}>
