@@ -1,7 +1,3 @@
-.main-header {
-
-}
-
 .main-content {
     display: flex;
     flex-direction: row;
@@ -21,7 +17,7 @@
     display: flex;
     justify-content: center;
 
-    background-color: bisque;
+    /* background-color: bisque; */
 }
 
 .rights-list {
@@ -31,7 +27,7 @@
     margin-top: 40px;
 
     .rights-block + .rights-block {
-        margin-top: 50px;;
+        margin-top: 50px;
     }
 
     .rights-block {
@@ -40,8 +36,9 @@
         align-items: center;
         flex-direction: column;
         padding: 10px;
+        border: solid;
     
-        background-color: hotpink;
+        /* background-color: hotpink; */
 
         .explanation {
             width: fit-content;
@@ -49,27 +46,53 @@
             flex-direction: column;
             align-items: center;
 
-            background-color: blueviolet;
-
-            .main {
-                
-            }
-
-            .sub {
-
-            }
+            /* background-color: blueviolet; */
         }
         
 
         /* SearchBar */
 
         .person-list {
-            padding-left: 40px;
-            padding-right: 40px;
+            padding-left: 10px;
+            padding-right: 10px;
             height: 100px;
-            width: 100%;
+            width: 400px;
+            overflow-y: auto;
+            border: solid;
+            border-width: thin;
 
-            background-color: green;
+            /* background-color: lightgreen; */
+
+            .person {
+                display: grid;
+                grid-template-columns: 1fr min-content;
+                align-items: center;
+                padding: 2px;
+
+                /* background-color: antiquewhite; */
+
+                .name {
+                    grid-row: 1;
+                    grid-column: 1;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    max-width: 280px;
+
+                    /* background-color: lightcoral; */
+                }
+
+                .operations {
+                    grid-row: 1;
+                    grid-column: 2;
+                    display: flex;
+                    flex-direction: row;
+
+                    .button + .button {
+                        margin-left: 5px;
+                    }
+                }
+            }
         }
     }
 }
