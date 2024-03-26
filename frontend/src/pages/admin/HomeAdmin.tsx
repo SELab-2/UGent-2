@@ -4,8 +4,10 @@ import {Sidebar} from "../../components/Sidebar.tsx";
 import '../../assets/styles/admin.css'
 import { SearchBar } from "../../components/SearchBar.tsx";
 import { Person } from "./Person.tsx";
-import { OperationButton, OperationType } from "./OperationButton.tsx";
+import { OperationButton } from "./OperationButton.tsx";
 import { Roles, admin_test_data, teacher_test_data } from "./test_data.tsx";
+import { OperationType } from "../../others/enums.tsx";
+import { getKey } from "../../others/key_generator.tsx";
 
 export default function HomeAdmin(): JSX.Element {
 
@@ -18,14 +20,14 @@ export default function HomeAdmin(): JSX.Element {
     function renderForTeacher(person: {
         name: string,
         roles: Roles[],
-        [key: string]: any;
+        /* [key: string]: any; */
     }) {
         
         if (! (person.roles.includes(Roles.TEACHER))) {
             return (
                 <div className="person">
                     <Person name={person.name} operations={[
-                        <OperationButton type={OperationType.ADD} action={function() { return undefined; }}/>,
+                        <OperationButton key={getKey()} type={OperationType.ADD} action={function() { return undefined; }}/>,
                     ]} />
                 </div>
             )
@@ -37,7 +39,7 @@ export default function HomeAdmin(): JSX.Element {
     function renderForAdmin(person: {
         name: string,
         roles: Roles[],
-        [key: string]: any;
+        /* [key: string]: any; */
     }) {
         
         /* Check if admin first. */
@@ -45,7 +47,7 @@ export default function HomeAdmin(): JSX.Element {
             return (
                 <div className="person">
                     <Person name={person.name} operations={[
-                        <OperationButton type={OperationType.REMOVE} action={function() { return undefined; }}/>,
+                        <OperationButton key={getKey()} type={OperationType.REMOVE} action={function() { return undefined; }}/>,
                     ]} />
                 </div>
             )
@@ -54,7 +56,7 @@ export default function HomeAdmin(): JSX.Element {
         return (
             <div className="person">
                 <Person name={person.name} operations={[
-                    <OperationButton type={OperationType.ADD} action={function() { return undefined; }}/>,
+                    <OperationButton key={getKey()} type={OperationType.ADD} action={function() { return undefined; }}/>,
                 ]} />
             </div>
         )

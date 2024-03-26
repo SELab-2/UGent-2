@@ -2,12 +2,7 @@ import {JSX, useState} from "react";
 import { PiProjectorScreen, PiFolder } from "react-icons/pi";
 import { IoMdSettings } from "react-icons/io";
 import Settings from "./Settings.tsx";
-
-export enum SidebarButton {
-    COURSES,
-    PROJECTS
-}
-
+import { SidebarButton } from "../others/enums.tsx";
 
 export function Sidebar(params: {buttons?: SidebarButton[]}): JSX.Element {
     const [isOpen, setIsOpen] = useState(false);
@@ -16,7 +11,7 @@ export function Sidebar(params: {buttons?: SidebarButton[]}): JSX.Element {
         setIsOpen(!isOpen)
     }
 
-    var buttons = params.buttons
+    let buttons = params.buttons
     if (buttons == undefined) {
         buttons = [SidebarButton.COURSES, SidebarButton.PROJECTS];
     }
