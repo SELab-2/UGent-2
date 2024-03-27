@@ -19,6 +19,7 @@ import CoursesViewStudent from "./pages/student/CoursesViewStudent.tsx";
 import RequireAuth from "./components/authentication/RequireAuth.tsx";
 import {AuthProvider} from "./components/authentication/AuthProvider.tsx";
 import 'bulma/css/bulma.min.css';
+import 'bulma-switch/dist/css/bulma-switch.min.css'
 import './assets/styles/mainpage.css'
 import ProjectsViewTeacher from "./pages/teacher/ProjectsViewTeacher.tsx";
 import CoursesViewTeacher from "./pages/teacher/CoursesViewTeacher.tsx";
