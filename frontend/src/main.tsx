@@ -9,6 +9,7 @@ import HomeAdmin from "./pages/admin/HomeAdmin.tsx";
 import HomeStudent from "./pages/student/HomeStudent.tsx";
 import HomeTeacher from "./pages/teacher/HomeTeacher.tsx";
 import 'bulma/css/bulma.min.css';
+import 'bulma-switch/dist/css/bulma-switch.min.css'
 import './assets/styles/mainpage.css'
 import studentLoader, {STUDENT_ROUTER_ID} from "./dataloaders/StudentLoader.ts";
 import teacherLoader, {TEACHER_ROUTER_ID} from "./dataloaders/TeacherLoader.ts";
