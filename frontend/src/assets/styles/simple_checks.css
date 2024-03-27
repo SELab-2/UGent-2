@@ -19,13 +19,22 @@
         margin-right: 3px;
     }
 
-    .thick {
-        font-weight: bolder;
+    .type {
+        .thick {
+            font-weight: bolder;
+        }
+
+        .thin {
+            font-weight: lighter;
+        }
     }
 
-    .thin {
-        font-weight: lighter;
+    .recursive {
+        display: flex;
+        flex-direction: column;
     }
+
+
 
 }
 
