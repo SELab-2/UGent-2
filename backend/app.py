@@ -27,14 +27,14 @@ app.include_router(project_router, prefix="/api")
 app.include_router(subject_router, prefix="/api")
 app.include_router(group_router, prefix="/api")
 
-DEBUG = True  # Should always be false in repo
+DEBUG = False  # Should always be false in repo
 
 if DEBUG:
     from fastapi.middleware.cors import CORSMiddleware
 
     origins = [
         "https://localhost",
-        "https://localhost:8000",
+        "https://localhost:8080",
         "http://localhost:5173",
     ]
 

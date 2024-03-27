@@ -1,4 +1,4 @@
-const DEBUG: boolean = true; // should always be false on the repo.
+const DEBUG: boolean = false; // should always be false on the repo.
 
 export default function apiFetch(url: string, options?: RequestInit) {
     if (typeof options === 'undefined') {
