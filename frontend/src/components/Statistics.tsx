@@ -1,14 +1,10 @@
 import {JSX} from "react";
-import {Chart} from "react-google-charts";
-
+import {PieChart} from "react-minimal-pie-chart";
 
 export default function Statistics(): JSX.Element {
-    const data = [
-        ["Indieningen", "Aantal leerlingen"],
-        ["SUCCES", 11],
-        ["FAIL", 2],
-        ["NOTHING YET", 2],
-    ];
+    
+
+    // default functie voor bulma modal gehaald van
     document.addEventListener('DOMContentLoaded', () => {
         // Functions to open and close a modal
         function openModal($el: HTMLElement | null) {
@@ -58,10 +54,13 @@ export default function Statistics(): JSX.Element {
                         <button className="delete" aria-label="close"></button>
                     </header>
                     <section className="modal-card-body">
-                        <Chart
-                            chartType="PieChart"
-                            data={data}
-                        />
+                        <PieChart
+                            data={[
+                                {title: 'One', value: 10, color: '#E38627'},
+                                {title: 'Two', value: 15, color: '#C13C37'},
+                                {title: 'Three', value: 20, color: '#6A2135'},
+                            ]}
+                        />;
                     </section>
                     <footer className="modal-card-foot"/>
                 </div>
