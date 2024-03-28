@@ -28,6 +28,7 @@ class AbstractModel(Generic[D]):
     It makes sure that every child implements the to_domain_model function
     and receives Pydantic data validation.
     """
+
     @abstractmethod
     def to_domain_model(self) -> D:
         """
@@ -35,17 +36,20 @@ class AbstractModel(Generic[D]):
         This prevents working with instances of SQLAlchemy's Base class.
         """
 
+
 # See the EER diagram for a more visual representation.
+
 
 @dataclass()
 class User(Base, AbstractModel):
     __tablename__ = "users"
     name: Mapped[str]
     email: Mapped[str]
+    language: Mapped[str] = mapped_column(default="EN")
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
 
     def to_domain_model(self) -> UserDataclass:
-        return UserDataclass(id=self.id, name=self.name, email=self.email)
+        return UserDataclass(id=self.id, name=self.name, language=self.language, email=self.email)
 
 
 @dataclass()
@@ -55,7 +59,7 @@ class Admin(Base, AbstractModel):
     user: Mapped[User] = relationship()
 
     def to_domain_model(self) -> AdminDataclass:
-        return AdminDataclass(id=self.id, name=self.user.name, email=self.user.email)
+        return AdminDataclass(id=self.id, name=self.user.name, language=self.user.language, email=self.user.email)
 
 
 teachers_subjects = Table(
@@ -86,7 +90,7 @@ class Teacher(Base, AbstractModel):
     subjects: Mapped[list["Subject"]] = relationship(secondary=teachers_subjects, back_populates="teachers")
 
     def to_domain_model(self) -> TeacherDataclass:
-        return TeacherDataclass(id=self.id, name=self.user.name, email=self.user.email)
+        return TeacherDataclass(id=self.id, name=self.user.name, language=self.user.language, email=self.user.email)
 
 
 @dataclass()
@@ -99,7 +103,7 @@ class Student(Base, AbstractModel):
     submissions: Mapped[list["Submission"]] = relationship(back_populates="student")
 
     def to_domain_model(self) -> StudentDataclass:
-        return StudentDataclass(id=self.id, name=self.user.name, email=self.user.email)
+        return StudentDataclass(id=self.id, name=self.user.name, language=self.user.language, email=self.user.email)
 
 
 @dataclass()
