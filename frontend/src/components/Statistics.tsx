@@ -1,8 +1,13 @@
 import {JSX} from "react";
 import {PieChart} from "react-minimal-pie-chart";
+import {IoIosStats} from "react-icons/io";
 
 export default function Statistics(): JSX.Element {
-    
+    const mockdata = [
+        {title: 'Succes', value: 10, color: '#50C878'},
+        {title: 'Fail', value: 15, color: '#C13C37'},
+        {title: 'Nothing yet', value: 20, color: '#D3D3D3'},
+    ]
 
     // default functie voor bulma modal gehaald van
     document.addEventListener('DOMContentLoaded', () => {
@@ -43,8 +48,11 @@ export default function Statistics(): JSX.Element {
 
     return (
         <>
-            <button className="js-modal-trigger button is-primary" data-target="modal-stats">
-                Statistieken
+            <button className="js-modal-trigger button is-primary is-pulled-right" data-target="modal-stats">
+                <span className="icon is-small">
+                    <IoIosStats/>
+                </span>
+                <span>Statistieken</span>
             </button>
             <div id="modal-stats" className="modal">
                 <div className="modal-background"></div>
@@ -55,12 +63,14 @@ export default function Statistics(): JSX.Element {
                     </header>
                     <section className="modal-card-body">
                         <PieChart
-                            data={[
-                                {title: 'One', value: 10, color: '#E38627'},
-                                {title: 'Two', value: 15, color: '#C13C37'},
-                                {title: 'Three', value: 20, color: '#6A2135'},
-                            ]}
-                        />;
+                            label={({dataEntry}) => `${dataEntry.title}: ${Math.round(dataEntry.percentage)} %`}
+                            labelStyle={() => ({
+                                fontSize: '5px',
+                            })}
+                            segmentsShift={0.2}
+                            radius={45}
+                            data={mockdata}
+                        />
                     </section>
                     <footer className="modal-card-foot"/>
                 </div>
