@@ -1,7 +1,7 @@
 // import React from "react";
 
-export type CourseTeacher = {
-}
+//export type CourseTeacher = {
+//}
 
 export type CourseStudent = {
     activeCourses: {
