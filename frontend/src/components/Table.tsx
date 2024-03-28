@@ -1,48 +1,61 @@
 import {JSX} from "react";
 import "../assets/styles/table.css"
 
-const TableData: { "Naam": string, "Aantal projecten": number, "Kortste deadline": string }[] = [
-    {
-        "Naam": "Automaten, berekenbaarheid & complexiteit",
-        "Aantal projecten": 3,
-        "Kortste deadline": "17:00 - 23/02/2024"
-    },
-    {
-        "Naam": "Computationele Biologie",
-        "Aantal projecten": 2,
-        "Kortste deadline": "19:00 - 25/02/2024"
-    }
-];
-
-interface TableRow {
-    "Naam": string;
-    "Aantal projecten": number;
-    "Kortste deadline": string;
+export interface TableRow {
+    name: string
 }
 
-export function Table(props: { title: string, keys: (keyof TableRow)[] }): JSX.Element {
+export interface TableRowProjects extends TableRow {
+    course: string,
+    deadline: string,
+    status: string | null,                      // for student
+    numberOfSubmissions: number | null          // for teacher and only for visible projects
+}
+
+export interface TableRowCourses extends TableRow {
+    numberOfProjects: number | null;            // not for archived projects for teachers
+    shortestDeadline: string | null;            // only if not archived
+}
+
+export function Table<T extends TableRow>(props: { title: string, data: T[] }): JSX.Element {
+
+    // todo: translate the keys for i18n way
+    // right now only the name of the key will be written as it will be completely different with i18n
+    console.log(props.data)
+    const keys = props.data.length > 0 ? Object.keys(props.data[0]) : [];
+    const firstFieldWidth: number = 40;
+
     return (
-        <>
-            <div className="title_lines">{props.title}</div>
-            <table className={"table is-fullwidth"}>
+        <div className={"is-flex is-flex-direction-column is-align-content-center"}>
+            <div className="title-lines">{props.title}</div>
+            {keys.length > 0 && <table className={"table is-fullwidth"}>
                 <thead>
-                <tr>
-                    {props.keys.map((field, index) => (
-                        <th key={index}>{field}</th>
+                <tr style={{width: 1/keys.length*100+"%"}}>
+                    {keys.map((field, index) => (
+                        field === "name" ?
+                            <th style={{width: firstFieldWidth + "%"}} key={index}>{field}</th>
+                            :
+                            <th style={{width: 1 / (keys.length-1) * 100 - firstFieldWidth + "%", textAlign: "center"}}
+                                key={index}>{field}</th>
                     ))}
                 </tr>
                 </thead>
                 <tbody>
-                {TableData.map((row, rowIndex) => (
+                {props.data.map((row, rowIndex) => (
                     <tr key={rowIndex}>
-                        {props.keys.map((field, colIndex) => (
-                            <td key={colIndex}>{row[field]}</td>
+                        {keys.map((field, colIndex) => (
+                            colIndex == 0 ?
+                                <td style={{width: firstFieldWidth + "%"}}
+                                    key={colIndex}>{Object.values(row)[keys.indexOf(field)]}</td>
+                                :
+                                <td style={{width: 1 / (keys.length-1) * 100 - firstFieldWidth + "%", textAlign: "center"}}
+                                    key={colIndex}>{Object.values(row)[keys.indexOf(field)]}</td>
                         ))}
                     </tr>
                 ))}
                 </tbody>
-            </table>
-        </>
-
+            </table>}
+            {keys.length == 0 && <p className={"is-flex is-justify-content-center is-italic pt-5"}>No data yet.</p>}
+        </div>
     );
 }
