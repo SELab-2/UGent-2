@@ -37,6 +37,9 @@ const router = createBrowserRouter([
         loader: studentLoader
     },
     {
+      path: "student/projects"
+    },
+    {
         path: "/student/courses",
         element: <CoursesViewStudent/>
     },
