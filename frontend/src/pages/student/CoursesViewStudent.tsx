@@ -7,23 +7,23 @@ import {Table, TableRowCourses} from "../../components/Table.tsx";
 
 export default function CoursesViewStudent(): JSX.Element {
 
-    const TableDataCoursesActive: TableRowCourses[] = [
+    const tableCoursesActive: TableRowCourses[] = [
         {
             name: "Automaten, berekenbaarheid & complexiteit",
-            numberOfProjects: 1,
-            shortestDeadline: "17:00 - 23/02/2024"
+            shortestDeadline: "17:00 - 23/02/2024",
+            numberOfProjects: 1
         },
         {
             name: "Computationele Biologie",
-            numberOfProjects: 2,
-            shortestDeadline: "19:00 - 25/02/2024"
+            shortestDeadline: "19:00 - 25/02/2024",
+            numberOfProjects: 2
         },
     ];
-    const TableCoursesArchived: TableRowCourses[] = [
+    const tableCoursesArchived: TableRowCourses[] = [
         {
             name: "Logisch Programmeren",
-            numberOfProjects: 1,
             shortestDeadline: null,
+            numberOfProjects: 1,
         }
     ];
 
@@ -39,8 +39,9 @@ export default function CoursesViewStudent(): JSX.Element {
                 <div className={"student-main is-flex is-justify-content-center"}>
                     <div className={"table-page is-flex is-flex-direction-column"}>
                         <SearchBar placeholder={"zoek een vak..."}/>
-                        <Table title={"actief"} data={TableDataCoursesActive}/>
-                        <Table title={"gearchiveerd"} data={TableCoursesArchived}/>
+                        <Table title={"actief"} data={tableCoursesActive} ignoreKeys={[]}/>
+                        <div className={"my-5"}/>
+                        <Table title={"gearchiveerd"} data={tableCoursesArchived} ignoreKeys={["shortestDeadline"]}/>
                     </div>
                 </div>
             </div>

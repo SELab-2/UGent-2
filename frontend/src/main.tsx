@@ -15,6 +15,7 @@ import teacherLoader, {TEACHER_ROUTER_ID} from "./dataloaders/TeacherLoader.ts";
 import SubjectsTeacher from "./pages/teacher/SubjectsTeacher.tsx";
 import subjectsTeacherLoader, {SUBJECT_TEACHER_ROUTER_ID} from "./dataloaders/SubjectsTeacherLoader.ts";
 import CoursesViewStudent from "./pages/student/CoursesViewStudent.tsx";
+import ProjectsViewStudent from "./pages/student/ProjectsViewStudent.tsx";
 
 const router = createBrowserRouter([
     {
@@ -37,7 +38,8 @@ const router = createBrowserRouter([
         loader: studentLoader
     },
     {
-      path: "student/projects"
+        path: "student/projects",
+        element: <ProjectsViewStudent/>
     },
     {
         path: "/student/courses",
