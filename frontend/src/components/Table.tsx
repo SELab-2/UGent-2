@@ -38,7 +38,7 @@ export function Table<T extends TableRow>(props: { title: string, data: T[], ign
                                 :
                                 <th style={{width: `${otherFieldsWidth}%`, textAlign: "center"}}
                                     key={index}>{field}</th>
-                            : <td style={{minWidth: `${otherFieldsWidth}%`}}></td>
+                            : <td style={{width: `${otherFieldsWidth}%`}} key={index}></td>
                     ))}
                 </tr>
                 </thead>
@@ -53,7 +53,7 @@ export function Table<T extends TableRow>(props: { title: string, data: T[], ign
                                     :
                                     <td style={{width: `${otherFieldsWidth}%`, textAlign: "center"}}
                                         key={colIndex}>{Object.values(row)[keys.indexOf(field)]}</td>
-                                : <td style={{minWidth: `${otherFieldsWidth}%`}}></td>
+                                : <td style={{width: `${otherFieldsWidth}%`}} key={colIndex}></td>
                         ))}
                     </tr>
                 ))}
