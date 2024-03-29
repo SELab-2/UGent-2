@@ -15,7 +15,7 @@ export default function ProjectCardStudent(): JSX.Element {
         <div
             className={"card project-card px-5 py-5 my-5 is-flex is-flex-direction-column is-justify-content-space-between"}>
             <p className={"title is-5"}>Markov Decision Diagram</p>
-            <div className={"is-flex is-flex-direction-row"}>
+            <div className={"card-text is-flex is-flex-direction-row"}>
                 <p className={"pr-2"}>vak: </p>
                 <p>Computationele Biologie</p>
             </div>
