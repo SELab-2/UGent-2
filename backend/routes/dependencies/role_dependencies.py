@@ -120,3 +120,14 @@ def ensure_student_authorized_for_group(
     if group.project_id not in [project.id for project in projects_of_student]:
         raise NoAccessToSubjectError
     return student
+
+
+def ensure_user_authorized_for_group(
+    group_id: int,
+    session: Session = Depends(get_session),
+    uid: int = Depends(get_authenticated_user),
+) -> None:
+    group = get_group(session, group_id)
+    project = get_project(session, group.project_id)
+    if not is_user_authorized_for_subject(project.subject_id, session, uid):
+        raise NoAccessToSubjectError
