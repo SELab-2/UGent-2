@@ -8,51 +8,103 @@
     background-color: bisque;
 }
 
+/* ====================================== */
+
+.column {
+    display: flex;
+    flex-direction: column;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+}
+
 .content {
     width: 800px;
     height: 500px;
 
     background-color: antiquewhite;
-    
-    .divider {
-        margin-left: 3px;
-        margin-right: 3px;
+
+    .warning-text {
+
     }
 
     .type {
-        .thick {
-            font-weight: bolder;
-        }
+        .field {
 
-        .thin {
-            font-weight: lighter;
+            .thick {
+                font-weight: bolder;
+            }
+    
+            .thin {
+                font-weight: lighter;
+            }
+
+            .divider {
+                margin-left: 3px;
+                margin-right: 3px;
+            }
+        
         }
     }
 
-    .recursive {
-        display: flex;
-        flex-direction: column;
+    .specify-text {
+        
+    }
 
+    .recursive {
         .line {
-            display: flex;
-            flex-direction: row;
 
             .constraint {
                 display: flex;
                 flex-direction: row;
                 align-items: center;
-                text-shadow: 2px 2px 4px rgba(150, 0, 200, 0.5);
+
+                .name {
+                    margin-right: 5px;
+                }
 
                 .expand {
-                    height: 20px;
-                    width: 10px;
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    
                 }
+
+            }
+
+            .adder {
+                border-radius: 10px;
+                border: solid;
+                border-width: 1px;
             }
         }
     }
 
-
+    .other-files {
+        
+    }
 
 }
 
+/* =============================================== */
 
+.hover-encircle:hover {
+    border-radius: 10px;
+    border: solid;
+    border-width: 1px;
+}
+
+.hover-shadow:hover {
+    background-color: rgb(232, 232, 232);
+}
+
+
+.folder {
+    text-shadow: 2px 2px 4px rgba(150, 0, 200, 0.5);
+}
+
+.zip {
+    text-shadow: 2px 2px 4px rgba(255, 238, 6, 0.804);
+}
