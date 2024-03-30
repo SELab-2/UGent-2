@@ -23,10 +23,20 @@ const ticketLogin = async (ticket: string, setUser: React.Dispatch<React.SetStat
     if (token.token) {
         localStorage.setItem('token', token.token)
         const result: loginLoaderObject = await loginLoader()
-        setUser(result.user)
+        if (isUser(result.user)) {
+            setUser(result.user)
+        }else{
+            localStorage.removeItem('token')
+            setUser(undefined)
+        }
     }
 
     return token;
+}
+
+const isUser = (data?: User) => {
+    return (data && data.id && data.name && data.email && data.roles);
+
 }
 
 export default function LoginScreen(): JSX.Element {
@@ -47,7 +57,12 @@ export default function LoginScreen(): JSX.Element {
     useEffect(() => {
         // If the saved token is valid => the user will be logged in
         if (data && data.user) {
-            setUser(data.user)
+            if (isUser(data.user)) {
+                setUser(data.user)
+            }else{
+                setUser(undefined)
+                localStorage.removeItem('token')
+            }
         } else if (!user && ticket) {
             void ticketLogin(ticket, setUser);
         }
