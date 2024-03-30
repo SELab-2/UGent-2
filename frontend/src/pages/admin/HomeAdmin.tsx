@@ -9,8 +9,22 @@ import { IoAdd } from "react-icons/io5";
 const WARNING = "Bij veranderingen zullen alle indieningen opnieuw gecontroleerd worden."
 const SINGLE_FILE = "enkele file"
 const ZIP_FILE = "zip-bestand"
-const SPECIFY = "Specifieer welke files de zip moet bevatten:"
-const OTHER_FILES = "Ook andere files toelaten."
+const SPECIFY = "Specifieer welke files de zip moet bevatten." 
+const SPECIFY_2 = "Ook andere files toelaten in een folder: selecteer de corresponderende checkbox."
+
+/*
+TODO:
+
+    - veranderen naam
+    - warning display
+    - toggle enkele file/zipbestand
+    - (three dots enkel displayen bij hover line)
+    - three dots mini display
+    - three dots mini display logic
+    - update to backend
+    - boolean voor 'is veranderd' voor later de confirm
+
+/*
 
 
 /* Enum voor constraint-type ipv string. */
@@ -31,6 +45,7 @@ interface FEConstraint {
     type: ConstraintType,
     shown: boolean, 
     spaces: number,
+    checkbox?: boolean
 }
 
 /* We willen constraints kunnen aanmaken. 
@@ -138,6 +153,7 @@ export default function HomeAdmin(): JSX.Element {
             type: ConstraintType.FILE,
             shown: true, 
             spaces: 0, 
+            checkbox: false,
         }
 
         const list: (FEConstraint | ConstraintAdder)[] = [start_constraint]
@@ -174,6 +190,7 @@ export default function HomeAdmin(): JSX.Element {
                 type: ConstraintType.FILE,
                 shown: false, 
                 spaces: spaces, 
+                checkbox: false,
             }
 
             // Add the constraint to the list.
@@ -209,14 +226,14 @@ export default function HomeAdmin(): JSX.Element {
     /* Logic behind the collaps/expand button. */
     function changeVisibility(id: number): undefined {
         // closing => collaps, !closing => expand
-        let closing = constraints.filter(checkObject => checkObject.parent_id === id && !checkObject.shown).length === 0
+        const closing = constraints.filter(checkObject => checkObject.parent_id === id && !checkObject.shown).length === 0
 
         
         if (!closing) {
 
             // EXPAND (single layer deeper)
             
-            let newConstraints = []
+            const newConstraints = []
             for (let object of constraints) {
                 if (object.parent_id === id) {
                     object.shown = true
@@ -229,8 +246,8 @@ export default function HomeAdmin(): JSX.Element {
             
             // COLLAPS (all children layers at once)
             
-            let ids = [id]
-            let newConstraints = []
+            const ids = [id]
+            const newConstraints = []
             for (let object of constraints) {
                 if (object.parent_id !== undefined && ids.includes(object.parent_id)) {
                     object.shown = false
@@ -252,6 +269,18 @@ export default function HomeAdmin(): JSX.Element {
             return className + " folder";
         }
         return className;
+    }
+
+    /* Logic for a checkbox for allowing other files in a folder. */
+    function handleCheckbox(id: number) {
+        const newConstraints = []
+        for (let object of constraints) {
+            if (isFEConstraint(object) && object.id === id) {
+                object.checkbox = !object.checkbox
+            }
+            newConstraints.push(object)
+        }
+        setConstraints(newConstraints)
     }
 
     /* Actual rendering HTML */
@@ -279,21 +308,22 @@ export default function HomeAdmin(): JSX.Element {
                     </div>
                 </div>
                 
-                <p className="specify-text">{SPECIFY}</p>
+                <div className="specify-text">{SPECIFY}</div>
+                <div className="specify-text">{SPECIFY_2}</div>
                 
                 {/* All constraints. */}
                 <div className="recursive">
                     {constraints.map(
-                        checkObject => 
+                        o => 
 
                         /* One constraint/adder => line (if shown) */
-                        <div> {checkObject.shown &&
+                        <div> {o.shown &&
                             <div className="line row">
 
                                 {/* indent as needed */}
-                                <div>{"\u00A0".repeat(6 * checkObject.spaces)}</div>
+                                <div>{"\u00A0".repeat(6 * o.spaces)}</div>
 
-                                {isFEConstraint(checkObject)
+                                {isFEConstraint(o)
 
                                     /* Constraint */
                                     ? <div className="constraint">
@@ -301,13 +331,18 @@ export default function HomeAdmin(): JSX.Element {
                                         {/* ... three dots ... */}
                                         <IoMdMore className="more hover-shadow" />
 
+                                        {/* ... checkbox ... */}
+                                        {(o.type == ConstraintType.ZIP || o.type == ConstraintType.DIRECTORY) &&
+                                            <input type="checkbox" checked={o.checkbox} onClick={() => handleCheckbox(o.id)}/>
+                                        }
+
                                         {/* ... actual name ... */}
-                                        <div className={colorByType("name", checkObject)}>{checkObject.name}</div>
+                                        <div className={colorByType("name", o)}>{o.name}</div>
                                         
                                         {/* ... expand/collaps ... */}
-                                        {(checkObject.type == ConstraintType.ZIP || checkObject.type == ConstraintType.DIRECTORY) &&
-                                            <div className="expand hover-encircle" onClick={() => changeVisibility(checkObject.id)}>
-                                                {constraints.filter(o => o.parent_id == checkObject.id && o.shown).length === 0
+                                        {(o.type == ConstraintType.ZIP || o.type == ConstraintType.DIRECTORY) &&
+                                            <div className="expand hover-encircle" onClick={() => changeVisibility(o.id)}>
+                                                {constraints.filter(o => o.parent_id == o.id && o.shown).length === 0
                                                     ? <MdOutlineExpandLess />
                                                     : <MdOutlineExpandMore />
                                                 }
@@ -324,11 +359,6 @@ export default function HomeAdmin(): JSX.Element {
                     
                     )}
                 </div>
-                
-                <label className="other-files">
-                    <input type="checkbox"/>
-                    {OTHER_FILES}
-                </label>
 
             </div>
         </div>
