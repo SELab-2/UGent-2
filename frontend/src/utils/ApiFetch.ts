@@ -1,13 +1,11 @@
-import useAuth from "../hooks/useAuth.ts";
 import {DEBUG} from "../pages/root.tsx";
 
 
 const ApiFetch = async (url: string, options?: RequestInit,) => {
+    const token = localStorage.getItem('token')
     if (typeof options === 'undefined') {
         options = {}
     }
-    const token = localStorage.getItem('token')
-    const {logout} = useAuth()
 
     if (token) {
         options.headers = {
@@ -16,17 +14,12 @@ const ApiFetch = async (url: string, options?: RequestInit,) => {
         }
     }
 
-    //url = "/api" + url;
+    url = "/api" + url;
     if (DEBUG) {
         url = "http://127.0.0.1:8000" + url;
     }
   
-    return fetch(url, options).then(response => {
-        if (response.status == 401){
-            logout()
-        }
-        return response
-    })
+    return fetch(url, options)
 }
 
 export default ApiFetch

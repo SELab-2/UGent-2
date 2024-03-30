@@ -7,6 +7,7 @@ export const DEBUG: boolean = false; // should always be false on the repo.
 export default function Root(): JSX.Element {
     const {user} = useAuth()
     let to: string = "/error"
+
     if (user?.roles) {
         if (user.roles.includes('TEACHER')) {
             to = "/teacher";
@@ -16,5 +17,5 @@ export default function Root(): JSX.Element {
             to = "/admin";
         }
     }
-    return (<Navigate to={to}/>)
+    return <Navigate to={to}/>
 }

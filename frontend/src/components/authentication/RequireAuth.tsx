@@ -6,16 +6,16 @@ interface Props {
 }
 
 const RequireAuth = ({allowedRoles}: Props) => {
-    const {user,} = useAuth();
+    const {user} = useAuth();
     const location = useLocation();
-
-    return (
-        (user) ?
-            (allowedRoles && user.roles.find(role => allowedRoles.includes(role))
+    if (user) {
+        return (
+            (allowedRoles && user.roles.find(role => allowedRoles.includes(role)))
                 ? <Outlet/>
-                : <Navigate to={"/unauthorized"} state={{from: location}} replace/>)
-            : <Navigate to={"/login"} state={{from: location}} replace/>
-    );
+                : <Navigate to={"/unauthorized"} state={{from: location}} replace/>
+        );
+    } else {
+        return <Navigate to={"/login"} state={{from: location}} replace/>;
+    }
 }
-
 export default RequireAuth;

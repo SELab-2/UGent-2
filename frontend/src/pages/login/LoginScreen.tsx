@@ -1,7 +1,11 @@
-import {JSX} from "react";
-import {Navigate, useLocation} from 'react-router-dom';
-import delphi_full from '../../assets/images/delphi_full.png';
+import {JSX, useEffect, useState} from "react";
+import {Navigate, useLocation, useRouteLoaderData} from 'react-router-dom';
 import useAuth from "../../hooks/useAuth.ts";
+import loginLoader, {LOGIN_ROUTER_ID, loginLoaderObject} from "../../dataloaders/LoginLoader.ts";
+import LoginForm from "../../components/authentication/LoginForm.tsx";
+import {DEBUG} from "../root.tsx";
+import {Token} from "../../utils/ApiInterfaces.ts";
+import ErrorLogin from "../../components/authentication/ErrorLogin.tsx";
 
 interface location_type {
     search?: { ticket?: string },
@@ -9,51 +13,70 @@ interface location_type {
     pathname: string
 }
 
-export default function LoginScreen(): JSX.Element {
-    const location = useLocation() as location_type;
-    const params = new URLSearchParams(location.search);
-
-    const next: string = location.state?.from?.pathname || localStorage.getItem("to") || '/'
-    const ticket = params.get('ticket');
-    const {ticketLogin, user, login, loading} = useAuth();
-
-    localStorage.setItem('to', next)
-    if (!loading && localStorage.getItem('token')) {
-        login()
-    } else if (!loading && !user && ticket) {
-        localStorage.setItem('to', next)
-        ticketLogin(ticket)
+const ticketLogin = async (ticket: string, setError: (value: (((prevState: string) => string) | string)) => void) => {
+    let url = '/api/login?ticket=' + ticket
+    if (DEBUG) {
+        url = 'http://127.0.0.1:8000/api/login?ticket=' + ticket
     }
 
-    return <div>
-        {loading && <h1>You will be redirected soon, please wait.</h1>}
-        {(!loading && user) &&
-            <div><Navigate to={next}/></div>}
-        {(!user && !loading) &&
-            <div className="card">
-                <div className="card-image">
-                    <figure className="image is-128x128">
-                        <img src={delphi_full} alt="Delphi logo"/>
-                    </figure>
-                </div>
-                <section className="section">
-                    <h1 className="title">Welcome to Delphi!</h1>
-                    <h2 className="subtitle">
-                        This page is still work in progress. But if you click <strong>the big green button
-                        below </strong>to
-                        log in with your UGent account, it will display your token :)
-                    </h2>
-                    <a className="button is-primary"
-                        // href="https://login.ugent.be/login?service=https://sel2-2.ugent.be/login"
-                       href="https://login.ugent.be/login?service=https://localhost:8080/login"
-                    >Log in</a>
+    return fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    })
+        .then(async response => {
+            if (response.ok) {
+                return await response.json() as Token
+            }
+        })
+        .then(data => {
+            if (data && data.token) {
+                localStorage.setItem('token', data.token)
+                return data.token
+            } else {
+                return undefined
+            }
+        })
+        .catch(error => {
+            setError("" + error)
+        })
+}
 
-                    <a className="button is-ghost"
-                        // href="https://login.ugent.be/login?service=https://sel2-2.ugent.be/login"
-                       href="/student"
-                    >Take me straight to the student page instead</a>
-                </section>
-            </div>
+export default function LoginScreen(): JSX.Element {
+    const {user, setUser} = useAuth();
+    const location = useLocation() as location_type;
+    const searchParams = new URLSearchParams(useLocation().search);
+    const [error, setError] = useState('')
+    const ticket = searchParams.get('ticket') || ''
+    let next: string = location.state?.from?.pathname || localStorage.getItem("to") || '/'
+    // preventing infinite loop
+    if (next === '/login') {
+        next = '/'
+    }
+    localStorage.setItem('to', next)
+
+    // Loading the user using the saved token
+    const data: loginLoaderObject = useRouteLoaderData(LOGIN_ROUTER_ID) as loginLoaderObject
+    useEffect(() => {
+        // If the saved token is valid => the user will be logged in
+        if (data && data.user) {
+            setUser(data.user)
+        } else if (!user && ticket) {
+            void ticketLogin(ticket, setError).then((token) => {
+                if (token) {
+                    void loginLoader().then(result => {
+                        setUser(result.user)
+                    })
+                }
+            })
         }
+
+    }, [data, setUser, ticket, user]);
+
+    return <div>
+        {error !== "" && <ErrorLogin/>}
+        {user && <Navigate to={next} replace/>}
+        {!user && ticket === "" && <LoginForm/>}
     </div>
 }
