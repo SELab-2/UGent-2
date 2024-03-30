@@ -37,10 +37,16 @@
             display: flex;
             flex-direction: row;
 
-            .check-object {
+            .constraint {
                 display: flex;
                 flex-direction: row;
-                height: 20px;
+                align-items: center;
+                text-shadow: 2px 2px 4px rgba(150, 0, 200, 0.5);
+
+                .expand {
+                    height: 20px;
+                    width: 10px;
+                }
             }
         }
     }
