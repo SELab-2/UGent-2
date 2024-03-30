@@ -3,6 +3,12 @@ import '../../assets/styles/simple_checks.css'
 import { useState, useEffect } from 'react';
 import { SelectionBox } from "../../components/SelectionBox";
 import { TbArrowRightBar } from "react-icons/tb";
+import { IoMdMore } from "react-icons/io";
+import { MdOutlineExpandLess } from "react-icons/md";
+import { MdOutlineExpandMore } from "react-icons/md";
+import { IoAdd } from "react-icons/io5";
+import { IoRemove } from "react-icons/io5";
+
 
 export default function HomeAdmin(): JSX.Element {
     
@@ -12,9 +18,9 @@ export default function HomeAdmin(): JSX.Element {
         setChecked(checkbox.target.checked);
     }
 
-    type Constraint = {"type": string, "name": string, "sub_constraints"?: Constraint[]}
+    type BEConstraint = {"type": string, "name": string, "sub_constraints"?: BEConstraint[]}
 
-    const test_structure: Constraint = {
+    const test_structure: BEConstraint = {
         "type": "zip_constraint",
         "name": "root.zip",
         "sub_constraints": [
@@ -83,123 +89,98 @@ export default function HomeAdmin(): JSX.Element {
         ]
     }
 
-    enum Type {
+    interface FEConstraint {
+        id: number,
+        parent_id: number | undefined,
+        name: string, 
+        type: ConstraintType,
+        shown: boolean, 
+        spaces: number,
+    }
+
+    enum ConstraintType {
         ZIP,
         DIRECTORY,
         FILE
     }
 
-    interface CheckObject {
-        id: number,
+    interface ConstraintAdder {
         parent_id: number | undefined,
-        name: string, 
         shown: boolean, 
-        spaces: number, 
-        last: boolean, 
-        type: Type
+        spaces: number,
     }
 
-    const [checkObjects, setCheckObjects] = useState<CheckObject[]>(initialLoad())
+    const [checkObjects, setCheckObjects] = useState<(FEConstraint | ConstraintAdder)[]>(initialLoad())
 
-    function initialLoad(): CheckObject[] {
-        const list = []
-        // first main constraint
-        if (test_structure.type == "file_constraint") {
-            // file-constraint
-            list.push({
-                id: 0, 
-                parent_id: undefined,
-                name: test_structure.name, 
-                shown: true, 
-                spaces: 0, 
-                last: true, 
-                type: Type.FILE
-            })
-        } else {    
-            // zip-constraint
-            list.push({
-                id: 0, 
-                parent_id: undefined,
-                name: test_structure.name, 
-                shown: true, 
-                spaces: 0, 
-                last: true, 
-                type: Type.ZIP
-            })
+    function isFEConstraint(obj: FEConstraint | ConstraintAdder): obj is FEConstraint {
+        return (obj as FEConstraint).name !== undefined;
+    }
 
+    function initialLoad(): (FEConstraint | ConstraintAdder)[] {
+        
+        const start_constraint: FEConstraint = {
+            id: 0, 
+            parent_id: undefined,
+            name: test_structure.name, 
+            type: ConstraintType.FILE,
+            shown: true, 
+            spaces: 0, 
+        }
+
+        const list: (FEConstraint | ConstraintAdder)[] = [start_constraint]
+
+        if (test_structure.type == "zip_constraint") {
+            (list[0] as FEConstraint).type = ConstraintType.ZIP  
+            
             if (test_structure.sub_constraints) {
-                parseRecursive(list, 0, 1, test_structure.sub_constraints)
+                parseSubConstraints(list, 0, 1, test_structure.sub_constraints)
             }
         }
+
         return list
     }
 
-    // sub constraints
-    function parseRecursive(list: CheckObject[], parent_id: number, spaces: number, sub_structures: Constraint[]): number {
+    function parseSubConstraints(
+        list: (FEConstraint | ConstraintAdder)[], 
+        parent_id: number, 
+        spaces: number, 
+        sub_constraints: BEConstraint[]
+    ): number {
         let i = 0;
         let id = parent_id + 1;
-        for (let structure of sub_structures) {
-            if (i < sub_structures.length - 1) {
-                // niet de laatste
-                if (structure.type == "directory_constraint") {
-                    // een directory
-                    list.push({
-                        id: id,
-                        parent_id: parent_id,
-                        name: structure.name, 
-                        shown: false, 
-                        spaces: spaces, 
-                        last: false, 
-                        type: Type.DIRECTORY
-                    })
-                    if (structure.sub_constraints) {
-                        id = parseRecursive(list, id, spaces+1, structure.sub_constraints)
-                    }
-                } else {
-                    // een file
-                    list.push({
-                        id: id, 
-                        parent_id: parent_id,
-                        name: structure.name, 
-                        shown: false, 
-                        spaces: spaces, 
-                        last: false, 
-                        type: Type.FILE
-                    })
+        for (let structure of sub_constraints) {
+
+            const constraint: FEConstraint = {
+                id: id, 
+                parent_id: parent_id,
+                name: structure.name, 
+                type: ConstraintType.FILE,
+                shown: false, 
+                spaces: spaces, 
+            }
+
+            list.push(constraint)
+
+            if (structure.type == "directory_constraint") {
+                (list[list.length-1] as FEConstraint).type = ConstraintType.DIRECTORY
+
+                if (structure.sub_constraints) {
+                    id = parseSubConstraints(list, id, spaces+1, structure.sub_constraints)
                 }
-            } else {
-                // wel de laatste
-                if (structure.type == "directory_constraint") {
-                    // een directory
-                    list.push({
-                        id: id, 
-                        parent_id: parent_id,
-                        name: structure.name, 
-                        shown: false, 
-                        spaces: spaces, 
-                        last: true, 
-                        type: Type.DIRECTORY
-                    })
-                    if (structure.sub_constraints) {
-                        id = parseRecursive(list, id, spaces+1, structure.sub_constraints)
-                    }
-                } else {
-                    // een file
-                    list.push({
-                        id: id, 
-                        parent_id: parent_id,
-                        name: structure.name, 
-                        shown: false, 
-                        spaces: spaces, 
-                        last: true, 
-                        type: Type.FILE
-                    })
-                }
+
             }
             i++;
             id++;
         }
-        return id - 1; // don't count last increase
+
+        const adder: ConstraintAdder = {
+            parent_id: parent_id,
+            shown: false, 
+            spaces: spaces,
+        }
+        list.push(adder)
+
+        return id - 1; // Don't count last increase.
     }
 
     function changeVisibility(id: number): undefined {
@@ -219,7 +200,9 @@ export default function HomeAdmin(): JSX.Element {
             for (let checkObject of checkObjects) {
                 if (checkObject.parent_id !== undefined && ids.includes(checkObject.parent_id)) {
                     checkObject.shown = false
-                    ids.push(checkObject.id)
+                    if (isFEConstraint(checkObject)) {
+                        ids.push(checkObject.id)
+                    }
                 }
                 newCheckObjects.push(checkObject)
             }
@@ -254,12 +237,31 @@ export default function HomeAdmin(): JSX.Element {
                         checkObject => 
                         <div> {checkObject.shown &&
                             <div className="line">
+
                                 <div>{"\u00A0".repeat(6 * checkObject.spaces)}</div>
-                                <div className="check-object">
-                                    <p>{checkObject.id}</p>
-                                    {(checkObject.type == Type.ZIP || checkObject.type == Type.DIRECTORY) &&
-                                        <button onClick={() => changeVisibility(checkObject.id)}>x</button>}
-                                </div>
+
+                                {isFEConstraint(checkObject)
+                                    /* Constraint. */
+                                    ? <div className="constraint">
+
+                                        <IoMdMore />
+
+                                        <div className="name">{checkObject.name}</div>
+                                        
+                                        {(checkObject.type == ConstraintType.ZIP || checkObject.type == ConstraintType.DIRECTORY) &&
+                                            <div className="expand" onClick={() => changeVisibility(checkObject.id)}>
+                                                {checkObjects.filter(o => o.parent_id == checkObject.id && o.shown).length === 0
+                                                    ? <MdOutlineExpandLess />
+                                                    : <MdOutlineExpandMore />
+                                                }
+                                            </div>
+                                        }
+
+                                      </div>
+                                    
+                                    /* Add new constraint. */
+                                    : <IoAdd />
+                                }
                             </div>
                         }</div>
                     )}
