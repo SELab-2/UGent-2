@@ -6,6 +6,13 @@ import { MdOutlineExpandLess } from "react-icons/md";
 import { MdOutlineExpandMore } from "react-icons/md";
 import { IoAdd } from "react-icons/io5";
 
+const WARNING = "Bij veranderingen zullen alle indieningen opnieuw gecontroleerd worden."
+const SINGLE_FILE = "enkele file"
+const ZIP_FILE = "zip-bestand"
+const SPECIFY = "Specifieer welke files de zip moet bevatten:"
+const OTHER_FILES = "Ook andere files toelaten."
+
+
 /* Enum voor constraint-type ipv string. */
 enum ConstraintType {
     ZIP,
@@ -252,27 +259,27 @@ export default function HomeAdmin(): JSX.Element {
         <div className="center">
             <div className="content">
 
-                <p className="warning-text">Bij veranderingen zullen alle indieningen opnieuw gecontroleerd worden.</p>
+                <p className="warning-text">{WARNING}</p>
 
                 <div className="type">
                     <div className="field">
                         <input id="switchRoundedDefault" type="checkbox" onChange={e => setFileOrZip(e.target.checked)} name="switchRoundedDefault" className="switch is-rounded"/>
                         {fileOrZip
                         ? <label htmlFor="switchRoundedDefault">
-                            <div className="thin">enkele file</div>
+                            <div className="thin">{SINGLE_FILE}</div>
                             <div className="divider">/</div>
-                            <div className="thick">zip-bestand</div>
+                            <div className="thick">{ZIP_FILE}</div>
                         </label>
                         : <label htmlFor="switchRoundedDefault">
-                            <div className="thick">enkele file</div>
+                            <div className="thick">{SINGLE_FILE}</div>
                             <div className="divider">/</div>
-                            <div className="thin">zip-bestand</div>
+                            <div className="thin">{ZIP_FILE}</div>
                         </label>
                     }
                     </div>
                 </div>
                 
-                <p className="specify-text">Specifieer welke files de zip moet bevatten:</p>
+                <p className="specify-text">{SPECIFY}</p>
                 
                 {/* All constraints. */}
                 <div className="recursive">
@@ -320,7 +327,7 @@ export default function HomeAdmin(): JSX.Element {
                 
                 <label className="other-files">
                     <input type="checkbox"/>
-                    Ook andere files toelaten.
+                    {OTHER_FILES}
                 </label>
 
             </div>
