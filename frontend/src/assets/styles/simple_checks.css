@@ -32,6 +32,17 @@
     .recursive {
         display: flex;
         flex-direction: column;
+
+        .line {
+            display: flex;
+            flex-direction: row;
+
+            .check-object {
+                display: flex;
+                flex-direction: row;
+                height: 20px;
+            }
+        }
     }
 
 
