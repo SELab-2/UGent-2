@@ -1,11 +1,10 @@
-import {JSX, useEffect, useState} from "react";
+import React, {JSX, useEffect} from "react";
 import {Navigate, useLocation, useRouteLoaderData} from 'react-router-dom';
 import useAuth from "../../hooks/useAuth.ts";
 import loginLoader, {LOGIN_ROUTER_ID, loginLoaderObject} from "../../dataloaders/LoginLoader.ts";
 import LoginForm from "../../components/authentication/LoginForm.tsx";
 import {DEBUG} from "../root.tsx";
-import {Token} from "../../utils/ApiInterfaces.ts";
-import ErrorLogin from "../../components/authentication/ErrorLogin.tsx";
+import {Token, User} from "../../utils/ApiInterfaces.ts";
 
 interface location_type {
     search?: { ticket?: string },
@@ -13,42 +12,29 @@ interface location_type {
     pathname: string
 }
 
-const ticketLogin = async (ticket: string, setError: (value: (((prevState: string) => string) | string)) => void) => {
+const ticketLogin = async (ticket: string, setUser: React.Dispatch<React.SetStateAction<User | undefined>>) => {
     let url = '/api/login?ticket=' + ticket
     if (DEBUG) {
         url = 'http://127.0.0.1:8000/api/login?ticket=' + ticket
     }
+    const token = await (await fetch(url, {method: 'POST', headers: {'Content-Type': 'application/json'}}))
+        .json() as Token
 
-    return fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    })
-        .then(async response => {
-            if (response.ok) {
-                return await response.json() as Token
-            }
-        })
-        .then(data => {
-            if (data && data.token) {
-                localStorage.setItem('token', data.token)
-                return data.token
-            } else {
-                return undefined
-            }
-        })
-        .catch(error => {
-            setError("" + error)
-        })
+    if (token.token) {
+        localStorage.setItem('token', token.token)
+        const result: loginLoaderObject = await loginLoader()
+        setUser(result.user)
+    }
+
+    return token;
 }
 
 export default function LoginScreen(): JSX.Element {
     const {user, setUser} = useAuth();
     const location = useLocation() as location_type;
     const searchParams = new URLSearchParams(useLocation().search);
-    const [error, setError] = useState('')
     const ticket = searchParams.get('ticket') || ''
+
     let next: string = location.state?.from?.pathname || localStorage.getItem("to") || '/'
     // preventing infinite loop
     if (next === '/login') {
@@ -63,19 +49,11 @@ export default function LoginScreen(): JSX.Element {
         if (data && data.user) {
             setUser(data.user)
         } else if (!user && ticket) {
-            void ticketLogin(ticket, setError).then((token) => {
-                if (token) {
-                    void loginLoader().then(result => {
-                        setUser(result.user)
-                    })
-                }
-            })
+            void ticketLogin(ticket, setUser);
         }
-
     }, [data, setUser, ticket, user]);
 
     return <div>
-        {error !== "" && <ErrorLogin/>}
         {user && <Navigate to={next} replace/>}
         {!user && ticket === "" && <LoginForm/>}
     </div>

@@ -1,12 +1,12 @@
 import {DEBUG} from "../pages/root.tsx";
 
 
-const ApiFetch = async (url: string, options?: RequestInit,) => {
-    const token = localStorage.getItem('token')
+const ApiFetch = async (url: string, options?: RequestInit) => {
     if (typeof options === 'undefined') {
         options = {}
     }
 
+    const token = localStorage.getItem('token')
     if (token) {
         options.headers = {
             ...options.headers,
@@ -18,8 +18,7 @@ const ApiFetch = async (url: string, options?: RequestInit,) => {
     if (DEBUG) {
         url = "http://127.0.0.1:8000" + url;
     }
-  
-    return fetch(url, options)
+    return (await fetch(url, options)).json()
 }
 
 export default ApiFetch

@@ -1,5 +1,5 @@
 import {JSX} from "react";
-import delphi_full from "../../assets/images/delphi_full.png";
+import delphi_full from "/delphi_full.png";
 import {DEBUG} from "../../pages/root.tsx";
 
 export default function LoginForm(): JSX.Element {

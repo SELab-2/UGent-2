@@ -9,19 +9,8 @@ export interface loginLoaderObject {
 
 export default async function loginLoader(): Promise<loginLoaderObject> {
     const token = localStorage.getItem('token')
-    let user = undefined
     if (token) {
-        user = (await apiFetch('/user')
-            .then(async response => {
-                if (response.status == 200) {
-                    return await response.json() as User;
-                } else {
-                    return undefined;
-                }
-            })
-            .catch(() => {
-                localStorage.removeItem('token')
-            })) as User | undefined
+        const user = (await apiFetch('/user')) as User;
         return {user: user}
     } else {
         return {user: undefined}
