@@ -9,8 +9,6 @@ import {useRouteLoaderData} from "react-router-dom";
 
 export default function HomeStudent(): JSX.Element {
     // data contains a list of Project in data.projects (i think)
-
-    // TODO Creates an error
     const data: studentLoaderObject = useRouteLoaderData(STUDENT_ROUTER_ID) as studentLoaderObject
     console.log(data) // TODO: remove
 
