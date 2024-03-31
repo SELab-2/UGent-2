@@ -1,18 +1,36 @@
-[project]
+[tool.poetry]
 name = "Delphi"
 version = "0.1.0"
 description = "A Dodona clone"
 authors = [
-    {name = "Mathieu Strypsteen", email = "mathieu.strypsteen@ugent.be"},
-    {name = "Albéric Loos", email = "alberic.loos@ugent.be"},
-    {name = "Emma Vandewalle", email = "emma.vandewalle@ugent.be"},
-    {name = "Lukas Barragan Torres", email = "lukas.barragantorres@ugent.be"},
-    {name = "Matthias Seghers", email = "matthias.seghers@ugent.be"},
-    {name = "Robbe Van de Keere", email = "robbe.vandekeere@ugent.be"},
-    {name = "Ruben Vandamme", email = "ruben.vandamme@ugent.be"},
-    {name = "Stef Ossé", email = "stef.osse@ugent.be"}
+    "Mathieu Strypsteen <mathieu.strypsteen@ugent.be>",
+    "Albéric Loos <alberic.loos@ugent.be>",
+    "Emma Vandewalle <emma.vandewalle@ugent.be>",
+    "Lukas Barragan Torres <lukas.barragantorres@ugent.be>",
+    "Matthias Seghers< matthias.seghers@ugent.be>",
+    "Robbe Van de Keere <robbe.vandekeere@ugent.be>",
+    "Ruben Vandamme <ruben.vandamme@ugent.be>",
+    "Stef Ossé <stef.osse@ugent.be>"
 ]
-python = ">=3.12"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+uvicorn = "^0.29.0"
+sqlalchemy = "^2.0.29"
+ruff = "^0.3.4"
+python-multipart = "^0.0.9"
+pyright = "^1.1.356"
+pyjwt = "^2.8.0"
+psycopg2-binary = "^2.9.9"
+pre-commit = "^3.7.0"
+fastapi = "^0.110.0"
+email-validator = "^2.1.1"
+httpx = "^0.27.0"
+defusedxml = "^0.7.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
 
 [tool.pyright]
 exclude = [
@@ -59,26 +77,8 @@ indent-width = 4
 target-version = "py312"
 
 
-
-
 [tool.ruff.lint]
-select = [
-    "ALL",
-    # "F",   # Pyflakes
-    # "E",   # Pycodestyle
-    # "W",   # Warnings
-    # "I",   # Isort (sorted imports)
-    # "N",   # PEP8
-    # "A",   # Flake8-builtins
-    # "C4",  # Comprehensions
-    # "PIE", # flake8 pie
-    # "Q",   # Quotes
-    # "RET", # returns
-    # "SIM", # simplify
-    # "ARG", # unused arguments
-    # "ERA", # no commented out code
-    # "PL"   # all pylint
-]
+select = ["ALL"]
 ignore = [
     "D", # Docstrings
     "ANN101", # type annotation for self
