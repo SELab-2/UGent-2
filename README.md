@@ -33,6 +33,7 @@ Volg deze stappen om de backend van het project op te zetten:
     **Ubuntu**
     ```bash
     sudo apt-get install postgresql postgresql-contrib
+    sudo service postgresql start
     ```
     **Fedora**
     ```bash
@@ -52,10 +53,15 @@ Volg deze stappen om de backend van het project op te zetten:
     sudo -u postgres psql -c "CREATE DATABASE delphi;"
     sudo -u postgres psql -c "ALTER USER postgres PASSWORD 'postgres';"
     ```
-6. Voer het `fill_database_mock.py` script uit om de database te vullen met mock data:
+6. Voer het `fill_database_mock.py` script uit als een module om de database te vullen met mock data:
     ```bash
-    python fill_database_mock.py
+    python -m db.fill_database_mock
     ```
+    Je kan ook een lege databank initialiseren met het `create_database_tables.py` script als volgt:
+    ```bash
+    python -m db.create_database_tables
+    ```
+    *Opgelet: beide scripts zullen de huidige databankinhoud verwijderen indien die bestaat en daarna de tabellen opnieuw aanmaken.*
 7. Start de API door het `app.py` script uit te voeren:
     ```bash
     python app.py
@@ -68,10 +74,10 @@ Volg deze stappen om de backend van het project op te zetten:
 
 ## Frontend
 
-Volg deze stappen om de backend van het project op te zetten:
+Volg deze stappen om de frontend van het project op te zetten:
 
 
-1. Navigeer naar de backend map:
+1. Navigeer naar de frontend map:
     ```bash
     cd UGent-2/frontend
     ```
