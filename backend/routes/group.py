@@ -2,9 +2,19 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from db.sessions import get_session
-from domain.logic.group import add_student_to_group, get_students_of_group, remove_student_from_group
+from domain.logic.group import (
+    add_student_to_group,
+    get_group_for_student_and_project,
+    get_students_of_group,
+    remove_student_from_group,
+)
+from domain.models.GroupDataclass import GroupDataclass
 from domain.models.StudentDataclass import StudentDataclass
-from routes.dependencies.role_dependencies import ensure_student_authorized_for_group, ensure_user_authorized_for_group
+from routes.dependencies.role_dependencies import (
+    ensure_student_authorized_for_group,
+    ensure_student_authorized_for_project,
+    ensure_user_authorized_for_group,
+)
 from routes.tags.swagger_tags import Tags
 
 group_router = APIRouter()
@@ -39,3 +49,16 @@ def list_group_members(
     session: Session = Depends(get_session),
 ) -> list[StudentDataclass]:
     return get_students_of_group(session, group_id)
+
+
+@group_router.get(
+    "/projects/{project_id}/group",
+    tags=[Tags.GROUP],
+    summary="Get your group for a project.",
+)
+def project_get_group(
+    project_id: int,
+    session: Session = Depends(get_session),
+    student: StudentDataclass = Depends(ensure_student_authorized_for_project),
+) -> GroupDataclass | None:
+    return get_group_for_student_and_project(session, student.id, project_id)

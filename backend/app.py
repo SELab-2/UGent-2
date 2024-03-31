@@ -7,7 +7,12 @@ from starlette import status
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 
-from db.errors.database_errors import ActionAlreadyPerformedError, ItemNotFoundError, NoSuchRelationError
+from db.errors.database_errors import (
+    ActionAlreadyPerformedError,
+    ConflictingRelationError,
+    ItemNotFoundError,
+    NoSuchRelationError,
+)
 from routes.errors.authentication import (
     InvalidAuthenticationError,
     InvalidRoleCredentialsError,
@@ -101,6 +106,14 @@ def no_such_relation_error_handler(request: Request, exc: NoSuchRelationError) -
 def invalid_authentication_error_handler(request: Request, exc: NoSuchRelationError) -> JSONResponse:
     return JSONResponse(
         status_code=status.HTTP_401_UNAUTHORIZED,
+        content={"detail": str(exc)},
+    )
+
+
+@app.exception_handler(ConflictingRelationError)
+def conflicting_relation_error_handler(request: Request, exc: ConflictingRelationError) -> JSONResponse:
+    return JSONResponse(
+        status_code=status.HTTP_400_BAD_REQUEST,
         content={"detail": str(exc)},
     )
 

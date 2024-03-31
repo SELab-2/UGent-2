@@ -99,6 +99,17 @@ def ensure_teacher_authorized_for_subject(
     return teacher
 
 
+def ensure_student_authorized_for_project(
+    project_id: int,
+    session: Session = Depends(get_session),
+    student: StudentDataclass = Depends(get_authenticated_student),
+) -> StudentDataclass:
+    projects_of_student = get_projects_of_student(session, student.id)
+    if project_id not in [project.id for project in projects_of_student]:
+        raise NoAccessToDataError
+    return student
+
+
 def ensure_teacher_authorized_for_project(
     project_id: int,
     session: Session = Depends(get_session),
