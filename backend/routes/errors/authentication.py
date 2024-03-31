@@ -14,8 +14,8 @@ class InvalidStudentCredentialsError(InvalidRoleCredentialsError):
     ERROR_MESSAGE = "User does not have the required student role"
 
 
-class NoAccessToSubjectError(Exception):
-    ERROR_MESSAGE = "User doesn't have access to subject"
+class NoAccessToDataError(Exception):
+    ERROR_MESSAGE = "User doesn't have access to object"
 
 
 class InvalidAuthenticationError(Exception):

@@ -50,7 +50,7 @@ def get_subject_teachers(subject_id: int, session: Session = Depends(get_session
 @subject_router.post(
     "/subjects/{subject_id}/projects",
     dependencies=[Depends(ensure_teacher_authorized_for_subject)],
-    tags=[Tags.SUBJECT],
+    tags=[Tags.PROJECT],
     summary="Create a new project linked to a certain subject.",
 )
 def new_project(

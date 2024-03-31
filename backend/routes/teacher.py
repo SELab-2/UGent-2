@@ -29,7 +29,7 @@ def projects_of_teacher_get(
     return get_projects_of_teacher(session, teacher.id)
 
 
-@teacher_router.post("/teacher/subjects", tags=[Tags.TEACHER], summary="Create a new subject.")
+@teacher_router.post("/teacher/subjects", tags=[Tags.SUBJECT], summary="Create a new subject.")
 def create_subject_post(
     subject: SubjectInput,
     teacher: TeacherDataclass = Depends(get_authenticated_teacher),
