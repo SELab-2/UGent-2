@@ -13,7 +13,7 @@ from domain.logic.submission import create_submission
 from domain.logic.teacher import create_teacher
 from domain.logic.user import modify_user_roles
 from domain.models.SubmissionDataclass import SubmissionState
-from create_database_tables import initialize_tables
+from db.create_database_tables import initialize_tables
 
 
 if __name__ == "__main__":
@@ -212,5 +212,5 @@ if __name__ == "__main__":
     add_teacher_to_subject(session, student6.id, webtech.id)
 
     session.commit()
-    print("Filled database with mock data")
+    # print("Filled database with mock data")
     session.close()
