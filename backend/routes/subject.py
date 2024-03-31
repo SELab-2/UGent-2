@@ -2,9 +2,10 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from db.sessions import get_session
-from domain.logic.project import create_project, get_projects_of_subject, get_teachers_of_subject
-from domain.logic.subject import get_subject
+from domain.logic.project import create_project, get_projects_of_subject
+from domain.logic.subject import get_students_of_subject, get_subject, get_teachers_of_subject
 from domain.models.ProjectDataclass import ProjectDataclass, ProjectInput
+from domain.models.StudentDataclass import StudentDataclass
 from domain.models.SubjectDataclass import SubjectDataclass
 from domain.models.TeacherDataclass import TeacherDataclass
 from routes.dependencies.role_dependencies import (
@@ -45,6 +46,16 @@ def get_subject_projects(subject_id: int, session: Session = Depends(get_session
 )
 def get_subject_teachers(subject_id: int, session: Session = Depends(get_session)) -> list[TeacherDataclass]:
     return get_teachers_of_subject(session, subject_id)
+
+
+@subject_router.get(
+    "/subjects/{subject_id}/students",
+    dependencies=[Depends(ensure_user_authorized_for_subject)],
+    tags=[Tags.SUBJECT],
+    summary="Get all students of a certain subject.",
+)
+def get_subject_students(subject_id: int, session: Session = Depends(get_session)) -> list[StudentDataclass]:
+    return get_students_of_subject(session, subject_id)
 
 
 @subject_router.post(

@@ -5,7 +5,6 @@ from sqlalchemy.orm import Session
 from db.models.models import Project, Student, Subject, Teacher
 from domain.logic.basic_operations import get, get_all
 from domain.models.ProjectDataclass import ProjectDataclass, ProjectInput
-from domain.models.TeacherDataclass import TeacherDataclass
 
 
 def create_project(
@@ -52,12 +51,6 @@ def get_projects_of_subject(session: Session, subject_id: int) -> list[ProjectDa
     subject: Subject = get(session, Subject, ident=subject_id)
     projects: list[Project] = subject.projects
     return [project.to_domain_model() for project in projects]
-
-
-def get_teachers_of_subject(session: Session, subject_id: int) -> list[TeacherDataclass]:
-    subject: Subject = get(session, Subject, ident=subject_id)
-    teachers = subject.teachers
-    return [teacher.to_domain_model() for teacher in teachers]
 
 
 def get_projects_of_student(session: Session, user_id: int) -> list[ProjectDataclass]:
