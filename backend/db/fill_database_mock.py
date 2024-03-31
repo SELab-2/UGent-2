@@ -1,8 +1,10 @@
 from datetime import datetime
-from db.extensions import engine
+
 from psycopg2 import tz
 from sqlalchemy.orm import sessionmaker
 
+from db.create_database_tables import initialize_tables
+from db.extensions import engine
 from domain.logic.admin import create_admin
 from domain.logic.group import add_student_to_group, create_group
 from domain.logic.project import create_project
@@ -13,8 +15,6 @@ from domain.logic.submission import create_submission
 from domain.logic.teacher import create_teacher
 from domain.logic.user import modify_user_roles
 from domain.models.SubmissionDataclass import SubmissionState
-from db.create_database_tables import initialize_tables
-
 
 if __name__ == "__main__":
     SessionLocal = sessionmaker(autocommit=False, bind=engine)
@@ -212,5 +212,4 @@ if __name__ == "__main__":
     add_teacher_to_subject(session, student6.id, webtech.id)
 
     session.commit()
-    # print("Filled database with mock data")
     session.close()

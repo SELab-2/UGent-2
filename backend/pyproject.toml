@@ -133,3 +133,8 @@ docstring-code-format = false
 # This only has an effect when the `docstring-code-format` setting is
 # enabled.
 docstring-code-line-length = "dynamic"
+
+
+[tool.ruff.per-file-ignores]
+# Ignore important unused import in the database initialization file.
+"db/create_database_tables.py" = ["F401"]

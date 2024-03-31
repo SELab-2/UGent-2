@@ -1,17 +1,16 @@
-from db.extensions import Base, engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy import Engine, MetaData, Table, inspect
+from sqlalchemy.orm import Session, sessionmaker
 from sqlalchemy_utils import create_database, database_exists
-from sqlalchemy import Table, MetaData, inspect
 
-import db.models.models  # DO NOT REMOVE THIS LINE, create_all doesn't work without it
+import db.models.models
+from db.extensions import Base, engine
 
 
-def initialize_tables(session_instance, engine_instance):
+def initialize_tables(session_instance: Session, engine_instance: Engine) -> None:
     if not database_exists(engine_instance.url):
         create_database(engine_instance.url)
 
-    if inspect(engine_instance).has_table('users'):  # Check if the tables already exist and remove them
-        # print("Dropping existing tables and making new ones...")
+    if inspect(engine_instance).has_table("users"):  # Check if the tables already exist and remove them
         metadata = MetaData()
         tables = ["submissions",
                   "students_groups",
@@ -35,5 +34,4 @@ def initialize_tables(session_instance, engine_instance):
 if __name__ == "__main__":
     session = sessionmaker(autocommit=False, bind=engine)()
     initialize_tables(session, engine)
-    # print("Tables initialized")
     session.close()
