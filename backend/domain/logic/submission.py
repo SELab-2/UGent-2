@@ -8,12 +8,13 @@ from domain.models.SubmissionDataclass import SubmissionDataclass, SubmissionSta
 
 
 def create_submission(
-        session: Session,
-        student_id: int,
-        group_id: int,
-        message: str,
-        state: SubmissionState,
-        date_time: datetime,
+    session: Session,
+    student_id: int,
+    group_id: int,
+    message: str,
+    state: SubmissionState,
+    date_time: datetime,
+    filename: str,
 ) -> SubmissionDataclass:
     """
     Create a submission for a certain project by a certain group.
@@ -27,6 +28,7 @@ def create_submission(
         message=message,
         state=state,
         date_time=date_time,
+        filename=filename,
     )
     session.add(new_submission)
     session.commit()

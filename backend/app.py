@@ -1,3 +1,5 @@
+import pathlib
+
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -21,6 +23,7 @@ from routes.tags.swagger_tags import tags_metadata
 from routes.teacher import teacher_router
 from routes.user import users_router
 
+pathlib.Path.mkdir(pathlib.Path("submissions"), exist_ok=True)
 app = FastAPI(docs_url="/api/docs", openapi_tags=tags_metadata)
 
 # Koppel routes uit andere modules.

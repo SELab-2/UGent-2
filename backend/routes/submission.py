@@ -1,6 +1,8 @@
 import datetime
+import hashlib
+from typing import Annotated
 
-from fastapi import APIRouter, Depends, UploadFile
+from fastapi import APIRouter, Depends, File
 from sqlalchemy.orm import Session
 
 from db.sessions import get_session
@@ -20,10 +22,13 @@ submission_router = APIRouter()
 )
 def make_submission(
     group_id: int,
-    file: UploadFile,
+    file: Annotated[bytes, File()],
     session: Session = Depends(get_session),
     student: StudentDataclass = Depends(ensure_student_in_group),
 ) -> SubmissionDataclass:
+    filename = hashlib.sha256(file).hexdigest()
+    with open(f"submissions/{filename}", "wb") as f:
+        f.write(file)
     return create_submission(
         session=session,
         student_id=student.id,
@@ -31,4 +36,5 @@ def make_submission(
         message="",
         state=SubmissionState.Pending,
         date_time=datetime.datetime.now(),
+        filename=filename,
     )
