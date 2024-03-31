@@ -141,3 +141,21 @@ def ensure_student_in_group(
     if student not in get_students_of_group(session, group_id):
         raise NoAccessToDataError
     return student
+
+
+def ensure_user_authorized_for_submission(
+    group_id: int,
+    session: Session = Depends(get_session),
+    uid: int = Depends(get_authenticated_user),
+) -> None:
+    group = get_group(session, group_id)
+    if is_user_student(session, uid):
+        student = get_student(session, uid)
+        if student in get_students_of_group(session, group_id):
+            return
+    if is_user_teacher(session, uid) and get_project(session, group.project_id) in get_projects_of_teacher(
+        session,
+        uid,
+    ):
+        return
+    raise NoAccessToDataError

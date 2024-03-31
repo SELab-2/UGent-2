@@ -53,3 +53,8 @@ def get_submissions_of_group(session: Session, group_id: int) -> list[Submission
     group: Group = get(session, Group, ident=group_id)
     submissions: list[Submission] = group.submissions
     return [submission.to_domain_model() for submission in submissions]
+
+
+def get_last_submission(session: Session, group_id: int) -> SubmissionDataclass:
+    submissions = get_submissions_of_group(session, group_id)
+    return max(submissions, key=lambda submission: submission.date_time)
