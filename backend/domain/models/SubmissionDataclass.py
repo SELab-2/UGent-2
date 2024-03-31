@@ -17,3 +17,4 @@ class SubmissionDataclass(BaseModel):
     student_id: int
     state: SubmissionState
     message: str
+    filename: str
