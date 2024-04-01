@@ -9,15 +9,17 @@ import { VscNewFile } from "react-icons/vsc";
 import { VscNewFolder } from "react-icons/vsc";
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
+import Warneable from "./Warneable";
 
 /* TODO:
 
-    - warning with proceed and cancel
+    x warning with proceed and cancel
     - remove
     - andere toestaan checkbox
     - enkele file/zip-bestand
     - kleurencodes uitleggen
     - algemene layout beter maken
+    - mergen & implementeren in projectview van teacher
 
 */
 
@@ -274,6 +276,7 @@ export default function HomeAdmin(): JSX.Element {
         
     }
 
+    /* add a new constraint */
     function handleAdd(folder_id: number, type: string) {
         function add(constraint: FEConstraint) {
             if (constraint.id === folder_id) {
@@ -300,6 +303,31 @@ export default function HomeAdmin(): JSX.Element {
 
         // update display
         setData(structuredClone(data))
+    }
+
+
+    /* remove a constraint and all its subconstraints recursively */
+    function handleRemove(parent_id: number | undefined, id: number) {
+
+        function remove(constraint: FEConstraint) {
+            if (constraint.id === parent_id) {
+                if (constraint.sub_constraints !== undefined) {
+                    constraint.sub_constraints = constraint.sub_constraints.filter(
+                        sub => sub.id !== id
+                    )
+                }
+            }
+        }
+
+        remove(data)
+
+        // update display
+        setData(structuredClone(data))
+
+    }
+
+    function log() {
+        console.log("log")
     }
 
     return (
@@ -334,11 +362,11 @@ export default function HomeAdmin(): JSX.Element {
                 
                 {/* ...constraints... */}
                 {flatten(data).map((v) => 
-                    <>
+                    <div key={"item"+v.item.id}>
                         {v.show &&
                             <div className="constraint_object row"
                                 onMouseOver={() => setIsHoveringMore(structuredClone(isHoveringMore.set(v.item.id, true)))}
-                                onMouseOut={() => setIsHoveringMore(structuredClone(isHoveringMore.set(v.item.id, false)))}
+                                onMouseOut={() => setIsHoveringMore(structuredClone(isHoveringMore.set(v.item.id, true)))}
                             >
 
                                 {/* ... spacing ... */}
@@ -348,19 +376,33 @@ export default function HomeAdmin(): JSX.Element {
                                 { (!isZip(v.item.type) && isHoveringMore.get(v.item.id) )
                                     ?   <Popup trigger={
 
-                                            <div className="more row"><IoMdMore className="hover-shadow" /></div>
+                                            <div className="more row">
+                                                {/* FIXME:  warneable.proceed works */}
+                                                <IoMdMore className="hover-shadow" />
+                                            </div>
 
-                                        } position="left center" arrow={true} on="hover">
+                                        } position="left center" arrow={true} on="click">
+
+                                            {/* FIXME:  warneable.proceed doesn't work */}
 
                                             <div className="menu">
 
-                                                <div className="menu-item menu-item-middle">
-                                                    <div>remove</div>
+                                                {/* ... menu-remove ... */}
+                                                <div className="menu-item menu-item-middle" id={"x"+v.item.id} key={"y"+v.item.id} >
+                                                    <button onClick={() => handleRemove(v.item.parent_id, v.item.id)}>remove</button>
+                                                    <Warneable 
+                                                        text="Are you sure?" 
+                                                        trigger={onClick => 
+                                                            <button onClick={onClick}>remove</button>
+                                                        }
+                                                        proceed={() => handleRemove(v.item.parent_id, v.item.id)} /* FIXME: proceed doesn't fire here for some reason */
+                                                    />
                                                 </div>
 
+                                                {/* ... menu-allow-others ... */}
                                                 <div className="menu-item menu-item-last">
                                                     <label className="checkbox"> { /* FIXME: sometimes a border appear around the checkbox -> bulma thing? */}
-                                                        <input type="checkbox" />
+                                                        <input type="checkbox" id={"others"+v.item.id}/>
                                                         Andere toestaan
                                                     </label>
                                                 </div>
@@ -382,6 +424,7 @@ export default function HomeAdmin(): JSX.Element {
                                                 : "dir-color"
                                         : ""
                                     )}
+                                    id={"name"+v.item.id}
                                     type="text" 
                                     value={v.item.name} 
                                     onChange={e => modifyName(v.item.id, e.target.value)} 
@@ -406,7 +449,7 @@ export default function HomeAdmin(): JSX.Element {
 
                             </div>
                         }
-                    </>
+                    </div>
                 )}
 
             </div>
