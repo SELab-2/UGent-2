@@ -1,11 +1,13 @@
-import {ChangeEvent, useState} from 'react';
+import React, {ChangeEvent} from 'react';
 
-export default function Inputfield(props: { placeholder: string }) {
-    const [inputValue, setInputValue] = useState('');
-
+export default function Inputfield(props: {
+    placeholder?: string,
+    value: string,
+    setValue: React.Dispatch<React.SetStateAction<string>>
+}) {
     // Event handler to update the input value
     function handleChange(e: ChangeEvent<HTMLInputElement>) {
-        setInputValue(e.target.value);
+        props.setValue(e.target.value);
     }
 
     return (
@@ -13,7 +15,7 @@ export default function Inputfield(props: { placeholder: string }) {
             style={{width: "33%"}}
             className={"input is-rounded"}
             type="text"
-            value={inputValue}
+            value={props.value}
             onChange={handleChange}
             placeholder={props.placeholder}
         />
