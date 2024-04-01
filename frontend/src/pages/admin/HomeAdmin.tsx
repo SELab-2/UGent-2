@@ -149,7 +149,7 @@ function flatten(constraint: FEConstraint): FlattedConstraint[] {
 
     
     return [{item: constraint, spacing: 0, show: true}].concat(
-        flatten_sub(constraint, 0, constraint.expanded, false).slice(1,)
+        flatten_sub(constraint, 0, constraint.expanded).slice(1,)
     )
     
 
