@@ -45,9 +45,26 @@
             /* border: solid;
             border-width: 1px; */
         }
+        .more {
+            align-items: center;
+        }
     }
-
+    
 }
+
+
+
+/* =============================================== */
+
+.menu-item {
+    padding: 5px 10px;
+    align-items: center;
+}
+
+.menu-item-middle {
+    border-bottom: 1px solid rgb(187, 187, 187);
+}
+
 
 /* =============================================== */
 
@@ -76,5 +93,13 @@
 }
 
 .dir-color {
-    text-shadow: 2px 2px 4px rgba(236, 24, 255, 0.5);
+    text-shadow: 2px 2px 4px rgba(230, 6, 6, 0.5);
+}
+
+.locked-dir-color {
+    text-shadow: 2px 2px 4px rgba(78, 255, 24, 0.7);
+}
+
+.zip-color {
+    text-shadow: 2px 2px 4px rgba(255, 251, 24, 0.7);
 }
