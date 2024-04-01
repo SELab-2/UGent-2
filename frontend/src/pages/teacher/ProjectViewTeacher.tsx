@@ -3,6 +3,7 @@ import {Sidebar} from "../../components/Sidebar.tsx";
 import {useState} from "react";
 import {ViewProjectTeacherComponent} from "../../components/ViewProjectTeacherComponent.tsx";
 import {ProjectTeacher} from "../../types/project.ts";
+import Statistics from "../../components/Statistics.tsx";
 
 export default function ProjecctViewTeacher() {
     const [projectName, setProjectName] = useState<string>("Markov Decision Diagram")
@@ -31,8 +32,10 @@ export default function ProjecctViewTeacher() {
         groupProject: groupProject, setGroupProject: setGroupProject
     }
 
+
     return (
         <>
+
             <div className={"main-header"}>
                 <Header page_title={projectName}/>
             </div>
@@ -41,9 +44,8 @@ export default function ProjecctViewTeacher() {
                     <Sidebar/>
                 </div>
                 <div className={"student-main mt-6 mr-6"}>
-
+                    <Statistics/>
                     <ViewProjectTeacherComponent project={project}/>
-
                 </div>
             </div>
         </>
