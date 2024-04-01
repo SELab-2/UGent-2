@@ -44,7 +44,7 @@ const router = createBrowserRouter(
                 <Route path={"/student/courses"} element={<CoursesViewStudent/>}/>
             </Route>
 
-            <Route element={<RequireAuth allowedRoles={['TEACHER']}/>}>
+            <Route element={<RequireAuth allowedRoles={['STUDENT', 'TEACHER']}/>}>
                 <Route id={TEACHER_ROUTER_ID} path={"/teacher"} element={<HomeTeacher/>} loader={teacherLoader}/>
                 <Route path={"/teacher/courses"} element={<SubjectsTeacher/>} id={SUBJECT_TEACHER_ROUTER_ID}
                        loader={subjectsTeacherLoader}/>

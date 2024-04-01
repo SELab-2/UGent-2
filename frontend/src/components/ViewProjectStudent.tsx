@@ -1,5 +1,5 @@
 import {JSX} from "react";
-import FieldWithLabel from "./FieldWithLabel.tsx";
+import FieldWithLabel from "./FieldWithLabel";
 import {FaCheck, FaUpload} from "react-icons/fa";
 import {FaDownload} from "react-icons/fa6";
 
