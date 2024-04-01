@@ -1,69 +1,51 @@
 import {JSX} from "react";
 import '../../assets/styles/simple_checks.css'
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { IoMdMore } from "react-icons/io";
 import { MdOutlineExpandLess } from "react-icons/md";
 import { MdOutlineExpandMore } from "react-icons/md";
 import { IoAdd } from "react-icons/io5";
+import { CiFileOn } from "react-icons/ci";
+import { CiFolderOn } from "react-icons/ci";
+import {parse, stringify} from 'flatted';
+import getID from "./IDProvider";
 
+/* text literals */
 const WARNING = "Bij veranderingen zullen alle indieningen opnieuw gecontroleerd worden."
 const SINGLE_FILE = "enkele file"
 const ZIP_FILE = "zip-bestand"
 const SPECIFY = "Specifieer welke files de zip moet bevatten." 
 const SPECIFY_2 = "Ook andere files toelaten in een folder: selecteer de corresponderende checkbox."
 
-/*
-TODO:
-
-    - veranderen naam
-    - warning display
-    - toggle enkele file/zipbestand
-    - (three dots enkel displayen bij hover line)
-    - three dots mini display
-    - three dots mini display logic
-    - update to backend
-    - boolean voor 'is veranderd' voor later de confirm
-
-/*
-
-
-/* Enum voor constraint-type ipv string. */
-enum ConstraintType {
-    ZIP,
-    DIRECTORY,
-    FILE
+/* Definieer constraint-types. */
+const ZIP = "zip_constraint"
+const FILE = "file_constraint"
+const DIR = "directory_constraint"
+const LOCKED_DIR = "only_present_directory_constraint"
+function isFolder(type: string) {
+    return type === DIR || type === LOCKED_DIR || type === ZIP
+}
+function isZip(type: string) {
+    return type === ZIP
 }
 
-/* Een constraint zoals binnengekregen van de backend. */
-type BEConstraint = {"type": string, "name": string, "sub_constraints"?: BEConstraint[]}
+type BEConstraint = {
+    "type": string, 
+    "name": string, 
+    "sub_constraints"?: BEConstraint[]
+}
 
-/* Een constraint met eigenschappen bruikbaar voor de frontend. */
-interface FEConstraint {
+type FEConstraint = {
+    "type": string, 
+    "name": string, 
+    "sub_constraints"?: FEConstraint[],
     id: number,
     parent_id: number | undefined,
-    name: string, 
-    type: ConstraintType,
-    shown: boolean, 
-    spaces: number,
-    checkbox?: boolean
-}
-
-/* We willen constraints kunnen aanmaken. 
-Om dit viseel aangenaam te maken, geven we dit object enkele zelfde eigenschappen als FEConstraint.
-*/
-interface ConstraintAdder {
-    parent_id: number | undefined,
-    shown: boolean, 
-    spaces: number,
-}
-
-/* We hebben FEConstraint en ConstraintAdder in één lijst gestopt, maar willen weten wanneer we wat hebben. */
-function isFEConstraint(obj: FEConstraint | ConstraintAdder): obj is FEConstraint {
-    return (obj as FEConstraint).name !== undefined;
+    expanded?: boolean,
 }
 
 /* Dummy data voor een structuur binnengekregen van de backend. 
-TODO: Verander dit naar de eigenlijke call later.*/
+TODO: not_present_constraint not supported*/
 const dummy_data: BEConstraint = {
     "type": "zip_constraint",
     "name": "root.zip",
@@ -91,7 +73,7 @@ const dummy_data: BEConstraint = {
                     ]
                 },
                 {
-                    "type": "directory_constraint",
+                    "type": "only_present_directory_constraint",
                     "name": "Other2",
                     "sub_constraints": [
                         {
@@ -125,171 +107,197 @@ const dummy_data: BEConstraint = {
                     "name": "Graduation.mp4"
                 }
             ]
-        },
-        {
-            "type": "not_present_constraint",
-            "name": "file4.txt"
         }
     ]
 }
 
+function BE_2_FE(BE_cons: BEConstraint): FEConstraint {
+
+    function BE_2_FE_sub(BE_cons: BEConstraint, parent_id: number | undefined): FEConstraint {
+        
+        const this_id = getID()
+        
+        return {
+            "type": BE_cons.type, 
+            "name": BE_cons.name, 
+            "sub_constraints": BE_cons.sub_constraints?.map(e => BE_2_FE_sub(e, this_id)), 
+            id: this_id,
+            parent_id: parent_id,
+            expanded: (BE_cons.type === FILE) ? undefined : false,
+        }
+    }
+    return BE_2_FE_sub(BE_cons, undefined)
+}
+
+function FE_2_BE(FE_cons: FEConstraint): BEConstraint {
+    return {
+        "type": FE_cons.type,
+        "name": FE_cons.type,
+        "sub_constraints": FE_cons.sub_constraints?.map(sub => FE_2_BE(sub))
+    }
+}
+
+/* Input fields will always lose focus on a recursive defined component.
+The easiest way to solve this is to flatten the structure and use the .map() function. */
+type FlattedConstraint = {
+    item: FEConstraint,
+    spacing: number,
+    show: boolean,
+}
+
+function flatten(constraint: FEConstraint): FlattedConstraint[] {
+
+    
+    return [{item: constraint, spacing: 0, show: true}].concat(
+        flatten_sub(constraint, 0, constraint.expanded, false).slice(1,)
+    )
+    
+
+    function flatten_sub(
+        constraint: FEConstraint, 
+        spacing: number, 
+        expanded: boolean | undefined
+    ): FlattedConstraint[] {
+        
+        let show = (expanded === undefined) ? false : expanded
+        
+        if (!isFolder(constraint.type)) {
+            return [{
+                item: constraint, 
+                spacing: spacing, 
+                show: show
+            }]
+        } else {
+            let list = [{
+                item: constraint, 
+                spacing: spacing, 
+                show: show
+            }]
+            if (constraint.sub_constraints !== undefined) {
+                for (let sub of constraint.sub_constraints) {
+                    list = list.concat(flatten_sub(
+                        sub, 
+                        spacing+1, 
+                        constraint.
+                        expanded, 
+                    ))
+                }
+            }
+            return list
+        }
+    }
+}
 
 export default function HomeAdmin(): JSX.Element {
     
-    /* Bepaalt of de switch geactiveerd is (true) (zip) or gedeactiveerd (false) (file). */
     const [fileOrZip, setFileOrZip] = useState<Boolean>(false);
 
-    /* Bevat alle constraints (& adders), klaar om te displayen (of aan te passen). */
-    /* FIXME: Gebruik setConstraints niet zelf bij inhoudelijke veranderingen! Roep hiervoor ... op! */
-    const [constraints, setConstraints] = useState<(FEConstraint | ConstraintAdder)[]>(initialLoad(dummy_data))
+    const [data, setData] = useState<FEConstraint>(BE_2_FE(dummy_data))
 
-    /* Laad de constraints van de backend in. */
-    function initialLoad(data: BEConstraint): (FEConstraint | ConstraintAdder)[] {
-        
-        const start_constraint: FEConstraint = {
-            id: 0, 
-            parent_id: undefined,
-            name: data.name, 
-            type: ConstraintType.FILE,
-            shown: true, 
-            spaces: 0, 
-            checkbox: false,
-        }
+    const [isHoveringMore, setIsHoveringMore] = useState<Map<number, boolean>>(new Map(
+        getAllIds(data).map(id => [id, false])
+    ));
 
-        const list: (FEConstraint | ConstraintAdder)[] = [start_constraint]
-
-        if (data.type == "zip_constraint") {
-            (list[0] as FEConstraint).type = ConstraintType.ZIP  
-            
-            if (data.sub_constraints) {
-                initialLoadSub(list, 0, 1, data.sub_constraints)
+    function getAllIds(constraint: FEConstraint): number[] {
+        let list = [constraint.id]
+        if (constraint.sub_constraints !== undefined) {
+            for (let sub of constraint.sub_constraints) {
+                list.concat(getAllIds(sub))
             }
         }
-
         return list
     }
 
-    /* Recursive part of initialLoad(). Puts a ConstraintAdder for every non-file container. */
-    function initialLoadSub(
-        list: (FEConstraint | ConstraintAdder)[], 
-        parent_id: number, 
-        spaces: number, 
-        sub_constraints: BEConstraint[]
-    ): number {
+    /* expand one layer */
+    function expand(id: number) {
 
-        let i = 0;  // the i-th file/directory in this this directory.
-        let id = parent_id + 1;
-
-        for (let structure of sub_constraints) {
-
-            // Parse backend constraint to frontend constraints.
-            const constraint: FEConstraint = {
-                id: id, 
-                parent_id: parent_id,
-                name: structure.name, 
-                type: ConstraintType.FILE,
-                shown: false, 
-                spaces: spaces, 
-                checkbox: false,
+        function expand_sub(constraint: FEConstraint): FEConstraint {
+            if (constraint.id === id) {
+                constraint.expanded = true
             }
 
-            // Add the constraint to the list.
-            list.push(constraint)
+            constraint.sub_constraints = constraint.sub_constraints?.map(e => expand_sub(e))
 
-            // If it is a directory:
-            if (structure.type == "directory_constraint") {
-                // change type to directory,
-                (list[list.length-1] as FEConstraint).type = ConstraintType.DIRECTORY
-
-                // and call initialLoadSub() recursively.
-                if (structure.sub_constraints) {
-                    id = initialLoadSub(list, id, spaces+1, structure.sub_constraints)
-                }
-
-            }
-
-            i++;
-            id++;
+            return constraint
         }
 
-        // Allows new files/directory to be created in this directory
-        const adder: ConstraintAdder = {
-            parent_id: parent_id,
-            shown: false, 
-            spaces: spaces,
-        }
-        list.push(adder)
-
-        return id - 1; // Don't count last increase.
+        setData(expand_sub(structuredClone(data)))
     }
 
-    /* Logic behind the collaps/expand button. */
-    function changeVisibility(id: number): undefined {
-        // closing => collaps, !closing => expand
-        const closing = constraints.filter(checkObject => checkObject.parent_id === id && !checkObject.shown).length === 0
+    /* collaps all children layers recursively */
+    function collaps(id: number) {
 
+        const ids = [id]
+
+        function collaps_sub(constraint: FEConstraint): FEConstraint {
+            if (ids.includes(constraint.id)) {
+                constraint.expanded = false
+            }
+            if (constraint.parent_id !== undefined && ids.includes(constraint.parent_id)) {
+                constraint.expanded = false
+                ids.push(constraint.parent_id)
+            }
+
+            constraint.sub_constraints = constraint.sub_constraints?.map(e => collaps_sub(e))
+
+            return constraint
+        }
+
+        setData(collaps_sub(structuredClone(data)))
+    }
+
+    /* modify the name of a file/folder */
+    function modifyName(id: number, value: string) {
+        function modify_sub(constraint: FEConstraint): FEConstraint {
+            if (constraint.id === id) {
+                constraint.name = value
+            }
+
+            constraint.sub_constraints = constraint.sub_constraints?.map(e => modify_sub(e))
+
+            return constraint
+        }
+
+        setData(modify_sub(structuredClone(data)))
         
-        if (!closing) {
+    }
 
-            // EXPAND (single layer deeper)
-            
-            const newConstraints = []
-            for (let object of constraints) {
-                if (object.parent_id === id) {
-                    object.shown = true
+    function handleAdd(folder_id: number, type: string) {
+        function add(constraint: FEConstraint) {
+            if (constraint.id === folder_id) {
+                // add new file
+                constraint.sub_constraints?.push({
+                    "type": type, 
+                    "name": "CHANGE_ME",
+                    "sub_constraints": (!isFolder(type)) ? undefined : [],
+                    id: getID(),
+                    parent_id: folder_id,
+                    expanded: undefined,
+                })
+                // expand if not yet expanded
+                constraint.expanded = true
+            }
+            if (constraint.sub_constraints) {
+                for (let sub of constraint.sub_constraints) {
+                    add(sub)
                 }
-                newConstraints.push(object)
             }
-            setConstraints(newConstraints)
-
-        } else {
-            
-            // COLLAPS (all children layers at once)
-            
-            const ids = [id]
-            const newConstraints = []
-            for (let object of constraints) {
-                if (object.parent_id !== undefined && ids.includes(object.parent_id)) {
-                    object.shown = false
-                    if (isFEConstraint(object)) {
-                        ids.push(object.id)
-                    }
-                }
-                newConstraints.push(object)
-            }
-            setConstraints(newConstraints)
         }
+
+        add(data)
+
+        // update display
+        setData(structuredClone(data))
     }
 
-    /* Add a CSS tag to give a specific color to a zip or directory. */
-    function colorByType(className: string, checkObject: FEConstraint): string {
-        if (checkObject.type == ConstraintType.ZIP) {
-            return className + " zip";
-        } else if (checkObject.type == ConstraintType.DIRECTORY) {
-            return className + " folder";
-        }
-        return className;
-    }
-
-    /* Logic for a checkbox for allowing other files in a folder. */
-    function handleCheckbox(id: number) {
-        const newConstraints = []
-        for (let object of constraints) {
-            if (isFEConstraint(object) && object.id === id) {
-                object.checkbox = !object.checkbox
-            }
-            newConstraints.push(object)
-        }
-        setConstraints(newConstraints)
-    }
-
-    /* Actual rendering HTML */
     return (
         <div className="center">
             <div className="content">
 
+                {/* ...warning-text... */}
                 <p className="warning-text">{WARNING}</p>
 
+                {/* ...type-switch... */}
                 <div className="type">
                     <div className="field">
                         <input id="switchRoundedDefault" type="checkbox" onChange={e => setFileOrZip(e.target.checked)} name="switchRoundedDefault" className="switch is-rounded"/>
@@ -308,57 +316,57 @@ export default function HomeAdmin(): JSX.Element {
                     </div>
                 </div>
                 
+                {/* ...specify-text... */}
                 <div className="specify-text">{SPECIFY}</div>
                 <div className="specify-text">{SPECIFY_2}</div>
                 
-                {/* All constraints. */}
-                <div className="recursive">
-                    {constraints.map(
-                        o => 
+                {/* ...constraints... */}
+                {flatten(data).map((v) => 
+                    <>
+                        {v.show &&
+                            <div className="constraint_object row"
+                                onMouseOver={() => setIsHoveringMore(structuredClone(isHoveringMore.set(v.item.id, true)))}
+                                onMouseOut={() => setIsHoveringMore(structuredClone(isHoveringMore.set(v.item.id, false)))}
+                            >
 
-                        /* One constraint/adder => line (if shown) */
-                        <div> {o.shown &&
-                            <div className="line row">
+                                {/* ... spacing ... */}
+                                {"\u00A0".repeat(6 * v.spacing)}
 
-                                {/* indent as needed */}
-                                <div>{"\u00A0".repeat(6 * o.spaces)}</div>
-
-                                {isFEConstraint(o)
-
-                                    /* Constraint */
-                                    ? <div className="constraint">
-
-                                        {/* ... three dots ... */}
-                                        <IoMdMore className="more hover-shadow" />
-
-                                        {/* ... checkbox ... */}
-                                        {(o.type == ConstraintType.ZIP || o.type == ConstraintType.DIRECTORY) &&
-                                            <input type="checkbox" checked={o.checkbox} onClick={() => handleCheckbox(o.id)}/>
-                                        }
-
-                                        {/* ... actual name ... */}
-                                        <div className={colorByType("name", o)}>{o.name}</div>
-                                        
-                                        {/* ... expand/collaps ... */}
-                                        {(o.type == ConstraintType.ZIP || o.type == ConstraintType.DIRECTORY) &&
-                                            <div className="expand hover-encircle" onClick={() => changeVisibility(o.id)}>
-                                                {constraints.filter(o => o.parent_id == o.id && o.shown).length === 0
-                                                    ? <MdOutlineExpandLess />
-                                                    : <MdOutlineExpandMore />
-                                                }
-                                            </div>}
-
-                                      </div>
-                                    
-                                    /* Adder */
-                                    : <IoAdd className="adder hover-shadow"/>
+                                {/* ... three dots ... */}
+                                { (!isZip(v.item.type) && isHoveringMore.get(v.item.id) )
+                                    ? <IoMdMore className="more hover-shadow" />
+                                    : <IoMdMore className="hidden"/> /* for correct spacing */
                                 }
+
+                                {/* ... name ... */}
+                                <input 
+                                    className= {"name input is-static " + ((isFolder(v.item.type)) ? "dir-color" : "")}
+                                    type="text" 
+                                    value={v.item.name} 
+                                    onChange={e => modifyName(v.item.id, e.target.value)} 
+                                />
+                                
+                                {/* ... expand ... */}
+                                {isFolder(v.item.type)
+                                    ? <div>
+                                        {v.item.expanded 
+                                            ? <MdOutlineExpandLess className="expand hover-encircle" onClick={() => collaps(v.item.id)} />
+                                            : <MdOutlineExpandMore className="expand hover-encircle" onClick={() => expand(v.item.id)} />
+                                        }
+                                        {isHoveringMore.get(v.item.id) && 
+                                            <>
+                                                <CiFileOn className="add hover-shadow" onClick={() => handleAdd(v.item.id, FILE)}/>
+                                                <CiFolderOn className="add hover-shadow" onClick={() => handleAdd(v.item.id, DIR)}/>
+                                            </>
+                                        }
+                                      </div>
+                                    : <div/>
+                                }
+
                             </div>
-                        }</div>
-                    
-                    
-                    )}
-                </div>
+                        }
+                    </>
+                )}
 
             </div>
         </div>
