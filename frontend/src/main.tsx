@@ -2,16 +2,12 @@ import React from 'react'
 import {createRoot} from 'react-dom/client'
 import {createBrowserRouter, createRoutesFromElements, Route, RouterProvider} from "react-router-dom";
 import './index.css'
-import 'bulma/css/bulma.min.css';
-import './assets/styles/mainpage.css'
-import {AuthProvider} from "./components/authentication/AuthProvider.tsx";
-import Root from "./pages/root.tsx";
+import Root from './pages/root.tsx'
+import ErrorPage from './pages/error.tsx'
 import LoginScreen from "./pages/login/LoginScreen.tsx";
-import RequireAuth from "./components/authentication/RequireAuth.tsx";
 import HomeAdmin from "./pages/admin/HomeAdmin.tsx";
 import HomeStudent from "./pages/student/HomeStudent.tsx";
 import HomeTeacher from "./pages/teacher/HomeTeacher.tsx";
-import ErrorPage from "./pages/error.tsx";
 import studentLoader, {STUDENT_ROUTER_ID} from "./dataloaders/StudentLoader.ts";
 import Unauthorized from "./components/authentication/Unauthorized.tsx";
 import teacherLoader, {TEACHER_ROUTER_ID} from "./dataloaders/TeacherLoader.ts";
@@ -21,12 +17,17 @@ import loginLoader, {LOGIN_ROUTER_ID} from "./dataloaders/LoginLoader.ts";
 import ErrorLogin from "./components/authentication/ErrorLogin.tsx";
 import ProjectsViewStudent from "./pages/student/ProjectsViewStudent.tsx";
 import CoursesViewStudent from "./pages/student/CoursesViewStudent.tsx";
+import RequireAuth from "./components/authentication/RequireAuth.tsx";
+import {AuthProvider} from "./components/authentication/AuthProvider.tsx";
+import 'bulma/css/bulma.min.css';
+import './assets/styles/mainpage.css'
 
 const router = createBrowserRouter(
     createRoutesFromElements(
         <Route path={"/"}>
             {/* Public routes */}
-            <Route path={"login"} id={LOGIN_ROUTER_ID} element={<LoginScreen/>} loader={loginLoader} errorElement={<ErrorLogin/>}/>
+            <Route path={"login"} id={LOGIN_ROUTER_ID} element={<LoginScreen/>} loader={loginLoader}
+                   errorElement={<ErrorLogin/>}/>
             <Route path={"unauthorized"} element={<Unauthorized/>}/>
 
             {/* Protected routes */}
