@@ -1,14 +1,26 @@
 import {JSX} from "react";
 import '../../assets/styles/simple_checks.css'
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
 import { IoMdMore } from "react-icons/io";
 import { MdOutlineExpandLess } from "react-icons/md";
 import { MdOutlineExpandMore } from "react-icons/md";
-import { IoAdd } from "react-icons/io5";
-import { CiFileOn } from "react-icons/ci";
-import { CiFolderOn } from "react-icons/ci";
-import {parse, stringify} from 'flatted';
 import getID from "./IDProvider";
+import { VscNewFile } from "react-icons/vsc";
+import { VscNewFolder } from "react-icons/vsc";
+import Popup from 'reactjs-popup';
+import 'reactjs-popup/dist/index.css';
+
+/* TODO:
+
+    - warning with proceed and cancel
+    - remove
+    - andere toestaan checkbox
+    - enkele file/zip-bestand
+    - kleurencodes uitleggen
+    - algemene layout beter maken
+
+*/
+
 
 /* text literals */
 const WARNING = "Bij veranderingen zullen alle indieningen opnieuw gecontroleerd worden."
@@ -45,7 +57,7 @@ type FEConstraint = {
 }
 
 /* Dummy data voor een structuur binnengekregen van de backend. 
-TODO: not_present_constraint not supported*/
+WARNING: not_present_constraint not supported*/
 const dummy_data: BEConstraint = {
     "type": "zip_constraint",
     "name": "root.zip",
@@ -334,13 +346,42 @@ export default function HomeAdmin(): JSX.Element {
 
                                 {/* ... three dots ... */}
                                 { (!isZip(v.item.type) && isHoveringMore.get(v.item.id) )
-                                    ? <IoMdMore className="more hover-shadow" />
+                                    ?   <Popup trigger={
+
+                                            <div className="more row"><IoMdMore className="hover-shadow" /></div>
+
+                                        } position="left center" arrow={true} on="hover">
+
+                                            <div className="menu">
+
+                                                <div className="menu-item menu-item-middle">
+                                                    <div>remove</div>
+                                                </div>
+
+                                                <div className="menu-item menu-item-last">
+                                                    <label className="checkbox"> { /* FIXME: sometimes a border appear around the checkbox -> bulma thing? */}
+                                                        <input type="checkbox" />
+                                                        Andere toestaan
+                                                    </label>
+                                                </div>
+
+                                            </div>
+
+                                        </Popup>
                                     : <IoMdMore className="hidden"/> /* for correct spacing */
                                 }
 
                                 {/* ... name ... */}
                                 <input 
-                                    className= {"name input is-static " + ((isFolder(v.item.type)) ? "dir-color" : "")}
+                                    className= {"name input is-static " + (
+                                        (isFolder(v.item.type)) 
+                                        ? isZip(v.item.type)
+                                            ? "zip-color"
+                                            : v.item.type === LOCKED_DIR
+                                                ? "locked-dir-color"
+                                                : "dir-color"
+                                        : ""
+                                    )}
                                     type="text" 
                                     value={v.item.name} 
                                     onChange={e => modifyName(v.item.id, e.target.value)} 
@@ -355,8 +396,8 @@ export default function HomeAdmin(): JSX.Element {
                                         }
                                         {isHoveringMore.get(v.item.id) && 
                                             <>
-                                                <CiFileOn className="add hover-shadow" onClick={() => handleAdd(v.item.id, FILE)}/>
-                                                <CiFolderOn className="add hover-shadow" onClick={() => handleAdd(v.item.id, DIR)}/>
+                                                <VscNewFile className="add hover-shadow" onClick={() => handleAdd(v.item.id, FILE)}/>
+                                                <VscNewFolder className="add hover-shadow" onClick={() => handleAdd(v.item.id, DIR)}/>
                                             </>
                                         }
                                       </div>
