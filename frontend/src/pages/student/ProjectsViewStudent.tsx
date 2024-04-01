@@ -35,7 +35,7 @@ export default function ProjectsViewStudent(): JSX.Element {
     return (
         <>
             <div className={"main-header"}>
-                <Header/>
+                <Header page_title={"Projects"}/>
             </div>
             <div className={"main-content is-flex is-flex-direction-row"}>
                 <div className={"side-bar is-flex is-justify-content-center"}>
