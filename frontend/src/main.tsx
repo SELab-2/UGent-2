@@ -19,6 +19,8 @@ import ProjectsViewStudent from "./pages/student/ProjectsViewStudent.tsx";
 import CoursesViewStudent from "./pages/student/CoursesViewStudent.tsx";
 import RequireAuth from "./components/authentication/RequireAuth.tsx";
 import {AuthProvider} from "./components/authentication/AuthProvider.tsx";
+import 'bulma/css/bulma.min.css';
+import './assets/styles/mainpage.css'
 
 const router = createBrowserRouter(
     createRoutesFromElements(
