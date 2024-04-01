@@ -15,3 +15,17 @@ jobs:
         run: ruff check backend
       - name: Run Pyright
         run: pyright
+  test:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: pip install -r backend/requirements.txt
+      - name: Run tests
+        run: cd backend && python -m unittest discover tests
+        env:
+          TEST_DB_USER: githubactions

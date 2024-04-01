@@ -41,7 +41,6 @@ function DropdownLanguage(props: { language: Language, changeLanguage: (language
     )
 }
 
-
 function Settings(props: { closeSettings: () => void }): JSX.Element {
 
     // TODO: get current language from user
@@ -53,6 +52,11 @@ function Settings(props: { closeSettings: () => void }): JSX.Element {
             // TODO: send it to the database
             setLanguage(newLang);
         }
+    }
+
+    function logout() {
+        localStorage.removeItem("token")
+        localStorage.removeItem("to")
     }
 
     return (
@@ -68,7 +72,7 @@ function Settings(props: { closeSettings: () => void }): JSX.Element {
                 <img src={"/delphi_full.png"} alt={"image"}/>
                 <div className={"is-flex px-5 py-1 is-align-items-center"}>
                     <p>Logout: </p>
-                    <a className={"button mx-5 px-2"}><BiLogOut size={25}></BiLogOut></a>
+                    <a className={"button mx-5 px-2"} onClick={logout} href={"/"}><BiLogOut size={25}></BiLogOut></a>
                 </div>
                 <div>
                     <p className={"py-2"}>Select workstation: </p>

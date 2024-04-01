@@ -26,7 +26,7 @@ export interface projectsAndSubjects {
 }
 
 export async function getAllProjectsAndSubjects(role: teacherStudentRole): Promise<projectsAndSubjects> {
-    const projects: Project[] = await (await apiFetch(`/${role}/projects`)).json() as Project[];
-    const subjects: Subject[] = await (await apiFetch(`/${role}/subjects`)).json() as Subject[];
+    const projects: Project[] = (await apiFetch(`/${role}/projects`)) as Project[];
+    const subjects: Subject[] = (await apiFetch(`/${role}/subjects`)) as Subject[];
     return {projects, subjects}
 }
