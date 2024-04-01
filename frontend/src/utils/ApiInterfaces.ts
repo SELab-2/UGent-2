@@ -16,6 +16,17 @@ export interface Project {
     subject_name: string | undefined | null
 }
 
+export interface Token {
+    token?: string
+}
+
+export interface User {
+    id: number,
+    name: string,
+    email: string,
+    roles: string[]
+}
+
 export interface properSubject {
     id: number,
     name: string,
