@@ -22,11 +22,12 @@ export interface properSubject {
     active_projects: number,
     first_deadline: Date | null | string
 }
+
 export interface Token {
     token?: string
 }
 
-export default interface User {
+export interface User {
     id: number,
     name: string,
     email: string,

@@ -3,12 +3,11 @@ import {Header} from "../../components/Header.tsx";
 import {Sidebar} from "../../components/Sidebar.tsx";
 import ProjectCardStudent from "./ProjectCardStudent.tsx";
 import '../../assets/styles/students_components.css'
-import {useRouteLoaderData} from "react-router-dom";
-import {STUDENT_ROUTER_ID, studentLoaderObject} from "../../dataloaders/StudentLoader.ts";
 import DeadlineTable from "./DeadlineTable.tsx";
+import {STUDENT_ROUTER_ID, studentLoaderObject} from "../../dataloaders/StudentLoader.ts";
+import {useRouteLoaderData} from "react-router-dom";
 
 export default function HomeStudent(): JSX.Element {
-
     // data contains a list of Project in data.projects (i think)
     const data: studentLoaderObject = useRouteLoaderData(STUDENT_ROUTER_ID) as studentLoaderObject
     console.log(data) // TODO: remove

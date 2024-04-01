@@ -1,9 +1,7 @@
-import User from "../utils/ApiInterfaces.ts";
+import {User} from "../utils/ApiInterfaces.ts";
+import React from "react";
 
 export type AuthContextType = {
-    isAuthenticated: boolean,
-    user?: User,
-    token?: string,
-    login: (user?: User, token?: string) => void,
-    logout: () => void
+    user: User | undefined,
+    setUser:React.Dispatch<React.SetStateAction<User | undefined>>
 };
