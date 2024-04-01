@@ -17,22 +17,24 @@ export function Sidebar(): JSX.Element {
                 <ul className={"menu-list"}>
                     <li>
                         <Link to={"/student/projects"}>
-                            <PiProjectorScreen size={30}/>
+                            <PiProjectorScreen/>
                         </Link>
                     </li>
                     <li>
                         <Link to={"/student/courses"}>
-                            <PiFolder size={30}/>
+                            <PiFolder/>
                         </Link>
                     </li>
                 </ul>
                 <ul className={"menu-list"}>
                     <li>
-                        <a className={"is-transparent"} onClick={handleSettings}><IoMdSettings size={30}/></a>
+                        <a className={"is-transparent mb-5"} onClick={handleSettings}><IoMdSettings/></a>
                     </li>
                 </ul>
             </aside>
-            {isOpen && <Settings closeSettings={handleSettings}/>}
+            {isOpen &&
+                <Settings closeSettings={handleSettings}/>
+            }
         </>
     )
 }

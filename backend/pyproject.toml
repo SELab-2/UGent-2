@@ -96,6 +96,7 @@ ignore = [
     "PT027",
     "FBT003",
     "DTZ005",
+    "ANN204", # Init function of object should not need return type annotation.
 ]
 
 # Allow fix for all enabled rules (when `--fix`) is provided.

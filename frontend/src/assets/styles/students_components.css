@@ -1,5 +1,5 @@
 .student-main {
-    width: 96vw;
+    width: calc(100vw - var(--sidebar-width));
 }
 
 .student-left {
@@ -9,9 +9,13 @@
 }
 
 .project-card {
-    background-color: #9c9afd !important;
+    background-color: var(--primary-light) !important;
     width: 25vw;
     height: 25vh;
+}
+
+.card-text {
+    width: 80%;
 }
 
 .p-negative {
@@ -34,7 +38,7 @@
 }
 
 .deadline-head {
-    background-color: #5f63c8;
+    background-color: var(--primary-dark);
     border-radius: 0.50rem 0.50rem 0 0;
 }
 
@@ -45,6 +49,6 @@
 }
 
 .deadline-card {
-    background-color: #9c9afd;
+    background-color: var(--primary-light);
     border-bottom: thin solid;
 }

@@ -11,21 +11,37 @@ from routes.dependencies.role_dependencies import (
     ensure_user_authorized_for_subject,
     get_authenticated_user,
 )
+from routes.tags.swagger_tags import Tags
 
 subject_router = APIRouter()
 
 
-@subject_router.get("/subjects/{subject_id}", dependencies=[Depends(get_authenticated_user)])
+@subject_router.get(
+        "/subjects/{subject_id}",
+        dependencies=[Depends(get_authenticated_user)],
+        tags=[Tags.SUBJECT],
+        summary="Get a certain subject.",
+)
 def subject_get(subject_id: int, session: Session = Depends(get_session)) -> SubjectDataclass:
     return get_subject(session, subject_id)
 
 
-@subject_router.get("/subjects/{subject_id}/projects", dependencies=[Depends(ensure_user_authorized_for_subject)])
+@subject_router.get(
+        "/subjects/{subject_id}/projects",
+        dependencies=[Depends(ensure_user_authorized_for_subject)],
+        tags=[Tags.SUBJECT],
+        summary="Get all projects of a certain subject.",
+)
 def get_subject_projects(subject_id: int, session: Session = Depends(get_session)) -> list[ProjectDataclass]:
     return get_projects_of_subject(session, subject_id)
 
 
-@subject_router.post("/subjects/{subject_id}/projects", dependencies=[Depends(ensure_teacher_authorized_for_subject)])
+@subject_router.post(
+        "/subjects/{subject_id}/projects",
+        dependencies=[Depends(ensure_teacher_authorized_for_subject)],
+        tags=[Tags.SUBJECT],
+        summary="Create a new project linked to a certain subject.",
+)
 def new_project(
     subject_id: int,
     project: ProjectInput,
