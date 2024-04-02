@@ -2,7 +2,6 @@ import pathlib
 
 import uvicorn
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
 from starlette import status
 from starlette.requests import Request
 from starlette.responses import JSONResponse
@@ -20,6 +19,7 @@ from routes.errors.authentication import (
 )
 from routes.group import group_router
 from routes.login import login_router
+from routes.middleware.middleware import DatabaseSessionMiddleware
 from routes.project import project_router
 from routes.student import student_router
 from routes.subject import subject_router
@@ -40,6 +40,9 @@ app.include_router(project_router, prefix="/api")
 app.include_router(subject_router, prefix="/api")
 app.include_router(group_router, prefix="/api")
 app.include_router(submission_router, prefix="/api")
+
+# Add Middlewares
+app.add_middleware(DatabaseSessionMiddleware)
 
 DEBUG = False  # Should always be false in repo
 
