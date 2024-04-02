@@ -1,4 +1,4 @@
-.title_lines {
+.title-lines {
     position: relative;
     font-size: 25px;
     z-index: 1;
@@ -6,7 +6,7 @@
     text-align: center;
 }
 
-.title_lines:before, .title_lines:after {
+.title-lines:before, .title-lines:after {
     position: absolute;
     top: 51%;
     overflow: hidden;
@@ -17,11 +17,20 @@
     margin-left: 2%;
 }
 
-.title_lines:before {
+.title-lines:before {
     margin-left: -50%;
     text-align: right;
 }
 
-body {
-    padding: 50px 0;
+.table-page {
+    width: 95%;
 }
+
+.search-field {
+    width: 35%;
+}
+
+th, td {
+    text-align: center;
+}
+
