@@ -137,7 +137,7 @@ function flatten(constraint: FEConstraint): FlattedConstraint[] {
         expanded: boolean | undefined
     ): FlattedConstraint[] {
         
-        let show = (expanded === undefined) ? false : expanded
+        const show = (expanded === undefined) ? false : expanded
         
         if (!isFolder(constraint.type)) {
             return [{
@@ -152,7 +152,7 @@ function flatten(constraint: FEConstraint): FlattedConstraint[] {
                 show: show
             }]
             if (constraint.sub_constraints !== undefined) {
-                for (let sub of constraint.sub_constraints) {
+                for (const sub of constraint.sub_constraints) {
                     list = list.concat(flatten_sub(
                         sub, 
                         spacing+1, 
@@ -169,9 +169,9 @@ function flatten(constraint: FEConstraint): FlattedConstraint[] {
 export default function SimpleTests(
     props: {
         teacherOrStudent: boolean, 
-        initialData: Object,
+        initialData: object,
         setHasChanged: React.Dispatch<React.SetStateAction<boolean>>,
-        setData: React.Dispatch<React.SetStateAction<any>>
+        setData: React.Dispatch<React.SetStateAction<object>>
     }
 ): JSX.Element {
 
@@ -203,9 +203,9 @@ export default function SimpleTests(
     ));
 
     function getAllIds(constraint: FEConstraint): number[] {
-        let list = [constraint.id]
+        const list = [constraint.id]
         if (constraint.sub_constraints !== undefined) {
-            for (let sub of constraint.sub_constraints) {
+            for (const sub of constraint.sub_constraints) {
                 list.concat(getAllIds(sub))
             }
         }
@@ -284,7 +284,7 @@ export default function SimpleTests(
                 constraint.expanded = true
             }
             if (constraint.sub_constraints) {
-                for (let sub of constraint.sub_constraints) {
+                for (const sub of constraint.sub_constraints) {
                     add(sub)
                 }
             }
@@ -310,7 +310,7 @@ export default function SimpleTests(
             }
 
             if (constraint.sub_constraints) {
-                for (let sub of constraint.sub_constraints) {
+                for (const sub of constraint.sub_constraints) {
                     remove(sub)
                 }
             }
@@ -335,7 +335,7 @@ export default function SimpleTests(
                 }
             }
             if (constraint.sub_constraints) {
-                for (let sub of constraint.sub_constraints) {
+                for (const sub of constraint.sub_constraints) {
                     switchDIR(sub)
                 }
             }
