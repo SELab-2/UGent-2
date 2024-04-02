@@ -34,7 +34,7 @@ export default function CoursesViewStudent(): JSX.Element {
             </div>
             <div className={"main-content is-flex is-flex-direction-row"}>
                 <div className={"side-bar is-flex is-justify-content-center"}>
-                    <Sidebar/>
+                    <Sidebar home={"student"}/>
                 </div>
                 <div className={"student-main is-flex is-justify-content-center"}>
                     <div className={"table-page is-flex is-flex-direction-column"}>

@@ -4,7 +4,7 @@ import { IoMdSettings } from "react-icons/io";
 import Settings from "./Settings.tsx";
 import {Link} from "react-router-dom";
 
-export function Sidebar(): JSX.Element {
+export function Sidebar(props: {home: string}): JSX.Element {
     const [isOpen, setIsOpen] = useState(false);
 
     const handleSettings: () => void = () => {
@@ -16,12 +16,12 @@ export function Sidebar(): JSX.Element {
             <aside className={"menu is-flex is-flex-direction-column is-justify-content-space-between"}>
                 <ul className={"menu-list"}>
                     <li>
-                        <Link to={"/student/projects"}>
+                        <Link to={`/${props.home}/projects`}>
                             <PiProjectorScreen/>
                         </Link>
                     </li>
                     <li>
-                        <Link to={"/student/courses"}>
+                        <Link to={`/${props.home}/courses`}>
                             <PiFolder/>
                         </Link>
                     </li>

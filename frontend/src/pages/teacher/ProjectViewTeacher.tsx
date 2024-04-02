@@ -41,7 +41,7 @@ export default function ProjecctViewTeacher() {
             </div>
             <div className={"main-content is-flex is-flex-direction-row"}>
                 <div className={"side-bar is-flex is-justify-content-center"}>
-                    <Sidebar/>
+                    <Sidebar home={"teacher"}/>
                 </div>
                 <div className={"student-main mt-6 mr-6"}>
                     <Statistics/>

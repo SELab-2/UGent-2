@@ -11,7 +11,6 @@ import HomeTeacher from "./pages/teacher/HomeTeacher.tsx";
 import studentLoader, {STUDENT_ROUTER_ID} from "./dataloaders/StudentLoader.ts";
 import Unauthorized from "./components/authentication/Unauthorized.tsx";
 import teacherLoader, {TEACHER_ROUTER_ID} from "./dataloaders/TeacherLoader.ts";
-import SubjectsTeacher from "./pages/teacher/SubjectsTeacher.tsx";
 import subjectsTeacherLoader, {SUBJECT_TEACHER_ROUTER_ID} from "./dataloaders/SubjectsTeacherLoader.ts";
 import loginLoader, {LOGIN_ROUTER_ID} from "./dataloaders/LoginLoader.ts";
 import ErrorLogin from "./components/authentication/ErrorLogin.tsx";
@@ -21,6 +20,8 @@ import RequireAuth from "./components/authentication/RequireAuth.tsx";
 import {AuthProvider} from "./components/authentication/AuthProvider.tsx";
 import 'bulma/css/bulma.min.css';
 import './assets/styles/mainpage.css'
+import ProjectsViewTeacher from "./pages/teacher/ProjectsViewTeacher.tsx";
+import CoursesViewTeacher from "./pages/teacher/CoursesViewTeacher.tsx";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -47,8 +48,8 @@ const router = createBrowserRouter(
 
             <Route element={<RequireAuth allowedRoles={['STUDENT', 'TEACHER']}/>}>
                 <Route id={TEACHER_ROUTER_ID} path={"/teacher"} element={<HomeTeacher/>} loader={teacherLoader}/>
-                <Route path={"/teacher/courses"} element={<SubjectsTeacher/>} id={SUBJECT_TEACHER_ROUTER_ID}
-                       loader={subjectsTeacherLoader}/>
+                <Route path={"/teacher/projects"} element={<ProjectsViewTeacher/>}/>
+                <Route path={"/teacher/courses"} element={<CoursesViewTeacher/>} /*loader={subjectsTeacherLoader} id={SUBJECT_TEACHER_ROUTER_ID}*//>
             </Route>
         </Route>
     )
