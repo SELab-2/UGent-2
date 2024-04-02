@@ -1,5 +1,5 @@
 import Popup from 'reactjs-popup';
-import '../../assets/styles/warneable.css'
+import '../../assets/styles/SimpleTests/warneable.css'
 import { useState } from 'react';
 
 export default function(props: {

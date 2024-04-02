@@ -1,5 +1,5 @@
 import {JSX} from "react";
-import '../../assets/styles/simple_checks.css'
+import '../../assets/styles/SimpleTests/simple_checks.css'
 import { useState } from 'react';
 import { IoMdMore } from "react-icons/io";
 import { MdOutlineExpandLess } from "react-icons/md";
