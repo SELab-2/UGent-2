@@ -6,6 +6,12 @@ import 'react-calendar/dist/Calendar.css';
 import {FaUpload} from "react-icons/fa";
 import "../assets/styles/small_components.css";
 import {ProjectTeacher} from "../types/project.ts";
+import SimpleTests from "./SimpleTests/SimpleTests.tsx";
+import { dummy_data } from "./SimpleTests/DummyData.tsx";
+
+// SimpleTests
+const CHECK_SIMPLE_TESTS = false
+const calledData = dummy_data
 
 export function ViewProjectTeacherComponent(props: {
     project: ProjectTeacher
@@ -27,6 +33,9 @@ export function ViewProjectTeacherComponent(props: {
     const hours_array = Array.from({length: 24}, (_, index) => index.toString().padStart(2, '0'));
     const minutes_array = Array.from({length: 60}, (_, index) => index.toString().padStart(2, '0'));
 
+    // SimpleTests
+    const [data, setData] = useState(calledData);
+    const [hasChanged, setHasChanged] = useState(false);
 
     return (
         <>
@@ -112,22 +121,16 @@ export function ViewProjectTeacherComponent(props: {
                 </div>
                 <div className="field-body field">
                     <div className="field"> {/* Deze moet er blijven, anders doet css raar*/}
-                        <label>Specifieer welke files de ingediende zip moet bevatten. Splits per komma.</label>
-                        <br/>
-                        <Inputfield placeholder="vb: diagram.dgr,verslag.pdf,textbestand.txt"
-                                    value={props.project.requiredFiles}
-                                    setValue={props.project.setRequiredFiles}/>
-                        <br/>
-                        <div className="field is-horizontal">
-                            <div className="field-label">
-                                <input type="checkbox"
-                                       onChange={e => props.project.setOtherFilesAllow(e.target.checked)}
-                                       checked={props.project.otherFilesAllow}/>
-                            </div>
-                            <div className="field-body">
-                                <label className="label is-fullwidth">ook andere files toegelaten</label>
-                            </div>
-                        </div>
+                        {CHECK_SIMPLE_TESTS && <>
+                            <button onClick={() => console.log(hasChanged)}>hasChanged</button>
+                            <button onClick={() => console.log(data)}>data</button>
+                        </>}
+                        <SimpleTests
+                            teacherOrStudent={true}
+                            initialData={calledData}
+                            setData={setData}
+                            setHasChanged={setHasChanged}
+                        />
                     </div>
                 </div>
             </div>
