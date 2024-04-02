@@ -1,18 +1,16 @@
-import {StateSetter} from "./common.ts";
-
-type ValuePiece = Date | null; // nodig voor de deadline
-type Value = ValuePiece | [ValuePiece, ValuePiece]; // nodig voor de deadline
+export type ValuePiece = Date | null; // nodig voor de deadline
+export type Value = ValuePiece | [ValuePiece, ValuePiece]; // nodig voor de deadline
 
 export type ProjectTeacher = {
-    projectName: string, setProjectName: StateSetter<string>,
-    courseName: string, setCourseName: StateSetter<string>,
-    hours: string, setHours: StateSetter<string>, //TODO dit aanpassen naar number
-    minutes: string, setMinutes: StateSetter<string>, //TODO dit aanpassen naar number
-    deadline: Value, setDeadline: StateSetter<Value>, // TODO dit aanpassen naar Date of iets anders
-    description: string, setDescription: StateSetter<string>,
-    requiredFiles: string, setRequiredFiles: StateSetter<string>,
-    otherFilesAllow: boolean, setOtherFilesAllow: StateSetter<boolean>,
-    groupProject: boolean, setGroupProject: StateSetter<boolean>
+    projectName: string,
+    courseName: string,
+    hours: number,
+    minutes: number,
+    deadline: Value, // TODO dit aanpassen naar Date of iets anders
+    description: string,
+    requiredFiles: string,
+    otherFilesAllow: boolean,
+    groupProject: boolean,
 }
 
 export enum ProjectStatus {

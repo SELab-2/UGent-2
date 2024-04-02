@@ -3,7 +3,7 @@ import {Table, TableRowCourses} from "../../components/Table.tsx";
 import {Header} from "../../components/Header.tsx";
 import {Sidebar} from "../../components/Sidebar.tsx";
 import {SearchBar} from "../../components/SearchBar.tsx";
-import {RegularButton} from "../../components/RegularButton.tsx";
+import {RegularATag} from "../../components/RegularATag.tsx";
 
 // import {useRouteLoaderData} from "react-router-dom";
 // import {SUBJECT_TEACHER_ROUTER_ID, subjectsTeacherLoaderObject} from "../../dataloaders/SubjectsTeacherLoader.ts";
@@ -46,11 +46,12 @@ export default function CoursesViewTeacher(): JSX.Element {
                     <div className={"table-page is-flex is-flex-direction-column"}>
                         <div className={"is-flex is-align-items-center is-justify-content-space-between"}>
                             <SearchBar placeholder={"zoek een vak..."}/>
-                            <RegularButton placeholder={"nieuw vak"} add={true}/>
+                            <RegularATag link={"teacher/courses/create"} text={"nieuw vak"} add={true}/>
                         </div>
                         <Table title={"actief"} data={tableCoursesActive} ignoreKeys={[]}/>
                         <div className={"my-5"}/>
-                        <Table title={"gearchiveerd"} data={tableCoursesArchived} ignoreKeys={["shortestDeadline", "numberOfProjects"]}/>
+                        <Table title={"gearchiveerd"} data={tableCoursesArchived}
+                               ignoreKeys={["shortestDeadline", "numberOfProjects"]}/>
                     </div>
                 </div>
             </div>

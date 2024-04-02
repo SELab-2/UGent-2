@@ -3,7 +3,7 @@ import {Header} from "../../components/Header.tsx";
 import {Sidebar} from "../../components/Sidebar.tsx";
 import {SearchBar} from "../../components/SearchBar.tsx";
 import {Table, TableRowProjects} from "../../components/Table.tsx";
-import {RegularButton} from "../../components/RegularButton.tsx";
+import {RegularATag} from "../../components/RegularATag.tsx";
 
 export default function ProjectsViewTeacher(): JSX.Element {
     const tableProjectsActive: TableRowProjects[] = [
@@ -49,13 +49,15 @@ export default function ProjectsViewTeacher(): JSX.Element {
                     <div className={"table-page is-flex is-flex-direction-column"}>
                         <div className={"is-flex is-align-items-center is-justify-content-space-between"}>
                             <SearchBar placeholder={"zoek een project..."}/>
-                            <RegularButton placeholder={"nieuw project"} add={true}/>
+                            <RegularATag link={"teacher/projects/create"} text={"nieuw project"} add={true}/>
                         </div>
                         <Table title={"actief"} data={tableProjectsActive} ignoreKeys={["status"]}/>
                         <div className={"my-5"}/>
-                        <Table title={"verborgen"} data={tableProjectsHidden} ignoreKeys={["status", "numberOfSubmissions"]}/>
+                        <Table title={"verborgen"} data={tableProjectsHidden}
+                               ignoreKeys={["status", "numberOfSubmissions"]}/>
                         <div className={"my-5"}/>
-                        <Table title={"gearchiveerd"} data={tableProjectsArchived} ignoreKeys={["status", "numberOfSubmissions", "deadline"]}/>
+                        <Table title={"gearchiveerd"} data={tableProjectsArchived}
+                               ignoreKeys={["status", "numberOfSubmissions", "deadline"]}/>
                     </div>
                 </div>
             </div>
