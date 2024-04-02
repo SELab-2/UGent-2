@@ -11,25 +11,17 @@ import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import Warneable from "./Warneable";
 
-/* TODO:
-
-    x warning with proceed and cancel
-    - remove
-    - andere toestaan checkbox
-    - enkele file/zip-bestand
-    - kleurencodes uitleggen
-    - algemene layout beter maken
-    - mergen & implementeren in projectview van teacher
-
-*/
-
-
 /* text literals */
 const WARNING = "Bij veranderingen zullen alle indieningen opnieuw gecontroleerd worden."
 const SINGLE_FILE = "enkele file"
 const ZIP_FILE = "zip-bestand"
-const SPECIFY = "Specifieer welke files de zip moet bevatten." 
-const SPECIFY_2 = "Ook andere files toelaten in een folder: selecteer de corresponderende checkbox."
+const SPECIFY = "Specifieer welke files de zip moet bevatten:" 
+const COLOR_CODES = [
+    "zip", 
+    "folder (enkel gespecifieerde files)",
+    "folder (ook andere files toegestaan)",
+    "file",
+]
 
 /* Definieer constraint-types. */
 const ZIP = "zip_constraint"
@@ -203,10 +195,11 @@ function flatten(constraint: FEConstraint): FlattedConstraint[] {
 }
 
 export default function HomeAdmin(): JSX.Element {
-    
-    const [fileOrZip, setFileOrZip] = useState<Boolean>(false);
 
     const [data, setData] = useState<FEConstraint>(BE_2_FE(dummy_data))
+
+    /* true -> ZIP */
+    const [fileOrZip, setFileOrZip] = useState<boolean>(data.type === ZIP);
 
     const [isHoveringMore, setIsHoveringMore] = useState<Map<number, boolean>>(new Map(
         getAllIds(data).map(id => [id, false])
@@ -305,18 +298,25 @@ export default function HomeAdmin(): JSX.Element {
         setData(structuredClone(data))
     }
 
-
     /* remove a constraint and all its subconstraints recursively */
     function handleRemove(parent_id: number | undefined, id: number) {
 
         function remove(constraint: FEConstraint) {
-            if (constraint.id === parent_id) {
+
+            if (constraint.id === parent_id) { 
                 if (constraint.sub_constraints !== undefined) {
                     constraint.sub_constraints = constraint.sub_constraints.filter(
                         sub => sub.id !== id
                     )
                 }
             }
+
+            if (constraint.sub_constraints) {
+                for (let sub of constraint.sub_constraints) {
+                    remove(sub)
+                }
+            }
+
         }
 
         remove(data)
@@ -326,8 +326,55 @@ export default function HomeAdmin(): JSX.Element {
 
     }
 
-    function log() {
-        console.log("log")
+    /* LOCKED_DIR -> DIR | DIR -> LOCKED_DIR */
+    function handleSwitchDirType(id: number) {
+        function switchDIR(constraint: FEConstraint) {
+            if (constraint.id === id) {
+                if (constraint.type === DIR) {
+                    constraint.type = LOCKED_DIR
+                } else if (constraint.type === LOCKED_DIR) {
+                    constraint.type = DIR
+                }
+            }
+            if (constraint.sub_constraints) {
+                for (let sub of constraint.sub_constraints) {
+                    switchDIR(sub)
+                }
+            }
+        }
+
+        switchDIR(data)
+
+        // update display
+        setData(structuredClone(data))
+    }
+
+    /* Logic for changeing the root type */
+    function handleChangeRoot() {
+
+        if (fileOrZip) {
+            // previously zip
+            setData({
+                "type": FILE, 
+                "name": "CHANGE_ME", 
+                "sub_constraints": undefined,
+                id: getID(),
+                parent_id: undefined,
+                expanded: undefined,
+            })
+        } else {
+            // previously file
+            setData({
+                "type": ZIP, 
+                "name": "CHANGE_ME.zip", 
+                "sub_constraints": [],
+                id: getID(),
+                parent_id: undefined,
+                expanded: false,
+            })
+        }
+
+        setFileOrZip(!fileOrZip)
     }
 
     return (
@@ -335,122 +382,155 @@ export default function HomeAdmin(): JSX.Element {
             <div className="content">
 
                 {/* ...warning-text... */}
-                <p className="warning-text">{WARNING}</p>
+                <div className="warning-text">{WARNING}</div>
 
                 {/* ...type-switch... */}
                 <div className="type">
                     <div className="field">
-                        <input id="switchRoundedDefault" type="checkbox" onChange={e => setFileOrZip(e.target.checked)} name="switchRoundedDefault" className="switch is-rounded"/>
+                        <Warneable 
+                            text="All current file specifications will be removed. Are you sure you want to change the root type?"
+                            trigger={ onClick =>
+                                <input 
+                                    id="switchRoundedDefault" 
+                                    type="checkbox" 
+                                    name="switchRoundedDefault" 
+                                    className="switch is-rounded"
+                                    checked={fileOrZip}
+                                    onClick={onClick}
+                                /> 
+                            }
+                            proceed={handleChangeRoot}
+                        />
+                         
                         {fileOrZip
-                        ? <label htmlFor="switchRoundedDefault">
-                            <div className="thin">{SINGLE_FILE}</div>
-                            <div className="divider">/</div>
-                            <div className="thick">{ZIP_FILE}</div>
-                        </label>
-                        : <label htmlFor="switchRoundedDefault">
-                            <div className="thick">{SINGLE_FILE}</div>
-                            <div className="divider">/</div>
-                            <div className="thin">{ZIP_FILE}</div>
-                        </label>
+                        ?   <>
+                                <label htmlFor="switchRoundedDefault">
+                                    <div className="thin">{SINGLE_FILE}</div>
+                                    <div className="divider">/</div>
+                                    <div className="thick">{ZIP_FILE}</div>
+                                </label>
+                            </>
+                        :   <>
+                                <label htmlFor="switchRoundedDefault">
+                                    <div className="thick">{SINGLE_FILE}</div>
+                                    <div className="divider">/</div>
+                                    <div className="thin">{ZIP_FILE}</div>
+                                </label>
+                            </>
                     }
                     </div>
                 </div>
-                
+
+                {/* ...color-codes... */}
+                <div>Color codes:</div>
+                <ul>
+                    <li className="zip-color">{COLOR_CODES[0]}</li>
+                    <li className="locked-dir-color">{COLOR_CODES[1]}</li>
+                    <li className="dir-color">{COLOR_CODES[2]}</li>
+                    <li>{COLOR_CODES[3]}</li>
+                </ul>
+
                 {/* ...specify-text... */}
                 <div className="specify-text">{SPECIFY}</div>
-                <div className="specify-text">{SPECIFY_2}</div>
                 
                 {/* ...constraints... */}
-                {flatten(data).map((v) => 
-                    <div key={"item"+v.item.id}>
-                        {v.show &&
-                            <div className="constraint_object row"
-                                onMouseOver={() => setIsHoveringMore(structuredClone(isHoveringMore.set(v.item.id, true)))}
-                                onMouseOut={() => setIsHoveringMore(structuredClone(isHoveringMore.set(v.item.id, true)))}
-                            >
+                <div className="constraints">
+                    {flatten(data).map((v) => 
+                        <div key={"item"+v.item.id}>
+                            {v.show &&
+                                <div className="constraint_object row"
+                                    onMouseOver={() => setIsHoveringMore(structuredClone(isHoveringMore.set(v.item.id, true)))}
+                                    onMouseOut={() => setIsHoveringMore(structuredClone(isHoveringMore.set(v.item.id, false)))}
+                                >
 
-                                {/* ... spacing ... */}
-                                {"\u00A0".repeat(6 * v.spacing)}
+                                    {/* ... spacing ... */}
+                                    {"\u00A0".repeat(6 * v.spacing)}
 
-                                {/* ... three dots ... */}
-                                { (!isZip(v.item.type) && isHoveringMore.get(v.item.id) )
-                                    ?   <Popup trigger={
+                                    {/* ... three dots ... */}
+                                    { (!isZip(v.item.type) && isHoveringMore.get(v.item.id) )
+                                        ?   <Popup trigger={
 
-                                            <div className="more row">
-                                                {/* FIXME:  warneable.proceed works */}
-                                                <IoMdMore className="hover-shadow" />
-                                            </div>
-
-                                        } position="left center" arrow={true} on="click">
-
-                                            {/* FIXME:  warneable.proceed doesn't work */}
-
-                                            <div className="menu">
-
-                                                {/* ... menu-remove ... */}
-                                                <div className="menu-item menu-item-middle" id={"x"+v.item.id} key={"y"+v.item.id} >
-                                                    <button onClick={() => handleRemove(v.item.parent_id, v.item.id)}>remove</button>
-                                                    <Warneable 
-                                                        text="Are you sure?" 
-                                                        trigger={onClick => 
-                                                            <button onClick={onClick}>remove</button>
-                                                        }
-                                                        proceed={() => handleRemove(v.item.parent_id, v.item.id)} /* FIXME: proceed doesn't fire here for some reason */
-                                                    />
+                                                <div className="more row">
+                                                    {/* FIXME:  warneable.proceed works */}
+                                                    <IoMdMore className="hover-shadow" />
                                                 </div>
 
-                                                {/* ... menu-allow-others ... */}
-                                                <div className="menu-item menu-item-last">
-                                                    <label className="checkbox"> { /* FIXME: sometimes a border appear around the checkbox -> bulma thing? */}
-                                                        <input type="checkbox" id={"others"+v.item.id}/>
-                                                        Andere toestaan
-                                                    </label>
+                                            } position="left center" arrow={true} on="click">
+
+                                                {/* FIXME:  warneable.proceed doesn't work */}
+
+                                                <div className="menu">
+
+                                                    {/* ... menu-remove ... */}
+                                                    <div className="menu-item" id={"x"+v.item.id} key={"y"+v.item.id} >
+                                                        <button onClick={() => handleRemove(v.item.parent_id, v.item.id)}>remove</button>
+                                                        <Warneable 
+                                                            text="Are you sure?" 
+                                                            trigger={onClick => 
+                                                                <button onClick={onClick}>remove</button>
+                                                            }
+                                                            proceed={() => handleRemove(v.item.parent_id, v.item.id)} /* FIXME: proceed doesn't fire here for some reason */
+                                                        />
+                                                    </div>
+
+                                                    {/* ... menu-allow-others ... */}
+                                                    {(v.item.type === LOCKED_DIR || v.item.type === DIR) &&
+                                                        <div className="menu-item">
+                                                            <label className="checkbox"> { /* FIXME: sometimes a border appear around the checkbox -> bulma thing? */}
+                                                                {v.item.type === LOCKED_DIR
+                                                                    ? <input type="checkbox" onChange={() => handleSwitchDirType(v.item.id)} id={"others"+v.item.id}/>
+                                                                    : <input type="checkbox" onChange={() => handleSwitchDirType(v.item.id)} id={"others"+v.item.id} checked/>
+                                                                }
+                                                                Andere toestaan
+                                                            </label>
+                                                        </div>
+                                                    }
+
                                                 </div>
 
-                                            </div>
+                                            </Popup>
+                                        : <IoMdMore className="hidden"/> /* for correct spacing */
+                                    }
 
-                                        </Popup>
-                                    : <IoMdMore className="hidden"/> /* for correct spacing */
-                                }
+                                    {/* ... name ... */}
+                                    <input 
+                                        className= {"name input is-static " + (
+                                            (isFolder(v.item.type)) 
+                                            ? isZip(v.item.type)
+                                                ? "zip-color"
+                                                : v.item.type === LOCKED_DIR
+                                                    ? "locked-dir-color"
+                                                    : "dir-color"
+                                            : ""
+                                        )}
+                                        id={"name"+v.item.id}
+                                        type="text" 
+                                        value={v.item.name} 
+                                        onChange={e => modifyName(v.item.id, e.target.value)} 
+                                    />
+                                    
+                                    {/* ... expand ... */}
+                                    {isFolder(v.item.type)
+                                        ? <div>
+                                            {v.item.expanded 
+                                                ? <MdOutlineExpandLess className="expand hover-encircle" onClick={() => collaps(v.item.id)} />
+                                                : <MdOutlineExpandMore className="expand hover-encircle" onClick={() => expand(v.item.id)} />
+                                            }
+                                            {isHoveringMore.get(v.item.id) && 
+                                                <>
+                                                    <VscNewFile className="add hover-shadow" onClick={() => handleAdd(v.item.id, FILE)}/>
+                                                    <VscNewFolder className="add hover-shadow" onClick={() => handleAdd(v.item.id, LOCKED_DIR)}/>
+                                                </>
+                                            }
+                                        </div>
+                                        : <div/>
+                                    }
 
-                                {/* ... name ... */}
-                                <input 
-                                    className= {"name input is-static " + (
-                                        (isFolder(v.item.type)) 
-                                        ? isZip(v.item.type)
-                                            ? "zip-color"
-                                            : v.item.type === LOCKED_DIR
-                                                ? "locked-dir-color"
-                                                : "dir-color"
-                                        : ""
-                                    )}
-                                    id={"name"+v.item.id}
-                                    type="text" 
-                                    value={v.item.name} 
-                                    onChange={e => modifyName(v.item.id, e.target.value)} 
-                                />
-                                
-                                {/* ... expand ... */}
-                                {isFolder(v.item.type)
-                                    ? <div>
-                                        {v.item.expanded 
-                                            ? <MdOutlineExpandLess className="expand hover-encircle" onClick={() => collaps(v.item.id)} />
-                                            : <MdOutlineExpandMore className="expand hover-encircle" onClick={() => expand(v.item.id)} />
-                                        }
-                                        {isHoveringMore.get(v.item.id) && 
-                                            <>
-                                                <VscNewFile className="add hover-shadow" onClick={() => handleAdd(v.item.id, FILE)}/>
-                                                <VscNewFolder className="add hover-shadow" onClick={() => handleAdd(v.item.id, DIR)}/>
-                                            </>
-                                        }
-                                      </div>
-                                    : <div/>
-                                }
-
-                            </div>
-                        }
-                    </div>
-                )}
+                                </div>
+                            }
+                        </div>
+                    )}
+                </div>
 
             </div>
         </div>
