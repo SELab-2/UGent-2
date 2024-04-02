@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 
 from db.models.models import Project, Student, Subject, Teacher
 from domain.logic.basic_operations import get, get_all
-from domain.models.ProjectDataclass import ProjectDataclass
+from domain.models.ProjectDataclass import ProjectDataclass, ProjectInput
 
 
 def create_project(
@@ -69,3 +69,15 @@ def get_projects_of_teacher(session: Session, user_id: int) -> list[ProjectDatac
     for i in subjects:
         projects += i.projects
     return [project.to_domain_model() for project in projects]
+
+
+def update_project(session: Session, project_id: int, project: ProjectInput) -> None:
+    project_db = get(session, Project, project_id)
+    project_db.archived = project.archived
+    project_db.deadline = project.deadline
+    project_db.description = project.description
+    project_db.max_students = project.max_students
+    project_db.name = project.name
+    project_db.requirements = project.requirements
+    project_db.visible = project.visible
+    session.commit()

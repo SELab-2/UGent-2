@@ -1,6 +1,6 @@
 # UGent-2
 De mockup van ons project kan [hier](https://www.figma.com/file/py6Qk9lgFtzbCy9by2qsYU/SELab2?type=design&node-id=617%3A4348&mode=design&t=N4FQR50wAYEyG8qx-1)
-gevonden worden. 
+gevonden worden.
 
 ## Project setup
 
@@ -10,7 +10,7 @@ gevonden worden.
     ```
 ## Backend
 
-De backend gebruikt Python 3.12.
+De backend gebruikt Python 3.12 en Poetry.
 Volg deze stappen om de backend van het project op te zetten:
 
 
@@ -18,15 +18,12 @@ Volg deze stappen om de backend van het project op te zetten:
     ```bash
     cd UGent-2/backend
     ```
-    
-2. Start de Python virtual environment:
+2. Installeer Poetry
+
+3. Installeer de benodigde Python packages met behulp van Poetry en voer de rest van de stappen uit in die virtual environment:
     ```bash
-    python3 -m venv venv
-    source venv/bin/activate
-    ```
-3. Installeer de benodigde Python packages met behulp van het `requirements.txt` bestand:
-    ```bash
-    pip install -r requirements.txt
+    poetry install
+    poetry shell
     ```
 4. Installeer PostgreSQL:
 
@@ -108,13 +105,12 @@ Volg deze stappen om de backend van het project op te zetten:
    npm run build
    ```
    De gecompileerde html/css/js bevindt zich nu in de `dist` folder
-   
+
 5. Deploy:
-   
+
    Zet de inhoud van de `dist` folder op de juiste plaats, zodat het geserveerd kan worden.
-   
+
 6. De testen kunnen uitgevoerd worden met: (nog niet geïmplementeerd)
    ```bash
    npm run tests
    ```
-   

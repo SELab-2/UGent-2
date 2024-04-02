@@ -28,8 +28,15 @@ class TestEdgeCases(unittest.TestCase):
     def test_create_submission_for_non_existent_project(self) -> None:
         stud = student.create_student(self.session, "Test Student", "teststudent@gmail.com")
         with self.assertRaises(ItemNotFoundError):
-            submission.create_submission(self.session, stud.id, 999, "Test Message", SubmissionState.Pending,
-                                         datetime.now())
+            submission.create_submission(
+                self.session,
+                stud.id,
+                999,
+                "Test Message",
+                SubmissionState.Pending,
+                datetime.now(),
+                filename="test",
+            )
 
 
 if __name__ == "__main__":
