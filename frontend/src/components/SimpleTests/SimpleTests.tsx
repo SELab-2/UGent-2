@@ -10,7 +10,7 @@ import { VscNewFolder } from "react-icons/vsc";
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import Warneable from "./Warneable";
-import { stringify, toJSON } from 'flatted';
+import { stringify } from 'flatted';
 
 
 /* === DOCUMENTATION ============================================================================================================================
