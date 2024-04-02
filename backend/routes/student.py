@@ -1,7 +1,6 @@
 from fastapi import APIRouter, Depends
-from sqlalchemy.orm import Session
+from starlette.requests import Request
 
-from db.sessions import get_session
 from domain.logic.project import get_projects_of_student
 from domain.logic.subject import add_student_to_subject, get_subjects_of_student
 from domain.models.ProjectDataclass import ProjectDataclass
@@ -15,18 +14,18 @@ student_router = APIRouter()
 
 @student_router.get("/student/subjects", tags=[Tags.STUDENT], summary="Get all subjects of the student.")
 def subjects_of_student_get(
-    session: Session = Depends(get_session),
+    request: Request,
     student: StudentDataclass = Depends(get_authenticated_student),
 ) -> list[SubjectDataclass]:
-    return get_subjects_of_student(session, student.id)
+    return get_subjects_of_student(request.state.session, student.id)
 
 
 @student_router.get("/student/projects", tags=[Tags.STUDENT], summary="Get all projects of the student.")
 def projects_of_student_get(
-    session: Session = Depends(get_session),
+    request: Request,
     student: StudentDataclass = Depends(get_authenticated_student),
 ) -> list[ProjectDataclass]:
-    return get_projects_of_student(session, student.id)
+    return get_projects_of_student(request.state.session, student.id)
 
 
 @student_router.post(
@@ -36,7 +35,7 @@ def projects_of_student_get(
 )
 def student_subject_join(
     subject_id: int,
-    session: Session = Depends(get_session),
+    request: Request,
     student: StudentDataclass = Depends(get_authenticated_student),
 ) -> None:
-    add_student_to_subject(session, student.id, subject_id)
+    add_student_to_subject(request.state.session, student.id, subject_id)
