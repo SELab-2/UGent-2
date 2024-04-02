@@ -37,7 +37,7 @@ export default function ProjecctViewTeacher() {
         <>
 
             <div className={"main-header"}>
-                <Header page_title={projectName}/>
+                <Header page_title={projectName} home={"teacher"}/>
             </div>
             <div className={"main-content is-flex is-flex-direction-row"}>
                 <div className={"side-bar is-flex is-justify-content-center"}>
