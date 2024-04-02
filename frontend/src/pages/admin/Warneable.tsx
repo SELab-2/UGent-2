@@ -11,8 +11,8 @@ export default function(props: {
     const [open, setOpen] = useState(false);
     const closeModal = () => setOpen(false);
     const onProceed = () => {
-        console.log("hallo2")
         props.proceed()
+        closeModal()
     };
 
     return (
