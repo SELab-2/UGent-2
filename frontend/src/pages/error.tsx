@@ -48,7 +48,7 @@ function errorMessage(error: unknown): string {
     } else if (typeof error === 'string') {
         return error
     } else {
-        console.error(error) //TODO doe weg
+        console.error(error) //TODO remove
         return 'Unknown error'
     }
 }
