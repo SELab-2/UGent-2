@@ -7,11 +7,11 @@ import {FaUpload} from "react-icons/fa";
 import {ProjectTeacher, Value} from "../types/project.ts";
 import SimpleTests, { TeacherOrStudent } from "./SimpleTests/SimpleTests.tsx";
 import { dummy_data } from "./SimpleTests/DummyData.tsx";
+import "../assets/styles/teacher_components.css"
 
 // SimpleTests
 const CHECK_SIMPLE_TESTS = false
 const calledData = dummy_data
-import "../assets/styles/teacher_components.css"
 
 export function ViewProjectTeacherComponent(props: {
     project: ProjectTeacher
