@@ -20,19 +20,22 @@ Roep 'SimpleTests' als component om deze in te laden.
         - teacherOrStudent
             TYPE:       boolean
             COMMENT:    "Als true, dan teacher-view. Als false, dan student-view."
+        - initialData
+            TYPE:       object
+            COMMENT:    "De initiele indiening-structuur."
         - setHasChanged:        
             TYPE:       React.Dispatch<React.SetStateAction<boolean>> 
             COMMENT:    "Dit is de setter van een react-hook. Deze zal gezet worden naar true/false 
                          afhankelijk van of de indiening-structuur al dan niet aangepast werd."
         - setData:
-            TYPE:       React.Dispatch<React.SetStateAction<Object>>  
+            TYPE:       React.Dispatch<React.SetStateAction<object>>  
             COMMENT:    "De SimpleTests-component zal deze setter telkens oproepen als de indiening-structuur veranderd.
                          Het kan zijn dat de data veranderd wordt naar iets dat het reeds was; 
                          gebruik setHasChanged om een échte verandering te detecteren."
 
 In de sectie 'text literals' vind je de tekst-constanten terug, klaar voor internationalisatie.
 
-!!! WARNING: een not_present_constraint wordt niet ondersteund. !!!  ->  Dit lijkt mij niet intuitief/nodig.
+!!! WARNING: een not_present_constraint wordt (nog) niet ondersteund. !!!
 
 FIXME:  Bij het verwijderen van een file, wordt er nog geen warning ondersteund (zie FIXME's in code).
         Zonder warning werkt dit wel al (eerste van de twee buttons).
