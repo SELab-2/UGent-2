@@ -44,7 +44,7 @@ export function ViewProjectTeacherComponent(props: {
     const minutes_array = Array.from({length: 60}, (_, index) => index.toString().padStart(2, '0'));
 
     // SimpleTests
-    const [data, setData] = useState(calledData);
+    const [data, setData] = useState<object>(calledData);
     const [hasChanged, setHasChanged] = useState(false);
 
     return (

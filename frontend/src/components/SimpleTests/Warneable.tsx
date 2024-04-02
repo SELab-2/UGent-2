@@ -2,7 +2,7 @@ import Popup from 'reactjs-popup';
 import '../../assets/styles/SimpleTests/warneable.css'
 import { useState } from 'react';
 
-export default function(props: {
+export default function Warneable(props: {
     text: string, 
     trigger: (onClick: () => void) => JSX.Element, 
     proceed: () => void,
