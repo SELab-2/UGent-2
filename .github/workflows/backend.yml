@@ -9,9 +9,27 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Install Poetry
+        run: pip install poetry
       - name: Install dependencies
-        run: pip install -r backend/requirements.txt
+        run: cd backend && poetry install
       - name: Lint code
-        run: ruff check backend
+        run: cd backend && poetry run ruff check
       - name: Run Pyright
-        run: pyright
+        run: cd backend && poetry run pyright
+  test:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Poetry
+        run: pip install poetry
+      - name: Install dependencies
+        run: cd backend && poetry install
+      - name: Run tests
+        run: cd backend && poetry run python -m unittest discover tests
+        env:
+          TEST_DB_USER: githubactions

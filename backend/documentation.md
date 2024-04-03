@@ -39,6 +39,81 @@ Now is a good time to explain the function *to_domain_model* from earlier. When 
 
 These universal dataclasses inherit the **Pydantic** BaseModel. It allows for automatic data validation, JSON schema generation and more. More information on Pydantic can be found [here](https://docs.pydantic.dev/latest/why/).
 
+#### III) simple submission tests
+
+[simple_submission_checks](domain/simple_submission_checks) contains the logic to run simple tests on a submission. simple tests can check if the submission
+- Is a zip file with a certain name
+- Is a file with a certain name
+- Contains a certain file or folder
+- Does not contain a certain file or folder
+- Only contains files with certain names
+
+These constraints can be nested indefinitely. 
+
+The frontend should send a json file containing a `SubmissionConstraint`. Such a submission constraint has a `root_constraint`
+which is one of two things: A `FileConstraint` or a `Zipconstraint`, as a submission is OR a file, OR a zip file.
+A `FileConstraint` simply checks if a file with a certain name is present. The `ZipConstraint` also contains a name field specifying the name of the zip file, along
+with a list of either `FileConstrainst`, `DirectoryConstraint`, `NotPresentConstraints` or `OnlyPresentConstraints`. These can be mixed.
+A `DirectoryConstraint` also has a name field and a list of constraints. The `NotPresentConstraint` specifies that a certain file may not be present in that directory or zip.
+The `FileConstraint` specifies that a file with a certain name must be present. The `OnlyPresentConstraint` specifies that only files with certain names may be present in that directory or zip, and no other.
+
+For the frontend people: If you want to know how to make a `Submissionconstraint` you can look at the models in the [simple_submission_checks](domain/simple_submission_checks) folder. The following is an example:
+
+```json
+ {
+  "type": "zip_constraint",
+  "name": "root.zip",
+  "sub_constraints": [
+    {
+      "type": "directory_constraint",
+      "name": "Documents",
+      "sub_constraints": [
+        {
+          "type": "file_constraint",
+          "name": "Resume.pdf"
+        },
+        {
+          "type": "file_constraint",
+          "name": "CoverLetter.docx"
+        },
+        {
+          "type": "file_constraint",
+          "name": "Transcript.pdf"
+        }
+      ]
+    },
+    {
+      "type": "directory_constraint",
+      "name": "Images",
+      "sub_constraints": [
+        {
+          "type": "file_constraint",
+          "name": "Vacation.jpg"
+        },
+        {
+          "type": "file_constraint",
+          "name": "ProfilePicture.jpg"
+        }
+      ]
+    },
+    {
+      "type": "directory_constraint",
+      "name": "Videos",
+      "sub_constraints": [
+        {
+          "type": "file_constraint",
+          "name": "Graduation.mp4"
+        }
+      ]
+    },
+    {
+      "type": "not_present_constraint",
+      "name": "file4.txt"
+    }
+  ]
+}
+```
+
 ## 3) API
 
 We use **FastAPI** as framework. FastAPI follows the OpenAPI Specification. Its idea is to, in its turn, specify a REST API with a YAML document. This document can be used to generate documentation and methods for API endpoints. In every file in [/routes/], we can see a FastAPI router defined that represents some routes that are logically grouped together.

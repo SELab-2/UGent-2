@@ -5,7 +5,9 @@ from db.models.models import Student, Subject, Teacher
 from domain.logic.basic_operations import get, get_all
 from domain.logic.student import is_user_student
 from domain.logic.teacher import is_user_teacher
+from domain.models.StudentDataclass import StudentDataclass
 from domain.models.SubjectDataclass import SubjectDataclass
+from domain.models.TeacherDataclass import TeacherDataclass
 
 
 def create_subject(session: Session, name: str) -> SubjectDataclass:
@@ -68,3 +70,15 @@ def is_user_authorized_for_subject(subject_id: int, session: Session, uid: int) 
     if subject_id in [subject.id for subject in subjects]:
         return True
     return False
+
+
+def get_teachers_of_subject(session: Session, subject_id: int) -> list[TeacherDataclass]:
+    subject: Subject = get(session, Subject, ident=subject_id)
+    teachers = subject.teachers
+    return [teacher.to_domain_model() for teacher in teachers]
+
+
+def get_students_of_subject(session: Session, subject_id: int) -> list[StudentDataclass]:
+    subject: Subject = get(session, Subject, ident=subject_id)
+    students = subject.students
+    return [student.to_domain_model() for student in students]
