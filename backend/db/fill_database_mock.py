@@ -87,22 +87,27 @@ if __name__ == "__main__":
     groep1_objprog = create_group(session, objprog_project.id)
     groep2_objprog = create_group(session, objprog_project.id)
     groep3_objprog = create_group(session, objprog_project.id)
+    groep4_objprog = create_group(session, objprog_project.id)  # empty group
     groep1_algo = create_group(session, algo_project.id)
     groep2_algo = create_group(session, algo_project.id)
     groep3_algo = create_group(session, algo_project.id)
     groep4_algo = create_group(session, algo_project.id)
     groep5_algo = create_group(session, algo_project.id)
     groep6_algo = create_group(session, algo_project.id)
+    groep7_algo = create_group(session, algo_project.id)
+    groep8_algo = create_group(session, algo_project.id)
     groep1_web = create_group(session, web_project.id)
     groep2_web = create_group(session, web_project.id)  # empty group
 
     # Create students
-    student1 = create_student(session, "Lukas", "lukas@gmail.com")
-    student2 = create_student(session, "Alberic", "alberic@gmail.com")
-    student3 = create_student(session, "Matthias", "matthias@gmail.com")
-    student4 = create_student(session, "Eva", "eva@gmail.com")
-    student5 = create_student(session, "Emma", "emma@gmail.com")
-    student6 = create_student(session, "Robbe", "robbe@gmail.com")
+    student1 = create_student(session, "Lukas", "Lukas.BarraganTorres@UGent.be")
+    student2 = create_student(session, "Alberic", "Alberic.Loos@UGent.be")
+    student3 = create_student(session, "Matthias", "matseghe.Seghers@UGent.be")
+    student4 = create_student(session, "Ruben", "Ruben.Vandamme@UGent.be")
+    student5 = create_student(session, "Emma", "emmavdwa.Vandewalle@UGent.be")
+    student6 = create_student(session, "Robbe", "Robbe.VandeKeere@UGent.be")
+    student7 = create_student(session, "Stef", "Stef.Osse@UGent.be")
+    student8 = create_student(session, "Mathieu", "Mathieu.Strypsteen@UGent.be")
 
     # Create teachers
     teacher1 = create_teacher(session, "Kris Coolsaet", "kris.coolsaet@ugent.be")
@@ -127,17 +132,25 @@ if __name__ == "__main__":
     add_student_to_subject(session, student4.id, objeprog.id)
     add_student_to_subject(session, student5.id, objeprog.id)
     add_student_to_subject(session, student6.id, objeprog.id)
+    add_student_to_subject(session, student7.id, objeprog.id)
+    add_student_to_subject(session, student8.id, objeprog.id)
+
     add_student_to_subject(session, student1.id, algoritmen.id)
     add_student_to_subject(session, student2.id, algoritmen.id)
-    # noinspection DuplicatedCode
     add_student_to_subject(session, student3.id, algoritmen.id)
+    # noinspection DuplicatedCode
     add_student_to_subject(session, student4.id, algoritmen.id)
     add_student_to_subject(session, student5.id, algoritmen.id)
     add_student_to_subject(session, student6.id, algoritmen.id)
+    add_student_to_subject(session, student7.id, algoritmen.id)
+    add_student_to_subject(session, student8.id, algoritmen.id)
+
     add_student_to_subject(session, student1.id, webtech.id)
     add_student_to_subject(session, student2.id, webtech.id)
     add_student_to_subject(session, student3.id, webtech.id)
-    add_student_to_subject(session, student4.id, webtech.id)
+    add_student_to_subject(session, student5.id, webtech.id)  # 4 en 8 zullen assistent zijn bij dit vak
+    add_student_to_subject(session, student6.id, webtech.id)
+    add_student_to_subject(session, student7.id, webtech.id)
 
     # Add students to groups
 
@@ -147,15 +160,19 @@ if __name__ == "__main__":
     add_student_to_group(session, student3.id, groep1_objprog.id)
     add_student_to_group(session, student4.id, groep2_objprog.id)
     add_student_to_group(session, student5.id, groep2_objprog.id)
+    add_student_to_group(session, student6.id, groep3_objprog.id)
+    add_student_to_group(session, student7.id, groep3_objprog.id)
+    add_student_to_group(session, student8.id, groep3_objprog.id)
 
     add_student_to_group(session, student4.id, groep1_algo.id)
-    add_student_to_group(session, student5.id, groep2_algo.id)
-
     # noinspection DuplicatedCode
+    add_student_to_group(session, student5.id, groep2_algo.id)
     add_student_to_group(session, student6.id, groep3_algo.id)
     add_student_to_group(session, student1.id, groep4_algo.id)
     add_student_to_group(session, student2.id, groep5_algo.id)
     add_student_to_group(session, student3.id, groep6_algo.id)
+    add_student_to_group(session, student8.id, groep7_algo.id)
+    add_student_to_group(session, student7.id, groep8_algo.id)
 
     add_student_to_group(session, student1.id, groep1_web.id)
     add_student_to_group(session, student3.id, groep1_web.id)
@@ -169,6 +186,7 @@ if __name__ == "__main__":
         message="Eerste versie",
         state=SubmissionState.Rejected,
         date_time=datetime(2024, 3, 22, 22, 55, 3, tzinfo=tz.LOCAL),
+        filename="flashcards.zip",
     )
 
     create_submission(
@@ -178,6 +196,17 @@ if __name__ == "__main__":
         message="",
         state=SubmissionState.Pending,
         date_time=datetime(2024, 3, 22, 22, 57, 34, tzinfo=tz.LOCAL),
+        filename="flashcards.zip",
+    )
+
+    create_submission(
+        session=session,
+        student_id=student8.id,
+        group_id=groep3_objprog.id,
+        message="blablabla",
+        state=SubmissionState.Approved,
+        date_time=datetime(2024, 3, 22, 22, 59, 17, tzinfo=tz.LOCAL),
+        filename="flashcards.zip",
     )
 
     create_submission(
@@ -187,6 +216,7 @@ if __name__ == "__main__":
         message="Optimalisatie + enkele bug fixes",
         state=SubmissionState.Approved,
         date_time=datetime(2024, 3, 21, 7, 59, 13, tzinfo=tz.LOCAL),
+        filename="sorteer_algoritmen.py",
     )
 
     create_submission(
@@ -196,6 +226,7 @@ if __name__ == "__main__":
         message="Klaar is kees!",
         state=SubmissionState.Approved,
         date_time=datetime(2024, 2, 1, 12, 20, 45, tzinfo=tz.LOCAL),
+        filename="sorteer_algoritmen.py",
     )
 
     create_submission(
@@ -205,11 +236,25 @@ if __name__ == "__main__":
         message="Nog wat werk",
         state=SubmissionState.Rejected,
         date_time=datetime(2024, 3, 22, 23, 57, 34, tzinfo=tz.LOCAL),
+        filename="sorteer_algoritmen.py",
     )
 
-    # make a student an assistant
-    modify_user_roles(session, student6.id, [Role.TEACHER])
-    add_teacher_to_subject(session, student6.id, webtech.id)
+    create_submission(
+        session=session,
+        student_id=student7.id,
+        group_id=groep8_algo.id,
+        message="",
+        state=SubmissionState.Rejected,
+        date_time=datetime(2024, 3, 22, 22, 19, 0, tzinfo=tz.LOCAL),
+        filename="sorteer_algoritmen.py",
+    )
+
+    # make assistants
+    modify_user_roles(session, student4.id, [Role.TEACHER])
+    add_teacher_to_subject(session, student4.id, webtech.id)
+
+    modify_user_roles(session, student8.id, [Role.TEACHER])
+    add_teacher_to_subject(session, student8.id, webtech.id)
 
     session.commit()
     session.close()
