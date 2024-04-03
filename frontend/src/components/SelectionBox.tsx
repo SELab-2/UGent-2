@@ -1,13 +1,14 @@
-import React, {ChangeEvent, JSX} from "react";
+import {ChangeEvent, JSX} from "react";
+import {StateSetter} from "../types/common.ts";
 
-export function SelectionBox(props: {
+export function SelectionBox<T>(props: {
     options: string[],
     value: string,
-    setValue: React.Dispatch<React.SetStateAction<string>>
+    setValue: StateSetter<T>
 }): JSX.Element {
 
     function handleChange(e: ChangeEvent<HTMLSelectElement>) {
-        props.setValue(e.target.value);
+        props.setValue(e.target.value as T);
     }
 
     return (

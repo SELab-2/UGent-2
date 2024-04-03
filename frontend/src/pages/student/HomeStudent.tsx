@@ -19,7 +19,7 @@ export default function HomeStudent(): JSX.Element {
             </div>
             <div className={"main-content is-flex is-flex-direction-row"}>
                 <div className={"side-bar is-flex is-justify-content-center"}>
-                    <Sidebar/>
+                    <Sidebar home={"student"}/>
                 </div>
                 <div className={"student-main is-flex"}>
                     <div className={"student-left px-5 py-5 mx-5 my-5 is-flex is-justify-content-space-evenly"}>

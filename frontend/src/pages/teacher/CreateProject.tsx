@@ -1,34 +1,35 @@
-import {useState} from "react";
-import {ViewProjectTeacherComponent} from "../../components/ViewProjectTeacherComponent.tsx";
+import {JSX} from "react";
 import {ProjectTeacher} from "../../types/project.ts";
+import {ViewProjectTeacherComponent} from "../../components/ViewProjectTeacherComponent.tsx";
+import {Header} from "../../components/Header.tsx";
+import {Sidebar} from "../../components/Sidebar.tsx";
 
-export function CreateProject() {
-    const [projectName, setProjectName] = useState('');
-    const [courseName, setCourseName] = useState('');
-    const [hours, setHours] = useState(''); //TODO aanpassen naar number
-    const [minutes, setMinutes] = useState(''); //TODO aanpassen naar number
-    type ValuePiece = Date | null; // nodig voor de deadline
-    type Value = ValuePiece | [ValuePiece, ValuePiece]; // nodig voor de deadline
-    const [deadlineValue, deadlineChange] = useState<Value>(null); // default waarde is null
-    const [description, setDescription] = useState('');
-    const [requiredFiles, setRequiredFiles] = useState('');
-    const [otherFilesAllow, setOtherFilesAllow] = useState(false);
-    const [groupProject, setGroupProject] = useState(false);
-    const project: ProjectTeacher = {
-        projectName: projectName, setProjectName: setProjectName,
-        courseName: courseName,
-        setCourseName: setCourseName, hours: hours, setHours: setHours,
-        minutes: minutes,
-        setMinutes: setMinutes,
-        deadline: deadlineValue,
-        setDeadline: deadlineChange, description: description,
-        setDescription: setDescription, requiredFiles: requiredFiles,
-        setRequiredFiles: setRequiredFiles,
-        otherFilesAllow: otherFilesAllow,
-        setOtherFilesAllow: setOtherFilesAllow,
-        groupProject: groupProject, setGroupProject: setGroupProject
-    }
+export function CreateProject(): JSX.Element {
+    const emptyProjectTeacher: ProjectTeacher = {
+        courseName: "",
+        deadline: new Date(Date.now()),
+        description: "",
+        groupProject: false,
+        hours: 22,
+        minutes: 58,
+        otherFilesAllow: false,
+        projectName: "",
+        requiredFiles: "",
+    };
+
     return (
-        <ViewProjectTeacherComponent project={project}/>
+        <>
+            <div className={"main-header"}>
+                <Header page_title={"Create project"} home={"teacher"}/>
+            </div>
+            <div className={"main-content is-flex is-flex-direction-row"}>
+                <div className={"side-bar is-flex is-justify-content-center"}>
+                    <Sidebar home={"teacher"}/>
+                </div>
+                <div className={"student-main my-5"}>
+                    <ViewProjectTeacherComponent project={emptyProjectTeacher}/>
+                </div>
+            </div>
+        </>
     )
 }
