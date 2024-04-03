@@ -20,3 +20,7 @@ class NoAccessToDataError(Exception):
 
 class InvalidAuthenticationError(Exception):
     ERROR_MESSAGE = "User is not authenticated"
+
+
+class NoCasHeaderError(Exception):
+    ERROR_MESSAGE = "No CAS header is present in the request."

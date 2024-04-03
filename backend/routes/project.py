@@ -17,7 +17,7 @@ project_router = APIRouter()
 @project_router.get("/projects/{project_id}", tags=[Tags.PROJECT], summary="Get a certain project.")
 def project_get(request: Request, project_id: int) -> ProjectDataclass:
     session = request.state.session
-    ensure_user_authorized_for_project(project_id)
+    ensure_user_authorized_for_project(request, project_id)
     project: ProjectDataclass = get_project(session, project_id)
     return project
 
@@ -25,19 +25,19 @@ def project_get(request: Request, project_id: int) -> ProjectDataclass:
 @project_router.get("/projects/{project_id}/groups", tags=[Tags.PROJECT], summary="Get all groups of a project.")
 def project_get_groups(request: Request, project_id: int) -> list[GroupDataclass]:
     session = request.state.session
-    ensure_user_authorized_for_project(project_id)
+    ensure_user_authorized_for_project(request, project_id)
     return get_groups_of_project(session, project_id)
 
 
 @project_router.post("/projects/{project_id}/groups", tags=[Tags.PROJECT], summary="Create a group for a project.")
 def project_create_group(request: Request, project_id: int) -> GroupDataclass:
     session = request.state.session
-    ensure_teacher_authorized_for_project(project_id)
+    ensure_teacher_authorized_for_project(request, project_id)
     return create_group(session, project_id)
 
 
 @project_router.patch("/projects/{project_id}", tags=[Tags.PROJECT], summary="Update a project.")
 def patch_update_project(request: Request, project_id: int, project: ProjectInput) -> None:
     session = request.state.session
-    ensure_teacher_authorized_for_project(project_id)
+    ensure_teacher_authorized_for_project(request, project_id)
     update_project(session, project_id, project)

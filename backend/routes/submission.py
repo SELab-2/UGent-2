@@ -16,7 +16,7 @@ submission_router = APIRouter()
 @submission_router.post("/groups/{group_id}/submission", tags=[Tags.SUBMISSION], summary="Make a submission.")
 def make_submission(request: Request, group_id: int, file: Annotated[bytes, File()]) -> SubmissionDataclass:
     session = request.state.session
-    student = ensure_student_in_group(group_id)
+    student = ensure_student_in_group(request, group_id)
 
     filename = hashlib.sha256(file).hexdigest()
     with open(f"submissions/{filename}", "wb") as f:
@@ -36,14 +36,14 @@ def make_submission(request: Request, group_id: int, file: Annotated[bytes, File
 @submission_router.get("/groups/{group_id}/submission", tags=[Tags.SUBMISSION], summary="Get latest submission.")
 def retrieve_submission(request: Request, group_id: int) -> SubmissionDataclass:
     session = request.state.session
-    ensure_user_authorized_for_submission(group_id)
+    ensure_user_authorized_for_submission(request, group_id)
     return get_last_submission(session, group_id)
 
 
 @submission_router.get("/groups/{group_id}/submission/file", tags=[Tags.SUBMISSION], summary="Get last submission")
 def retrieve_submission_file(request: Request, group_id: int) -> Response:
     session = request.state.session
-    ensure_user_authorized_for_submission(group_id)
+    ensure_user_authorized_for_submission(request, group_id)
 
     submission = get_last_submission(session, group_id)
     with open(f"submissions/{submission.filename}", "rb") as file:
