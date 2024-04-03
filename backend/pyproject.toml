@@ -27,6 +27,7 @@ fastapi = "^0.110.0"
 email-validator = "^2.1.1"
 httpx = "^0.27.0"
 defusedxml = "^0.7.1"
+sqlalchemy-utils = "0.41.2"
 
 [build-system]
 requires = ["poetry-core"]
@@ -135,3 +136,8 @@ docstring-code-format = false
 # This only has an effect when the `docstring-code-format` setting is
 # enabled.
 docstring-code-line-length = "dynamic"
+
+
+[tool.ruff.lint.per-file-ignores]
+# Ignore important unused import in the database initialization file.
+"db/create_database_tables.py" = ["F401"]
