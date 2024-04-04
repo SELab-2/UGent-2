@@ -41,7 +41,6 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        /*padding: 5%;*/
 
         a {
             transform: scale(1.5);

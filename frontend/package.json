@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "engines": {
-    "node": "^20.0.0"
+    "node": ">=20.0.0"
   },
   "scripts": {
     "dev": "vite",
@@ -19,7 +19,8 @@
     "react-calendar": "^4.8.0",
     "react-dom": "^18.2.0",
     "react-icons": "^5.0.1",
-    "react-router-dom": "^6.22.3"
+    "react-minimal-pie-chart": "^8.4.0",
+    "react-router-dom": ">=6.22.2"
   },
   "devDependencies": {
     "@types/react": "^18.2.56",
@@ -32,6 +33,6 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
     "typescript": "^5.2.2",
-    "vite": "^5.1.4"
+    "vite": "^5.1.7"
   }
 }

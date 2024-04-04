@@ -32,11 +32,27 @@ class TestSubmission(unittest.TestCase):
     def test_create_and_get_submission(self) -> None:
         student = create_student(self.session, "Test Student", "teststudent@gmail.com")
         subject = create_subject(self.session, "Test Subject")
-        project = create_project(self.session, subject.id, "Test Project", datetime.now(), False, "Test Description",
-                                 "Test Requirements", True, 2)
+        project = create_project(
+            self.session,
+            subject.id,
+            "Test Project",
+            datetime.now(),
+            False,
+            "Test Description",
+            "Test Requirements",
+            True,
+            2,
+        )
         group = create_group(self.session, project.id)
-        submission = create_submission(self.session, student.id, group.id, "Test Message", SubmissionState.Pending,
-                                       datetime.now())
+        submission = create_submission(
+            self.session,
+            student.id,
+            group.id,
+            "Test Message",
+            SubmissionState.Pending,
+            datetime.now(),
+            filename="test",
+        )
         retrieved_submission = get_submission(self.session, submission.id)
         self.assertEqual(submission.id, retrieved_submission.id)
 
@@ -44,23 +60,71 @@ class TestSubmission(unittest.TestCase):
         student1 = create_student(self.session, "Test Student 1", "teststudent1@gmail.com")
         student2 = create_student(self.session, "Test Student 2", "teststudent2@gmail.com")
         subject = create_subject(self.session, "Test Subject")
-        project = create_project(self.session, subject.id, "Test Project", datetime.now(), False, "Test Description",
-                                 "Test Requirements", True, 2)
+        project = create_project(
+            self.session,
+            subject.id,
+            "Test Project",
+            datetime.now(),
+            False,
+            "Test Description",
+            "Test Requirements",
+            True,
+            2,
+        )
         group = create_group(self.session, project.id)
-        create_submission(self.session, student1.id, group.id, "Test Message 1", SubmissionState.Pending,
-                          datetime.now())
-        create_submission(self.session, student2.id, group.id, "Test Message 2", SubmissionState.Pending,
-                          datetime.now())
+        create_submission(
+            self.session,
+            student1.id,
+            group.id,
+            "Test Message 1",
+            SubmissionState.Pending,
+            datetime.now(),
+            filename="test",
+        )
+        create_submission(
+            self.session,
+            student2.id,
+            group.id,
+            "Test Message 2",
+            SubmissionState.Pending,
+            datetime.now(),
+            filename="test",
+        )
         self.assertEqual(len(get_all_submissions(self.session)), 2)
 
     def test_get_submissions_of_student(self) -> None:
         student = create_student(self.session, "Test Student", "teststudent@gmail.com")
         subject = create_subject(self.session, "Test Subject")
-        project = create_project(self.session, subject.id, "Test Project", datetime.now(), False, "Test Description",
-                                 "Test Requirements", True, 2)
+        project = create_project(
+            self.session,
+            subject.id,
+            "Test Project",
+            datetime.now(),
+            False,
+            "Test Description",
+            "Test Requirements",
+            True,
+            2,
+        )
         group = create_group(self.session, project.id)
-        create_submission(self.session, student.id, group.id, "Test Message 1", SubmissionState.Pending, datetime.now())
-        create_submission(self.session, student.id, group.id, "Test Message 2", SubmissionState.Pending, datetime.now())
+        create_submission(
+            self.session,
+            student.id,
+            group.id,
+            "Test Message 1",
+            SubmissionState.Pending,
+            datetime.now(),
+            filename="test",
+        )
+        create_submission(
+            self.session,
+            student.id,
+            group.id,
+            "Test Message 2",
+            SubmissionState.Pending,
+            datetime.now(),
+            filename="test",
+        )
         submissions_of_student = get_submissions_of_student(self.session, student.id)
         self.assertEqual(len(submissions_of_student), 2)
 
@@ -68,13 +132,36 @@ class TestSubmission(unittest.TestCase):
         student1 = create_student(self.session, "Test Student 1", "teststudent1@gmail.com")
         student2 = create_student(self.session, "Test Student 2", "teststudent2@gmail.com")
         subject = create_subject(self.session, "Test Subject")
-        project = create_project(self.session, subject.id, "Test Project", datetime.now(), False, "Test Description",
-                                 "Test Requirements", True, 2)
+        project = create_project(
+            self.session,
+            subject.id,
+            "Test Project",
+            datetime.now(),
+            False,
+            "Test Description",
+            "Test Requirements",
+            True,
+            2,
+        )
         group = create_group(self.session, project.id)
-        create_submission(self.session, student1.id, group.id, "Test Message 1", SubmissionState.Pending,
-                          datetime.now())
-        create_submission(self.session, student2.id, group.id, "Test Message 2", SubmissionState.Pending,
-                          datetime.now())
+        create_submission(
+            self.session,
+            student1.id,
+            group.id,
+            "Test Message 1",
+            SubmissionState.Pending,
+            datetime.now(),
+            filename="test",
+        )
+        create_submission(
+            self.session,
+            student2.id,
+            group.id,
+            "Test Message 2",
+            SubmissionState.Pending,
+            datetime.now(),
+            filename="test",
+        )
         submissions_of_group = get_submissions_of_group(self.session, group.id)
         self.assertEqual(len(submissions_of_group), 2)
 

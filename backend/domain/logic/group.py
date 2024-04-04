@@ -48,7 +48,10 @@ def add_student_to_group(session: Session, student_id: int, group_id: int) -> No
     if student in group.students:
         msg = f"Student with id {student_id} already in group with id {group_id}"
         raise ActionAlreadyPerformedError(msg)
-
+    for i in group.project.groups:
+        if student in i.students:
+            msg = "Student is already in a group for this project"
+            raise ActionAlreadyPerformedError(msg)
     group.students.append(student)
     session.commit()
 
@@ -69,3 +72,12 @@ def get_students_of_group(session: Session, group_id: int) -> list[StudentDatacl
     group: Group = get(session, Group, ident=group_id)
     students: list[Student] = group.students
     return [student.to_domain_model() for student in students]
+
+
+def get_group_for_student_and_project(session: Session, student_id: int, project_id: int) -> GroupDataclass | None:
+    student: Student = get(session, Student, ident=student_id)
+    project: Project = get(session, Project, ident=project_id)
+    for group in project.groups:
+        if student in group.students:
+            return group.to_domain_model()
+    return None

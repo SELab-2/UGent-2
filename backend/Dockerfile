@@ -1,6 +1,7 @@
 FROM python:3.12-slim
 EXPOSE 8000
+RUN pip install poetry
 COPY . /backend
 WORKDIR /backend
-RUN pip install -r requirements.txt
-CMD uvicorn --host 0.0.0.0 app:app
+RUN poetry install
+CMD poetry run uvicorn --host 0.0.0.0 app:app

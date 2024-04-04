@@ -2,15 +2,25 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from controllers.auth.authentication_controller import authenticate_user
-from controllers.auth.token_controller import create_token
+from controllers.auth.token_controller import create_token, verify_token
 from db.sessions import get_session
-from domain.models.APIUser import LoginResponse
+from domain.models.APIUser import LoginResponse, ValidateResponse
 from domain.models.UserDataclass import UserDataclass
 from routes.errors.authentication import InvalidAuthenticationError
 from routes.tags.swagger_tags import Tags
 
 # test url: https://login.ugent.be/login?service=https://localhost:8080/api/login
 login_router = APIRouter()
+
+
+@login_router.post("/validate", tags=[Tags.LOGIN], summary="Validate a session token.")
+def validate_token(
+    token: str,
+) -> ValidateResponse:
+    uid = verify_token(token)
+    if uid:
+        return ValidateResponse(valid=True)
+    return ValidateResponse(valid=False)
 
 
 @login_router.post("/login", tags=[Tags.LOGIN], summary="Starts a session for the user.")

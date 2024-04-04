@@ -1,0 +1,5 @@
+.create-project {
+    height: 100%;
+    flex-wrap: wrap;
+    overflow-x: scroll;
+}

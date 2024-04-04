@@ -24,12 +24,27 @@ class TestStress(unittest.TestCase):
         for i in range(100):
             stud = student.create_student(self.session, f"Test Student {i}", f"teststudent{i}@gmail.com")
             subj = subject.create_subject(self.session, f"Test Subject {i}")
-            proj = project.create_project(self.session, subj.id, f"Test Project {i}", datetime.now(), False,
-                                          "Test Description",
-                                          "Test Requirements", True, 2)
+            proj = project.create_project(
+                self.session,
+                subj.id,
+                f"Test Project {i}",
+                datetime.now(),
+                False,
+                "Test Description",
+                "Test Requirements",
+                True,
+                2,
+            )
             grp = group.create_group(self.session, proj.id)
-            subm = submission.create_submission(self.session, stud.id, grp.id, "Test Message", SubmissionState.Pending,
-                                                datetime.now())
+            subm = submission.create_submission(
+                self.session,
+                stud.id,
+                grp.id,
+                "Test Message",
+                SubmissionState.Pending,
+                datetime.now(),
+                filename="test",
+            )
             teach = teacher.create_teacher(self.session, f"Test Teacher {i}", f"testteacher{i}@gmail.com")
             adm = admin.create_admin(self.session, f"Test Admin {i}", f"testadmin{i}@gmail.com")
 

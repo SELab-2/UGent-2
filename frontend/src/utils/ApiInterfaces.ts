@@ -16,6 +16,13 @@ export interface Project {
     subject_name?: string
 }
 
+export interface properSubject {
+    id: number,
+    name: string,
+    active_projects: number,
+    first_deadline: Date | null | string
+}
+
 export interface Token {
     token?: string
 }
@@ -25,11 +32,4 @@ export interface User {
     name: string,
     email: string,
     roles: string[]
-}
-
-export interface properSubject {
-    id: number,
-    name: string,
-    active_projects: number,
-    first_deadline: Date | null | string
 }
