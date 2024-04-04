@@ -13,7 +13,7 @@ export interface Project {
     visible: string,
     max_students: number,
     subject_id: number,
-    subject_name: string | undefined | null
+    subject_name?: string
 }
 
 export interface properSubject {

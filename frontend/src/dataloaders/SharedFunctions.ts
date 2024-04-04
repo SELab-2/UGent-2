@@ -7,10 +7,8 @@ export enum teacherStudentRole {
 }
 
 export async function projectsLoader(role: teacherStudentRole): Promise<Project[]> {
-    const getter = await getAllProjectsAndSubjects(role);
-    const subjects = getter.subjects;
-    const projects = getter.projects;
-    // TODO: add submission data
+    const {subjects, projects} = await getAllProjectsAndSubjects(role);
+    // TODO: add submission data there seems to no api available just yet.
     for (let i = 0; i < projects.length; i++) {
         const subject: Subject | undefined = subjects.find(subject => subject.id === projects[i].subject_id);
         if (subject !== undefined) {
