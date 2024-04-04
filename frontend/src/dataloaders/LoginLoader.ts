@@ -1,7 +1,7 @@
 import {User} from "../utils/ApiInterfaces.ts";
+import apiFetch from "../utils/ApiFetch.ts";
 import {Backend_user} from "../utils/BackendInterfaces.ts";
 import {mapUser} from "../utils/ApiTypesMapper.ts";
-import apiFetch from "../utils/ApiFetch.ts";
 
 export const LOGIN_ROUTER_ID = "login";
 

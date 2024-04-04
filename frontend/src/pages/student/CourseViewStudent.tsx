@@ -1,39 +1,37 @@
 import {JSX} from "react";
+import {TableRowOverviewProjects, TableRowPeople} from "../../types/tableRows.ts";
 import {Header} from "../../components/Header.tsx";
 import {Sidebar} from "../../components/Sidebar.tsx";
-import '../../assets/styles/students_components.css'
-import {SearchBar} from "../../components/SearchBar.tsx";
 import {Table} from "../../components/Table.tsx";
-import {TableRowCourses} from "../../types/tableRows.ts";
 
-export default function CoursesViewStudent(): JSX.Element {
-
-    const tableCoursesActive: TableRowCourses[] = [
+export default function CourseViewStudent(): JSX.Element {
+    const tableProjects: TableRowOverviewProjects[] = [
         {
-            course: {
-                name: "Automaten, berekenbaarheid & complexiteit",
-                id: 5896
+            project: {
+                name: "RSA security",
+                id: 1234
             },
-            shortestDeadline: "17:00 - 23/02/2024",
-            numberOfProjects: 1
+            status: null,
+            deadline: "23:59 - 27/02/2024"
         },
         {
-            course: {
-                name: "Computationele Biologie",
-                id: 5741
+            project: {
+                name: "Symmetric encryption",
+                id: 5897
             },
-            shortestDeadline: "19:00 - 25/02/2024",
-            numberOfProjects: 2
-        },
+            status: null,
+            deadline: "23:59 - 03/03/2024"
+        }
     ];
-    const tableCoursesArchived: TableRowCourses[] = [
+
+    const teachers: TableRowPeople[] = [
         {
-            course: {
-                name: "Logisch Programmeren",
-                id: 2569
-            },
-            shortestDeadline: null,
-            numberOfProjects: 1,
+            name: "Maarten Vermeiren",
+            email: "maarten.vermeiren@ugent.be"
+        },
+        {
+            name: "Anke De Groot",
+            email: "anke.degroot@ugent.be"
         }
     ];
 
@@ -48,13 +46,14 @@ export default function CoursesViewStudent(): JSX.Element {
                 </div>
                 <div className={"student-main is-flex is-justify-content-center"}>
                     <div className={"table-page is-flex is-flex-direction-column"}>
-                        <SearchBar placeholder={"zoek een vak..."}/>
-                        <Table title={"actief"} data={tableCoursesActive} ignoreKeys={[]} home={"student"}/>
                         <div className={"my-5"}/>
-                        <Table title={"gearchiveerd"} data={tableCoursesArchived} ignoreKeys={["shortestDeadline"]} home={"student"}/>
+                        <Table title={"lesgevers"} data={teachers} ignoreKeys={[]} home={"student"}/>
+                        <div className={"my-5"}/>
+                        <Table title={"projecten"} data={tableProjects} ignoreKeys={["status"]} home={"student"}/>
                     </div>
                 </div>
             </div>
         </>
+
     )
 }
