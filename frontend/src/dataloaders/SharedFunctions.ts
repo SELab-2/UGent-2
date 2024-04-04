@@ -1,4 +1,4 @@
-import {Project, Subject} from "../utils/ApiInterfaces.ts";
+import {CompleteProject, Group, Project, Subject, Submission} from "../utils/ApiInterfaces.ts";
 import apiFetch from "../utils/ApiFetch.ts";
 
 export enum teacherStudentRole {
@@ -6,16 +6,23 @@ export enum teacherStudentRole {
     TEACHER = "teacher"
 }
 
-export async function projectsLoader(role: teacherStudentRole): Promise<Project[]> {
+export async function projectsLoader(role: teacherStudentRole): Promise<CompleteProject[]> {
     const {subjects, projects} = await getAllProjectsAndSubjects(role);
     // TODO: add submission data there seems to no api available just yet.
-    for (let i = 0; i < projects.length; i++) {
-        const subject: Subject | undefined = subjects.find(subject => subject.id === projects[i].subject_id);
-        if (subject !== undefined) {
-            projects[i].subject_name = subject.name;
+    const submissions: Submission[] = await Promise.all(projects.map(project => {
+       return getSubmissionforProject(project.project_id);
+    }));
+    return projects.map((project, index) => {
+        const subject = subjects.find(subject => subject.subject_id === project.subject_id);
+        if (subject === undefined) {
+            throw Error("there should always be a subject for a project");
         }
-    }
-    return projects;
+        return {
+            ...project,
+            ...subject,
+            ...submissions[index]
+        }
+    });
 }
 
 export interface projectsAndSubjects {
@@ -27,4 +34,9 @@ export async function getAllProjectsAndSubjects(role: teacherStudentRole): Promi
     const projects: Project[] = (await apiFetch(`/${role}/projects`)) as Project[];
     const subjects: Subject[] = (await apiFetch(`/${role}/subjects`)) as Subject[];
     return {projects, subjects}
+}
+
+export async function getSubmissionforProject(project_id: number): Promise<Submission> {
+    const group: Group = (await apiFetch(`/projects/${project_id}/group`)) as Group;
+    return (await apiFetch(`/groups/${group.group_id}/submission`)) as Submission;
 }
