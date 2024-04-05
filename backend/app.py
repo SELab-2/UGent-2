@@ -1,7 +1,8 @@
 import pathlib
 
 import uvicorn
-from fastapi import FastAPI
+from fastapi import Depends, FastAPI
+from fastapi.security import APIKeyHeader
 from starlette import status
 from starlette.requests import Request
 from starlette.responses import JSONResponse
@@ -29,7 +30,11 @@ from routes.teacher import teacher_router
 from routes.user import users_router
 
 pathlib.Path.mkdir(pathlib.Path("submissions"), exist_ok=True)
-app = FastAPI(docs_url="/api/docs", openapi_tags=tags_metadata)
+app = FastAPI(
+    docs_url="/api/docs",
+    openapi_tags=tags_metadata,
+    dependencies=[Depends(APIKeyHeader(name="cas", auto_error=False))],  # To authenticate via Swagger UI
+)
 
 # Koppel routes uit andere modules.
 app.include_router(login_router, prefix="/api")
