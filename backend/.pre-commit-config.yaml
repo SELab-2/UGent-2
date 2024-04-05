@@ -15,6 +15,6 @@ repos:
         always_run: true
       - id: eslint-and-tsc
         name: eslint and tsc linting checks
-        entry: pwd
+        entry: ./frontend-lint-check.sh
         language: system
         always_run: true
