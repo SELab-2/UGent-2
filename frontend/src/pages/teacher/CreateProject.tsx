@@ -1,11 +1,11 @@
 import {JSX} from "react";
-import {ProjectTeacher} from "../../types/project.ts";
 import {ProjectTeacherComponent} from "../../components/ProjectTeacherComponent.tsx";
 import {Header} from "../../components/Header.tsx";
 import {Sidebar} from "../../components/Sidebar.tsx";
+import {ProjectTeacher} from "../../types/project.ts";
 
 export function CreateProject(): JSX.Element {
-    const emptyProjectTeacher: ProjectTeacherComponent = {
+    const emptyProjectTeacher: ProjectTeacher = {
         courseName: "",
         deadline: new Date(Date.now()),
         description: "",

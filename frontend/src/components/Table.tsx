@@ -4,17 +4,20 @@ import {Link} from "react-router-dom";
 import {TableRow} from "../types/tableRows.ts";
 
 const firstFieldWidth: number = 40;
-const otherFieldsWidth = (keysLength: number) => 1 / (keysLength - 1) * 100 - firstFieldWidth / (keysLength - 1);
+
+function otherFieldsWidth(keysLength: number): number {
+    return 1 / (keysLength - 1) * 100 - firstFieldWidth / (keysLength - 1);
+}
 
 function TableDataElement<T extends TableRow>(props: {home: string, row: T, colIndex: number, keys: string[], index: number}): JSX.Element {
     const widthElement = props.colIndex == 0 ? firstFieldWidth : otherFieldsWidth(props.keys.length)
-    const values: any[] = Object.values(props.row)
+    const values = Object.values(props.row)
 
     return (
-        <td style={{width: `${widthElement}%`, textAlign: props.colIndex == 0 ? "start" : "center"}} key={props.colIndex}>
-            { typeof values[props.index] === "object" ? (
-                <Link to={`/${props.home}/${Object.keys(props.row)[props.index]}/${values[props.index]["id"]}`}>
-                    <a>{values[props.index]["name"]}</a>
+        <td style={{width: `${widthElement}%`, textAlign: props.colIndex == 0 ? "start" : "center"}}>
+            { typeof values[props.index] === "object" && "id" in values[props.index] ? (
+                <Link to={`/${props.home}/${Object.keys(props.row)[props.index]}/${(values[props.index] as {name: string, id: number}).id}`}>
+                    <a>{(values[props.index] as {name: string, id: number}).name}</a>
                 </Link>
             ) : (
                 <>{values[props.index]}</>
@@ -51,9 +54,9 @@ export function Table<T extends TableRow>(props: { title: string, data: T[], ign
                     <tr key={rowIndex}>
                         {keys.map((field, colIndex) => (
                             !props.ignoreKeys.some(item => field === item) ?
-                                <TableDataElement home={props.home} row={row} colIndex={colIndex} keys={keys} index={keys.indexOf(field)}/>
+                                <TableDataElement key={colIndex} home={props.home} row={row} colIndex={colIndex} keys={keys} index={keys.indexOf(field)}/>
                                 :
-                                <td style={{width: `${otherFieldsWidth}%`}} key={colIndex}></td>
+                                <td style={{width: `${otherFieldsWidth(keys.length)}%`}} key={colIndex}></td>
                         ))}
                     </tr>
                 ))}
