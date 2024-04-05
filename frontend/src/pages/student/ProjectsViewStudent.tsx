@@ -2,10 +2,15 @@ import {JSX} from "react";
 import {Header} from "../../components/Header.tsx";
 import {Sidebar} from "../../components/Sidebar.tsx";
 import {SearchBar} from "../../components/SearchBar.tsx";
+<<<<<<< HEAD
 import {Table, TableRowProjects} from "../../components/Table.tsx";
 import {useRouteLoaderData} from "react-router-dom";
 import {PROJECTS_STUDENT_ROUTER_ID} from "../../dataloaders/ProjectsStudentLoader.ts";
 import {studentLoaderObject} from "../../dataloaders/StudentLoader.ts";
+=======
+import {Table} from "../../components/Table.tsx";
+import {TableRowProjects} from "../../types/tableRows.ts";
+>>>>>>> 685d6cb (feat: last pages added)
 
 export default function ProjectsViewStudent(): JSX.Element {
 
@@ -14,15 +19,27 @@ export default function ProjectsViewStudent(): JSX.Element {
 
     const tableProjectsActive: TableRowProjects[] = [
         {
-            name: "Markov Decision Diagram",
-            course: "Automaten, berekenbaarheid & complexiteit",
+            project: {
+                name: "Markov Decision Diagram",
+                id: 1234
+            },
+            course: {
+                name: "Automaten, berekenbaarheid & complexiteit",
+                id: 9876
+            },
             numberOfSubmissions: null,
             deadline: "17:00 - 23/02/2024",
             status: "FAILED"
         },
         {
-            name: "HPC",
-            course: "Computationele Biologie",
+            project: {
+                name: "HPC",
+                id: 4321
+            },
+            course: {
+                name: "Computationele Biologie",
+                id: 6789
+            },
             numberOfSubmissions: null,
             deadline: "19:00 - 25/02/2024",
             status: "SUCCES"
@@ -31,8 +48,14 @@ export default function ProjectsViewStudent(): JSX.Element {
 
     const tableProjectsArchived: TableRowProjects[] = [
         {
-            name: "HPC",
-            course: "Computationele Biologie",
+            project: {
+                name: "HPC",
+                id: 5478
+            },
+            course: {
+                name: "Computationele Biologie",
+                id: 6789
+            },
             numberOfSubmissions: null,
             deadline: null,
             status: "SUCCES"
@@ -51,10 +74,14 @@ export default function ProjectsViewStudent(): JSX.Element {
                 <div className={"student-main is-flex is-justify-content-center"}>
                     <div className={"table-page is-flex is-flex-direction-column"}>
                         <SearchBar placeholder={"zoek een project..."}/>
-                        <Table title={"actief"} data={tableProjectsActive} ignoreKeys={["numberOfSubmissions"]}/>
+                        <Table title={"actief"} data={tableProjectsActive} ignoreKeys={["numberOfSubmissions"]} home={"student"}/>
                         <div className={"my-5"}/>
+<<<<<<< HEAD
                         <Table title={"gearchiveerd"} data={tableProjectsArchived}
                                ignoreKeys={["numberOfSubmissions", "deadline"]}/>
+=======
+                        <Table title={"gearchiveerd"} data={tableProjectsArchived} ignoreKeys={["numberOfSubmissions", "deadline"]} home={"student"}/>
+>>>>>>> 685d6cb (feat: last pages added)
                     </div>
                 </div>
             </div>

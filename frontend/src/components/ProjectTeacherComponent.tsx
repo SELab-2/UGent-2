@@ -7,9 +7,7 @@ import {FaUpload} from "react-icons/fa";
 import {ProjectTeacher, Value} from "../types/project.ts";
 import "../assets/styles/teacher_components.css"
 
-export function ViewProjectTeacherComponent(props: {
-    project: ProjectTeacher
-}): JSX.Element {
+export function ProjectTeacherComponent(props: {project: ProjectTeacher }): JSX.Element {
 
     const [projectName, setProjectName] = useState<string>(props.project.projectName)
     const [courseName, setCourseName] = useState<string>(props.project.courseName)

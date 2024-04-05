@@ -1,11 +1,18 @@
 import {JSX} from "react";
-import {Table, TableRowCourses} from "../../components/Table.tsx";
+import {Table} from "../../components/Table.tsx";
 import {Header} from "../../components/Header.tsx";
 import {Sidebar} from "../../components/Sidebar.tsx";
 import {SearchBar} from "../../components/SearchBar.tsx";
 import {RegularATag} from "../../components/RegularATag.tsx";
+<<<<<<< HEAD
 import {COURSES_TEACHER_ROUTER_ID, coursesTeacherLoaderObject} from "../../dataloaders/CoursesTeacherLoader.ts";
 import {useRouteLoaderData} from "react-router-dom";
+=======
+import {TableRowCourses} from "../../types/tableRows.ts";
+
+// import {useRouteLoaderData} from "react-router-dom";
+// import {SUBJECT_TEACHER_ROUTER_ID, subjectsTeacherLoaderObject} from "../../dataloaders/SubjectsTeacherLoader.ts";
+>>>>>>> 685d6cb (feat: last pages added)
 
 
 export default function CoursesViewTeacher(): JSX.Element {
@@ -14,19 +21,28 @@ export default function CoursesViewTeacher(): JSX.Element {
 
     const tableCoursesActive: TableRowCourses[] = [
         {
-            name: "Information Security",
+            course: {
+                name: "Information Security",
+                id: 5241
+            },
             shortestDeadline: "23:59 - 05/03/2024",
             numberOfProjects: 2
         },
         {
-            name: "Rechtsgeschiedenis",
+            course: {
+                name: "Rechtsgeschiedenis",
+                id: 5897
+            },
             shortestDeadline: "23:59 - 21/03/2024",
             numberOfProjects: 2
         },
     ];
     const tableCoursesArchived: TableRowCourses[] = [
         {
-            name: "Moderne talen",
+            course: {
+                name: "Moderne talen",
+                id: 5896
+            },
             shortestDeadline: null,
             numberOfProjects: null,
         }
@@ -47,10 +63,10 @@ export default function CoursesViewTeacher(): JSX.Element {
                             <SearchBar placeholder={"zoek een vak..."}/>
                             <RegularATag link={"teacher/courses/create"} text={"nieuw vak"} add={true}/>
                         </div>
-                        <Table title={"actief"} data={tableCoursesActive} ignoreKeys={[]}/>
+                        <Table title={"actief"} data={tableCoursesActive} ignoreKeys={[]} home={"teacher"}/>
                         <div className={"my-5"}/>
                         <Table title={"gearchiveerd"} data={tableCoursesArchived}
-                               ignoreKeys={["shortestDeadline", "numberOfProjects"]}/>
+                               ignoreKeys={["shortestDeadline", "numberOfProjects"]} home={"teacher"}/>
                     </div>
                 </div>
             </div>
