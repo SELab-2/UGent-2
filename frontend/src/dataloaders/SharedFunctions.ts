@@ -8,9 +8,11 @@ export enum teacherStudentRole {
 
 export async function projectsLoader(role: teacherStudentRole): Promise<CompleteProject[]> {
     const {subjects, projects} = await getAllProjectsAndSubjects(role);
-    // TODO: add submission data there seems to no api available just yet.
+    if (! Array.isArray(projects) || ! Array.isArray(subjects)) {
+        throw Error("Problem loading projects or courses.");
+    }
     const submissions: Submission[] = await Promise.all(projects.map(project => {
-       return getSubmissionforProject(project.project_id);
+       return getSubmissionForProject(project.project_id);
     }));
     return projects.map((project, index) => {
         const subject = subjects.find(subject => subject.subject_id === project.subject_id);
@@ -36,7 +38,7 @@ export async function getAllProjectsAndSubjects(role: teacherStudentRole): Promi
     return {projects, subjects}
 }
 
-export async function getSubmissionforProject(project_id: number): Promise<Submission> {
+export async function getSubmissionForProject(project_id: number): Promise<Submission> {
     const group: Group = (await apiFetch(`/projects/${project_id}/group`)) as Group;
     return (await apiFetch(`/groups/${group.group_id}/submission`)) as Submission;
 }

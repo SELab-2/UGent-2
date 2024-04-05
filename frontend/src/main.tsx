@@ -24,6 +24,7 @@ import ProjectsViewTeacher from "./pages/teacher/ProjectsViewTeacher.tsx";
 import CoursesViewTeacher from "./pages/teacher/CoursesViewTeacher.tsx";
 import {CreateProject} from "./pages/teacher/CreateProject.tsx";
 import CreateCourse from "./pages/teacher/CreateCourse.tsx";
+import projectsTeacherLoader, {PROJECTS_TEACHER_ROUTER_ID} from "./dataloaders/projectsTeacherLoader.ts";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -50,7 +51,7 @@ const router = createBrowserRouter(
 
             <Route element={<RequireAuth allowedRoles={['STUDENT', 'TEACHER']}/>}>
                 <Route id={TEACHER_ROUTER_ID} path={"/teacher"} element={<HomeTeacher/>} loader={teacherLoader}/>
-                <Route path={"/teacher/projects"} element={<ProjectsViewTeacher/>}/>
+                <Route id={PROJECTS_TEACHER_ROUTER_ID} path={"/teacher/projects"} element={<ProjectsViewTeacher/>} loader={projectsTeacherLoader}/>
                 <Route path={"/teacher/projects/create"} element={<CreateProject/>}/>
                 <Route path={"/teacher/courses"} element={<CoursesViewTeacher/>} /*loader={subjectsTeacherLoader} id={SUBJECT_TEACHER_ROUTER_ID}*//>
                 <Route path={"/teacher/courses/create"} element={<CreateCourse/>}/>
