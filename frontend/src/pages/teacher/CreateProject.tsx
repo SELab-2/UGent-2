@@ -1,11 +1,11 @@
 import {JSX} from "react";
 import {ProjectTeacher} from "../../types/project.ts";
-import {ViewProjectTeacherComponent} from "../../components/ViewProjectTeacherComponent.tsx";
+import {ProjectTeacherComponent} from "../../components/ProjectTeacherComponent.tsx";
 import {Header} from "../../components/Header.tsx";
 import {Sidebar} from "../../components/Sidebar.tsx";
 
 export function CreateProject(): JSX.Element {
-    const emptyProjectTeacher: ProjectTeacher = {
+    const emptyProjectTeacher: ProjectTeacherComponent = {
         courseName: "",
         deadline: new Date(Date.now()),
         description: "",
@@ -27,7 +27,7 @@ export function CreateProject(): JSX.Element {
                     <Sidebar home={"teacher"}/>
                 </div>
                 <div className={"student-main my-5"}>
-                    <ViewProjectTeacherComponent project={emptyProjectTeacher}/>
+                    <ProjectTeacherComponent project={emptyProjectTeacher}/>
                 </div>
             </div>
         </>

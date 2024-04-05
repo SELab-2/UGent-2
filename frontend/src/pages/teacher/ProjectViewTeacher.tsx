@@ -1,11 +1,10 @@
 import {Header} from "../../components/Header.tsx";
 import {Sidebar} from "../../components/Sidebar.tsx";
-import {ViewProjectTeacherComponent} from "../../components/ViewProjectTeacherComponent.tsx";
+import {ProjectTeacherComponent} from "../../components/ProjectTeacherComponent.tsx";
 import {ProjectTeacher} from "../../types/project.ts";
 import Statistics from "../../components/Statistics.tsx";
 
 export default function ProjectViewTeacher() {
-
 
     const project: ProjectTeacher = {
         projectName: "RSA security",
@@ -19,7 +18,6 @@ export default function ProjectViewTeacher() {
         groupProject: true,
     }
 
-
     return (
         <>
             <div className={"main-header"}>
@@ -31,7 +29,7 @@ export default function ProjectViewTeacher() {
                 </div>
                 <div className={"student-main mt-6"}>
                     <Statistics/>
-                    <ViewProjectTeacherComponent project={project}/>
+                    <ProjectTeacherComponent project={project}/>
                 </div>
             </div>
         </>

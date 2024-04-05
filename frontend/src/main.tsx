@@ -24,6 +24,10 @@ import ProjectsViewTeacher from "./pages/teacher/ProjectsViewTeacher.tsx";
 import CoursesViewTeacher from "./pages/teacher/CoursesViewTeacher.tsx";
 import {CreateProject} from "./pages/teacher/CreateProject.tsx";
 import CreateCourse from "./pages/teacher/CreateCourse.tsx";
+import ProjectViewStudent from "./pages/student/ProjectViewStudent.tsx";
+import ProjectViewTeacher from "./pages/teacher/ProjectViewTeacher.tsx";
+import CourseViewStudent from "./pages/student/CourseViewStudent.tsx";
+import CourseViewTeacher from "./pages/teacher/CourseViewTeacher.tsx";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -45,14 +49,18 @@ const router = createBrowserRouter(
             <Route element={<RequireAuth allowedRoles={['STUDENT']}/>}>
                 <Route id={STUDENT_ROUTER_ID} path={"/student"} element={<HomeStudent/>} loader={studentLoader}/>
                 <Route path={"/student/projects"} element={<ProjectsViewStudent/>}/>
+                <Route path={"/student/project/:id"} element={<ProjectViewStudent/>}/>
                 <Route path={"/student/courses"} element={<CoursesViewStudent/>}/>
+                <Route path={"/student/course/:id"} element={<CourseViewStudent/>}/>
             </Route>
 
             <Route element={<RequireAuth allowedRoles={['STUDENT', 'TEACHER']}/>}>
                 <Route id={TEACHER_ROUTER_ID} path={"/teacher"} element={<HomeTeacher/>} loader={teacherLoader}/>
                 <Route path={"/teacher/projects"} element={<ProjectsViewTeacher/>}/>
+                <Route path={"/teacher/project/:id"} element={<ProjectViewTeacher/>}/>
                 <Route path={"/teacher/projects/create"} element={<CreateProject/>}/>
                 <Route path={"/teacher/courses"} element={<CoursesViewTeacher/>} /*loader={subjectsTeacherLoader} id={SUBJECT_TEACHER_ROUTER_ID}*//>
+                <Route path={"/teacher/course/:id"} element={<CourseViewTeacher/>}/>
                 <Route path={"/teacher/courses/create"} element={<CreateCourse/>}/>
             </Route>
         </Route>

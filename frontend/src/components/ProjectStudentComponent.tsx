@@ -4,7 +4,7 @@ import {FaCheck, FaUpload} from "react-icons/fa";
 import {FaDownload} from "react-icons/fa6";
 import {ProjectStatus, ProjectStudent} from "../types/project.ts";
 
-export default function ViewProjectStudentComponent(props: { project: ProjectStudent }): JSX.Element {
+export default function ProjectStudentComponent(props: { project: ProjectStudent }): JSX.Element {
     return (
         <>
             <FieldWithLabel fieldLabel={"Naam"} fieldBody={props.project.projectName} arrow={true}/>
