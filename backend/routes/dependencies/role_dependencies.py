@@ -17,7 +17,6 @@ from routes.errors.authentication import (
     InvalidStudentCredentialsError,
     InvalidTeacherCredentialsError,
     NoAccessToDataError,
-    NoCasHeaderError,
 )
 
 
@@ -25,7 +24,7 @@ def get_authenticated_user(request: Request) -> int:
     token: str | None = request.headers.get("cas")
 
     if token is None:
-        raise NoCasHeaderError
+        raise InvalidAuthenticationError
 
     uid = verify_token(token)
     if uid is None:
