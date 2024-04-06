@@ -3,14 +3,14 @@ import {Header} from "../../components/Header.tsx";
 import {Sidebar} from "../../components/Sidebar.tsx";
 import {SearchBar} from "../../components/SearchBar.tsx";
 import {Table, TableRowProjects} from "../../components/Table.tsx";
-import {studentLoaderObject} from "../../dataloaders/StudentLoader.ts";
 import {useRouteLoaderData} from "react-router-dom";
 import {PROJECTS_STUDENT_ROUTER_ID} from "../../dataloaders/ProjectsStudentLoader.ts";
+import {studentLoaderObject} from "../../dataloaders/StudentLoader.ts";
 
 export default function ProjectsViewStudent(): JSX.Element {
 
     const data: studentLoaderObject = useRouteLoaderData(PROJECTS_STUDENT_ROUTER_ID) as studentLoaderObject
-    console.log(data)
+    console.log(data.projects)
 
     const tableProjectsActive: TableRowProjects[] = [
         {

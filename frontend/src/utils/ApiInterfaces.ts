@@ -1,19 +1,21 @@
 export interface Subject {
-    subject_id: number,
-    subject_name: string
+    id: number,
+    name: string
 }
 
 export interface Project {
-    project_id: number,
-    project_name: string,
-    project_deadline: string | Date,
-    project_archived: boolean,
-    project_description: string,
-    project_requirements: string,
-    project_visible: string,
-    project_max_students: number,
-    subject_id: number
+    id: number,
+    name: string,
+    deadline: string | Date,
+    archived: boolean,
+    description: string,
+    requirements: string,
+    visible: string,
+    max_students: number,
+    subject_id: number,
+    subject_name: string | undefined | null
 }
+
 
 export enum SUBMISSION_STATE {
     Pending = 1,
@@ -22,7 +24,7 @@ export enum SUBMISSION_STATE {
 }
 
 export interface Submission {
-    submission_id: number,
+    submission_id: number
     submission_date: string | Date,
     submission_group_id: number,
     submission_student_id: number,
@@ -36,7 +38,9 @@ export interface Group {
     project_id: number
 }
 
-export interface CompleteProject extends Project, Submission, Subject {}
+export interface CompleteProject extends Project, Subject {
+    submission_state: SUBMISSION_STATE,
+}
 
 export interface properSubject extends Subject {
     active_projects: number,

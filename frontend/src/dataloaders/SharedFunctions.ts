@@ -45,20 +45,36 @@ export async function projectsLoader(role: teacherStudentRole): Promise<Complete
     if (! Array.isArray(projects) || ! Array.isArray(subjects)) {
         throw Error("Problem loading projects or courses.");
     }
-    const submissions: Submission[] = await Promise.all(projects.map(project => {
-        return getSubmissionForProject(project.project_id);
-    }));
+
+    //TODO aanpassen, dit geeft gelijk alle groepen terug
+    const groupPromises: Promise<Group | undefined>[] = projects.map(async project => {
+        return (await apiFetch(`/projects/${project.id}/group`)) as Group;
+    });
+
+    const submissionPromises: Promise<Submission | undefined>[] = (await Promise.all(groupPromises)).map(async group => {
+        if (group) {
+            return (await apiFetch(`/groups/${group.id}/submission`)) as Submission;
+        }
+        return undefined;
+    });
+
+    const groups: Group[] = (await Promise.all(groupPromises)).filter(group => group !== null) as Group[];
+    const submissions: Submission[] = (await Promise.all(submissionPromises)) as Submission[];
+
     return projects.map((project, index) => {
+        const group = groups[index];
+        const submission = submissions[index];
         const subject = subjects.find(subject => subject.id === project.subject_id);
-        if (subject === undefined) {
-            throw Error("there should always be a subject for a project");
+        if (!subject) {
+            throw Error("Subject not found for project.");
         }
         return {
             ...project,
-            ...subject,
-            ...submissions[index]
+            ...group,
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+            submission_state: submission?.state
         }
-    });
+    }).filter(project => project.submission_state !== undefined); // filter alles eruit waar je niets mee te maken hebt
 }
 
 export interface projectsAndSubjects {
@@ -70,9 +86,4 @@ export async function getAllProjectsAndSubjects(role: teacherStudentRole): Promi
     const projects: Project[] = (await apiFetch(`/${role}/projects`)) as Project[];
     const subjects: Subject[] = (await apiFetch(`/${role}/subjects`)) as Subject[];
     return {projects, subjects}
-}
-
-export async function getSubmissionForProject(project_id: number): Promise<Submission> {
-    const group: Group = (await apiFetch(`/projects/${project_id}/group`)) as Group;
-    return (await apiFetch(`/groups/${group.group_id}/submission`)) as Submission;
 }
