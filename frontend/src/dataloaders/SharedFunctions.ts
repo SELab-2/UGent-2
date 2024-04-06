@@ -1,5 +1,5 @@
-import {CompleteProject, Group, Project, properSubject, Subject, Submission} from "../utils/ApiInterfaces.ts";
-import apiFetch from "../utils/api/ApiFetch.ts";
+import {Project, properSubject, Subject} from "../utils/ApiInterfaces.ts";
+import apiFetch from "../utils/ApiFetch.ts";
 
 export enum teacherStudentRole {
     STUDENT = "student",
@@ -40,6 +40,7 @@ export async function coursesLoader(role: teacherStudentRole): Promise<properSub
 
 }
 
+<<<<<<< HEAD
 export async function projectsLoader(role: teacherStudentRole): Promise<CompleteProject[]> {
     const {subjects, projects} = await getAllProjectsAndSubjects(role);
     if (! Array.isArray(projects) || ! Array.isArray(subjects)) {
@@ -77,6 +78,8 @@ export async function projectsLoader(role: teacherStudentRole): Promise<Complete
     }).filter(project => project.submission_state !== undefined); // filter alles eruit waar je niets mee te maken hebt
 }
 
+=======
+>>>>>>> d865193 (move project dataloader for student to other file)
 export interface projectsAndSubjects {
     projects: Project[],
     subjects: Subject[]
