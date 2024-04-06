@@ -1,17 +1,17 @@
 # test_teacher.py
 import unittest
 
-from test_main import SessionLocal, test_engine
+from sqlmodel import SQLModel
+from test_main import get_db, test_engine
 
-from db.extensions import Base
 from domain.logic.teacher import create_teacher, get_all_teachers, get_teacher
 
 
 class TestTeacher(unittest.TestCase):
     def setUp(self) -> None:
-        Base.metadata.drop_all(test_engine)
-        Base.metadata.create_all(test_engine)
-        self.session = SessionLocal()
+        SQLModel.metadata.drop_all(test_engine)
+        SQLModel.metadata.create_all(test_engine)
+        self.session = next(get_db())
 
     def tearDown(self) -> None:
         self.session.rollback()
