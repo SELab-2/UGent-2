@@ -1,34 +1,30 @@
-from sqlalchemy.orm import Session
+from sqlmodel import Session
 
 from db.errors.database_errors import ActionAlreadyPerformedError
 from db.models.models import Student, Subject, Teacher
 from domain.logic.basic_operations import get, get_all
 from domain.logic.student import is_user_student
 from domain.logic.teacher import is_user_teacher
-from domain.models.StudentDataclass import StudentDataclass
-from domain.models.SubjectDataclass import SubjectDataclass
-from domain.models.TeacherDataclass import TeacherDataclass
 
 
-def create_subject(session: Session, name: str) -> SubjectDataclass:
+def create_subject(session: Session, name: str) -> Subject:
     new_subject = Subject(name=name)
     session.add(new_subject)
     session.commit()
-    return new_subject.to_domain_model()
+    return new_subject
 
 
-def get_subject(session: Session, subject_id: int) -> SubjectDataclass:
-    return get(session, Subject, subject_id).to_domain_model()
+def get_subject(session: Session, subject_id: int) -> Subject:
+    return get(session, Subject, subject_id)
 
 
-def get_all_subjects(session: Session) -> list[SubjectDataclass]:
-    return [subject.to_domain_model() for subject in get_all(session, Subject)]
+def get_all_subjects(session: Session) -> list[Subject]:
+    return get_all(session, Subject)
 
 
-def get_subjects_of_teacher(session: Session, teacher_id: int) -> list[SubjectDataclass]:
+def get_subjects_of_teacher(session: Session, teacher_id: int) -> list[Subject]:
     teacher: Teacher = get(session, Teacher, ident=teacher_id)
-    subjects: list[Subject] = teacher.subjects
-    return [vak.to_domain_model() for vak in subjects]
+    return teacher.subjects
 
 
 def add_student_to_subject(session: Session, student_id: int, subject_id: int) -> None:
@@ -55,10 +51,9 @@ def add_teacher_to_subject(session: Session, teacher_id: int, subject_id: int) -
     session.commit()
 
 
-def get_subjects_of_student(session: Session, student_id: int) -> list[SubjectDataclass]:
+def get_subjects_of_student(session: Session, student_id: int) -> list[Subject]:
     student: Student = get(session, Student, ident=student_id)
-    subjects: list[Subject] = student.subjects
-    return [vak.to_domain_model() for vak in subjects]
+    return student.subjects
 
 
 def is_user_authorized_for_subject(subject_id: int, session: Session, uid: int) -> bool:
@@ -72,13 +67,11 @@ def is_user_authorized_for_subject(subject_id: int, session: Session, uid: int) 
     return False
 
 
-def get_teachers_of_subject(session: Session, subject_id: int) -> list[TeacherDataclass]:
+def get_teachers_of_subject(session: Session, subject_id: int) -> list[Teacher]:
     subject: Subject = get(session, Subject, ident=subject_id)
-    teachers = subject.teachers
-    return [teacher.to_domain_model() for teacher in teachers]
+    return subject.teachers
 
 
-def get_students_of_subject(session: Session, subject_id: int) -> list[StudentDataclass]:
+def get_students_of_subject(session: Session, subject_id: int) -> list[Student]:
     subject: Subject = get(session, Subject, ident=subject_id)
-    students = subject.students
-    return [student.to_domain_model() for student in students]
+    return subject.students

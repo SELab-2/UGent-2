@@ -1,13 +1,11 @@
-from sqlalchemy.orm import Session
+from sqlmodel import Session
 
 from db.errors.database_errors import ActionAlreadyPerformedError, NoSuchRelationError
 from db.models.models import Group, Project, Student
 from domain.logic.basic_operations import get, get_all
-from domain.models.GroupDataclass import GroupDataclass
-from domain.models.StudentDataclass import StudentDataclass
 
 
-def create_group(session: Session, project_id: int) -> GroupDataclass:
+def create_group(session: Session, project_id: int) -> Group:
     """
     Create an empty group for a certain project.
     """
@@ -18,27 +16,25 @@ def create_group(session: Session, project_id: int) -> GroupDataclass:
     session.add(new_group)
     session.commit()
 
-    return new_group.to_domain_model()
+    return new_group
 
 
-def get_group(session: Session, group_id: int) -> GroupDataclass:
-    return get(session, Group, group_id).to_domain_model()
+def get_group(session: Session, group_id: int) -> Group:
+    return get(session, Group, group_id)
 
 
-def get_all_groups(session: Session) -> list[GroupDataclass]:
-    return [group.to_domain_model() for group in get_all(session, Group)]
+def get_all_groups(session: Session) -> list[Group]:
+    return get_all(session, Group)
 
 
-def get_groups_of_project(session: Session, project_id: int) -> list[GroupDataclass]:
+def get_groups_of_project(session: Session, project_id: int) -> list[Group]:
     project: Project = get(session, Project, project_id)
-    groups: list[Group] = project.groups
-    return [group.to_domain_model() for group in groups]
+    return project.groups
 
 
-def get_groups_of_student(session: Session, student_id: int) -> list[GroupDataclass]:
+def get_groups_of_student(session: Session, student_id: int) -> list[Group]:
     student: Student = get(session, Student, ident=student_id)
-    groups: list[Group] = student.groups
-    return [group.to_domain_model() for group in groups]
+    return student.groups
 
 
 def add_student_to_group(session: Session, student_id: int, group_id: int) -> None:
@@ -68,16 +64,15 @@ def remove_student_from_group(session: Session, student_id: int, group_id: int) 
     session.commit()
 
 
-def get_students_of_group(session: Session, group_id: int) -> list[StudentDataclass]:
+def get_students_of_group(session: Session, group_id: int) -> list[Student]:
     group: Group = get(session, Group, ident=group_id)
-    students: list[Student] = group.students
-    return [student.to_domain_model() for student in students]
+    return group.students
 
 
-def get_group_for_student_and_project(session: Session, student_id: int, project_id: int) -> GroupDataclass | None:
+def get_group_for_student_and_project(session: Session, student_id: int, project_id: int) -> Group | None:
     student: Student = get(session, Student, ident=student_id)
     project: Project = get(session, Project, ident=project_id)
     for group in project.groups:
         if student in group.students:
-            return group.to_domain_model()
+            return group
     return None
