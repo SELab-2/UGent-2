@@ -1,6 +1,7 @@
 from starlette.requests import Request
 
 from controllers.auth.token_controller import verify_token
+from db.models.models import Admin, Student, Teacher
 from db.sessions import get_session
 from domain.logic.admin import get_admin, is_user_admin
 from domain.logic.group import get_group, get_students_of_group
@@ -8,9 +9,6 @@ from domain.logic.project import get_project, get_projects_of_student, get_proje
 from domain.logic.student import get_student, is_user_student
 from domain.logic.subject import get_subjects_of_student, get_subjects_of_teacher, is_user_authorized_for_subject
 from domain.logic.teacher import get_teacher, is_user_teacher
-from domain.models.AdminDataclass import AdminDataclass
-from domain.models.StudentDataclass import StudentDataclass
-from domain.models.TeacherDataclass import TeacherDataclass
 from routes.errors.authentication import (
     InvalidAdminCredentialsError,
     InvalidAuthenticationError,
@@ -32,7 +30,7 @@ def get_authenticated_user(request: Request) -> int:
     return uid
 
 
-def get_authenticated_admin(request: Request) -> AdminDataclass:
+def get_authenticated_admin(request: Request) -> Admin:
     session = next(get_session())
     uid = get_authenticated_user(request)
 
@@ -41,7 +39,7 @@ def get_authenticated_admin(request: Request) -> AdminDataclass:
     return get_admin(session, uid)
 
 
-def get_authenticated_teacher(request: Request) -> TeacherDataclass:
+def get_authenticated_teacher(request: Request) -> Teacher:
     session = next(get_session())
     uid = get_authenticated_user(request)
 
@@ -50,7 +48,7 @@ def get_authenticated_teacher(request: Request) -> TeacherDataclass:
     return get_teacher(session, uid)
 
 
-def get_authenticated_student(request: Request) -> StudentDataclass:
+def get_authenticated_student(request: Request) -> Student:
     session = next(get_session())
     uid = get_authenticated_user(request)
 
@@ -77,7 +75,7 @@ def ensure_user_authorized_for_project(request: Request, project_id: int) -> Non
         raise NoAccessToDataError
 
 
-def ensure_student_authorized_for_subject(request: Request, subject_id: int) -> StudentDataclass:
+def ensure_student_authorized_for_subject(request: Request, subject_id: int) -> Student:
     session = next(get_session())
     student = get_authenticated_student(request)
 
@@ -87,7 +85,7 @@ def ensure_student_authorized_for_subject(request: Request, subject_id: int) -> 
     return student
 
 
-def ensure_teacher_authorized_for_subject(request: Request, subject_id: int) -> TeacherDataclass:
+def ensure_teacher_authorized_for_subject(request: Request, subject_id: int) -> Teacher:
     session = next(get_session())
     teacher = get_authenticated_teacher(request)
 
@@ -97,7 +95,7 @@ def ensure_teacher_authorized_for_subject(request: Request, subject_id: int) -> 
     return teacher
 
 
-def ensure_student_authorized_for_project(request: Request, project_id: int) -> StudentDataclass:
+def ensure_student_authorized_for_project(request: Request, project_id: int) -> Student:
     session = next(get_session())
     student = get_authenticated_student(request)
 
@@ -107,7 +105,7 @@ def ensure_student_authorized_for_project(request: Request, project_id: int) -> 
     return student
 
 
-def ensure_teacher_authorized_for_project(request: Request, project_id: int) -> TeacherDataclass:
+def ensure_teacher_authorized_for_project(request: Request, project_id: int) -> Teacher:
     session = next(get_session())
     teacher = get_authenticated_teacher(request)
 
@@ -117,7 +115,7 @@ def ensure_teacher_authorized_for_project(request: Request, project_id: int) -> 
     return teacher
 
 
-def ensure_student_authorized_for_group(request: Request, group_id: int) -> StudentDataclass:
+def ensure_student_authorized_for_group(request: Request, group_id: int) -> Student:
     session = next(get_session())
     student = get_authenticated_student(request)
 
@@ -138,7 +136,7 @@ def ensure_user_authorized_for_group(request: Request, group_id: int) -> None:
         raise NoAccessToDataError
 
 
-def ensure_student_in_group(request: Request, group_id: int) -> StudentDataclass:
+def ensure_student_in_group(request: Request, group_id: int) -> Student:
     session = next(get_session())
     student = get_authenticated_student(request)
 
