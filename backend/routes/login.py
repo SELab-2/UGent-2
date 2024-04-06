@@ -3,8 +3,8 @@ from starlette.requests import Request
 
 from controllers.auth.authentication_controller import authenticate_user
 from controllers.auth.token_controller import create_token, verify_token
+from db.models.models import User
 from domain.models.APIUser import LoginResponse, ValidateResponse
-from domain.models.UserDataclass import UserDataclass
 from routes.errors.authentication import InvalidAuthenticationError
 from routes.tags.swagger_tags import Tags
 
@@ -35,7 +35,7 @@ def login(request: Request, ticket: str) -> LoginResponse:
         - Invalid Ticket: Response: with status_code 401 (unauthenticated) and an error message
     """
     session = request.state.session
-    user: UserDataclass | None = authenticate_user(session, ticket)
+    user: User | None = authenticate_user(session, ticket)
     if not user:
         raise InvalidAuthenticationError
     return LoginResponse(token=create_token(user))

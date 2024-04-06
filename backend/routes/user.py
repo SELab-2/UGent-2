@@ -6,7 +6,6 @@ from domain.logic.basic_operations import get, get_all
 from domain.logic.role_enum import Role
 from domain.logic.user import convert_user, get_user, modify_language, modify_user_roles
 from domain.models.APIUser import APIUser
-from domain.models.UserDataclass import UserDataclass
 from routes.dependencies.role_dependencies import get_authenticated_admin, get_authenticated_user
 from routes.tags.swagger_tags import Tags
 
@@ -34,7 +33,7 @@ def get_users(request: Request) -> list[APIUser]:
     session = request.state.session
     get_authenticated_admin(request)
 
-    users: list[UserDataclass] = [user.to_domain_model() for user in get_all(session, User)]
+    users: list[User] = [user.to_domain_model() for user in get_all(session, User)]
     return [convert_user(session, user) for user in users]
 
 
@@ -43,7 +42,7 @@ def admin_get_user(request: Request, uid: int) -> APIUser:
     session = request.state.session
     get_authenticated_admin(request)
 
-    user: UserDataclass = get(session, User, uid).to_domain_model()
+    user: User = get(session, User, uid).to_domain_model()
     return convert_user(session, user)
 
 
