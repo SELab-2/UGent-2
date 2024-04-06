@@ -4,7 +4,7 @@ from datetime import UTC, datetime, timedelta
 
 import jwt
 
-from domain.models.UserDataclass import UserDataclass
+from db.models.models import User
 
 # Zeker aanpassen in production
 jwt_secret = os.getenv("JWT_SECRET", "secret")
@@ -16,7 +16,7 @@ def verify_token(token: str) -> int | None:
         return payload.get("uid", None)
 
 
-def create_token(user: UserDataclass) -> str:
+def create_token(user: User) -> str:
     expire = datetime.now(UTC) + timedelta(days=1)
     to_encode: dict = {
         "uid": user.id,
