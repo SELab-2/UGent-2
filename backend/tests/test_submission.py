@@ -2,9 +2,9 @@
 import unittest
 from datetime import datetime
 
-from test_main import SessionLocal, test_engine
+from sqlmodel import SQLModel
+from test_main import get_db, test_engine
 
-from db.extensions import Base
 from domain.logic.group import create_group
 from domain.logic.project import create_project
 from domain.logic.student import create_student
@@ -21,9 +21,9 @@ from domain.models.SubmissionDataclass import SubmissionState
 
 class TestSubmission(unittest.TestCase):
     def setUp(self) -> None:
-        Base.metadata.drop_all(test_engine)
-        Base.metadata.create_all(test_engine)
-        self.session = SessionLocal()
+        SQLModel.metadata.drop_all(test_engine)
+        SQLModel.metadata.create_all(test_engine)
+        self.session = next(get_db())
 
     def tearDown(self) -> None:
         self.session.rollback()

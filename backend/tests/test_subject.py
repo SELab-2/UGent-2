@@ -1,9 +1,9 @@
 # test_subject.py
 import unittest
 
-from test_main import SessionLocal, test_engine
+from sqlmodel import SQLModel
+from test_main import get_db, test_engine
 
-from db.extensions import Base
 from domain.logic.student import create_student
 from domain.logic.subject import (
     add_student_to_subject,
@@ -19,9 +19,9 @@ from domain.logic.teacher import create_teacher
 
 class TestSubject(unittest.TestCase):
     def setUp(self) -> None:
-        Base.metadata.drop_all(test_engine)
-        Base.metadata.create_all(test_engine)
-        self.session = SessionLocal()
+        SQLModel.metadata.drop_all(test_engine)
+        SQLModel.metadata.create_all(test_engine)
+        self.session = next(get_db())
 
     def tearDown(self) -> None:
         self.session.rollback()
