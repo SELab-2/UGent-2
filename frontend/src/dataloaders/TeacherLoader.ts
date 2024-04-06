@@ -1,5 +1,5 @@
 import {CompleteProject} from "../utils/ApiInterfaces.ts";
-import {projectsLoader, teacherStudentRole} from "./SharedFunctions.ts";
+import {LoadProjectsForTeacher} from "./projectsTeacherLoader.ts";
 
 export interface teacherLoaderObject {
     projects: CompleteProject[]
@@ -8,7 +8,7 @@ export interface teacherLoaderObject {
 export const TEACHER_ROUTER_ID = "teacher";
 
 export default async function teacherLoader(): Promise<teacherLoaderObject> {
-    const projects: CompleteProject[] = (await projectsLoader(teacherStudentRole.TEACHER))
-        .filter(project => !project.project_archived && project.project_visible);
+    const projects: CompleteProject[] = (await LoadProjectsForTeacher())
+        .filter(project => !project.archived && project.visible);
     return {projects};
 }

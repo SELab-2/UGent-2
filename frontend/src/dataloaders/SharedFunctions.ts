@@ -36,8 +36,6 @@ export async function coursesLoader(role: teacherStudentRole): Promise<properSub
             name: subject.name
         }
     });
-
-
 }
 
 export interface projectsAndSubjects {
