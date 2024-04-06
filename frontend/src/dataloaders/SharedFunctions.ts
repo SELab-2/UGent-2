@@ -12,12 +12,28 @@ export async function coursesLoader(role: teacherStudentRole): Promise<properSub
         throw Error("Problem loading projects or courses.");
     }
     return subjects.map((subject) => {
-        const first_deadline = null; // TODO: add deadlines when needed api endpoints are added.
+        const subjectProjects = projects.filter(project => project.subject_id === subject.id);
+        if (subjectProjects.length === 0) {
+            return {
+                active_projects: 0,
+                first_deadline: null,
+                id: subject.id,
+                name: subject.name
+            };
+        }
+        const shortestDeadlineProject = subjectProjects.reduce((minProject, project) => {
+            if (project.deadline < minProject.deadline) {
+                return project;
+            } else {
+                return minProject;
+            }
+        });
+        const firstDeadline = shortestDeadlineProject.deadline;
         return {
-            active_projects: projects.filter(project => project.subject_id === subject.subject_id).length,
-            first_deadline: first_deadline,
-            subject_id: subject.subject_id,
-            subject_name: subject.subject_name
+            active_projects: subjectProjects.length,
+            first_deadline: firstDeadline,
+            id: subject.id,
+            name: subject.name
         }
     });
 
@@ -30,10 +46,10 @@ export async function projectsLoader(role: teacherStudentRole): Promise<Complete
         throw Error("Problem loading projects or courses.");
     }
     const submissions: Submission[] = await Promise.all(projects.map(project => {
-        return getSubmissionForProject(project.project_id);
+        return getSubmissionForProject(project.id);
     }));
     return projects.map((project, index) => {
-        const subject = subjects.find(subject => subject.subject_id === project.subject_id);
+        const subject = subjects.find(subject => subject.id === project.subject_id);
         if (subject === undefined) {
             throw Error("there should always be a subject for a project");
         }
