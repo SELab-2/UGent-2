@@ -4,12 +4,12 @@ from typing import TYPE_CHECKING
 
 import httpx
 from defusedxml.ElementTree import fromstring
-from sqlalchemy.orm import Session
+from sqlmodel import Session
 
+from db.models.models import User
 from domain.logic.student import create_student
 from domain.logic.teacher import create_teacher
 from domain.logic.user import get_user_with_email
-from domain.models.UserDataclass import UserDataclass
 
 if TYPE_CHECKING:
     from _elementtree import Element
@@ -17,7 +17,7 @@ if TYPE_CHECKING:
 cas_service = os.getenv("CAS_URL", "https://localhost:8080/login")
 
 
-def authenticate_user(session: Session, ticket: str) -> UserDataclass | None:
+def authenticate_user(session: Session, ticket: str) -> User | None:
     """
     This function will authenticate the user.
     If the use doesn't yet exist in the database, it will create an entry.
@@ -35,12 +35,12 @@ def authenticate_user(session: Session, ticket: str) -> UserDataclass | None:
     if user_dict is None:
         return None
 
-    user: UserDataclass | None = get_user_with_email(session, user_dict["email"])
+    user: User | None = get_user_with_email(session, user_dict["email"])
     if user is None:
         if user_dict["role"] == "student":
-            user = create_student(session, user_dict["name"], user_dict["email"])
+            user = create_student(session, user_dict["name"], user_dict["email"]).user
         elif user_dict["role"] == "teacher":
-            user = create_teacher(session, user_dict["name"], user_dict["email"])
+            user = create_teacher(session, user_dict["name"], user_dict["email"]).user
     return user
 
 
