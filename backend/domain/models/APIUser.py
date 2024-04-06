@@ -1,18 +1,4 @@
-from pydantic import BaseModel, EmailStr
-
-from domain.logic.role_enum import Role
-
-
-class APIUser(BaseModel):
-    """
-    Same as UserDataclass, but with the roles specified in a list.
-    """
-
-    id: int
-    name: str
-    language: str
-    email: EmailStr
-    roles: list[Role]
+from pydantic import BaseModel
 
 
 class LoginResponse(BaseModel):
