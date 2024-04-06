@@ -1,9 +1,28 @@
-import {CompleteProject, Group, Project, Subject, Submission} from "../utils/ApiInterfaces.ts";
+import {CompleteProject, Group, Project, properSubject, Subject, Submission} from "../utils/ApiInterfaces.ts";
 import apiFetch from "../utils/api/ApiFetch.ts";
 
 export enum teacherStudentRole {
     STUDENT = "student",
     TEACHER = "teacher"
+}
+
+export async function coursesLoader(role: teacherStudentRole): Promise<properSubject[]> {
+    const {subjects, projects} = await getAllProjectsAndSubjects(role);
+    if (!Array.isArray(projects) || !Array.isArray(subjects)) {
+        throw Error("Problem loading projects or courses.");
+    }
+    return subjects.map((subject) => {
+        const first_deadline = null; // TODO: add deadlines when needed api endpoints are added.
+        const project = projects.find(project => project.subject_id === subject.subject_id);
+        return {
+            active_projects: projects.filter(project => project.subject_id === subject.subject_id).length,
+            first_deadline: first_deadline,
+            ...project,
+            ...subject
+        }
+    });
+
+
 }
 
 export async function projectsLoader(role: teacherStudentRole): Promise<CompleteProject[]> {
