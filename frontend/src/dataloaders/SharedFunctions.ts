@@ -11,15 +11,13 @@ export async function coursesLoader(role: teacherStudentRole): Promise<properSub
     if (!Array.isArray(projects) || !Array.isArray(subjects)) {
         throw Error("Problem loading projects or courses.");
     }
-    return subjects.map((course) => {
-        const subject = subjects.find(subject => subject.subject_id === course.subject_id);
-        if (subject === undefined) {
-            throw Error("there should always be a subject for a course");
-        }
+    return subjects.map((subject) => {
+        const first_deadline = null; // TODO: add deadlines when needed api endpoints are added.
+        const project = projects.find(project => project.subject_id === subject.subject_id);
         return {
-            active_projects: projects.filter(project => project.subject_id === course.subject_id).length,
-            first_deadline: null, // TODO: add deadlines when needed api endpoints are added.
-            ...course,
+            active_projects: projects.filter(project => project.subject_id === subject.subject_id).length,
+            first_deadline: first_deadline,
+            ...project,
             ...subject
         }
     });
