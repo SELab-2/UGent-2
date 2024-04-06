@@ -10,7 +10,7 @@ import {useRouteLoaderData} from "react-router-dom";
 
 export default function CoursesViewTeacher(): JSX.Element {
     const data = useRouteLoaderData(COURSES_TEACHER_ROUTER_ID) as coursesTeacherLoaderObject;
-    console.log(data);
+    console.log(data.courses);
 
     const tableCoursesActive: TableRowCourses[] = [
         {
