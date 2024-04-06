@@ -1,5 +1,4 @@
-from sqlalchemy import select
-from sqlalchemy.orm import Session
+from sqlmodel import Session, select
 
 from db.models.models import Admin, Student, Teacher, User
 from domain.logic.admin import is_user_admin
@@ -8,12 +7,11 @@ from domain.logic.role_enum import Role
 from domain.logic.student import is_user_student
 from domain.logic.teacher import is_user_teacher
 from domain.models.APIUser import APIUser
-from domain.models.UserDataclass import UserDataclass
 
 
-def convert_user(session: Session, user: UserDataclass) -> APIUser:
+def convert_user(session: Session, user: User) -> APIUser:
     """
-    Given a UserDataclass, check what roles that user has and fill those in to convert it to an APIUser.
+    Given a User, check what roles that user has and fill those in to convert it to an APIUser.
     """
     api_user = APIUser(id=user.id, name=user.name, email=user.email, language=user.language, roles=[])
 
@@ -29,11 +27,11 @@ def convert_user(session: Session, user: UserDataclass) -> APIUser:
     return api_user
 
 
-def get_user(session: Session, user_id: int) -> UserDataclass:
+def get_user(session: Session, user_id: int) -> User:
     return get(session, User, user_id).to_domain_model()
 
 
-def get_user_with_email(session: Session, email: str) -> UserDataclass | None:
+def get_user_with_email(session: Session, email: str) -> User | None:
     stmt = select(User).where(User.email == email)
     result = session.execute(stmt)
     users = [r.to_domain_model() for r in result.scalars()]
@@ -47,7 +45,7 @@ def get_user_with_email(session: Session, email: str) -> UserDataclass | None:
     return None
 
 
-def get_all_users(session: Session) -> list[UserDataclass]:
+def get_all_users(session: Session) -> list[User]:
     return [user.to_domain_model() for user in get_all(session, User)]
 
 

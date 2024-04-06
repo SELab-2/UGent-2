@@ -1,10 +1,10 @@
 from datetime import datetime
 
-from sqlalchemy.orm import Session
+from sqlmodel import Session
 
 from db.models.models import Group, Student, Submission
 from domain.logic.basic_operations import get, get_all
-from domain.models.SubmissionDataclass import SubmissionDataclass, SubmissionState
+from domain.models.SubmissionDataclass import SubmissionState
 
 
 def create_submission(
@@ -15,7 +15,7 @@ def create_submission(
     state: SubmissionState,
     date_time: datetime,
     filename: str,
-) -> SubmissionDataclass:
+) -> Submission:
     """
     Create a submission for a certain project by a certain group.
     """
@@ -32,29 +32,27 @@ def create_submission(
     )
     session.add(new_submission)
     session.commit()
-    return new_submission.to_domain_model()
+    return new_submission
 
 
-def get_submission(session: Session, submission_id: int) -> SubmissionDataclass:
-    return get(session, Submission, submission_id).to_domain_model()
+def get_submission(session: Session, submission_id: int) -> Submission:
+    return get(session, Submission, submission_id)
 
 
-def get_all_submissions(session: Session) -> list[SubmissionDataclass]:
-    return [submission.to_domain_model() for submission in get_all(session, Submission)]
+def get_all_submissions(session: Session) -> list[Submission]:
+    return get_all(session, Submission)
 
 
-def get_submissions_of_student(session: Session, student_id: int) -> list[SubmissionDataclass]:
+def get_submissions_of_student(session: Session, student_id: int) -> list[Submission]:
     student: Student = get(session, Student, ident=student_id)
-    submissions: list[Submission] = student.submissions
-    return [submission.to_domain_model() for submission in submissions]
+    return student.submissions
 
 
-def get_submissions_of_group(session: Session, group_id: int) -> list[SubmissionDataclass]:
+def get_submissions_of_group(session: Session, group_id: int) -> list[Submission]:
     group: Group = get(session, Group, ident=group_id)
-    submissions: list[Submission] = group.submissions
-    return [submission.to_domain_model() for submission in submissions]
+    return group.submissions
 
 
-def get_last_submission(session: Session, group_id: int) -> SubmissionDataclass:
+def get_last_submission(session: Session, group_id: int) -> Submission:
     submissions = get_submissions_of_group(session, group_id)
     return max(submissions, key=lambda submission: submission.date_time)
