@@ -14,7 +14,7 @@ export function Header(props: { page_title: string, home: string }): JSX.Element
             <div className={"is-align-self-center"}><p>{props.page_title}</p></div>
             <button className={"button mx-2 is-transparent"}>
                 <div className={"icon-text"}>
-                    <p>{user?.name}</p>
+                    <p>{user?.user_name}</p>
                     <RiAccountPinBoxLine className={"icon"}/>
                 </div>
             </button>
