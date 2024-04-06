@@ -1,186 +1,169 @@
-from abc import abstractmethod
-from dataclasses import dataclass  # automatically add special methods as __init__() and __repr__()
 from datetime import datetime
-from typing import Generic, TypeVar
 
-from pydantic import BaseModel
-from sqlalchemy import Column, ForeignKey, Table
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlmodel import Field, Relationship, Session, SQLModel
 
-from db.extensions import Base
-from domain.models.AdminDataclass import AdminDataclass
-from domain.models.GroupDataclass import GroupDataclass
-from domain.models.ProjectDataclass import ProjectDataclass
-from domain.models.StudentDataclass import StudentDataclass
-from domain.models.SubjectDataclass import SubjectDataclass
-from domain.models.SubmissionDataclass import SubmissionDataclass, SubmissionState
-from domain.models.TeacherDataclass import TeacherDataclass
-from domain.models.UserDataclass import UserDataclass
-
-# Create a generic type variable bound to subclasses of BaseModel.
-D = TypeVar("D", bound=BaseModel)
+from db.extensions import engine
+from domain.models.SubmissionDataclass import SubmissionState
 
 
-@dataclass()
-class AbstractModel(Generic[D]):
-    """
-    This class is meant to be inherited by the python classes for the database tables.
-    It makes sure that every child implements the to_domain_model function
-    and receives Pydantic data validation.
-    """
+class User(SQLModel, table=True):
+    name: str
+    email: str
+    language: str = "EN"
+    id: int = Field(default=-1, primary_key=True)
 
-    @abstractmethod
-    def to_domain_model(self) -> D:
-        """
-        Change to an actual easy-to-use dataclass defined in [domain/models/*].
-        This prevents working with instances of SQLAlchemy's Base class.
-        """
+    admin: "Admin" = Relationship(back_populates="user")
+    teacher: "Teacher" = Relationship(back_populates="user")
+    student: "Student" = Relationship(back_populates="user")
 
 
-# See the EER diagram for a more visual representation.
+class Admin(SQLModel, table=True):
+    id: int = Field(default=-1, foreign_key="user.id", primary_key=True)
+    user: User = Relationship(back_populates="admin")
 
 
-@dataclass()
-class User(Base, AbstractModel):
-    __tablename__ = "users"
-    name: Mapped[str]
-    email: Mapped[str]
-    language: Mapped[str] = mapped_column(default="EN")
-    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-
-    def to_domain_model(self) -> UserDataclass:
-        return UserDataclass(id=self.id, name=self.name, language=self.language, email=self.email)
+class TeacherSubject(SQLModel, table=True):
+    teacher_id: int = Field(foreign_key="teacher.id", primary_key=True)
+    subject_id: int = Field(foreign_key="subject.id", primary_key=True)
 
 
-@dataclass()
-class Admin(Base, AbstractModel):
-    __tablename__ = "admins"
-    id: Mapped[int] = mapped_column(ForeignKey(User.id), primary_key=True)
-    user: Mapped[User] = relationship()
-
-    def to_domain_model(self) -> AdminDataclass:
-        return AdminDataclass(id=self.id, name=self.user.name, language=self.user.language, email=self.user.email)
+class StudentSubject(SQLModel, table=True):
+    student_id: int = Field(foreign_key="student.id", primary_key=True)
+    subject_id: int = Field(foreign_key="subject.id", primary_key=True)
 
 
-teachers_subjects = Table(
-    "teachers_subjects",
-    Base.metadata,
-    Column("teacher_id", ForeignKey("teachers.id"), primary_key=True),
-    Column("subject_id", ForeignKey("subjects.id"), primary_key=True),
-)
-students_subjects = Table(
-    "students_subjects",
-    Base.metadata,
-    Column("student_id", ForeignKey("students.id"), primary_key=True),
-    Column("subject_id", ForeignKey("subjects.id"), primary_key=True),
-)
-students_groups = Table(
-    "students_groups",
-    Base.metadata,
-    Column("student_id", ForeignKey("students.id"), primary_key=True),
-    Column("group_id", ForeignKey("groups.id"), primary_key=True),
-)
+class StudentGroup(SQLModel, table=True):
+    student_id: int = Field(foreign_key="student.id", primary_key=True)
+    group_id: int = Field(foreign_key="group.id", primary_key=True)
 
 
-@dataclass()
-class Teacher(Base, AbstractModel):
-    __tablename__ = "teachers"
-    id: Mapped[int] = mapped_column(ForeignKey(User.id), primary_key=True)
-    user: Mapped[User] = relationship()
-    subjects: Mapped[list["Subject"]] = relationship(secondary=teachers_subjects, back_populates="teachers")
-
-    def to_domain_model(self) -> TeacherDataclass:
-        return TeacherDataclass(id=self.id, name=self.user.name, language=self.user.language, email=self.user.email)
+class Teacher(SQLModel, table=True):
+    id: int = Field(default=-1, foreign_key="user.id", primary_key=True)
+    user: User = Relationship(back_populates="teacher")
+    subjects: list["Subject"] = Relationship(link_model=TeacherSubject, back_populates="teachers")
 
 
-@dataclass()
-class Student(Base, AbstractModel):
-    __tablename__ = "students"
-    id: Mapped[int] = mapped_column(ForeignKey(User.id), primary_key=True)
-    user: Mapped[User] = relationship()
-    subjects: Mapped[list["Subject"]] = relationship(secondary=students_subjects, back_populates="students")
-    groups: Mapped[list["Group"]] = relationship(secondary=students_groups, back_populates="students")
-    submissions: Mapped[list["Submission"]] = relationship(back_populates="student")
-
-    def to_domain_model(self) -> StudentDataclass:
-        return StudentDataclass(id=self.id, name=self.user.name, language=self.user.language, email=self.user.email)
+class Student(SQLModel, table=True):
+    id: int = Field(default=-1, foreign_key="user.id", primary_key=True)
+    user: User = Relationship(back_populates="student")
+    subjects: list["Subject"] = Relationship(link_model=StudentSubject, back_populates="students")
+    groups: list["Group"] = Relationship(link_model=StudentGroup, back_populates="students")
+    submissions: list["Submission"] = Relationship(back_populates="student")
 
 
-@dataclass()
-class Subject(Base, AbstractModel):
-    __tablename__ = "subjects"
-    name: Mapped[str]
-    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    teachers: Mapped[list[Teacher]] = relationship(secondary=teachers_subjects, back_populates="subjects")
-    students: Mapped[list[Student]] = relationship(secondary=students_subjects, back_populates="subjects")
-    projects: Mapped[list["Project"]] = relationship(back_populates="subject")
-
-    def to_domain_model(self) -> SubjectDataclass:
-        return SubjectDataclass(id=self.id, name=self.name)
+class Subject(SQLModel, table=True):
+    name: str
+    id: int = Field(default=-1, primary_key=True)
+    teachers: list[Teacher] = Relationship(link_model=TeacherSubject, back_populates="subjects")
+    students: list[Student] = Relationship(link_model=StudentSubject, back_populates="subjects")
+    projects: list["Project"] = Relationship(back_populates="subject")
 
 
-@dataclass()
-class Project(Base, AbstractModel):
-    __tablename__ = "projects"
-    name: Mapped[str]
-    deadline: Mapped[datetime]
-    archived: Mapped[bool]
-    description: Mapped[str]
-    requirements: Mapped[str]
-    visible: Mapped[bool]
-    max_students: Mapped[int]
-    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    subject_id: Mapped[int] = mapped_column(ForeignKey(Subject.id))
-    subject: Mapped[Subject] = relationship(back_populates="projects")
-    groups: Mapped[list["Group"]] = relationship(back_populates="project")
+class Project(SQLModel, table=True):
+    name: str
+    deadline: datetime
+    archived: bool
+    description: str
+    requirements: str
+    visible: bool
+    max_students: int
+    id: int = Field(default=-1, primary_key=True)
+    subject_id: int = Field(default=-1, foreign_key="subject.id")
+    subject: Subject = Relationship(back_populates="projects")
+    groups: list["Group"] = Relationship(back_populates="project")
 
-    def to_domain_model(self) -> ProjectDataclass:
-        return ProjectDataclass(
-            id=self.id,
-            name=self.name,
-            deadline=self.deadline,
-            archived=self.archived,
-            description=self.description,
-            requirements=self.requirements,
-            visible=self.visible,
-            max_students=self.max_students,
-            subject_id=self.subject_id,
+
+class Group(SQLModel, table=True):
+    id: int = Field(default=-1, primary_key=True)
+    project_id: int = Field(default=-1, foreign_key="project.id")
+    project: Project = Relationship(back_populates="groups")
+    students: list[Student] = Relationship(link_model=StudentGroup, back_populates="groups")
+    submissions: list["Submission"] = Relationship(back_populates="group")
+
+
+class Submission(SQLModel, table=True):
+    date_time: datetime
+    state: SubmissionState
+    message: str
+    filename: str
+    id: int = Field(default=-1, primary_key=True)
+    group_id: int = Field(default=-1, foreign_key="group.id")
+    group: Group = Relationship(back_populates="submissions")
+    student_id: int = Field(default=-1, foreign_key="student.id")
+    student: Student = Relationship(back_populates="submissions")
+
+
+if __name__ == "__main__":
+    # Initialize database engine; replace connection string as needed
+
+    # Create tables
+    SQLModel.metadata.drop_all(engine)
+    SQLModel.metadata.create_all(engine)
+
+    # Insert mock data
+    with Session(engine) as session:
+
+        user1 = User(name="John Doe", email="john@example.com")
+        user2 = User(name="Jane Doe", email="jane@example.com")
+
+        teacher1 = Teacher(user=user1)
+        student1 = Student(user=user2)
+
+        subject1 = Subject(name="Math")
+        subject2 = Subject(name="English")
+
+        project1 = Project(
+            name="Math Project",
+            deadline=datetime.now(),
+            archived=False,
+            description="Math project description",
+            requirements="Math project requirements",
+            visible=True,
+            max_students=2,
+            subject=subject1,
+        )
+        project2 = Project(
+            name="English Project",
+            deadline=datetime.now(),
+            archived=False,
+            description="English project description",
+            requirements="English project requirements",
+            visible=True,
+            max_students=2,
+            subject=subject2,
         )
 
+        group1 = Group(project=project1)
+        group2 = Group(project=project2)
 
-@dataclass()
-class Group(Base, AbstractModel):
-    __tablename__ = "groups"
-    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    project_id: Mapped[int] = mapped_column(ForeignKey(Project.id))
-    project: Mapped[Project] = relationship(back_populates="groups")
-    students: Mapped[list[Student]] = relationship(secondary=students_groups, back_populates="groups")
-    submissions: Mapped[list["Submission"]] = relationship(back_populates="group")
-
-    def to_domain_model(self) -> GroupDataclass:
-        return GroupDataclass(id=self.id, project_id=self.project_id)
-
-
-@dataclass()
-class Submission(Base, AbstractModel):
-    __tablename__ = "submissions"
-    date_time: Mapped[datetime]
-    state: Mapped[SubmissionState]
-    message: Mapped[str]
-    filename: Mapped[str]
-    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    group_id: Mapped[int] = mapped_column(ForeignKey(Group.id))
-    group: Mapped[Group] = relationship(back_populates="submissions")
-    student_id: Mapped[int] = mapped_column(ForeignKey(Student.id))
-    student: Mapped[Student] = relationship(back_populates="submissions")
-
-    def to_domain_model(self) -> SubmissionDataclass:
-        return SubmissionDataclass(
-            id=self.id,
-            date_time=self.date_time,
-            group_id=self.group_id,
-            student_id=self.student_id,
-            state=self.state,
-            message=self.message,
-            filename=self.filename,
+        submission1 = Submission(
+            date_time=datetime.now(),
+            state=SubmissionState.Pending,
+            message="Submission message",
+            filename="submission.txt",
+            group=group1,
+            student=student1,
         )
+        submission2 = Submission(
+            date_time=datetime.now(),
+            state=SubmissionState.Pending,
+            message="Submission message",
+            filename="submission.txt",
+            group=group2,
+            student=student1,
+        )
+
+        session.add(user1)
+        session.add(user2)
+        session.add(teacher1)
+        session.add(student1)
+        session.add(subject1)
+        session.add(subject2)
+        session.add(project1)
+        session.add(project2)
+        session.add(group1)
+        session.add(group2)
+        session.add(submission1)
+        session.add(submission2)
+
+        session.commit()
