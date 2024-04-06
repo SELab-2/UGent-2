@@ -13,12 +13,11 @@ export async function coursesLoader(role: teacherStudentRole): Promise<properSub
     }
     return subjects.map((subject) => {
         const first_deadline = null; // TODO: add deadlines when needed api endpoints are added.
-        const project = projects.find(project => project.subject_id === subject.subject_id);
         return {
             active_projects: projects.filter(project => project.subject_id === subject.subject_id).length,
             first_deadline: first_deadline,
-            ...project,
-            ...subject
+            subject_id: subject.subject_id,
+            subject_name: subject.subject_name
         }
     });
 

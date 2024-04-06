@@ -11,7 +11,7 @@ import HomeTeacher from "./pages/teacher/HomeTeacher.tsx";
 import studentLoader, {STUDENT_ROUTER_ID} from "./dataloaders/StudentLoader.ts";
 import Unauthorized from "./components/authentication/Unauthorized.tsx";
 import teacherLoader, {TEACHER_ROUTER_ID} from "./dataloaders/TeacherLoader.ts";
-// import subjectsTeacherLoader, {SUBJECT_TEACHER_ROUTER_ID} from "./dataloaders/SubjectsTeacherLoader.ts";
+// import coursesTeacherLoader, {SUBJECT_TEACHER_ROUTER_ID} from "./dataloaders/CoursesTeacherLoader.ts";
 import loginLoader, {LOGIN_ROUTER_ID} from "./dataloaders/LoginLoader.ts";
 import ErrorLogin from "./components/authentication/ErrorLogin.tsx";
 import ProjectsViewStudent from "./pages/student/ProjectsViewStudent.tsx";
@@ -27,6 +27,7 @@ import CreateCourse from "./pages/teacher/CreateCourse.tsx";
 import projectsTeacherLoader, {PROJECTS_TEACHER_ROUTER_ID} from "./dataloaders/projectsTeacherLoader.ts";
 import projectsStudentLoader, {PROJECTS_STUDENT_ROUTER_ID} from "./dataloaders/ProjectsStudentLoader.ts";
 import coursesStudentLoader, {COURSES_STUDENT_ROUTER_ID} from './dataloaders/CoursesStudentLoader.ts';
+import coursesTeacherLoader, {COURSES_TEACHER_ROUTER_ID} from "./dataloaders/CoursesTeacherLoader.ts";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -58,8 +59,8 @@ const router = createBrowserRouter(
                 <Route id={PROJECTS_TEACHER_ROUTER_ID} path={"/teacher/projects"} element={<ProjectsViewTeacher/>}
                        loader={projectsTeacherLoader}/>
                 <Route path={"/teacher/projects/create"} element={<CreateProject/>}/>
-                <Route path={"/teacher/courses"} element={
-                    <CoursesViewTeacher/>} /*loader={subjectsTeacherLoader} id={SUBJECT_TEACHER_ROUTER_ID}*//>
+                <Route id={COURSES_TEACHER_ROUTER_ID} path={"/teacher/courses"} element={
+                    <CoursesViewTeacher/>} loader={coursesTeacherLoader}/>
                 <Route path={"/teacher/courses/create"} element={<CreateCourse/>}/>
             </Route>
         </Route>
