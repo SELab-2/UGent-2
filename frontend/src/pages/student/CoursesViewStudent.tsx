@@ -10,7 +10,7 @@ import {COURSES_STUDENT_ROUTER_ID, coursesStudentLoaderObject} from "../../datal
 export default function CoursesViewStudent(): JSX.Element {
 
     const data: coursesStudentLoaderObject = useRouteLoaderData(COURSES_STUDENT_ROUTER_ID) as coursesStudentLoaderObject
-    console.log(data)
+    console.log(data.courses)
 
     const tableCoursesActive: TableRowCourses[] = [
         {
