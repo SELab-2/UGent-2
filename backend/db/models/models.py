@@ -3,6 +3,7 @@ from datetime import datetime
 from sqlmodel import Field, Relationship, Session, SQLModel
 
 from db.extensions import engine
+from domain.logic.role_enum import Role
 from domain.models.SubmissionDataclass import SubmissionState
 
 
@@ -15,6 +16,17 @@ class User(SQLModel, table=True):
     admin: "Admin" = Relationship(back_populates="user")
     teacher: "Teacher" = Relationship(back_populates="user")
     student: "Student" = Relationship(back_populates="user")
+
+    @property
+    def roles(self) -> list[Role]:
+        _roles = []
+        if self.admin:
+            _roles.append(Role.ADMIN)
+        if self.teacher:
+            _roles.append(Role.TEACHER)
+        if self.student:
+            _roles.append(Role.STUDENT)
+        return _roles
 
 
 class Admin(SQLModel, table=True):
