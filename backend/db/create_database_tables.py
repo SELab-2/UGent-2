@@ -1,8 +1,7 @@
-from sqlalchemy import Engine, MetaData, Table, inspect
+from sqlalchemy import Engine
 from sqlalchemy.orm import Session, sessionmaker
 from sqlalchemy_utils import create_database, database_exists
 
-import db.models.models
 from db.extensions import Base, engine
 
 
