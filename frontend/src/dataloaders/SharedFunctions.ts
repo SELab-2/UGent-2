@@ -1,4 +1,4 @@
-import {CompleteProject, Group, Project, Subject, Submission} from "../utils/ApiInterfaces.ts";
+import {CompleteProject, Group, Project, properSubject, Subject, Submission} from "../utils/ApiInterfaces.ts";
 import apiFetch from "../utils/ApiFetch.ts";
 
 export enum teacherStudentRole {
@@ -6,13 +6,34 @@ export enum teacherStudentRole {
     TEACHER = "teacher"
 }
 
+export async function coursesLoader(role: teacherStudentRole): Promise<properSubject[]> {
+    const {subjects, projects} = await getAllProjectsAndSubjects(role);
+    if (!Array.isArray(projects) || !Array.isArray(subjects)) {
+        throw Error("Problem loading projects or courses.");
+    }
+    return subjects.map((course) => {
+        const subject = subjects.find(subject => subject.subject_id === course.subject_id);
+        if (subject === undefined) {
+            throw Error("there should always be a subject for a course");
+        }
+        return {
+            active_projects: projects.filter(project => project.subject_id === course.subject_id).length,
+            first_deadline: null, // TODO: add deadlines when needed api endpoints are added.
+            ...course,
+            ...subject
+        }
+    });
+
+
+}
+
 export async function projectsLoader(role: teacherStudentRole): Promise<CompleteProject[]> {
     const {subjects, projects} = await getAllProjectsAndSubjects(role);
-    if (! Array.isArray(projects) || ! Array.isArray(subjects)) {
+    if (!Array.isArray(projects) || !Array.isArray(subjects)) {
         throw Error("Problem loading projects or courses.");
     }
     const submissions: Submission[] = await Promise.all(projects.map(project => {
-       return getSubmissionForProject(project.project_id);
+        return getSubmissionForProject(project.project_id);
     }));
     return projects.map((project, index) => {
         const subject = subjects.find(subject => subject.subject_id === project.subject_id);
