@@ -1,14 +1,14 @@
 from fastapi import APIRouter
 from starlette.requests import Request
 
-from db.models import Group, Project, ProjectInput
-from domain.logic.group import create_group, get_groups_of_project
-from domain.logic.project import get_project, update_project
-from routes.authentication.role_dependencies import (
+from controllers.authentication.role_dependencies import (
     ensure_teacher_authorized_for_project,
     ensure_user_authorized_for_project,
 )
-from routes.tags.swagger_tags import Tags
+from controllers.swagger_tags import Tags
+from db.models import Group, Project, ProjectInput
+from domain.logic.group import create_group, get_groups_of_project
+from domain.logic.project import get_project, update_project
 
 project_router = APIRouter()
 
