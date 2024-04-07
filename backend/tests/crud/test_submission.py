@@ -3,7 +3,6 @@ import unittest
 from datetime import datetime
 
 from sqlmodel import SQLModel
-from test_main import get_db, test_engine
 
 from db.models import SubmissionState
 from domain.logic.group import create_group
@@ -17,6 +16,7 @@ from domain.logic.submission import (
     get_submissions_of_group,
     get_submissions_of_student,
 )
+from tests.crud.test_main import get_db, test_engine
 
 
 class TestSubmission(unittest.TestCase):
