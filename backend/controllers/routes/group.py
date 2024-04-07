@@ -1,6 +1,12 @@
 from fastapi import APIRouter
 from starlette.requests import Request
 
+from controllers.authentication.role_dependencies import (
+    ensure_student_authorized_for_group,
+    ensure_student_authorized_for_project,
+    ensure_user_authorized_for_group,
+)
+from controllers.swagger_tags import Tags
 from db.models import Group, Student
 from domain.logic.group import (
     add_student_to_group,
@@ -8,12 +14,6 @@ from domain.logic.group import (
     get_students_of_group,
     remove_student_from_group,
 )
-from routes.authentication.role_dependencies import (
-    ensure_student_authorized_for_group,
-    ensure_student_authorized_for_project,
-    ensure_user_authorized_for_group,
-)
-from routes.tags.swagger_tags import Tags
 
 group_router = APIRouter()
 
