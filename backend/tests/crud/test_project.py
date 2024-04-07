@@ -3,7 +3,6 @@ import unittest
 from datetime import datetime
 
 from sqlmodel import SQLModel
-from test_main import get_db, test_engine
 
 from domain.logic.project import (
     create_project,
@@ -16,6 +15,7 @@ from domain.logic.project import (
 from domain.logic.student import create_student
 from domain.logic.subject import add_student_to_subject, add_teacher_to_subject, create_subject
 from domain.logic.teacher import create_teacher
+from tests.crud.test_main import get_db, test_engine
 
 
 class TestProject(unittest.TestCase):

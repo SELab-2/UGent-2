@@ -2,9 +2,9 @@
 import unittest
 
 from sqlmodel import SQLModel
-from test_main import get_db, test_engine
 
 from domain.logic.teacher import create_teacher, get_all_teachers, get_teacher
+from tests.crud.test_main import get_db, test_engine
 
 
 class TestTeacher(unittest.TestCase):

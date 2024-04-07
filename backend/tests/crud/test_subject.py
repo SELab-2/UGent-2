@@ -2,7 +2,6 @@
 import unittest
 
 from sqlmodel import SQLModel
-from test_main import get_db, test_engine
 
 from domain.logic.student import create_student
 from domain.logic.subject import (
@@ -15,6 +14,7 @@ from domain.logic.subject import (
     get_subjects_of_teacher,
 )
 from domain.logic.teacher import create_teacher
+from tests.crud.test_main import get_db, test_engine
 
 
 class TestSubject(unittest.TestCase):
