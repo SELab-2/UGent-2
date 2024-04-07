@@ -1,5 +1,11 @@
-import {Group, Project, Subject, Submission} from "./ApiInterfaces.ts";
-import {Backend_group, Backend_Project, Backend_Subject, Backend_submission} from "./BackendInterfaces.ts";
+import {Group, Project, Subject, Submission, User} from "./ApiInterfaces.ts";
+import {
+    Backend_group,
+    Backend_Project,
+    Backend_Subject,
+    Backend_submission,
+    Backend_user
+} from "./BackendInterfaces.ts";
 
 export function mapSubjectList(subjectList: Backend_Subject[]): Subject[] {
     if (!Array.isArray(subjectList)) {
@@ -34,6 +40,16 @@ export function mapSubmission(submission: Backend_submission): Submission {
         submission_state: submission.state,
         submission_message: submission.message,
         submission_filename: submission.filename,
+    };
+}
+
+export function mapUser(user: Backend_user): User {
+    return {
+        user_id: user.id,
+        user_name: user.name,
+        user_roles: user.roles,
+        user_email: user.email,
+        user_language: user.language
     };
 }
 

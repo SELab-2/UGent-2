@@ -23,7 +23,7 @@ const ticketLogin = async (ticket: string, setUser: React.Dispatch<React.SetStat
     if (token.token) {
         localStorage.setItem('token', token.token)
         const result: loginLoaderObject = await loginLoader()
-        if (isUser(result.user)) {
+        if (result.user) {
             setUser(result.user)
         }else{
             localStorage.removeItem('token')
@@ -34,11 +34,14 @@ const ticketLogin = async (ticket: string, setUser: React.Dispatch<React.SetStat
     return token;
 }
 
+<<<<<<< HEAD
 const isUser = (data?: User) => {
     return (data && data.id && data.name && data.email && data.roles);
 
 }
 
+=======
+>>>>>>> a25cbf2 (mapping backend_user <> user)
 export default function LoginScreen(): JSX.Element {
     const {user, setUser} = useAuth();
     const location = useLocation() as location_type;
@@ -57,13 +60,9 @@ export default function LoginScreen(): JSX.Element {
     useEffect(() => {
         // If the saved token is valid => the user will be logged in
         if (data && data.user) {
-            if (isUser(data.user)) {
-                setUser(data.user)
-            }else{
-                setUser(undefined)
-                localStorage.removeItem('token')
-            }
-        } else if (!user && ticket) {
+            setUser(data.user)
+        }
+        else if (!user && ticket) {
             void ticketLogin(ticket, setUser);
         }
     }, [data, setUser, ticket, user]);
