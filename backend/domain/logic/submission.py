@@ -2,9 +2,8 @@ from datetime import datetime
 
 from sqlmodel import Session
 
-from db.models import Group, Student, Submission
+from db.models import Group, Student, Submission, SubmissionState
 from domain.logic.basic_operations import get, get_all
-from domain.models.SubmissionDataclass import SubmissionState
 
 
 def create_submission(

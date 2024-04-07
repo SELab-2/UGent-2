@@ -5,6 +5,7 @@ from sqlalchemy_utils import create_database, database_exists
 from sqlmodel import Session, SQLModel
 
 from db.extensions import engine
+from db.models import SubmissionState
 from domain.logic.admin import create_admin
 from domain.logic.group import add_student_to_group, create_group
 from domain.logic.project import create_project
@@ -14,7 +15,6 @@ from domain.logic.subject import add_student_to_subject, add_teacher_to_subject,
 from domain.logic.submission import create_submission
 from domain.logic.teacher import create_teacher
 from domain.logic.user import modify_user_roles
-from domain.models.SubmissionDataclass import SubmissionState
 
 if __name__ == "__main__":
     with Session(engine) as session:

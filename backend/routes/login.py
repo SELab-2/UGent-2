@@ -1,8 +1,8 @@
 from fastapi import APIRouter
+from pydantic import BaseModel
 from starlette.requests import Request
 
 from db.models import User
-from domain.models.APIUser import LoginResponse, ValidateResponse
 from routes.authentication.authentication_controller import authenticate_user
 from routes.authentication.errors import InvalidAuthenticationError
 from routes.authentication.token_controller import create_token, verify_token
@@ -12,10 +12,16 @@ from routes.tags.swagger_tags import Tags
 login_router = APIRouter()
 
 
+class LoginResponse(BaseModel):
+    token: str
+
+
+class ValidateResponse(BaseModel):
+    valid: bool
+
+
 @login_router.post("/validate", tags=[Tags.LOGIN], summary="Validate a session token.")
-def validate_token(
-    token: str,
-) -> ValidateResponse:
+def validate_token(token: str) -> ValidateResponse:
     uid = verify_token(token)
     if uid:
         return ValidateResponse(valid=True)

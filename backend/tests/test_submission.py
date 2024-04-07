@@ -5,6 +5,7 @@ from datetime import datetime
 from sqlmodel import SQLModel
 from test_main import get_db, test_engine
 
+from db.models import SubmissionState
 from domain.logic.group import create_group
 from domain.logic.project import create_project
 from domain.logic.student import create_student
@@ -16,7 +17,6 @@ from domain.logic.submission import (
     get_submissions_of_group,
     get_submissions_of_student,
 )
-from domain.models.SubmissionDataclass import SubmissionState
 
 
 class TestSubmission(unittest.TestCase):

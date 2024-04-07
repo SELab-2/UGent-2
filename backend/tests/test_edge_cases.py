@@ -6,8 +6,8 @@ from sqlmodel import SQLModel
 from test_main import get_db, test_engine
 
 from db.database_errors import ItemNotFoundError
+from db.models import SubmissionState
 from domain.logic import group, student, submission
-from domain.models.SubmissionDataclass import SubmissionState
 
 
 class TestEdgeCases(unittest.TestCase):

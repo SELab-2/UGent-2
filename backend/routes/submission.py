@@ -5,9 +5,8 @@ from typing import Annotated
 from fastapi import APIRouter, File, Response
 from starlette.requests import Request
 
-from db.models import Submission
+from db.models import Submission, SubmissionState
 from domain.logic.submission import create_submission, get_last_submission
-from domain.models.SubmissionDataclass import SubmissionState
 from routes.authentication.role_dependencies import ensure_student_in_group, ensure_user_authorized_for_submission
 from routes.tags.swagger_tags import Tags
 

@@ -4,7 +4,7 @@ from starlette.requests import Request
 from db.models import Project, Student, Subject, Teacher
 from domain.logic.project import create_project, get_projects_of_subject
 from domain.logic.subject import get_students_of_subject, get_subject, get_teachers_of_subject
-from domain.models.ProjectDataclass import ProjectInput
+from domain.models.ProjectInput import ProjectInput
 from routes.authentication.role_dependencies import (
     ensure_teacher_authorized_for_subject,
     ensure_user_authorized_for_subject,
