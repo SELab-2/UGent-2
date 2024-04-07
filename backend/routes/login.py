@@ -1,10 +1,10 @@
 from fastapi import APIRouter
 from starlette.requests import Request
 
-from controllers.auth.authentication_controller import authenticate_user
-from controllers.auth.token_controller import create_token, verify_token
 from db.models.models import User
 from domain.models.APIUser import LoginResponse, ValidateResponse
+from routes.authentication.authentication_controller import authenticate_user
+from routes.authentication.token_controller import create_token, verify_token
 from routes.errors.authentication import InvalidAuthenticationError
 from routes.tags.swagger_tags import Tags
 

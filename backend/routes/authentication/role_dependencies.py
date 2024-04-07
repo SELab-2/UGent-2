@@ -1,6 +1,5 @@
 from starlette.requests import Request
 
-from controllers.auth.token_controller import verify_token
 from db.models.models import Admin, Student, Teacher
 from db.sessions import get_session
 from domain.logic.admin import get_admin, is_user_admin
@@ -9,6 +8,7 @@ from domain.logic.project import get_project, get_projects_of_student, get_proje
 from domain.logic.student import get_student, is_user_student
 from domain.logic.subject import get_subjects_of_student, get_subjects_of_teacher, is_user_authorized_for_subject
 from domain.logic.teacher import get_teacher, is_user_teacher
+from routes.authentication.token_controller import verify_token
 from routes.errors.authentication import (
     InvalidAdminCredentialsError,
     InvalidAuthenticationError,
