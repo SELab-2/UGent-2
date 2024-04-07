@@ -4,8 +4,8 @@ from starlette.requests import Request
 from db.models.models import User
 from domain.models.APIUser import LoginResponse, ValidateResponse
 from routes.authentication.authentication_controller import authenticate_user
+from routes.authentication.errors import InvalidAuthenticationError
 from routes.authentication.token_controller import create_token, verify_token
-from routes.errors.authentication import InvalidAuthenticationError
 from routes.tags.swagger_tags import Tags
 
 # test url: https://login.ugent.be/login?service=https://localhost:8080/api/login
