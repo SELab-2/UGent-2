@@ -1,51 +1,56 @@
-import {CompleteProject, Group, Submission} from "../utils/ApiInterfaces.ts";
+import {CompleteProjectTeacer, Group, Submission} from "../utils/ApiInterfaces.ts";
 import {getAllProjectsAndSubjects, teacherStudentRole} from "./SharedFunctions.ts";
 import apiFetch from "../utils/ApiFetch.ts";
+import {Backend_group} from "../utils/BackendInterfaces.ts";
+import {mapGroupList} from "../utils/ApiTypesMapper.ts";
 
 export interface projectsTeacherLoaderObject {
-    projects: CompleteProject[]
+    projects: CompleteProjectTeacer[]
 }
 
 export const PROJECTS_TEACHER_ROUTER_ID = "projects_teacher";
 
 export default async function projectsTeacherLoader(): Promise<projectsTeacherLoaderObject> {
-    const projects: CompleteProject[] = await LoadProjectsForTeacher();
+    const projects: CompleteProjectTeacer[] = await LoadProjectsForTeacher();
     return {projects};
 }
 
-export async function LoadProjectsForTeacher(): Promise<CompleteProject[]> {
+export async function LoadProjectsForTeacher(): Promise<CompleteProjectTeacer[]> {
     const {subjects, projects} = await getAllProjectsAndSubjects(teacherStudentRole.TEACHER);
     if (!Array.isArray(projects) || !Array.isArray(subjects)) {
         throw Error("Problem loading projects or courses.");
     }
 
-    //TODO aanpassen, dit geeft gelijk alle groepen terug
-    const groupPromises: Promise<Group | undefined>[] = projects.map(async project => {
-        return (await apiFetch(`/projects/${project.id}/group`)) as Group;
-    });
+    const groupPromises: Promise<Group[][]> = Promise.all(projects.map(async project => {
+        const groups = await apiFetch(`/projects/${project.project_id}/groups`) as Backend_group[];
+        return mapGroupList(groups);
+    }));
 
-    const submissionPromises: Promise<Submission | undefined>[] = (await Promise.all(groupPromises)).map(async group => {
-        if (group) {
-            return (await apiFetch(`/groups/${group.id}/submission`)) as Submission;
+    const groups: Group[][] = (await groupPromises)
+    const amount_of_submissions: number[] = []
+    for (const groupArray of groups) {
+        let amount = 0
+        for (const group of groupArray) {
+            try {
+                const submission = await apiFetch(`/groups/${group.group_id}/submission`) as Submission;
+                if (submission) {
+                    amount++;
+                }
+            } catch (e) {
+                //console.log(e);
+            }
         }
-        return undefined;
-    });
-
-    const groups: Group[] = (await Promise.all(groupPromises)).filter(group => group !== null) as Group[];
-    const submissions: Submission[] = (await Promise.all(submissionPromises)) as Submission[];
-
+        amount_of_submissions.push(amount);
+    }
     return projects.map((project, index) => {
-        const group = groups[index];
-        const submission = submissions[index];
-        const subject = subjects.find(subject => subject.id === project.subject_id);
+        const subject = subjects.find(subject => subject.subject_id === project.subject_id);
         if (!subject) {
             throw Error("Subject not found for project.");
         }
         return {
             ...project,
-            ...group,
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-            submission_state: submission?.state
+            ...subject,
+            submission_amount: amount_of_submissions[index],
         }
-    }).filter(project => project.submission_state !== undefined); // filter alles eruit waar je niets mee te maken hebt
+    })
 }
