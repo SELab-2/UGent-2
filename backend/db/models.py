@@ -49,8 +49,11 @@ class Student(SQLModel, table=True):
     submissions: list["Submission"] = Relationship(back_populates="student")
 
 
-class Subject(SQLModel, table=True):
+class SubjectInput(SQLModel):
     name: str
+
+
+class Subject(SubjectInput, table=True):  # Inherits from SubjectInput
     id: int = Field(default=None, primary_key=True)
     teachers: list[Teacher] = Relationship(link_model=TeacherSubject, back_populates="subjects")
     students: list[Student] = Relationship(link_model=StudentSubject, back_populates="subjects")
