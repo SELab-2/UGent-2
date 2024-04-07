@@ -4,7 +4,7 @@ from sqlmodel import Session
 
 from db.models import Project, Student, Subject, Teacher
 from domain.logic.basic_operations import get, get_all
-from domain.models.ProjectDataclass import ProjectInput
+from domain.models.ProjectInput import ProjectInput
 
 
 def create_project(

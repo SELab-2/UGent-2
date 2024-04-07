@@ -1,8 +1,7 @@
+import enum
 from datetime import datetime
 
 from sqlmodel import Field, Relationship, SQLModel
-
-from domain.models.SubmissionDataclass import SubmissionState
 
 
 class User(SQLModel, table=True):
@@ -78,6 +77,12 @@ class Group(SQLModel, table=True):
     project: Project = Relationship(back_populates="groups")
     students: list[Student] = Relationship(link_model=StudentGroup, back_populates="groups")
     submissions: list["Submission"] = Relationship(back_populates="group")
+
+
+class SubmissionState(enum.Enum):
+    Pending = 1
+    Approved = 2
+    Rejected = 3
 
 
 class Submission(SQLModel, table=True):

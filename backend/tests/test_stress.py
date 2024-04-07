@@ -5,8 +5,8 @@ from datetime import datetime
 from sqlmodel import SQLModel
 from test_main import get_db, test_engine
 
+from db.models import SubmissionState
 from domain.logic import admin, group, project, student, subject, submission, teacher
-from domain.models.SubmissionDataclass import SubmissionState
 
 
 class TestStress(unittest.TestCase):

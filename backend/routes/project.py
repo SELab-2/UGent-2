@@ -4,7 +4,7 @@ from starlette.requests import Request
 from db.models import Group, Project
 from domain.logic.group import create_group, get_groups_of_project
 from domain.logic.project import get_project, update_project
-from domain.models.ProjectDataclass import ProjectInput
+from domain.models.ProjectInput import ProjectInput
 from routes.authentication.role_dependencies import (
     ensure_teacher_authorized_for_project,
     ensure_user_authorized_for_project,
