@@ -8,7 +8,7 @@ from starlette.requests import Request
 from db.models.models import Submission
 from domain.logic.submission import create_submission, get_last_submission
 from domain.models.SubmissionDataclass import SubmissionState
-from routes.dependencies.role_dependencies import ensure_student_in_group, ensure_user_authorized_for_submission
+from routes.authentication.role_dependencies import ensure_student_in_group, ensure_user_authorized_for_submission
 from routes.tags.swagger_tags import Tags
 
 submission_router = APIRouter()
