@@ -8,14 +8,14 @@ from domain.logic.project import get_project, get_projects_of_student, get_proje
 from domain.logic.student import get_student, is_user_student
 from domain.logic.subject import get_subjects_of_student, get_subjects_of_teacher, is_user_authorized_for_subject
 from domain.logic.teacher import get_teacher, is_user_teacher
-from routes.authentication.token_controller import verify_token
-from routes.errors.authentication import (
+from routes.authentication.errors import (
     InvalidAdminCredentialsError,
     InvalidAuthenticationError,
     InvalidStudentCredentialsError,
     InvalidTeacherCredentialsError,
     NoAccessToDataError,
 )
+from routes.authentication.token_controller import verify_token
 
 
 def get_authenticated_user(request: Request) -> int:

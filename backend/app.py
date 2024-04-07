@@ -13,7 +13,7 @@ from db.errors.database_errors import (
     ItemNotFoundError,
     NoSuchRelationError,
 )
-from routes.errors.authentication import (
+from routes.authentication.errors import (
     InvalidAuthenticationError,
     InvalidRoleCredentialsError,
     NoAccessToDataError,
