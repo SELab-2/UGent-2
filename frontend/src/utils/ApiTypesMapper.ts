@@ -44,4 +44,11 @@ export function mapGroup(group: Backend_group): Group {
     };
 }
 
+export function mapGroupList(groupList: Backend_group[]): Group[] {
+    return groupList.map(groupData => ({
+        group_id: groupData.id,
+        project_id: groupData.project_id,
+    }));
+}
+
 

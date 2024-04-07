@@ -41,6 +41,10 @@ export interface CompleteProject extends Project, Subject {
     submission_state: SUBMISSION_STATE,
 }
 
+export interface CompleteProjectTeacer extends Project, Subject {
+    submission_amount: number,
+}
+
 export interface properSubject extends Subject {
     active_projects: number,
     first_deadline: Date | null | string
