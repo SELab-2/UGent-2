@@ -41,7 +41,7 @@ export interface CompleteProject extends Project, Subject {
     submission_state: SUBMISSION_STATE,
 }
 
-export interface CompleteProjectTeacer extends Project, Subject {
+export interface CompleteProjectTeacher extends Project, Subject {
     submission_amount: number,
 }
 
@@ -58,5 +58,6 @@ export interface User {
     user_id: number,
     user_name: string,
     user_email: string,
+    user_language: string,
     user_roles: string[]
 }

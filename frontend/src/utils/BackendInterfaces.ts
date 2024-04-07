@@ -31,3 +31,11 @@ export interface Backend_group {
     id: number,
     project_id: number
 }
+
+export interface Backend_user {
+    id: number,
+    name: string,
+    email: string,
+    language: string,
+    roles: string[]
+}
