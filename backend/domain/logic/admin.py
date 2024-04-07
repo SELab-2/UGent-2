@@ -1,6 +1,6 @@
 from sqlmodel import Session
 
-from db.models.models import Admin, User
+from db.models import Admin, User
 from domain.logic.basic_operations import get, get_all
 
 

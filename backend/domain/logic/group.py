@@ -1,7 +1,7 @@
 from sqlmodel import Session
 
-from db.errors.database_errors import ActionAlreadyPerformedError, NoSuchRelationError
-from db.models.models import Group, Project, Student
+from db.database_errors import ActionAlreadyPerformedError, NoSuchRelationError
+from db.models import Group, Project, Student
 from domain.logic.basic_operations import get, get_all
 
 

@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 from starlette.requests import Request
 
-from db.models.models import Project, Subject
+from db.models import Project, Subject
 from domain.logic.project import get_projects_of_teacher
 from domain.logic.subject import add_teacher_to_subject, create_subject, get_subjects_of_teacher
 from domain.models.SubjectDataclass import SubjectInput

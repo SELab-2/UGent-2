@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Response, status
 from starlette.requests import Request
 
-from db.models.models import User
+from db.models import User
 from domain.logic.basic_operations import get, get_all
 from domain.logic.role_enum import Role
 from domain.logic.user import get_user, modify_language, modify_user_roles

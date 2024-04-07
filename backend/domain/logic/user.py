@@ -1,6 +1,6 @@
 from sqlmodel import Session, select
 
-from db.models.models import Admin, Student, Teacher, User
+from db.models import Admin, Student, Teacher, User
 from domain.logic.basic_operations import get, get_all
 from domain.logic.role_enum import Role
 

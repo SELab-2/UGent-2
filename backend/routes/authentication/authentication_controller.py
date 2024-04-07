@@ -6,7 +6,7 @@ import httpx
 from defusedxml.ElementTree import fromstring
 from sqlmodel import Session
 
-from db.models.models import User
+from db.models import User
 from domain.logic.student import create_student
 from domain.logic.teacher import create_teacher
 from domain.logic.user import get_user_with_email

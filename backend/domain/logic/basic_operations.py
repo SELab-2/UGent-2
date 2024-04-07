@@ -2,7 +2,7 @@ from typing import TypeVar
 
 from sqlmodel import Session, SQLModel, select
 
-from db.errors.database_errors import ItemNotFoundError
+from db.database_errors import ItemNotFoundError
 
 # Create a generic type variable bound to subclasses of AbstractModel.
 T = TypeVar("T", bound=SQLModel)
