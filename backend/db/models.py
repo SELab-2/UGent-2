@@ -57,7 +57,7 @@ class Subject(SQLModel, table=True):
     projects: list["Project"] = Relationship(back_populates="subject")
 
 
-class Project(SQLModel, table=True):
+class ProjectInput(SQLModel):
     name: str
     deadline: datetime
     archived: bool
@@ -65,6 +65,9 @@ class Project(SQLModel, table=True):
     requirements: str
     visible: bool
     max_students: int
+
+
+class Project(ProjectInput, table=True):  # Inherits from ProjectInput
     id: int = Field(default=None, primary_key=True)
     subject_id: int = Field(default=None, foreign_key="subject.id")
     subject: Subject = Relationship(back_populates="projects")
