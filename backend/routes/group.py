@@ -8,7 +8,7 @@ from domain.logic.group import (
     get_students_of_group,
     remove_student_from_group,
 )
-from routes.dependencies.role_dependencies import (
+from routes.authentication.role_dependencies import (
     ensure_student_authorized_for_group,
     ensure_student_authorized_for_project,
     ensure_user_authorized_for_group,

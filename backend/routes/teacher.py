@@ -5,7 +5,7 @@ from db.models.models import Project, Subject
 from domain.logic.project import get_projects_of_teacher
 from domain.logic.subject import add_teacher_to_subject, create_subject, get_subjects_of_teacher
 from domain.models.SubjectDataclass import SubjectInput
-from routes.dependencies.role_dependencies import get_authenticated_teacher
+from routes.authentication.role_dependencies import get_authenticated_teacher
 from routes.tags.swagger_tags import Tags
 
 teacher_router = APIRouter()

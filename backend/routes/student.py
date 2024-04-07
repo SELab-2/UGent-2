@@ -4,7 +4,7 @@ from starlette.requests import Request
 from db.models.models import Project, Subject
 from domain.logic.project import get_projects_of_student
 from domain.logic.subject import add_student_to_subject, get_subjects_of_student
-from routes.dependencies.role_dependencies import get_authenticated_student
+from routes.authentication.role_dependencies import get_authenticated_student
 from routes.tags.swagger_tags import Tags
 
 student_router = APIRouter()
