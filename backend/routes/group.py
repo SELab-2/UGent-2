@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 from starlette.requests import Request
 
-from db.models.models import Group, Student
+from db.models import Group, Student
 from domain.logic.group import (
     add_student_to_group,
     get_group_for_student_and_project,

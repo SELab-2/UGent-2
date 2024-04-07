@@ -5,7 +5,7 @@ from datetime import datetime
 from sqlmodel import SQLModel
 from test_main import get_db, test_engine
 
-from db.errors.database_errors import ItemNotFoundError
+from db.database_errors import ItemNotFoundError
 from domain.logic import group, student, submission
 from domain.models.SubmissionDataclass import SubmissionState
 

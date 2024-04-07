@@ -7,7 +7,7 @@ from starlette import status
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 
-from db.errors.database_errors import (
+from db.database_errors import (
     ActionAlreadyPerformedError,
     ConflictingRelationError,
     ItemNotFoundError,

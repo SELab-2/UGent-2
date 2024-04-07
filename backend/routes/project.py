@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 from starlette.requests import Request
 
-from db.models.models import Group, Project
+from db.models import Group, Project
 from domain.logic.group import create_group, get_groups_of_project
 from domain.logic.project import get_project, update_project
 from domain.models.ProjectDataclass import ProjectInput

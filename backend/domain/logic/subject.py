@@ -1,7 +1,7 @@
 from sqlmodel import Session
 
-from db.errors.database_errors import ActionAlreadyPerformedError
-from db.models.models import Student, Subject, Teacher
+from db.database_errors import ActionAlreadyPerformedError
+from db.models import Student, Subject, Teacher
 from domain.logic.basic_operations import get, get_all
 from domain.logic.student import is_user_student
 from domain.logic.teacher import is_user_teacher

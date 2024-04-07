@@ -2,7 +2,7 @@ from datetime import datetime
 
 from sqlmodel import Session
 
-from db.models.models import Project, Student, Subject, Teacher
+from db.models import Project, Student, Subject, Teacher
 from domain.logic.basic_operations import get, get_all
 from domain.models.ProjectDataclass import ProjectInput
 

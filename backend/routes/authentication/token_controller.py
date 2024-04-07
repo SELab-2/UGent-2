@@ -4,7 +4,7 @@ from datetime import UTC, datetime, timedelta
 
 import jwt
 
-from db.models.models import User
+from db.models import User
 
 # Zeker aanpassen in production
 jwt_secret = os.getenv("JWT_SECRET", "secret")

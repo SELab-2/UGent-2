@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 from starlette.requests import Request
 
-from db.models.models import User
+from db.models import User
 from domain.models.APIUser import LoginResponse, ValidateResponse
 from routes.authentication.authentication_controller import authenticate_user
 from routes.authentication.errors import InvalidAuthenticationError

@@ -1,6 +1,6 @@
 from starlette.requests import Request
 
-from db.models.models import Admin, Student, Teacher
+from db.models import Admin, Student, Teacher
 from db.sessions import get_session
 from domain.logic.admin import get_admin, is_user_admin
 from domain.logic.group import get_group, get_students_of_group
