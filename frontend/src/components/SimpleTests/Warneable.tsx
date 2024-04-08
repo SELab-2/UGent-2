@@ -29,11 +29,11 @@ export default function Warneable(props: {
                     <div className="warning-actions">
 
                         <button className="warning-button warning-proceed" onClick={onProceed}> 
-                            Proceed 
+                            Doorgaan 
                         </button>
                         
                         <button className="warning-button warning-close" onClick={closeModal}>
-                            Cancel
+                            Annuleren
                         </button>
 
                     </div>

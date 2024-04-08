@@ -18,20 +18,22 @@ import { stringify } from 'flatted';
 Roep 'SimpleTests' als component om deze in te laden.
     PROPS: 
         - teacherOrStudent
-            TYPE:       boolean
-            COMMENT:    "Als true, dan teacher-view. Als false, dan student-view."
+            TYPE:       TeacherOrStudent
+            COMMENT:    "Als TEACHER, dan teacher-view. Als STUDENT, dan student-view."
         - initialData
             TYPE:       object
             COMMENT:    "De initiele indiening-structuur."
         - setHasChanged:        
-            TYPE:       React.Dispatch<React.SetStateAction<boolean>> 
+            TYPE:       React.Dispatch<React.SetStateAction<boolean>> | undefined
             COMMENT:    "Dit is de setter van een react-hook. Deze zal gezet worden naar true/false 
                          afhankelijk van of de indiening-structuur al dan niet aangepast werd."
+                        -> undefined als STUDENT
         - setData:
             TYPE:       React.Dispatch<React.SetStateAction<object>>  
             COMMENT:    "De SimpleTests-component zal deze setter telkens oproepen als de indiening-structuur veranderd.
                          Het kan zijn dat de data veranderd wordt naar iets dat het reeds was; 
                          gebruik setHasChanged om een échte verandering te detecteren."
+                        -> undefined als STUDENT
 
 In de sectie 'text literals' vind je de tekst-constanten terug, klaar voor internationalisatie.
 
@@ -42,6 +44,10 @@ FIXME:  Bij het verwijderen van een file, wordt er nog geen warning ondersteund 
 
 ================================================================================================================================================ */
 
+export enum TeacherOrStudent {
+    TEACHER,
+    STUDENT,
+}
 
 /* text literals */
 const CONTROLE_TEXT = "Bij veranderingen zullen alle indieningen opnieuw gecontroleerd worden."
@@ -171,10 +177,10 @@ function flatten(constraint: FEConstraint): FlattedConstraint[] {
 
 export default function SimpleTests(
     props: {
-        teacherOrStudent: boolean, 
+        teacherOrStudent: TeacherOrStudent, 
         initialData: object,
-        setHasChanged: React.Dispatch<React.SetStateAction<boolean>>,
-        setData: React.Dispatch<React.SetStateAction<object>>
+        setHasChanged: React.Dispatch<React.SetStateAction<boolean>> | undefined,
+        setData: React.Dispatch<React.SetStateAction<object>> | undefined
     }
 ): JSX.Element {
 
@@ -185,15 +191,17 @@ export default function SimpleTests(
     /* Gebruik altijd deze functie om feData aan te passen! */
     function updateData(newData: FEConstraint) {
 
-        const newDataBE = FE_2_BE(newData)
+        if (props.setHasChanged !== undefined && props.setData !== undefined) {
+            const newDataBE = FE_2_BE(newData)
 
-        if (stringify(original) !== stringify(newDataBE)) {
-            props.setHasChanged(true)
-        } else {
-            props.setHasChanged(false)
+            if (stringify(original) !== stringify(newDataBE)) {
+                props.setHasChanged(true)
+            } else {
+                props.setHasChanged(false)
+            }
+
+            props.setData(newDataBE)
         }
-
-        props.setData(newDataBE)
 
         setData(newData)
     }
@@ -381,45 +389,53 @@ export default function SimpleTests(
     return (
         <div className="content">
 
-            {/* ...warning-text... */}
-            <div className="warning-text">{CONTROLE_TEXT}</div>
+            {props.teacherOrStudent == TeacherOrStudent.TEACHER
+                ? 
+                    <>
+                        {/* ...warning-text... */}
+                        <div className="warning-text">{CONTROLE_TEXT}</div>
 
-            {/* ...type-switch... */}
-            <div className="type">
-                <div className="field">
-                    <Warneable 
-                        text={WARNING_CHANGE_ROOT}
-                        trigger={ onClick =>
-                            <input 
-                                id="switchRoundedDefault" 
-                                type="checkbox" 
-                                name="switchRoundedDefault" 
-                                className="switch is-rounded"
-                                checked={fileOrZip}
-                                onClick={onClick}
-                            /> 
-                        }
-                        proceed={handleChangeRoot}
-                    />
-                        
-                    {fileOrZip
-                    ?   <>
-                            <label htmlFor="switchRoundedDefault">
-                                <div className="thin">{SINGLE_FILE_TEXT}</div>
-                                <div className="divider">/</div>
-                                <div className="thick">{ZIP_FILE_TEXT}</div>
-                            </label>
-                        </>
-                    :   <>
-                            <label htmlFor="switchRoundedDefault">
-                                <div className="thick">{SINGLE_FILE_TEXT}</div>
-                                <div className="divider">/</div>
-                                <div className="thin">{ZIP_FILE_TEXT}</div>
-                            </label>
-                        </>
-                }
-                </div>
-            </div>
+                        {/* ...type-switch... */}
+                        <div className="type">
+                            <div className="field">
+                                <Warneable 
+                                    text={WARNING_CHANGE_ROOT}
+                                    trigger={ onClick =>
+                                        <input 
+                                            id="switchRoundedDefault" 
+                                            type="checkbox" 
+                                            name="switchRoundedDefault" 
+                                            className="switch is-rounded"
+                                            checked={fileOrZip}
+                                            onClick={onClick}
+                                        /> 
+                                    }
+                                    proceed={handleChangeRoot}
+                                />
+                                    
+                                {fileOrZip
+                                ?   <>
+                                        <label htmlFor="switchRoundedDefault">
+                                            <div className="thin">{SINGLE_FILE_TEXT}</div>
+                                            <div className="divider">/</div>
+                                            <div className="thick">{ZIP_FILE_TEXT}</div>
+                                        </label>
+                                    </>
+                                :   <>
+                                        <label htmlFor="switchRoundedDefault">
+                                            <div className="thick">{SINGLE_FILE_TEXT}</div>
+                                            <div className="divider">/</div>
+                                            <div className="thin">{ZIP_FILE_TEXT}</div>
+                                        </label>
+                                    </>
+                            }
+                            </div>
+                        </div>
+                    </>
+                :   <></>
+            }
+
+            
 
             {/* ...color-codes... */}
             <div>{COLOR_CODES_TEXT}</div>
@@ -447,7 +463,7 @@ export default function SimpleTests(
                                 {"\u00A0".repeat(6 * v.spacing)}
 
                                 {/* ... three dots ... */}
-                                { (!isZip(v.item.type) && isHoveringMore.get(v.item.id) )
+                                { ((props.teacherOrStudent == TeacherOrStudent.TEACHER) && (!isZip(v.item.type) && isHoveringMore.get(v.item.id)) )
                                     ?   <Popup trigger={
 
                                             <div className="more row">
@@ -493,21 +509,36 @@ export default function SimpleTests(
                                 }
 
                                 {/* ... name ... */}
-                                <input 
-                                    className= {"name input is-static " + (
-                                        (isFolder(v.item.type)) 
-                                        ? isZip(v.item.type)
-                                            ? "zip-color"
-                                            : v.item.type === LOCKED_DIR
-                                                ? "locked-dir-color"
-                                                : "dir-color"
-                                        : ""
-                                    )}
-                                    id={"name"+v.item.id}
-                                    type="text" 
-                                    value={v.item.name} 
-                                    onChange={e => modifyName(v.item.id, e.target.value)} 
-                                />
+                                {props.teacherOrStudent == TeacherOrStudent.TEACHER
+                                    ? <input 
+                                            className= {"name input is-static " + (
+                                                (isFolder(v.item.type)) 
+                                                ? isZip(v.item.type)
+                                                    ? "zip-color"
+                                                    : v.item.type === LOCKED_DIR
+                                                        ? "locked-dir-color"
+                                                        : "dir-color"
+                                                : ""
+                                            )}
+                                            id={"name"+v.item.id}
+                                            type="text" 
+                                            value={v.item.name} 
+                                            onChange={e => modifyName(v.item.id, e.target.value)} 
+                                      />
+                                    : <div 
+                                        className= {"name input is-static " + (
+                                            (isFolder(v.item.type)) 
+                                            ? isZip(v.item.type)
+                                                ? "zip-color"
+                                                : v.item.type === LOCKED_DIR
+                                                    ? "locked-dir-color"
+                                                    : "dir-color"
+                                            : ""
+                                        )}
+                                        id={"name"+v.item.id} 
+                                      > {v.item.name} </div>
+                                }
+                                
                                 
                                 {/* ... expand ... */}
                                 {isFolder(v.item.type)
@@ -516,7 +547,7 @@ export default function SimpleTests(
                                             ? <MdOutlineExpandLess className="expand hover-encircle" onClick={() => collaps(v.item.id)} />
                                             : <MdOutlineExpandMore className="expand hover-encircle" onClick={() => expand(v.item.id)} />
                                         }
-                                        {isHoveringMore.get(v.item.id) && 
+                                        {props.teacherOrStudent == TeacherOrStudent.TEACHER && isHoveringMore.get(v.item.id) && 
                                             <>
                                                 <VscNewFile className="add hover-shadow" onClick={() => handleAdd(v.item.id, FILE)}/>
                                                 <VscNewFolder className="add hover-shadow" onClick={() => handleAdd(v.item.id, LOCKED_DIR)}/>
