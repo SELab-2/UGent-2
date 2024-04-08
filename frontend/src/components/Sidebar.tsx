@@ -12,7 +12,7 @@ export function Sidebar(props: {home: string, buttons?: SidebarButton[]}): JSX.E
         setIsOpen(!isOpen)
     }
 
-    let buttons = params.buttons
+    let buttons = props.buttons
     if (buttons == undefined) {
         buttons = [SidebarButton.COURSES, SidebarButton.PROJECTS];
     }

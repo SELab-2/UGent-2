@@ -65,11 +65,11 @@ export default function HomeAdmin(): JSX.Element {
     return (
         <>
             <div className={"main-header"}>
-                <Header title="Admin"/>
+                <Header page_title={"Admin"} home={"admin"}/>
             </div>
             <div className={"main-content"}>
                 <div className={"side-bar"}>
-                    <Sidebar buttons={[]}/>
+                    <Sidebar home={"admin"} buttons={[]}/>
                 </div>
                 <div className={"admin-main"}>
                     <div className={"rights-list"}>
