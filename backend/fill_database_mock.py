@@ -1,9 +1,9 @@
 from datetime import datetime
 
 from psycopg2 import tz
-from sqlalchemy_utils import create_database, database_exists
-from sqlmodel import Session, SQLModel
+from sqlmodel import Session
 
+from create_database_tables import initialize_tables
 from db.extensions import engine
 from db.models import SubmissionState
 from domain.logic.admin import create_admin
@@ -17,14 +17,9 @@ from domain.logic.teacher import create_teacher
 from domain.logic.user import modify_user_roles
 
 if __name__ == "__main__":
+
     with Session(engine) as session:
-        if not database_exists(engine.url):
-            create_database(engine.url)
-
-        SQLModel.metadata.drop_all(engine)
-        SQLModel.metadata.create_all(engine)
-
-        session.commit()
+        initialize_tables(session, engine)
 
         # Create subjects
         objeprog = create_subject(session, name="Objectgericht Programmeren")
