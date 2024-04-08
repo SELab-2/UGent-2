@@ -1,13 +1,24 @@
-const DEBUG: boolean = false; // should always be false on the repo.
+import {DEBUG} from "../pages/root.tsx";
 
-export default function apiFetch(url: string, options?: RequestInit) {
+
+const ApiFetch = async (url: string, options?: RequestInit) => {
     if (typeof options === 'undefined') {
         options = {}
     }
+
+    const token = localStorage.getItem('token')
+    if (token) {
+        options.headers = {
+            ...options.headers,
+            'cas': token
+        }
+    }
+
     url = "/api" + url;
     if (DEBUG) {
         url = "http://127.0.0.1:8000" + url;
     }
-    // TODO: add auth things in options
-    return fetch(url, options)
+    return (await fetch(url, options)).json()
 }
+
+export default ApiFetch

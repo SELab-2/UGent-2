@@ -4,61 +4,79 @@ import {SelectionBox} from "./SelectionBox.tsx";
 import Calendar from "react-calendar";
 import 'react-calendar/dist/Calendar.css';
 import {FaUpload} from "react-icons/fa";
-import "../assets/styles/small_components.css";
+import {ProjectTeacher, Value} from "../types/project.ts";
+import "../assets/styles/teacher_components.css"
 
+export function ViewProjectTeacherComponent(props: {
+    project: ProjectTeacher
+}): JSX.Element {
 
-export function CreateProject(): JSX.Element {
-    const [showCalender, setCalender] = useState(false);
-    type ValuePiece = Date | null; // nodig voor de deadline
-    type Value = ValuePiece | [ValuePiece, ValuePiece]; // nodig voor de deadline
-    const [deadlineValue, deadlineChange] = useState<Value>(new Date());
-    const [description, setDescription] = useState('');
-    const [showGroup, setGroup] = useState(false);
+    const [projectName, setProjectName] = useState<string>(props.project.projectName)
+    const [courseName, setCourseName] = useState<string>(props.project.courseName)
+    const [hours, setHours] = useState<number>(props.project.hours);
+    const [minutes, setMinutes] = useState<number>(props.project.minutes);
+    const [deadline, setDeadline] = useState<Value>(props.project.deadline);
+    const [description, setDescription] = useState(props.project.description);
+    const [requiredFiles, setRequiredFiles] = useState(props.project.requiredFiles);
+    const [otherFilesAllow, setOtherFilesAllow] = useState(props.project.otherFilesAllow);
+    const [groupProject, setGroupProject] = useState(props.project.groupProject);
+
+    // helpers
+    const [showCalender, setCalender] = useState(props.project.deadline !== null);
+    const [showGroup, setGroup] = useState(props.project.groupProject);
 
     const expandDeadline = () => {
         setCalender(!showCalender);
     };
 
-    const expandGroup = () => {
+    const expandGroup = (checked: boolean) => {
         setGroup(!showGroup);
+        setGroupProject(checked);
     };
 
-    const hours = Array.from({length: 24}, (_, index) => index.toString().padStart(2, '0'));
-    const minutes = Array.from({length: 60}, (_, index) => index.toString().padStart(2, '0'));
+    const hours_array = Array.from({length: 24}, (_, index) => index.toString().padStart(2, '0'));
+    const minutes_array = Array.from({length: 60}, (_, index) => index.toString().padStart(2, '0'));
 
 
     return (
-        <>
-            <div className="field is-horizontal">
-                <div className="field-label">
+        <div className={"create-project"}>
+            {/* PROJECT NAME FIELD */}
+            <div className={"field is-horizontal"}>
+                <div className={"field-label"}>
                     <label className="label">Project naam:</label>
                 </div>
                 <div className="field-body field">
-                    <Inputfield placeholder="Geef een naam in"/>
+                    <Inputfield placeholder="Geef een naam in" value={projectName}
+                                setValue={setProjectName}/>
                 </div>
             </div>
+            {/* COURSE NAME FIELD */}
             <div className="field is-horizontal">
                 <div className="field-label">
                     <label className="label">Vak:</label>
                 </div>
                 <div className="field-body field">
-                    <SelectionBox options={["vak1", "vak2", "vak3"]}/>
+                    <SelectionBox options={["vak1", "vak2", "vak3"]} value={courseName}
+                                  setValue={setCourseName}/>
                 </div>
             </div>
+            {/* DEADLINE FIELD */}
             <div className="field is-horizontal">
                 <div className="field-label">
                     <label className="label">Deadline:</label>
                 </div>
                 <div className="field-body">
                     <label>
-                        <input type="checkbox" onChange={expandDeadline}/>
+                        <input type="checkbox" onChange={expandDeadline} checked={showCalender}/>
                         {showCalender &&
                             <>
-                                <Calendar onChange={e => deadlineChange(e)} value={deadlineValue}/>
+                                <Calendar onChange={e => setDeadline(e)} value={deadline}/>
                                 <div className="is-horizontal field">
-                                    <SelectionBox options={hours}/>
+                                    <SelectionBox options={hours_array} value={hours.toString()}
+                                                  setValue={setHours}/>
                                     <label className={"title ml-3 mr-3"}>:</label>
-                                    <SelectionBox options={minutes}/>
+                                    <SelectionBox options={minutes_array} value={minutes.toString()}
+                                                  setValue={setMinutes}/>
                                 </div>
                             </>
                         }
@@ -106,11 +124,15 @@ export function CreateProject(): JSX.Element {
                     <div className="field"> {/* Deze moet er blijven, anders doet css raar*/}
                         <label>Specifieer welke files de ingediende zip moet bevatten. Splits per komma.</label>
                         <br/>
-                        <Inputfield placeholder="vb: diagram.dgr,verslag.pdf,textbestand.txt"/>
+                        <Inputfield placeholder="vb: diagram.dgr,verslag.pdf,textbestand.txt"
+                                    value={requiredFiles}
+                                    setValue={setRequiredFiles}/>
                         <br/>
                         <div className="field is-horizontal">
                             <div className="field-label">
-                                <input type="checkbox"/> {/*TODO doe iets*/}
+                                <input type="checkbox"
+                                       onChange={e => setOtherFilesAllow(e.target.checked)}
+                                       checked={otherFilesAllow}/>
                             </div>
                             <div className="field-body">
                                 <label className="label is-fullwidth">ook andere files toegelaten</label>
@@ -125,7 +147,8 @@ export function CreateProject(): JSX.Element {
                 </div>
                 <div className="field-body">
                     <label>
-                        <input type="checkbox" onChange={expandGroup}/>
+                        <input type="checkbox" onChange={e => expandGroup(e.target.checked)}
+                               checked={groupProject}/>
                         {showGroup &&
                             <>
                                 <div className="field is-horizontal">
@@ -163,7 +186,7 @@ export function CreateProject(): JSX.Element {
                     </label>
                 </div>
             </div>
-        </>
+        </div>
     )
         ;
 }

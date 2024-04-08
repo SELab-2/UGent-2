@@ -1,11 +1,12 @@
-from fastapi import APIRouter, Depends
-from sqlalchemy.orm import Session
+from fastapi import APIRouter
+from starlette.requests import Request
 
-from db.sessions import get_session
 from domain.logic.project import create_project, get_projects_of_subject
-from domain.logic.subject import get_subject
+from domain.logic.subject import get_students_of_subject, get_subject, get_teachers_of_subject
 from domain.models.ProjectDataclass import ProjectDataclass, ProjectInput
+from domain.models.StudentDataclass import StudentDataclass
 from domain.models.SubjectDataclass import SubjectDataclass
+from domain.models.TeacherDataclass import TeacherDataclass
 from routes.dependencies.role_dependencies import (
     ensure_teacher_authorized_for_subject,
     ensure_user_authorized_for_subject,
@@ -16,37 +17,38 @@ from routes.tags.swagger_tags import Tags
 subject_router = APIRouter()
 
 
-@subject_router.get(
-        "/subjects/{subject_id}",
-        dependencies=[Depends(get_authenticated_user)],
-        tags=[Tags.SUBJECT],
-        summary="Get a certain subject.",
-)
-def subject_get(subject_id: int, session: Session = Depends(get_session)) -> SubjectDataclass:
+@subject_router.get("/subjects/{subject_id}", tags=[Tags.SUBJECT], summary="Get a certain subject.")
+def subject_get(request: Request, subject_id: int) -> SubjectDataclass:
+    session = request.state.session
+    get_authenticated_user(request)
     return get_subject(session, subject_id)
 
 
-@subject_router.get(
-        "/subjects/{subject_id}/projects",
-        dependencies=[Depends(ensure_user_authorized_for_subject)],
-        tags=[Tags.SUBJECT],
-        summary="Get all projects of a certain subject.",
-)
-def get_subject_projects(subject_id: int, session: Session = Depends(get_session)) -> list[ProjectDataclass]:
+@subject_router.get("/subjects/{subject_id}/projects", tags=[Tags.SUBJECT], summary="Get all projects of subject.")
+def get_subject_projects(request: Request, subject_id: int) -> list[ProjectDataclass]:
+    session = request.state.session
+    ensure_user_authorized_for_subject(request, subject_id)
     return get_projects_of_subject(session, subject_id)
 
 
-@subject_router.post(
-        "/subjects/{subject_id}/projects",
-        dependencies=[Depends(ensure_teacher_authorized_for_subject)],
-        tags=[Tags.SUBJECT],
-        summary="Create a new project linked to a certain subject.",
-)
-def new_project(
-    subject_id: int,
-    project: ProjectInput,
-    session: Session = Depends(get_session),
-) -> ProjectDataclass:
+@subject_router.get("/subjects/{subject_id}/teachers", tags=[Tags.SUBJECT], summary="Get all teachers of subject.")
+def get_subject_teachers(request: Request, subject_id: int) -> list[TeacherDataclass]:
+    session = request.state.session
+    ensure_user_authorized_for_subject(request, subject_id)
+    return get_teachers_of_subject(session, subject_id)
+
+
+@subject_router.get("/subjects/{subject_id}/students", tags=[Tags.SUBJECT], summary="Get all students of subject.")
+def get_subject_students(request: Request, subject_id: int) -> list[StudentDataclass]:
+    session = request.state.session
+    ensure_user_authorized_for_subject(request, subject_id)
+    return get_students_of_subject(session, subject_id)
+
+
+@subject_router.post("/subjects/{subject_id}/projects", tags=[Tags.PROJECT], summary="Create project in a course.")
+def new_project(request: Request, subject_id: int, project: ProjectInput) -> ProjectDataclass:
+    session = request.state.session
+    ensure_teacher_authorized_for_subject(request, subject_id)
     return create_project(
         session,
         subject_id=subject_id,

@@ -167,6 +167,7 @@ class Submission(Base, AbstractModel):
     date_time: Mapped[datetime]
     state: Mapped[SubmissionState]
     message: Mapped[str]
+    filename: Mapped[str]
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     group_id: Mapped[int] = mapped_column(ForeignKey(Group.id))
     group: Mapped[Group] = relationship(back_populates="submissions")
@@ -181,4 +182,5 @@ class Submission(Base, AbstractModel):
             student_id=self.student_id,
             state=self.state,
             message=self.message,
+            filename=self.filename,
         )
