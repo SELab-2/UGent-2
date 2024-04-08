@@ -103,8 +103,3 @@ export default function HomeAdmin(): JSX.Element {
         </>
     )
 }
-// <Table title="test" keys={["Naam", "Aantal projecten", "Kortste deadline"]}></Table>
-//<SearchBar placeholder="test"></SearchBar>
-//<Inputfield placeholder="test"></Inputfield>
-//<RegularButton placeholder="test" add={false}></RegularButton>
-//<SelectionBox options={["1","2"]}></SelectionBox>
