@@ -10,6 +10,7 @@ import "../assets/styles/small_components.css";
 import { dummy_data } from "./SimpleTests/DummyData.tsx";
 import "../assets/styles/teacher_components.css"
 
+
 // SimpleTests
 const CHECK_SIMPLE_TESTS = false
 const calledData = dummy_data
