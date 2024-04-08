@@ -3,8 +3,9 @@ import FieldWithLabel from "./FieldWithLabel.tsx";
 import {FaCheck, FaUpload} from "react-icons/fa";
 import {FaDownload} from "react-icons/fa6";
 import {ProjectStatus, ProjectStudent} from "../types/project.ts";
-import SimpleTests, { TeacherOrStudent } from "./SimpleTests/SimpleTests.tsx";
+import SimpleTests from "./SimpleTests/SimpleTests.tsx";
 import { dummy_data } from "./SimpleTests/DummyData.tsx";
+import { TeacherOrStudent } from "./SimpleTests/TeacherOrStudentEnum.tsx";
 
 // SimpleTests
 const calledData = dummy_data

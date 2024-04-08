@@ -12,6 +12,7 @@ import 'reactjs-popup/dist/index.css';
 import Warneable from "./Warneable";
 import { stringify } from 'flatted';
 import 'bulma-switch/dist/css/bulma-switch.min.css'
+import { TeacherOrStudent } from "./TeacherOrStudentEnum";
 
 
 /* === DOCUMENTATION ============================================================================================================================
@@ -44,11 +45,6 @@ FIXME:  Bij het verwijderen van een file, wordt er nog geen warning ondersteund 
         Zonder warning werkt dit wel al (eerste van de twee buttons).
 
 ================================================================================================================================================ */
-
-export enum TeacherOrStudent {
-    TEACHER,
-    STUDENT,
-}
 
 /* text literals */
 const CONTROLE_TEXT = "Bij veranderingen zullen alle indieningen opnieuw gecontroleerd worden."

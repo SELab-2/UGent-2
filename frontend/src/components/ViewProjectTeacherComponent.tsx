@@ -7,7 +7,8 @@ import {FaUpload} from "react-icons/fa";
 import {ProjectTeacher, Value} from "../types/project.ts";
 import "../assets/styles/teacher_components.css"
 import { dummy_data } from "./SimpleTests/DummyData.tsx";
-import SimpleTests, { TeacherOrStudent } from "./SimpleTests/SimpleTests.tsx";
+import SimpleTests from "./SimpleTests/SimpleTests.tsx";
+import { TeacherOrStudent } from "./SimpleTests/TeacherOrStudentEnum.tsx";
 
 // SimpleTests
 const CHECK_SIMPLE_TESTS = false
