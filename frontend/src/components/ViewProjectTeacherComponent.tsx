@@ -23,8 +23,8 @@ export function ViewProjectTeacherComponent(props: {
     const [minutes, setMinutes] = useState<number>(props.project.minutes);
     const [deadline, setDeadline] = useState<Value>(props.project.deadline);
     const [description, setDescription] = useState(props.project.description);
-    const [requiredFiles, setRequiredFiles] = useState(props.project.requiredFiles);
-    const [otherFilesAllow, setOtherFilesAllow] = useState(props.project.otherFilesAllow);
+    //const [requiredFiles, setRequiredFiles] = useState(props.project.requiredFiles); // dit zou een json object moeten zijn (of toch stringified versie ervan)
+    //const [otherFilesAllow, setOtherFilesAllow] = useState(props.project.otherFilesAllow); // deze wordt niet gebruikt. zit verwerkt in json object als OnlyPresentConstraint
     const [groupProject, setGroupProject] = useState(props.project.groupProject);
 
     // helpers
