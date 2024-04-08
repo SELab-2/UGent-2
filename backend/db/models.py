@@ -1,23 +1,10 @@
 import enum
 from datetime import datetime
 
+from pydantic import computed_field
 from sqlmodel import Field, Relationship, SQLModel
 
-
-class User(SQLModel, table=True):
-    name: str
-    email: str
-    language: str = "EN"
-    id: int = Field(default=None, primary_key=True)
-
-    admin: "Admin" = Relationship(back_populates="user")
-    teacher: "Teacher" = Relationship(back_populates="user")
-    student: "Student" = Relationship(back_populates="user")
-
-
-class Admin(SQLModel, table=True):
-    id: int = Field(default=None, foreign_key="user.id", primary_key=True)
-    user: User = Relationship(back_populates="admin")
+from domain.logic.role_enum import Role
 
 
 class TeacherSubject(SQLModel, table=True):
@@ -33,6 +20,34 @@ class StudentSubject(SQLModel, table=True):
 class StudentGroup(SQLModel, table=True):
     student_id: int = Field(foreign_key="student.id", primary_key=True)
     group_id: int = Field(foreign_key="group.id", primary_key=True)
+
+
+class User(SQLModel, table=True):
+    name: str
+    email: str
+    language: str = "EN"
+    id: int = Field(default=None, primary_key=True)
+
+    admin: "Admin" = Relationship(back_populates="user")
+    teacher: "Teacher" = Relationship(back_populates="user")
+    student: "Student" = Relationship(back_populates="user")
+
+    @computed_field
+    @property
+    def roles(self) -> list[Role]:
+        roles = []
+        if self.admin:
+            roles.append(Role.ADMIN)
+        if self.teacher:
+            roles.append(Role.TEACHER)
+        if self.student:
+            roles.append(Role.STUDENT)
+        return roles
+
+
+class Admin(SQLModel, table=True):
+    id: int = Field(default=None, foreign_key="user.id", primary_key=True)
+    user: User = Relationship(back_populates="admin")
 
 
 class Teacher(SQLModel, table=True):
