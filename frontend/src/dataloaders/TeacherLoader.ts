@@ -8,7 +8,6 @@ export interface teacherLoaderObject {
 export const TEACHER_ROUTER_ID = "teacher";
 
 export default async function teacherLoader(): Promise<teacherLoaderObject> {
-    const projects: CompleteProjectTeacher[] = (await LoadProjectsForTeacher())
-        .filter(project => !project.project_archived && project.project_visible);
+    const projects: CompleteProjectTeacher[] = await LoadProjectsForTeacher(true);
     return {projects};
 }

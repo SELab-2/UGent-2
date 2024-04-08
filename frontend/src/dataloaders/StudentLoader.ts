@@ -7,8 +7,7 @@ export interface studentLoaderObject {
 
 export const STUDENT_ROUTER_ID = "student";
 
-
 export default async function studentLoader(): Promise<studentLoaderObject> {
-    const projects: CompleteProject[] = await LoadProjectsForStudent();
+    const projects: CompleteProject[] = await LoadProjectsForStudent(true);
     return {projects};
 }

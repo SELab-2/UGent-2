@@ -15,10 +15,19 @@ export default async function projectsStudentLoader(): Promise<projectsStudentLo
     return {projects};
 }
 
-export async function LoadProjectsForStudent(): Promise<CompleteProject[]> {
-    const {subjects, projects} = await getAllProjectsAndSubjects(teacherStudentRole.STUDENT);
+export async function LoadProjectsForStudent(filter_on_current: boolean = false, project_id?: number): Promise<CompleteProject[]> {
+    if (project_id) {
+        filter_on_current = false;
+    }
+    const temp = await getAllProjectsAndSubjects(teacherStudentRole.STUDENT, filter_on_current);
+    const subjects = temp.subjects;
+    let projects = temp.projects;
     if (!Array.isArray(projects) || !Array.isArray(subjects)) {
         throw Error("Problem loading projects or courses.");
+    }
+
+    if (project_id) {
+        projects = projects.filter(project => project.project_id === project_id);
     }
 
     //TODO aanpassen, dit geeft gelijk alle groepen terug

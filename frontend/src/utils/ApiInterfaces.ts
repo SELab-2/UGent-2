@@ -10,7 +10,7 @@ export interface Project {
     project_archived: boolean,
     project_description: string,
     project_requirements: string,
-    project_visible: string,
+    project_visible: boolean,
     project_max_students: number,
     subject_id: number,
 }
