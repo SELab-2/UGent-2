@@ -6,6 +6,7 @@ import 'react-calendar/dist/Calendar.css';
 import {FaUpload} from "react-icons/fa";
 import {ProjectTeacher, Value} from "../types/project.ts";
 import SimpleTests, { TeacherOrStudent } from "./SimpleTests/SimpleTests.tsx";
+import "../assets/styles/small_components.css";
 import { dummy_data } from "./SimpleTests/DummyData.tsx";
 import "../assets/styles/teacher_components.css"
 

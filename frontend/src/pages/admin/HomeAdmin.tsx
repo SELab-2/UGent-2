@@ -1,6 +1,6 @@
 import {JSX} from "react";
 
-export default function LoginScreen(): JSX.Element {
+export default function AdminScreen(): JSX.Element {
     return <div>
         Homescreen Admin!
     </div>
