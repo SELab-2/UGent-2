@@ -5,7 +5,7 @@ import Calendar from "react-calendar";
 import 'react-calendar/dist/Calendar.css';
 import {FaUpload} from "react-icons/fa";
 import {ProjectTeacher, Value} from "../types/project.ts";
-import SimpleTests from "./SimpleTests/SimpleTests.tsx";
+import SimpleTests, { TeacherOrStudent } from "./SimpleTests/SimpleTests.tsx";
 import { dummy_data } from "./SimpleTests/DummyData.tsx";
 
 // SimpleTests
@@ -136,7 +136,7 @@ export function ViewProjectTeacherComponent(props: {
                             <button onClick={() => console.log(data)}>data</button>
                         </>}
                         <SimpleTests
-                            teacherOrStudent={true}
+                            teacherOrStudent={TeacherOrStudent.TEACHER}
                             initialData={calledData}
                             setData={setData}
                             setHasChanged={setHasChanged}
