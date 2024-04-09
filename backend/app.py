@@ -28,6 +28,7 @@ from db.database_errors import (
     ItemNotFoundError,
     NoSuchRelationError,
 )
+from debug import DEBUG
 
 pathlib.Path.mkdir(pathlib.Path("submissions"), exist_ok=True)
 app = FastAPI(
@@ -49,7 +50,6 @@ app.include_router(submission_router, prefix="/api")
 # Add Middlewares
 app.add_middleware(DatabaseSessionMiddleware)
 
-DEBUG = False  # Should always be false in repo
 
 if DEBUG:
     from fastapi.middleware.cors import CORSMiddleware
