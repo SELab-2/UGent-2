@@ -12,7 +12,7 @@ import studentLoader, {STUDENT_ROUTER_ID} from "./dataloaders/StudentLoader.ts";
 import Unauthorized from "./components/authentication/Unauthorized.tsx";
 import teacherLoader, {TEACHER_ROUTER_ID} from "./dataloaders/TeacherLoader.ts";
 // import coursesTeacherLoader, {SUBJECT_TEACHER_ROUTER_ID} from "./dataloaders/CoursesTeacherLoader.ts";
-import loginLoader, {LOGIN_ROUTER_ID} from "./dataloaders/LoginLoader.ts";
+import loginLoader, {LOGIN_ROUTER_ID} from "./dataloaders/LoginLoader.tsx";
 import ErrorLogin from "./components/authentication/ErrorLogin.tsx";
 import ProjectsViewStudent from "./pages/student/ProjectsViewStudent.tsx";
 import CoursesViewStudent from "./pages/student/CoursesViewStudent.tsx";
@@ -46,7 +46,7 @@ const router = createBrowserRouter(
                 <Route path={"admin"} element={<HomeAdmin/>}/>
             </Route>
 
-            <Route element={<RequireAuth allowedRoles={['STUDENT']}/>}>
+            <Route path={'/student'} element={<RequireAuth allowedRoles={['STUDENT']}/>}>
                 <Route id={STUDENT_ROUTER_ID} path={"/student"} element={<HomeStudent/>} loader={studentLoader}/>
                 <Route id={PROJECTS_STUDENT_ROUTER_ID} path={"/student/projects"} element={<ProjectsViewStudent/>}
                        loader={projectsStudentLoader}/>
@@ -54,7 +54,7 @@ const router = createBrowserRouter(
                        loader={coursesStudentLoader}/>
             </Route>
 
-            <Route element={<RequireAuth allowedRoles={['STUDENT', 'TEACHER']}/>}>
+            <Route element={<RequireAuth allowedRoles={['TEACHER']}/>}>
                 <Route id={TEACHER_ROUTER_ID} path={"/teacher"} element={<HomeTeacher/>} loader={teacherLoader}/>
                 <Route id={PROJECTS_TEACHER_ROUTER_ID} path={"/teacher/projects"} element={<ProjectsViewTeacher/>}
                        loader={projectsTeacherLoader}/>
