@@ -25,6 +25,7 @@ import CoursesViewTeacher from "./pages/teacher/CoursesViewTeacher.tsx";
 import {CreateProject} from "./pages/teacher/CreateProject.tsx";
 import CreateCourse from "./pages/teacher/CreateCourse.tsx";
 import projectsTeacherLoader, {PROJECTS_TEACHER_ROUTER_ID} from "./dataloaders/projectsTeacherLoader.ts";
+import Test from "./pages/Test.tsx";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -33,6 +34,7 @@ const router = createBrowserRouter(
             <Route path={"login"} id={LOGIN_ROUTER_ID} element={<LoginScreen/>} loader={loginLoader}
                    errorElement={<ErrorLogin/>}/>
             <Route path={"unauthorized"} element={<Unauthorized/>}/>
+            <Route path={"test"} element={<Test/>}/>
 
             {/* Protected routes */}
             <Route element={<RequireAuth allowedRoles={['ADMIN', 'STUDENT', 'TEACHER']}/>}>

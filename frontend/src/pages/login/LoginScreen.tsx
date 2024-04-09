@@ -35,7 +35,7 @@ const ticketLogin = async (ticket: string, setUser: React.Dispatch<React.SetStat
 }
 
 const isUser = (data?: User) => {
-    return (data && data.user_id && data.user_name && data.user_email && data.user_roles);
+    return (data && data.id && data.name && data.email && data.roles);
 
 }
 
