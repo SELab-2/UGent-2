@@ -3,8 +3,15 @@ import {Header} from "../../components/Header.tsx";
 import {Sidebar} from "../../components/Sidebar.tsx";
 import {SearchBar} from "../../components/SearchBar.tsx";
 import {Table, TableRowProjects} from "../../components/Table.tsx";
+import {useRouteLoaderData} from "react-router-dom";
+import {PROJECTS_STUDENT_ROUTER_ID} from "../../dataloaders/ProjectsStudentLoader.ts";
+import {studentLoaderObject} from "../../dataloaders/StudentLoader.ts";
 
 export default function ProjectsViewStudent(): JSX.Element {
+
+    const data: studentLoaderObject = useRouteLoaderData(PROJECTS_STUDENT_ROUTER_ID) as studentLoaderObject
+    console.log(data.projects)
+
     const tableProjectsActive: TableRowProjects[] = [
         {
             name: "Markov Decision Diagram",
@@ -46,7 +53,8 @@ export default function ProjectsViewStudent(): JSX.Element {
                         <SearchBar placeholder={"zoek een project..."}/>
                         <Table title={"actief"} data={tableProjectsActive} ignoreKeys={["numberOfSubmissions"]}/>
                         <div className={"my-5"}/>
-                        <Table title={"gearchiveerd"} data={tableProjectsArchived} ignoreKeys={["numberOfSubmissions", "deadline"]}/>
+                        <Table title={"gearchiveerd"} data={tableProjectsArchived}
+                               ignoreKeys={["numberOfSubmissions", "deadline"]}/>
                     </div>
                 </div>
             </div>

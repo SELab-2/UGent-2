@@ -1,13 +1,56 @@
-import {CompleteProject} from "../utils/ApiInterfaces.ts";
-import {projectsLoader, teacherStudentRole} from "./SharedFunctions.ts";
+import {CompleteProjectTeacher, Group, Submission} from "../utils/ApiInterfaces.ts";
+import {getAllProjectsAndSubjects, teacherStudentRole} from "./SharedFunctions.ts";
+import apiFetch from "../utils/api/ApiFetch.ts";
+import {Backend_group} from "../utils/BackendInterfaces.ts";
+import {mapGroupList} from "../utils/ApiTypesMapper.ts";
 
 export interface projectsTeacherLoaderObject {
-    projects: CompleteProject[]
+    projects: CompleteProjectTeacher[]
 }
 
 export const PROJECTS_TEACHER_ROUTER_ID = "projects_teacher";
 
 export default async function projectsTeacherLoader(): Promise<projectsTeacherLoaderObject> {
-    const projects: CompleteProject[] = await projectsLoader(teacherStudentRole.TEACHER);
+    const projects: CompleteProjectTeacher[] = await LoadProjectsForTeacher();
     return {projects};
+}
+
+export async function LoadProjectsForTeacher(): Promise<CompleteProjectTeacher[]> {
+    const {subjects, projects} = await getAllProjectsAndSubjects(teacherStudentRole.TEACHER);
+    if (!Array.isArray(projects) || !Array.isArray(subjects)) {
+        throw Error("Problem loading projects or courses.");
+    }
+
+    const groupPromises: Promise<Group[][]> = Promise.all(projects.map(async project => {
+        const groups = await apiFetch(`/projects/${project.project_id}/groups`) as Backend_group[];
+        return mapGroupList(groups);
+    }));
+
+    const groups: Group[][] = (await groupPromises)
+    const amount_of_submissions: number[] = []
+    for (const groupArray of groups) {
+        let amount = 0
+        for (const group of groupArray) {
+            try {
+                const submission = await apiFetch(`/groups/${group.group_id}/submission`) as Submission;
+                if (submission) {
+                    amount++;
+                }
+            } catch (e) {
+                //console.log(e);
+            }
+        }
+        amount_of_submissions.push(amount);
+    }
+    return projects.map((project, index) => {
+        const subject = subjects.find(subject => subject.subject_id === project.subject_id);
+        if (!subject) {
+            throw Error("Subject not found for project.");
+        }
+        return {
+            ...project,
+            ...subject,
+            submission_amount: amount_of_submissions[index],
+        }
+    })
 }

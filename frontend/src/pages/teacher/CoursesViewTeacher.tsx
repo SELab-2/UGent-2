@@ -4,14 +4,13 @@ import {Header} from "../../components/Header.tsx";
 import {Sidebar} from "../../components/Sidebar.tsx";
 import {SearchBar} from "../../components/SearchBar.tsx";
 import {RegularATag} from "../../components/RegularATag.tsx";
-
-// import {useRouteLoaderData} from "react-router-dom";
-// import {SUBJECT_TEACHER_ROUTER_ID, subjectsTeacherLoaderObject} from "../../dataloaders/SubjectsTeacherLoader.ts";
+import {COURSES_TEACHER_ROUTER_ID, coursesTeacherLoaderObject} from "../../dataloaders/CoursesTeacherLoader.ts";
+import {useRouteLoaderData} from "react-router-dom";
 
 
 export default function CoursesViewTeacher(): JSX.Element {
-    // const data= useRouteLoaderData(SUBJECT_TEACHER_ROUTER_ID) as subjectsTeacherLoaderObject;
-    // console.log(data);
+    const data = useRouteLoaderData(COURSES_TEACHER_ROUTER_ID) as coursesTeacherLoaderObject;
+    console.log(data.courses);
 
     const tableCoursesActive: TableRowCourses[] = [
         {

@@ -1,4 +1,6 @@
-import {CompleteProject, Group, Project, Subject, Submission} from "../utils/ApiInterfaces.ts";
+import {Project, properSubject, Subject} from "../utils/ApiInterfaces.ts";
+import {mapProjectList, mapSubjectList} from "../utils/ApiTypesMapper.ts";
+import {Backend_Project, Backend_Subject} from "../utils/BackendInterfaces.ts";
 import apiFetch from "../utils/api/ApiFetch.ts";
 
 export enum teacherStudentRole {
@@ -6,23 +8,34 @@ export enum teacherStudentRole {
     TEACHER = "teacher"
 }
 
-export async function projectsLoader(role: teacherStudentRole): Promise<CompleteProject[]> {
+export async function coursesLoader(role: teacherStudentRole): Promise<properSubject[]> {
     const {subjects, projects} = await getAllProjectsAndSubjects(role);
-    if (! Array.isArray(projects) || ! Array.isArray(subjects)) {
+    if (!Array.isArray(projects) || !Array.isArray(subjects)) {
         throw Error("Problem loading projects or courses.");
     }
-    const submissions: Submission[] = await Promise.all(projects.map(project => {
-       return getSubmissionForProject(project.project_id);
-    }));
-    return projects.map((project, index) => {
-        const subject = subjects.find(subject => subject.subject_id === project.subject_id);
-        if (subject === undefined) {
-            throw Error("there should always be a subject for a project");
+    return subjects.map((subject) => {
+        const subjectProjects = projects.filter(project => project.subject_id === subject.subject_id);
+        if (subjectProjects.length === 0) {
+            return {
+                active_projects: 0,
+                first_deadline: null,
+                subject_id: subject.subject_id,
+                subject_name: subject.subject_name
+            };
         }
+        const shortestDeadlineProject = subjectProjects.reduce((minProject, project) => {
+            if (project.project_deadline < minProject.project_deadline) {
+                return project;
+            } else {
+                return minProject;
+            }
+        });
+        const firstDeadline = shortestDeadlineProject.project_deadline;
         return {
-            ...project,
-            ...subject,
-            ...submissions[index]
+            active_projects: subjectProjects.length,
+            first_deadline: firstDeadline,
+            subject_id: subject.subject_id,
+            subject_name: subject.subject_name
         }
     });
 }
@@ -33,12 +46,9 @@ export interface projectsAndSubjects {
 }
 
 export async function getAllProjectsAndSubjects(role: teacherStudentRole): Promise<projectsAndSubjects> {
-    const projects: Project[] = (await apiFetch(`/${role}/projects`)) as Project[];
-    const subjects: Subject[] = (await apiFetch(`/${role}/subjects`)) as Subject[];
+    const apiSubjects = (await apiFetch(`/${role}/subjects`)) as Backend_Subject[];
+    const apiProjects = (await apiFetch(`/${role}/projects`)) as Backend_Project[];
+    const projects: Project[] = mapProjectList(apiProjects);
+    const subjects: Subject[] = mapSubjectList(apiSubjects);
     return {projects, subjects}
-}
-
-export async function getSubmissionForProject(project_id: number): Promise<Submission> {
-    const group: Group = (await apiFetch(`/projects/${project_id}/group`)) as Group;
-    return (await apiFetch(`/groups/${group.group_id}/submission`)) as Submission;
 }

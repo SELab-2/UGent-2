@@ -12,8 +12,9 @@ export interface Project {
     project_requirements: string,
     project_visible: string,
     project_max_students: number,
-    subject_id: number
+    subject_id: number,
 }
+
 
 export enum SUBMISSION_STATE {
     Pending = 1,
@@ -22,7 +23,7 @@ export enum SUBMISSION_STATE {
 }
 
 export interface Submission {
-    submission_id: number,
+    submission_id: number
     submission_date: string | Date,
     submission_group_id: number,
     submission_student_id: number,
@@ -36,7 +37,13 @@ export interface Group {
     project_id: number
 }
 
-export interface CompleteProject extends Project, Submission, Subject {}
+export interface CompleteProject extends Project, Subject {
+    submission_state: SUBMISSION_STATE,
+}
+
+export interface CompleteProjectTeacher extends Project, Subject {
+    submission_amount: number,
+}
 
 export interface properSubject extends Subject {
     active_projects: number,
@@ -48,8 +55,9 @@ export interface Token {
 }
 
 export interface User {
-    id: number,
-    name: string,
-    email: string,
-    roles: string[]
+    user_id: number,
+    user_name: string,
+    user_email: string,
+    user_language: string,
+    user_roles: string[]
 }
