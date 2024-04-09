@@ -20,11 +20,9 @@ from domain.logic.teacher import get_teacher, is_user_teacher
 
 def get_authenticated_user(request: Request) -> int:
     token: str | None = request.headers.get("Authorization")
-    if token:
-        token = token.replace("Bearer ", "")
     if token is None:
         raise InvalidAuthenticationError
-
+    token = token.replace("Bearer ", "")
     uid = verify_token(token)
     if uid is None:
         raise InvalidAuthenticationError
