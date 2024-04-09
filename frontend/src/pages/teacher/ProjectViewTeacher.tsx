@@ -3,6 +3,7 @@ import {Sidebar} from "../../components/Sidebar.tsx";
 import {ProjectTeacherComponent} from "../../components/ProjectTeacherComponent.tsx";
 import {ProjectTeacher} from "../../types/project.ts";
 import Statistics from "../../components/Statistics.tsx";
+import {RegularButton} from "../../components/RegularButton.tsx";
 
 export default function ProjectViewTeacher() {
 
@@ -27,8 +28,12 @@ export default function ProjectViewTeacher() {
                 <div className={"side-bar is-flex is-justify-content-center"}>
                     <Sidebar home={"teacher"}/>
                 </div>
-                <div className={"student-main mt-6"}>
-                    <Statistics/>
+                <div className={"student-main my-3 is-flex is-flex-direction-column"}>
+                    <div className={"mx-5 mb-5 is-flex is-justify-content-start"}>
+                        <RegularButton placeholder={"Save"} add={false} onClick={() => {}}/>
+                        <div className={"mr-5"}/>
+                        <Statistics/>
+                    </div>
                     <ProjectTeacherComponent project={project}/>
                 </div>
             </div>
