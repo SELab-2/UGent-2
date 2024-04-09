@@ -4,6 +4,10 @@ import { test, expect } from 'vitest';
 
 test('renders DefaultErrorPage', () => {
   render(<DefaultErrorPage title="Error" body="Uh oh!" />);
-  const linkElement = screen.getByText(/Error/i);
+  const titleElement = screen.getByText(/Error/i);
+  expect(titleElement).toBeTruthy();
+  const bodyElement = screen.getByText(/Uh oh!/i);
+  expect(bodyElement).toBeTruthy();
+  const linkElement = screen.getByText(/Go back to the homepage/i);
   expect(linkElement).toBeTruthy();
 });

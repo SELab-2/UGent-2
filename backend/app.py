@@ -49,7 +49,7 @@ app.include_router(submission_router, prefix="/api")
 # Add Middlewares
 app.add_middleware(DatabaseSessionMiddleware)
 
-DEBUG = True  # Should always be false in repo
+DEBUG = False  # Should always be false in repo
 
 if DEBUG:
     from fastapi.middleware.cors import CORSMiddleware

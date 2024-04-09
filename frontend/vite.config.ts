@@ -13,11 +13,18 @@ export default defineConfig({
         port: 8080, // nodig voor CAS
     },
     test: {
-        setupFiles: ['src/test/vitest.setup.ts'],
+        setupFiles: ['src/vitest.setup.ts'],
         environment: 'jsdom',
         coverage: {
             reporter: ['text', 'html'],
-        }
+        },
+        exclude: [
+            '**/node_modules/**',
+            '**/dist/**',
+            '**/.{idea,git,cache,output,temp}/**',
+            '**/{karma,rollup,webpack,vite,vitest,jest,ava,babel,nyc,cypress,tsup,build}.config.*',
+            '**/*.spec.ts', // Exclude all .spec.ts files
+        ],
     }
 })
 

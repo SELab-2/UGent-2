@@ -11,7 +11,10 @@
     "build": "tsc && vite build",
     "lint": "tsc --noEmit && eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "test": "vitest"
+    "test:vitest": "vitest",
+    "test:coverage": "vitest --coverage",
+    "test:e2e": "playwright test",
+    "test": "npm run test:vitest && npm run test:e2e"
   },
   "dependencies": {
     "bulma": "^0.9.4",
@@ -24,12 +27,15 @@
     "react-router-dom": ">=6.22.2"
   },
   "devDependencies": {
+    "@playwright/test": "^1.43.0",
     "@testing-library/react": "^14.2.2",
+    "@types/node": "^20.12.6",
     "@types/react": "^18.2.56",
     "@types/react-dom": "^18.2.19",
     "@typescript-eslint/eslint-plugin": "^7.0.2",
     "@typescript-eslint/parser": "^7.0.2",
     "@vitejs/plugin-react": "^4.2.1",
+    "@vitest/coverage-v8": "^1.4.0",
     "eslint": "^8.57.0",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",

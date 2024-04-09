@@ -23,7 +23,7 @@
   },
   "include": [
     "src",
-    "src/test/vitest.setup.ts"
+    "src/vitest.setup.ts"
   ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
