@@ -2,7 +2,7 @@ import pathlib
 
 import uvicorn
 from fastapi import Depends, FastAPI
-from fastapi.security import APIKeyHeader
+from fastapi.security import HTTPBearer
 from starlette import status
 from starlette.requests import Request
 from starlette.responses import JSONResponse
@@ -28,12 +28,13 @@ from db.database_errors import (
     ItemNotFoundError,
     NoSuchRelationError,
 )
+from debug import DEBUG
 
 pathlib.Path.mkdir(pathlib.Path("submissions"), exist_ok=True)
 app = FastAPI(
     docs_url="/api/docs",
     openapi_tags=tags_metadata,
-    dependencies=[Depends(APIKeyHeader(name="cas", auto_error=False))],  # To authenticate via Swagger UI
+    dependencies=[Depends(HTTPBearer(auto_error=False))],  # To authenticate via Swagger UI
 )
 
 # Koppel controllers uit andere modules.
@@ -49,7 +50,6 @@ app.include_router(submission_router, prefix="/api")
 # Add Middlewares
 app.add_middleware(DatabaseSessionMiddleware)
 
-DEBUG = False  # Should always be false in repo
 
 if DEBUG:
     from fastapi.middleware.cors import CORSMiddleware
