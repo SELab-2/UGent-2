@@ -7,9 +7,7 @@ import {FaUpload} from "react-icons/fa";
 import {ProjectTeacher, Value} from "../types/project.ts";
 import "../assets/styles/teacher_components.css"
 
-export function ViewProjectTeacherComponent(props: {
-    project: ProjectTeacher
-}): JSX.Element {
+export function ProjectTeacherComponent(props: { project: ProjectTeacher }): JSX.Element {
 
     const [projectName, setProjectName] = useState<string>(props.project.projectName)
     const [courseName, setCourseName] = useState<string>(props.project.courseName)
@@ -65,22 +63,23 @@ export function ViewProjectTeacherComponent(props: {
                 <div className="field-label">
                     <label className="label">Deadline:</label>
                 </div>
-                <div className="field-body">
-                    <label>
-                        <input type="checkbox" onChange={expandDeadline} checked={showCalender}/>
-                        {showCalender &&
-                            <>
+                <div
+                    className="field-body is-flex is-flex-direction-column is-align-items-start is-justify-content-center">
+                    <input type="checkbox" onChange={expandDeadline} checked={showCalender}/>
+                    {showCalender &&
+                        <div>
+                            <div>
                                 <Calendar onChange={e => setDeadline(e)} value={deadline}/>
-                                <div className="is-horizontal field">
-                                    <SelectionBox options={hours_array} value={hours.toString()}
-                                                  setValue={setHours}/>
-                                    <label className={"title ml-3 mr-3"}>:</label>
-                                    <SelectionBox options={minutes_array} value={minutes.toString()}
-                                                  setValue={setMinutes}/>
-                                </div>
-                            </>
-                        }
-                    </label>
+                            </div>
+                            <div className="is-horizontal field is-justify-content-center mt-2">
+                                <SelectionBox options={hours_array} value={hours.toString()}
+                                              setValue={setHours}/>
+                                <label className={"title mx-3"}>:</label>
+                                <SelectionBox options={minutes_array} value={minutes.toString()}
+                                              setValue={setMinutes}/>
+                            </div>
+                        </div>
+                    }
                 </div>
             </div>
             <div className="field is-horizontal">
