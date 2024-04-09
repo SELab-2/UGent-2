@@ -1,5 +1,5 @@
 import {JSX} from "react";
-import delphi_full from "/delphi_full.png";
+import delphi_full from "../../../public/delphi_full.png";
 
 export default function ErrorLogin(): JSX.Element {
 

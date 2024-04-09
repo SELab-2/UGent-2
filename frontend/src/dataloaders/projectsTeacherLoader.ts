@@ -1,6 +1,6 @@
 import {CompleteProjectTeacher, Group, Submission} from "../utils/ApiInterfaces.ts";
 import {getAllProjectsAndSubjects, teacherStudentRole} from "./SharedFunctions.ts";
-import apiFetch from "../utils/ApiFetch.ts";
+import apiFetch from "../utils/api/ApiFetch.ts";
 import {Backend_group} from "../utils/BackendInterfaces.ts";
 import {mapGroupList} from "../utils/ApiTypesMapper.ts";
 
