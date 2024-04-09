@@ -1,5 +1,5 @@
 import {CompleteProject, Group, Project, Subject, Submission} from "../utils/ApiInterfaces.ts";
-import apiFetch from "../utils/ApiFetch.ts";
+import apiFetch from "../utils/api/ApiFetch.ts";
 
 export enum teacherStudentRole {
     STUDENT = "student",

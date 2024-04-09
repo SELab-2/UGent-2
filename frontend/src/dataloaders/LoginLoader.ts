@@ -1,5 +1,5 @@
 import {User} from "../utils/ApiInterfaces.ts";
-import apiFetch from "../utils/ApiFetch.ts";
+import apiFetch from "../utils/api/ApiFetch.ts";
 
 export const LOGIN_ROUTER_ID = "login";
 
