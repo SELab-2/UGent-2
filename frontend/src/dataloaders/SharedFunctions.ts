@@ -1,7 +1,7 @@
 import {Project, properSubject, Subject} from "../utils/ApiInterfaces.ts";
 import {mapProjectList, mapSubjectList} from "../utils/ApiTypesMapper.ts";
 import {Backend_Project, Backend_Subject} from "../utils/BackendInterfaces.ts";
-import apiFetch from "../utils/ApiFetch.ts";
+import apiFetch from "../utils/api/ApiFetch.ts";
 
 export enum teacherStudentRole {
     STUDENT = "student",

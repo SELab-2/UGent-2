@@ -1,10 +1,10 @@
 import React, {JSX, useEffect} from "react";
 import {Navigate, useLocation, useRouteLoaderData} from 'react-router-dom';
 import useAuth from "../../hooks/useAuth.ts";
-import loginLoader, {LOGIN_ROUTER_ID, loginLoaderObject} from "../../dataloaders/LoginLoader.tsx";
+import loginLoader, {LOGIN_ROUTER_ID, loginLoaderObject} from "../../dataloaders/LoginLoader.ts";
 import LoginForm from "../../components/authentication/LoginForm.tsx";
+import {DEBUG} from "../root.tsx";
 import {Token, User} from "../../utils/ApiInterfaces.ts";
-import {post_ticket} from "../../utils/api/Login.ts";
 
 interface location_type {
     search?: { ticket?: string },
@@ -13,12 +13,17 @@ interface location_type {
 }
 
 const ticketLogin = async (ticket: string, setUser: React.Dispatch<React.SetStateAction<User | undefined>>) => {
-    const token: Token = await post_ticket(ticket)
+    let url = '/api/login?ticket=' + ticket
+    if (DEBUG) {
+        url = 'http://127.0.0.1:8000/api/login?ticket=' + ticket
+    }
+    const token = await (await fetch(url, {method: 'POST', headers: {'Content-Type': 'application/json'}}))
+        .json() as Token
 
     if (token.token) {
         localStorage.setItem('token', token.token)
         const result: loginLoaderObject = await loginLoader()
-        if (isUser(result.user)) {
+        if (result.user) {
             setUser(result.user)
         }else{
             localStorage.removeItem('token')
@@ -27,10 +32,6 @@ const ticketLogin = async (ticket: string, setUser: React.Dispatch<React.SetStat
     }
 
     return token;
-}
-
-const isUser = (data?: User) => {
-    return (data && data.user_id && data.user_name && data.user_email && data.user_roles);
 }
 
 export default function LoginScreen(): JSX.Element {
@@ -51,13 +52,9 @@ export default function LoginScreen(): JSX.Element {
     useEffect(() => {
         // If the saved token is valid => the user will be logged in
         if (data && data.user) {
-            if (isUser(data.user)) {
-                setUser(data.user)
-            }else{
-                setUser(undefined)
-                localStorage.removeItem('token')
-            }
-        } else if (!user && ticket) {
+            setUser(data.user)
+        }
+        else if (!user && ticket) {
             void ticketLogin(ticket, setUser);
         }
     }, [data, setUser, ticket, user]);

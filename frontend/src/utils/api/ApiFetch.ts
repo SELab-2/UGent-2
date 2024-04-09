@@ -1,4 +1,4 @@
-import {DEBUG} from "../pages/root.tsx";
+import {DEBUG} from "../../pages/root.tsx";
 
 
 const ApiFetch = async (url: string, options?: RequestInit) => {
