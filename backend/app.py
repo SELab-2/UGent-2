@@ -2,7 +2,7 @@ import pathlib
 
 import uvicorn
 from fastapi import Depends, FastAPI
-from fastapi.security import APIKeyHeader
+from fastapi.security import HTTPBearer
 from starlette import status
 from starlette.requests import Request
 from starlette.responses import JSONResponse
@@ -34,7 +34,7 @@ pathlib.Path.mkdir(pathlib.Path("submissions"), exist_ok=True)
 app = FastAPI(
     docs_url="/api/docs",
     openapi_tags=tags_metadata,
-    dependencies=[Depends(APIKeyHeader(name="cas", auto_error=False))],  # To authenticate via Swagger UI
+    dependencies=[Depends(HTTPBearer(auto_error=False))],  # To authenticate via Swagger UI
 )
 
 # Koppel controllers uit andere modules.

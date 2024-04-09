@@ -1,1 +1,3 @@
-DEBUG = False  # Should always be false in repo
+import os
+
+DEBUG = os.getenv("DELPHI_DEBUG") is not None
