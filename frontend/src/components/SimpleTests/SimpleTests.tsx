@@ -48,7 +48,7 @@ FIXME:  Bij het verwijderen van een file, wordt er nog geen warning ondersteund 
 
 /* text literals */
 const CONTROLE_TEXT = "Bij veranderingen zullen alle indieningen opnieuw gecontroleerd worden."
-const WARNING_CHANGE_ROOT = "All current file specifications will be removed. Are you sure you want to change the root type?"
+const WARNING_CHANGE_ROOT = "Alle huidige file-specificaties zullen verwijderd worden. Ben je zeker dat je het root-type wil aanpassen?"
 const SINGLE_FILE_TEXT = "enkele file"
 const ZIP_FILE_TEXT = "zip-bestand"
 const SPECIFY_TEXT_TEACHER = "Specifieer welke files de zip moet bevatten:" 
