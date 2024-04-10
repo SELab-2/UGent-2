@@ -11,7 +11,6 @@ import HomeTeacher from "./pages/teacher/HomeTeacher.tsx";
 import studentLoader, {STUDENT_ROUTER_ID} from "./dataloaders/StudentLoader.ts";
 import Unauthorized from "./components/authentication/Unauthorized.tsx";
 import teacherLoader, {TEACHER_ROUTER_ID} from "./dataloaders/TeacherLoader.ts";
-// import subjectsTeacherLoader, {SUBJECT_TEACHER_ROUTER_ID} from "./dataloaders/SubjectsTeacherLoader.ts";
 import loginLoader, {LOGIN_ROUTER_ID} from "./dataloaders/LoginLoader.ts";
 import ErrorLogin from "./components/authentication/ErrorLogin.tsx";
 import ProjectsViewStudent from "./pages/student/ProjectsViewStudent.tsx";
@@ -28,6 +27,14 @@ import ProjectViewStudent from "./pages/student/ProjectViewStudent.tsx";
 import ProjectViewTeacher from "./pages/teacher/ProjectViewTeacher.tsx";
 import CourseViewStudent from "./pages/student/CourseViewStudent.tsx";
 import CourseViewTeacher from "./pages/teacher/CourseViewTeacher.tsx";
+import projectsTeacherLoader, {PROJECTS_TEACHER_ROUTER_ID} from "./dataloaders/projectsTeacherLoader.ts";
+import projectsStudentLoader, {PROJECTS_STUDENT_ROUTER_ID} from "./dataloaders/ProjectsStudentLoader.ts";
+import coursesStudentLoader, {COURSES_STUDENT_ROUTER_ID} from './dataloaders/CoursesStudentLoader.ts';
+import coursesTeacherLoader, {COURSES_TEACHER_ROUTER_ID} from "./dataloaders/CoursesTeacherLoader.ts";
+import projectStudentLoader, {PROJECT_STUDENT} from "./dataloaders/ProjectStudent.ts";
+import projectTeacherLoader, {PROJECT_TEACHER} from "./dataloaders/ProjectTeacher.ts";
+import courseTeacherLoader, {COURSE_TEACHER} from "./dataloaders/CourseTeacherLoader.ts";
+import courseStudentLoader, {COURSE_STUDENT} from "./dataloaders/CourseStudentLoader.ts";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -48,19 +55,35 @@ const router = createBrowserRouter(
 
             <Route element={<RequireAuth allowedRoles={['STUDENT']}/>}>
                 <Route id={STUDENT_ROUTER_ID} path={"/student"} element={<HomeStudent/>} loader={studentLoader}/>
-                <Route path={"/student/projects"} element={<ProjectsViewStudent/>}/>
-                <Route path={"/student/project/:id"} element={<ProjectViewStudent/>}/>
-                <Route path={"/student/courses"} element={<CoursesViewStudent/>}/>
-                <Route path={"/student/course/:id"} element={<CourseViewStudent/>}/>
+                <Route id={PROJECTS_STUDENT_ROUTER_ID} path={"/student/projects"} element={<ProjectsViewStudent/>}
+                       loader={projectsStudentLoader}/>
+                <Route id={PROJECT_STUDENT} path={"/student/project/:id"} element={<ProjectViewStudent/>}
+                       loader={({params}) => {
+                           return projectStudentLoader(params.id);
+                       }}/>
+                <Route id={COURSES_STUDENT_ROUTER_ID} path={"/student/courses"} element={<CoursesViewStudent/>}
+                       loader={coursesStudentLoader}/>
+                <Route id={COURSE_STUDENT} path={"/student/course/:id"} element={<CourseViewStudent/>}
+                       loader={({params}) => {
+                           return courseStudentLoader(params.id);
+                       }}/>
             </Route>
 
-            <Route element={<RequireAuth allowedRoles={['STUDENT', 'TEACHER']}/>}>
+            <Route element={<RequireAuth allowedRoles={['TEACHER']}/>}>
                 <Route id={TEACHER_ROUTER_ID} path={"/teacher"} element={<HomeTeacher/>} loader={teacherLoader}/>
-                <Route path={"/teacher/projects"} element={<ProjectsViewTeacher/>}/>
-                <Route path={"/teacher/project/:id"} element={<ProjectViewTeacher/>}/>
+                <Route id={PROJECTS_TEACHER_ROUTER_ID} path={"/teacher/projects"} element={<ProjectsViewTeacher/>}
+                       loader={projectsTeacherLoader}/>
+                <Route id={PROJECT_TEACHER} path={"/teacher/project/:id"} element={<ProjectViewTeacher/>}
+                       loader={({params}) => {
+                           return projectTeacherLoader(params.id);
+                       }}/>
                 <Route path={"/teacher/projects/create"} element={<CreateProject/>}/>
-                <Route path={"/teacher/courses"} element={<CoursesViewTeacher/>} /*loader={subjectsTeacherLoader} id={SUBJECT_TEACHER_ROUTER_ID}*//>
-                <Route path={"/teacher/course/:id"} element={<CourseViewTeacher/>}/>
+                <Route id={COURSES_TEACHER_ROUTER_ID} path={"/teacher/courses"} element={<CoursesViewTeacher/>}
+                       loader={coursesTeacherLoader}/>
+                <Route id={COURSE_TEACHER} path={"/teacher/course/:id"} element={<CourseViewTeacher/>}
+                       loader={({params}) => {
+                           return courseTeacherLoader(params.id);
+                       }}/>
                 <Route path={"/teacher/courses/create"} element={<CreateCourse/>}/>
             </Route>
         </Route>

@@ -5,6 +5,9 @@ import {SearchBar} from "../../components/SearchBar.tsx";
 import {Table} from "../../components/Table.tsx";
 import {RegularATag} from "../../components/RegularATag.tsx";
 import {TableRowProjects} from "../../types/tableRows.ts";
+import {useRouteLoaderData} from "react-router-dom";
+import {teacherLoaderObject} from "../../dataloaders/TeacherLoader.ts";
+import {PROJECTS_TEACHER_ROUTER_ID} from "../../dataloaders/projectsTeacherLoader.ts";
 
 export default function ProjectsViewTeacher(): JSX.Element {
     const tableProjectsActive: TableRowProjects[] = [
@@ -35,6 +38,9 @@ export default function ProjectsViewTeacher(): JSX.Element {
             deadline: "23:59 - 21/03/2024"
         }
     ];
+
+    const data: teacherLoaderObject = useRouteLoaderData(PROJECTS_TEACHER_ROUTER_ID) as teacherLoaderObject
+    console.log(data.projects)
 
     const tableProjectsHidden: TableRowProjects[] = [];
 
