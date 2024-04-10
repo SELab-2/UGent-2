@@ -6,14 +6,12 @@ export const PROJECT_STUDENT = "project_student";
 
 export interface ProjectStudentLoaderObject {
     project?: CompleteProject
-    found: boolean
 }
 
-// TODO: aan router toevoegen wanneer emma haar branch is gemerged
-export default async function ProjectStudentLoader(project_id: number): Promise<ProjectStudentLoaderObject> {
-    const projects = await LoadProjectsForStudent(false, project_id)
-    if (projects.length === 0) {
-        return {project: undefined, found: false};
+export default async function projectStudentLoader(project_id?: string): Promise<ProjectStudentLoaderObject> {
+    if (!project_id || isNaN(parseInt(project_id))) {
+        return {project: undefined};
     }
-    return {project: projects[0], found: true};
+    const id = parseInt(project_id);
+    return {project: (await LoadProjectsForStudent(false, id)).find(() => true)};
 }

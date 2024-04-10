@@ -8,7 +8,6 @@ import {STUDENT_ROUTER_ID, studentLoaderObject} from "../../dataloaders/StudentL
 import {useRouteLoaderData} from "react-router-dom";
 
 export default function HomeStudent(): JSX.Element {
-    // data contains a list of Project in data.projects (i think)
     const data: studentLoaderObject = useRouteLoaderData(STUDENT_ROUTER_ID) as studentLoaderObject
     console.log(data) // TODO: remove
 
