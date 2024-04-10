@@ -24,6 +24,10 @@ import ProjectsViewTeacher from "./pages/teacher/ProjectsViewTeacher.tsx";
 import CoursesViewTeacher from "./pages/teacher/CoursesViewTeacher.tsx";
 import {CreateProject} from "./pages/teacher/CreateProject.tsx";
 import CreateCourse from "./pages/teacher/CreateCourse.tsx";
+import ProjectViewStudent from "./pages/student/ProjectViewStudent.tsx";
+import ProjectViewTeacher from "./pages/teacher/ProjectViewTeacher.tsx";
+import CourseViewStudent from "./pages/student/CourseViewStudent.tsx";
+import CourseViewTeacher from "./pages/teacher/CourseViewTeacher.tsx";
 import projectsTeacherLoader, {PROJECTS_TEACHER_ROUTER_ID} from "./dataloaders/projectsTeacherLoader.ts";
 import projectsStudentLoader, {PROJECTS_STUDENT_ROUTER_ID} from "./dataloaders/ProjectsStudentLoader.ts";
 import coursesStudentLoader, {COURSES_STUDENT_ROUTER_ID} from './dataloaders/CoursesStudentLoader.ts';
@@ -49,18 +53,25 @@ const router = createBrowserRouter(
             <Route element={<RequireAuth allowedRoles={['STUDENT']}/>}>
                 <Route id={STUDENT_ROUTER_ID} path={"/student"} element={<HomeStudent/>} loader={studentLoader}/>
                 <Route id={PROJECTS_STUDENT_ROUTER_ID} path={"/student/projects"} element={<ProjectsViewStudent/>}
-                       loader={projectsStudentLoader}/>
+                    loader={projectsStudentLoader}/>
+                <Route path={"/student/project/:id"} element={<ProjectViewStudent/>}/>
                 <Route id={COURSES_STUDENT_ROUTER_ID} path={"/student/courses"} element={<CoursesViewStudent/>}
-                       loader={coursesStudentLoader}/>
+                    loader={coursesStudentLoader}/>
+                {/* TODO: loader toevoegen*/}
+                <Route path={"/student/course/:id"} element={<CourseViewStudent/>}/>
             </Route>
 
             <Route element={<RequireAuth allowedRoles={['STUDENT', 'TEACHER']}/>}>
                 <Route id={TEACHER_ROUTER_ID} path={"/teacher"} element={<HomeTeacher/>} loader={teacherLoader}/>
                 <Route id={PROJECTS_TEACHER_ROUTER_ID} path={"/teacher/projects"} element={<ProjectsViewTeacher/>}
-                       loader={projectsTeacherLoader}/>
+                    loader={projectsTeacherLoader}/>
+                {/* TODO: loader toevoegen*/}
+                <Route path={"/teacher/project/:id"} element={<ProjectViewTeacher/>}/>
                 <Route path={"/teacher/projects/create"} element={<CreateProject/>}/>
-                <Route id={COURSES_TEACHER_ROUTER_ID} path={"/teacher/courses"} element={
-                    <CoursesViewTeacher/>} loader={coursesTeacherLoader}/>
+                <Route id={COURSES_TEACHER_ROUTER_ID} path={"/teacher/courses"} element={<CoursesViewTeacher/>}
+                    loader={coursesTeacherLoader}/>
+                {/* TODO: loader toevoegen*/}
+                <Route path={"/teacher/course/:id"} element={<CourseViewTeacher/>}/>
                 <Route path={"/teacher/courses/create"} element={<CreateCourse/>}/>
             </Route>
         </Route>
