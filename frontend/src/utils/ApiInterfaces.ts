@@ -38,10 +38,13 @@ export interface Group {
 }
 
 export interface CompleteProject extends Project, Subject {
+}
+
+export interface CompleteProjectStudent extends CompleteProject {
     submission_state: SUBMISSION_STATE,
 }
 
-export interface CompleteProjectTeacher extends Project, Subject {
+export interface CompleteProjectTeacher extends CompleteProject {
     submission_amount: number,
 }
 

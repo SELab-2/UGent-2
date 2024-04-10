@@ -1,5 +1,5 @@
-import {CompleteProject, Group, Submission} from "../utils/ApiInterfaces.ts";
-import {getAllProjectsAndSubjects, teacherStudentRole} from "./SharedFunctions.ts";
+import {CompleteProjectStudent, Group, Submission} from "../utils/ApiInterfaces.ts";
+import {getAllProjectsAndSubjects, teacherStudentRole} from "./loader_helpers/SharedFunctions.ts";
 import apiFetch from "../utils/ApiFetch.ts";
 import {Backend_group, Backend_submission} from "../utils/BackendInterfaces.ts";
 import {mapGroup, mapSubmission} from "../utils/ApiTypesMapper.ts";
@@ -7,15 +7,15 @@ import {mapGroup, mapSubmission} from "../utils/ApiTypesMapper.ts";
 export const PROJECTS_STUDENT_ROUTER_ID = "projects_student";
 
 export interface projectsStudentLoaderObject {
-    projects: CompleteProject[]
+    projects: CompleteProjectStudent[]
 }
 
 export default async function projectsStudentLoader(): Promise<projectsStudentLoaderObject> {
-    const projects: CompleteProject[] = await LoadProjectsForStudent();
+    const projects: CompleteProjectStudent[] = await LoadProjectsForStudent();
     return {projects};
 }
 
-export async function LoadProjectsForStudent(filter_on_current: boolean = false, project_id?: number): Promise<CompleteProject[]> {
+export async function LoadProjectsForStudent(filter_on_current: boolean = false, project_id?: number): Promise<CompleteProjectStudent[]> {
     if (project_id) {
         filter_on_current = false;
     }

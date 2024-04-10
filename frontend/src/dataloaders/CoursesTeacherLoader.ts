@@ -1,5 +1,5 @@
 import {properSubject} from "../utils/ApiInterfaces.ts";
-import {coursesLoader, teacherStudentRole} from "./SharedFunctions.ts";
+import {coursesLoader, teacherStudentRole} from "./loader_helpers/SharedFunctions.ts";
 
 export interface coursesTeacherLoaderObject {
     courses: properSubject[]

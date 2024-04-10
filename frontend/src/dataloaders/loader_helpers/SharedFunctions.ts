@@ -1,11 +1,32 @@
-import {Project, properSubject, Subject} from "../utils/ApiInterfaces.ts";
-import apiFetch from "../utils/ApiFetch.ts";
-import {mapProjectList, mapSubjectList} from "../utils/ApiTypesMapper.ts";
-import {Backend_Project, Backend_Subject} from "../utils/BackendInterfaces.ts";
+import {Project, properSubject, Subject} from "../../utils/ApiInterfaces.ts";
+import apiFetch from "../../utils/ApiFetch.ts";
+import {mapProjectList, mapSubjectList} from "../../utils/ApiTypesMapper.ts";
+import {Backend_Project, Backend_Subject} from "../../utils/BackendInterfaces.ts";
 
 export enum teacherStudentRole {
     STUDENT = "student",
     TEACHER = "teacher"
+}
+
+export interface CourseLoaderObject {
+    course?: properSubject
+}
+
+export async function parse_id_and_get_item<T>(id: string | undefined, loader: (id: number) => Promise<T[]>): Promise<T | undefined> {
+    if (!id || isNaN(parseInt(id))) {
+        return undefined;
+    }
+    const parsed_id = parseInt(id);
+    return (await loader(parsed_id)).find(() => true);
+}
+
+export async function courseLoader(role: teacherStudentRole, course_id: string | undefined): Promise<CourseLoaderObject> {
+    return {
+        course: await parse_id_and_get_item(
+            course_id,
+            (id) => coursesLoader(role, id)
+        )
+    };
 }
 
 export async function coursesLoader(role: teacherStudentRole, course_id?: number): Promise<properSubject[]> {
