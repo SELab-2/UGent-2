@@ -8,12 +8,19 @@ export enum teacherStudentRole {
     TEACHER = "teacher"
 }
 
-export async function coursesLoader(role: teacherStudentRole): Promise<properSubject[]> {
-    const {subjects, projects} = await getAllProjectsAndSubjects(role);
-    if (!Array.isArray(projects) || !Array.isArray(subjects)) {
+export async function coursesLoader(role: teacherStudentRole, course_id?: number): Promise<properSubject[]> {
+    const temp = await getAllProjectsAndSubjects(role);
+    let courses = temp.subjects;
+    const projects = temp.projects;
+    if (!Array.isArray(projects) || !Array.isArray(courses)) {
         throw Error("Problem loading projects or courses.");
     }
-    return subjects.map((subject) => {
+
+    if (course_id) {
+        courses = courses.filter(course => course.subject_id === course_id);
+    }
+
+    return courses.map((subject) => {
         const subjectProjects = projects.filter(project => project.subject_id === subject.subject_id);
         if (subjectProjects.length === 0) {
             return {
