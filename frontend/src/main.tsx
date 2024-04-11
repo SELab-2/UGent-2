@@ -42,6 +42,11 @@ import './i18n';
 const router = createBrowserRouter(
     createRoutesFromElements(
         <Route path={"/"}>
+
+
+            <Route path={"test"} element={<ErrorLogin/>}/>
+
+
             {/* Public routes */}
             <Route path={"login"} id={LOGIN_ROUTER_ID} element={<LoginScreen/>} loader={loginLoader}
                    errorElement={<ErrorLogin/>}/>

@@ -1,7 +1,12 @@
 {
-  "login": {
-    "title": "Welcome to Delphi!",
-    "text": "To login, please click the button below, you'll get redirected to the login page of UGent CAS.",
-    "button": "Log in"
-  }
+    "login": {
+        "title": "Welcome to Delphi!",
+        "text": "To login, please click the button below, you'll get redirected to the login page of UGent CAS.",
+        "button": "Log in"
+    },
+    "login_error": {
+        "title": "There was an error logging in!",
+        "text": "To retry, please press the button below.",
+        "button": "Retry"
+    }
 }

@@ -1,7 +1,12 @@
 {
-  "login": {
-    "title": "Welkom bij Delphi!",
-    "text": "Om in te loggen, klik op de knop hieronder. Je wordt doorgestuurd naar de aanmeldpagina van UGent CAS. ",
-    "button": "Aanmelden"
-  }
+    "login": {
+        "title": "Welkom bij Delphi!",
+        "text": "Om in te loggen, drup op de knop hieronder. Je wordt doorgestuurd naar de aanmeldpagina van UGent CAS. ",
+        "button": "Aanmelden"
+    },
+    "login_error": {
+        "title": "Er is een fout opgetreden bij het inloggen!",
+        "text": "Om opnieuw te proberen, druk op de knop hieronder.",
+        "button": "Opnieuw proberen"
+    }
 }
