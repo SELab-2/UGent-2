@@ -10,7 +10,7 @@ const ApiFetch = async (url: string, options?: RequestInit) => {
     if (token) {
         options.headers = {
             ...options.headers,
-            'cas': token
+            'Authorization': 'Bearer ' + token
         }
     }
 

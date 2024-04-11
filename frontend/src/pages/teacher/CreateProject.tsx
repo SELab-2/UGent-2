@@ -1,8 +1,9 @@
 import {JSX} from "react";
-import {ProjectTeacher} from "../../types/project.ts";
-import {ViewProjectTeacherComponent} from "../../components/ViewProjectTeacherComponent.tsx";
+import {ProjectTeacherComponent} from "../../components/ProjectTeacherComponent.tsx";
 import {Header} from "../../components/Header.tsx";
 import {Sidebar} from "../../components/Sidebar.tsx";
+import {ProjectTeacher} from "../../types/project.ts";
+import {RegularButton} from "../../components/RegularButton.tsx";
 
 export function CreateProject(): JSX.Element {
     const emptyProjectTeacher: ProjectTeacher = {
@@ -26,8 +27,11 @@ export function CreateProject(): JSX.Element {
                 <div className={"side-bar is-flex is-justify-content-center"}>
                     <Sidebar home={"teacher"}/>
                 </div>
-                <div className={"student-main my-5"}>
-                    <ViewProjectTeacherComponent project={emptyProjectTeacher}/>
+                <div className={"student-main my-3 is-flex is-flex-direction-column"}>
+                    <div className={"mx-5"}>
+                        <RegularButton placeholder={"Save"} add={false} onClick={() => {}}/>
+                    </div>
+                    <ProjectTeacherComponent project={emptyProjectTeacher}/>
                 </div>
             </div>
         </>
