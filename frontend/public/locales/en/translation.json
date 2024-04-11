@@ -8,5 +8,10 @@
         "title": "There was an error logging in!",
         "text": "To retry, please press the button below.",
         "button": "Retry"
+    },
+    "unauthorized": {
+        "title": "Access to this page is restricted!",
+        "text": "Please check with an admin if you believe this is a mistake.",
+        "back": "Go back to the homepage"
     }
 }

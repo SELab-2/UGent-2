@@ -44,7 +44,7 @@ const router = createBrowserRouter(
         <Route path={"/"}>
 
 
-            <Route path={"test"} element={<ErrorLogin/>}/>
+            <Route path={"test"} element={<Unauthorized/>}/>
 
 
             {/* Public routes */}

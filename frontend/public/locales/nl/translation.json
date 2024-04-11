@@ -8,5 +8,10 @@
         "title": "Er is een fout opgetreden bij het inloggen!",
         "text": "Om opnieuw te proberen, druk op de knop hieronder.",
         "button": "Opnieuw proberen"
+    },
+    "unauthorized": {
+        "title": "Toegang tot deze pagina is beperkt!",
+        "text": "Contacteer een beheerder als u denkt dat dit een vergissing is.",
+        "back": "Ga terug naar de startpagina"
     }
 }
