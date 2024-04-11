@@ -1,9 +1,12 @@
 from datetime import datetime
 
+from pydantic import ValidationError
 from sqlmodel import Session
 
 from db.models import Project, ProjectInput, Student, Subject, Teacher
 from domain.logic.basic_operations import get, get_all
+from domain.logic.errors import InvalidConstraintsError
+from domain.simple_submission_checks.constraints.submission_constraint import create_constraint_from_json
 
 
 def create_project(
@@ -79,3 +82,10 @@ def update_project(session: Session, project_id: int, project: ProjectInput) -> 
     project_db.requirements = project.requirements
     project_db.visible = project.visible
     session.commit()
+
+
+def validate_constraints(requirements: str) -> None:
+    try:
+        create_constraint_from_json(requirements)
+    except ValidationError as err:
+        raise InvalidConstraintsError from err
