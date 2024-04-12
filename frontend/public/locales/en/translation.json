@@ -102,5 +102,24 @@
         "title": "Warning!",
         "cancel": "Cancel",
         "proceed": "Proceed"
+    },
+    "projects": {
+        "title": "Projects",
+        "search_placeholder": "search a project...",
+        "active": "active",
+        "archived": "archived",
+        "hidden": "hidden",
+        "new_project": "new project"
+    },
+    "table": {
+        "project": "project",
+        "course": "course",
+        "deadline": "deadline",
+        "status": "status",
+        "number_of_submissions": "number of submissions",
+        "shortest_deadline": "shortest deadline",
+        "name": "name",
+        "email": "email",
+        "no_data_yet": "No data yet."
     }
 }

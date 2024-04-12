@@ -102,5 +102,24 @@
         "title": "Waarschuwing!",
         "cancel": "Annuleren",
         "proceed": "Doorgaan"
+    },
+    "projects": {
+        "title": "Projecten",
+        "search_placeholder": "zoek een project...",
+        "active": "actief",
+        "archived": "gearchiveerd",
+        "hidden": "verborgen",
+        "new_project": "nieuw project"
+    },
+    "table": {
+        "project": "project",
+        "course": "vak",
+        "deadline": "deadline",
+        "status": "status",
+        "number_of_submissions": "aantal indieningen",
+        "shortest_deadline": "eerstvolgende deadline",
+        "name": "naam",
+        "email": "email",
+        "no_data_yet": "Nog geen data beschikbaar."
     }
 }
