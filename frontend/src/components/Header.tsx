@@ -3,7 +3,6 @@ import {RiAccountPinBoxLine} from "react-icons/ri";
 import {Link} from "react-router-dom";
 import useAuth from "../hooks/useAuth.ts";
 import { MdLanguage } from "react-icons/md";
-import '../assets/styles/header.css'
 import Popup from 'reactjs-popup';
 import i18n from "../i18n.tsx";
 
