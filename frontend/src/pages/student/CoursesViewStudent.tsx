@@ -7,8 +7,11 @@ import {Table} from "../../components/Table.tsx";
 import {TableRowCourses} from "../../types/tableRows.ts";
 import {useRouteLoaderData} from "react-router-dom";
 import {COURSES_STUDENT_ROUTER_ID, coursesStudentLoaderObject} from "../../dataloaders/CoursesStudentLoader.ts";
+import { useTranslation } from 'react-i18next';
 
 export default function CoursesViewStudent(): JSX.Element {
+
+    const { t } = useTranslation();
 
     const data: coursesStudentLoaderObject = useRouteLoaderData(COURSES_STUDENT_ROUTER_ID) as coursesStudentLoaderObject
     console.log(data.courses)
@@ -45,7 +48,7 @@ export default function CoursesViewStudent(): JSX.Element {
     return (
         <>
             <div className={"main-header"}>
-                <Header page_title={"Courses"} home={"student"}/>
+                <Header page_title={t('courses.title')} home={"student"}/>
             </div>
             <div className={"main-content is-flex is-flex-direction-row"}>
                 <div className={"side-bar is-flex is-justify-content-center"}>
@@ -53,10 +56,10 @@ export default function CoursesViewStudent(): JSX.Element {
                 </div>
                 <div className={"student-main is-flex is-justify-content-center"}>
                     <div className={"table-page is-flex is-flex-direction-column"}>
-                        <SearchBar placeholder={"zoek een vak..."}/>
-                        <Table title={"actief"} data={tableCoursesActive} ignoreKeys={[]} home={"student"}/>
+                        <SearchBar placeholder={t('courses.search_placeholder')}/>
+                        <Table title={t('courses.active')} data={tableCoursesActive} ignoreKeys={[]} home={"student"}/>
                         <div className={"my-5"}/>
-                        <Table title={"gearchiveerd"} data={tableCoursesArchived} ignoreKeys={["shortestDeadline"]} home={"student"}/>
+                        <Table title={t('courses.archived')} data={tableCoursesArchived} ignoreKeys={["shortestDeadline"]} home={"student"}/>
                     </div>
                 </div>
             </div>

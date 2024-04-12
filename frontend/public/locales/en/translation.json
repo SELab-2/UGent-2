@@ -120,7 +120,8 @@
         "shortest_deadline": "shortest deadline",
         "name": "name",
         "email": "email",
-        "no_data_yet": "No data yet."
+        "no_data_yet": "No data yet.",
+        "number_of_projects": "number of projects"
     },
     "project": {
         "name": "Name",
@@ -148,5 +149,12 @@
         "nothing_yet": "Nothing yet",
         "failed": "Failed",
         "success": "Success"
+    },
+    "courses": {
+        "title": "Courses",
+        "search_placeholder": "search a course...",
+        "active": "active",
+        "archived": "archived",
+        "new_project": "new project"
     }
 }

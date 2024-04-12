@@ -36,6 +36,7 @@ const field_string_mapper = new Map<string, string>(Object.entries({
     shortestDeadline: "table.shortest_deadline",
     name: "table.name",
     email: "table.email",
+    numberOfProjects: "table.number_of_projects",
 }))
 
 function getField(map: Map<string, string>, key: string): string {

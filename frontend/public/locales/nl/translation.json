@@ -120,7 +120,8 @@
         "shortest_deadline": "eerstvolgende deadline",
         "name": "naam",
         "email": "email",
-        "no_data_yet": "Nog geen data beschikbaar."
+        "no_data_yet": "Nog geen data beschikbaar.",
+        "number_of_projects": "aantal projecten"
     },
     "project": {
         "name": "Naam",
@@ -139,6 +140,21 @@
             "tag": "Indiening",
             "choose_file": "Kies een bestand"
         },
-        "confirm": "Bevestigen"
+        "confirm": "Bevestigen",
+        "save": "Opslaan"
+    },
+    "statistics": {
+        "tag": "StatiStatistiekenstics",
+        "submissions": "Indieningen",
+        "nothing_yet": "Nog niets",
+        "failed": "Mislukt",
+        "success": "Geslaagd"
+    },
+    "courses": {
+        "title": "Vakken",
+        "search_placeholder": "zoek een vak...",
+        "active": "actief",
+        "archived": "gearchiveerd",
+        "new_project": "nieuw project"
     }
 }
