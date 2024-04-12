@@ -43,7 +43,8 @@ export interface CompleteProject extends Project, Subject {
 export interface CompleteProjectStudent extends CompleteProject {
     submission_state: SUBMISSION_STATE,
     submission_student_id: number | undefined,
-    group_members: (User | undefined)[]
+    group_members: (User | undefined)[],
+    submission_file: string
 }
 
 export interface CompleteProjectTeacher extends CompleteProject {
