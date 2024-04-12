@@ -1,13 +1,17 @@
-import {CompleteProjectStudent, Group, Submission} from "../utils/ApiInterfaces.ts";
+import {CompleteProjectStudent, Group, Submission, User} from "../utils/ApiInterfaces.ts";
 import {getAllProjectsAndSubjects, teacherStudentRole} from "./loader_helpers/SharedFunctions.ts";
 import apiFetch from "../utils/ApiFetch.ts";
-import {Backend_group, Backend_submission} from "../utils/BackendInterfaces.ts";
-import {mapGroup, mapSubmission} from "../utils/ApiTypesMapper.ts";
+import {Backend_group, Backend_submission, Backend_user} from "../utils/BackendInterfaces.ts";
+import {mapGroup, mapSubmission, mapUser} from "../utils/ApiTypesMapper.ts";
 
 export const PROJECTS_STUDENT_ROUTER_ID = "projects_student";
 
 export interface projectsStudentLoaderObject {
     projects: CompleteProjectStudent[]
+}
+
+export interface member {
+    id: number;
 }
 
 export default async function projectsStudentLoader(): Promise<projectsStudentLoaderObject> {
@@ -38,13 +42,37 @@ export async function LoadProjectsForStudent(filter_on_current: boolean = false,
         } else return undefined;
     });
 
-    const submissionPromises: Promise<Submission | undefined>[] = (await Promise.all(groupPromises)).map(async group => {
+    const groups: Group[] = (await Promise.all(groupPromises)) as Group[];
+
+    const submissionPromises: Promise<Submission | undefined>[] = groups.map(async group => {
         if (group) {
             const apiSubmission = await apiFetch(`/groups/${group.group_id}/submission`) as Backend_submission;
             return mapSubmission(apiSubmission);
         }
         return undefined;
     });
+
+    const groupMemberIdsPromises: Promise<member[] | undefined>[] = groups.map(async group => {
+        if (group) {
+            return await apiFetch(`/groups/${group.group_id}/members`) as member[]
+        }
+        return undefined;
+    });
+
+    const groupMembersIds: Awaited<member[] | undefined>[] = await Promise.all(groupMemberIdsPromises);
+
+    const groupMembersPromises: Promise<(User | undefined)[]>[] = groupMembersIds.map(async (groupMemberIds) => {
+        if (groupMemberIds) {
+            const memberPromises = groupMemberIds.map(async (memberId) => {
+                const apiMember = await apiFetch(`/users/${memberId.id}`) as Backend_user;
+                return mapUser(apiMember);
+            });
+            return Promise.all(memberPromises);
+        }
+        return [];
+    });
+
+    const groupMembers: (User | undefined)[][] = await Promise.all(groupMembersPromises);
 
     const submissions: Submission[] = (await Promise.all(submissionPromises)) as Submission[];
 
@@ -58,6 +86,9 @@ export async function LoadProjectsForStudent(filter_on_current: boolean = false,
             ...project,
             ...subject,
             submission_state: submission?.submission_state,
+            submission_student_id: submission?.submission_student_id,
+            group_members: groupMembers[index]
+
         }
     }).filter(project => project.submission_state !== undefined); // filter alles eruit waar je niets mee te maken hebt
 }
