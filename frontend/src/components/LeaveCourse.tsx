@@ -28,9 +28,9 @@ export default function LeaveCourse(): JSX.Element {
                         </p>
                     </section>
                     <footer className="modal-card-foot is-flex is-justify-content-center">
-                        <RegularButton placeholder={"Ja"} add={false} color={"is-danger"} onClick={() => {
+                        <RegularButton placeholder={"Ja"} add={false} styling={"is-danger"} onClick={() => {
                         }}/>
-                        <RegularButton placeholder={"Nee"} add={false} color={"is-info"} onClick={changeModal}/>
+                        <RegularButton placeholder={"Nee"} add={false} styling={"is-info"} onClick={changeModal}/>
                     </footer>
                 </div>
             </div>

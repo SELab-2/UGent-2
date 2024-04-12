@@ -1,8 +1,7 @@
 import {JSX, useState} from "react";
 import {RegularButton} from "./RegularButton.tsx";
-import {FaArchive} from "react-icons/fa";
 
-export default function Archive(): JSX.Element {
+export default function AddWarning(): JSX.Element {
     const [modalActive, setModalActive] = useState(false);
 
     const changeModal = () => {
@@ -11,26 +10,24 @@ export default function Archive(): JSX.Element {
 
     return (
         <>
-            <button className="js-modal-trigger button is-rounded is-pulled-right" onClick={changeModal}>
-                <FaArchive size={25}/>
+            <button className="js-modal-trigger button is-rounded is-small" onClick={changeModal}>
+                Voeg toe
             </button>
             <div id="modal-stats" className={`modal ${modalActive ? 'is-active' : ''}`}>
                 <div className="modal-background" onClick={changeModal}></div>
                 <div className="modal-card">
                     <header className="modal-card-head">
-                        <p className="modal-card-title">Archiveer vak</p>
+                        <p className="modal-card-title">Bevestiging</p>
                         <button className="delete" aria-label="close" onClick={changeModal}></button>
                     </header>
                     <section className="modal-card-body py-6">
                         <p>
-                            Voor iedere student en lesgever van dit vak, zal dit vak ook gearchiveerd worden.
-                            Er zullen geen projecten meer aangemaakt kunnen worden en actieve projecten zullen
-                            afgesloten.
-                            Bent u zeker dat u dit vak wil archiveren?
+                            Ben je zeker dat je deze persoon lesgever van dit vak wil maken?
                         </p>
                     </section>
                     <footer className="modal-card-foot is-flex is-justify-content-center">
-                        <RegularButton placeholder={"Ja"} add={false} styling={"is-danger"} onClick={() => {}}/>
+                        <RegularButton placeholder={"Ja"} add={false} styling={"is-danger"} onClick={() => {
+                        }}/>
                         <RegularButton placeholder={"Nee"} add={false} styling={"is-info"} onClick={changeModal}/>
                     </footer>
                 </div>

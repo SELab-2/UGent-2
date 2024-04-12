@@ -28,7 +28,7 @@ export default function CopyLink(): JSX.Element {
                         </p>
                     </section>
                     <footer className="modal-card-foot is-flex is-justify-content-center">
-                        <RegularButton placeholder={"genereer link"} add={false} color={"is-success"} onClick={() => {}}/>
+                        <RegularButton placeholder={"genereer link"} add={false} styling={"is-success"} onClick={() => {}}/>
                     </footer>
                 </div>
             </div>
