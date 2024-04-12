@@ -31,12 +31,12 @@ export function Header(props: { page_title: string, home: string }): JSX.Element
                         <div className="menu-item" id="language" key="language">
                             <button className={"button mx-2 is-transparent is-small is-primary"} 
                                     disabled={i18n.resolvedLanguage === "en"}
-                                    onClick={() => i18n.changeLanguage("en")}>
+                                    onClick={() => void i18n.changeLanguage("en")}>
                                 <p>en</p>
                             </button>
                             <button className={"button mx-2 is-transparent is-small is-primary"}
                                     disabled={i18n.resolvedLanguage === "nl"}
-                                    onClick={() => i18n.changeLanguage("nl")}>
+                                    onClick={() => void i18n.changeLanguage("nl")}>
                                 <p>nl</p>
                             </button>
                         </div>
