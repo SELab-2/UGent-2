@@ -14,6 +14,7 @@ export type ProjectTeacher = {
 }
 
 export enum ProjectStatus {
+    PENDING = "Pending",
     FAILED = "Failed",
     SUCCESS = "Succes",
 }
@@ -29,7 +30,7 @@ export type ProjectStudent = {
         name: string,
         email: string,
         lastSubmission: boolean
-    }[],
+    }[] | undefined,
     maxGroupMembers: number,
     submission: string | null
 }
