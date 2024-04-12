@@ -49,6 +49,7 @@ export interface CompleteProjectStudent extends CompleteProject {
 
 export interface CompleteProjectTeacher extends CompleteProject {
     submission_amount: number,
+    subjects: Subject[]
 }
 
 export interface properSubject extends Subject {
