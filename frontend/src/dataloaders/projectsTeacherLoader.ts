@@ -59,6 +59,7 @@ export async function LoadProjectsForTeacher(filter_on_current: boolean = false,
         return {
             ...project,
             ...subject,
+            subjects: subjects,
             submission_amount: amount_of_submissions[index],
         }
     })
