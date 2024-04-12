@@ -105,18 +105,19 @@ Volg deze stappen om de frontend van het project op te zetten:
 3. Installeer alle npm dependencies
     ```bash
     npm install
-    ```
+   ```
 4. Build de frontend:
    ```bash
    npm run build
    ```
-   De gecompileerde html/css/js bevindt zich nu in de `dist` folder
-
+   De gecompileerde html/css/js bevindt zich nu in de `dist` folder.
 5. Deploy:
-
    Zet de inhoud van de `dist` folder op de juiste plaats, zodat het geserveerd kan worden.
-
-6. De testen kunnen uitgevoerd worden met: (nog niet geïmplementeerd)
+6. De testen kunnen uitgevoerd worden met:
    ```bash
    npm run tests
+   ```
+   Dit draait zowel de unit als de e2e testen. De e2e testen kun je ook debuggen met een UI in je browser via:
+   ```bash
+   npm run test:e2e:ui
    ```

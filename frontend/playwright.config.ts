@@ -24,9 +24,10 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    ignoreHTTPSErrors: true,
     baseURL: 'https://localhost:8080',
     // baseURL: 'https://127.0.0.1:8080',
+    ignoreHTTPSErrors: true,
+    headless: true,
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
@@ -40,7 +41,7 @@ export default defineConfig({
         ...devices['Desktop Chrome'],
         launchOptions: {
           args: ['--ignore-certificate-errors']
-        }
+        },
       },
     },
 
@@ -52,7 +53,7 @@ export default defineConfig({
       },
     },
 
-    // { /* Uncomment to test against WebKit. */
+    // { /* Uncomment to test against WebKit. I get errors running this locally. -rvdkeere */
     //   name: 'webkit',
     //   use: { ...devices['Desktop Safari'] },
     // },
@@ -82,8 +83,8 @@ export default defineConfig({
     // timeout: 120 * 1000,
     command: 'npm run dev',
     // url: 'https://localhost:8080',
-    reuseExistingServer: !process.env.CI,
+    // reuseExistingServer: !process.env.CI,
     stdout:'pipe',
-    // reuseExistingServer: true,
+    reuseExistingServer: true,
   },
 });
