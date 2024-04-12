@@ -13,5 +13,20 @@
         "title": "Access to this page is restricted!",
         "text": "Please check with an admin if you believe this is a mistake.",
         "back": "Go back to the homepage"
+    },
+    "home_student": {
+        "title": "Home",
+        "deadlines": "Upcoming deadlines",
+        "card": {
+            "tag": {
+                "course": "course:",
+                "status": "status:"
+            },
+            "status": {
+                "success": "Success",
+                "failed": "Failed"
+            }
+            
+        }
     }
 }

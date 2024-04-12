@@ -13,5 +13,20 @@
         "title": "Toegang tot deze pagina is beperkt!",
         "text": "Contacteer een beheerder als u denkt dat dit een vergissing is.",
         "back": "Ga terug naar de startpagina"
+    },
+    "home_student": {
+        "title": "Startpagina",
+        "deadlines": "Komende deadlines",
+        "card": {
+            "tag": {
+                "course": "vak:",
+                "status": "status:"
+            },
+            "status": {
+                "success": "Geslaagd",
+                "failed": "Mislukt"
+            }
+            
+        }
     }
 }
