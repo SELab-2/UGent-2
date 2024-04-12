@@ -3,23 +3,52 @@ import {Header} from "../../components/Header.tsx";
 import {Sidebar} from "../../components/Sidebar.tsx";
 import ViewProjectStudent from "../../components/ProjectStudentComponent.tsx";
 import {ProjectStatus, ProjectStudent} from "../../types/project.ts";
+import {useRouteLoaderData} from "react-router-dom";
+import {PROJECT_STUDENT, ProjectStudentLoaderObject} from "../../dataloaders/ProjectStudent.ts";
+import {SUBMISSION_STATE} from "../../utils/ApiInterfaces.ts";
 
 export default function ProjectViewStudent(): JSX.Element {
-    const groupMembers: { name: string, email: string, lastSubmission: boolean }[] = [
-        {name: "jan", email: "jan@ugent.be", lastSubmission: false},
-        {name: "erik", email: "erik@ugent.be", lastSubmission: false},
-        {name: "peter", email: "peter@ugent.be", lastSubmission: true}
-    ]
+
+    const data: ProjectStudentLoaderObject = useRouteLoaderData(PROJECT_STUDENT) as ProjectStudentLoaderObject
+    const project_data = data.project
+    console.log(project_data)
+
+    let project_status;
+    switch (project_data?.submission_state) {
+        case SUBMISSION_STATE.Pending:
+            project_status = ProjectStatus.PENDING;
+            break;
+        case SUBMISSION_STATE.Approved:
+            project_status = ProjectStatus.SUCCESS;
+            break;
+        default:
+            project_status = ProjectStatus.FAILED;
+    }
+
+    const groupMembers: {
+        name: string;
+        email: string;
+        lastSubmission: boolean
+    }[] | undefined = project_data?.group_members?.map((member) => {
+        return {
+            name: member?.user_name ?? "name",
+            email: member?.user_email ?? "email",
+            lastSubmission: project_data.submission_student_id === member?.user_id
+        }
+    });
+
+    const deadline_date = new Date(project_data?.project_deadline ?? "")
+    const deadline = `${deadline_date.getHours()}:${deadline_date.getMinutes()} - ${deadline_date.getDate()}/${deadline_date.getMonth()}/${deadline_date.getFullYear()}`
 
     const project: ProjectStudent = {
-        projectName: "Markov Decision Diagram",
-        courseName: "Automaten, berekenbaarheid en complexiteit",
-        deadline: "17:00 - 23/02/2024",
-        status: ProjectStatus.FAILED,
-        description: "Lorem ipsum dolor sit amet.",
+        projectName: project_data?.project_name ?? "projectName",
+        courseName: project_data?.subject_name ?? "courseName",
+        deadline: deadline,
+        status: project_status,
+        description: project_data?.project_description ?? "description",
         requiredFiles: ["Diagram.dgr", "verslag.pdf"],
         groupMembers: groupMembers,
-        maxGroupMembers: 4,
+        maxGroupMembers: project_data?.project_max_students ?? NaN,
         submission: "submission.zip"
     }
 
