@@ -121,5 +121,24 @@
         "name": "naam",
         "email": "email",
         "no_data_yet": "Nog geen data beschikbaar."
+    },
+    "project": {
+        "name": "Naam",
+        "course": "Vak",
+        "deadline": "Deadline",
+        "status": "Status",
+        "description": "Beschrijving",
+        "submission_files": "Indiening moet bevatten",
+        "groupmembers": {
+            "tag": "Groepsleden",
+            "name": "Naam",
+            "email": "Email",
+            "latest_submission": "Laatste indiening"
+        },
+        "submission": {
+            "tag": "Indiening",
+            "choose_file": "Kies een bestand"
+        },
+        "confirm": "Bevestigen"
     }
 }

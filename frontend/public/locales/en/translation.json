@@ -121,5 +121,32 @@
         "name": "name",
         "email": "email",
         "no_data_yet": "No data yet."
+    },
+    "project": {
+        "name": "Name",
+        "course": "Course",
+        "deadline": "Deadline",
+        "status": "Status",
+        "description": "Description",
+        "submission_files": "Submission must contain",
+        "groupmembers": {
+            "tag": "Groupmembers",
+            "name": "Name",
+            "email": "Email",
+            "latest_submission": "Latest submission"
+        },
+        "submission": {
+            "tag": "Submission",
+            "choose_file": "Choose a file"
+        },
+        "confirm": "Confirm",
+        "save": "Save"
+    },
+    "statistics": {
+        "tag": "Statistics",
+        "submissions": "Submissions",
+        "nothing_yet": "Nothing yet",
+        "failed": "Failed",
+        "success": "Success"
     }
 }
