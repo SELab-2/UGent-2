@@ -1,7 +1,7 @@
 import {JSX, useState} from "react";
 import {TableRowPeople} from "../types/tableRows.ts";
 import {MdManageAccounts} from "react-icons/md";
-import {RegularButton} from "./RegularButton.tsx";
+import RemoveWarning from "./RemoveWarning.tsx";
 
 export default function ManageCourse(props: { teachers: TableRowPeople[] }): JSX.Element {
     const [modalActive, setModalActive] = useState(false);
@@ -36,8 +36,7 @@ export default function ManageCourse(props: { teachers: TableRowPeople[] }): JSX
                                 return (<tr key={index}>
                                     <td>{member.name}</td>
                                     <td>{member.email}</td>
-                                    <td><RegularButton placeholder={"Remove"} add={false} onClick={() => {
-                                    }}/></td>
+                                    <RemoveWarning/>
                                 </tr>)
                             })}
                             </tbody>

@@ -1,8 +1,7 @@
 import {JSX, useState} from "react";
-import {CiLink} from "react-icons/ci";
 import {RegularButton} from "./RegularButton.tsx";
 
-export default function CopyLink(): JSX.Element {
+export default function RemoveWarning(): JSX.Element {
     const [modalActive, setModalActive] = useState(false);
 
     const changeModal = () => {
@@ -11,24 +10,25 @@ export default function CopyLink(): JSX.Element {
 
     return (
         <>
-            <button className="js-modal-trigger button is-rounded" onClick={changeModal}>
-                <CiLink size={25}/>
+            <button className="js-modal-trigger button is-rounded is-small" onClick={changeModal}>
+                Remove
             </button>
             <div id="modal-stats" className={`modal ${modalActive ? 'is-active' : ''}`}>
                 <div className="modal-background" onClick={changeModal}></div>
                 <div className="modal-card">
                     <header className="modal-card-head">
-                        <p className="modal-card-title">Voeg studenten toe</p>
+                        <p className="modal-card-title">Bevestiging</p>
                         <button className="delete" aria-label="close" onClick={changeModal}></button>
                     </header>
                     <section className="modal-card-body py-6">
                         <p>
-                            Iedereen die deze link volgt en ingelogd is op dit systeem, zal als student toegevoegd worden aan het vak.
-                            Deel deze link enkel met de personen die u wil toevoegen.
+                            Ben je zeker dat je deze persoon zijn lesgeverrechten wilt ontnemen voor dit vak?
                         </p>
                     </section>
                     <footer className="modal-card-foot is-flex is-justify-content-center">
-                        <RegularButton placeholder={"genereer link"} add={false} color={"is-success"} onClick={() => {}}/>
+                        <RegularButton placeholder={"Ja"} add={false} color={"is-danger"} onClick={() => {
+                        }}/>
+                        <RegularButton placeholder={"Nee"} add={false} color={"is-info"} onClick={changeModal}/>
                     </footer>
                 </div>
             </div>
