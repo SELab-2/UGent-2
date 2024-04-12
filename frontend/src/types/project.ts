@@ -9,7 +9,7 @@ export type ProjectTeacher = {
     courseName: string,
     hours: number,
     minutes: number,
-    deadline: Date,
+    deadline: Value,
     description: string,
     requiredFiles: string,
     otherFilesAllow: boolean,
