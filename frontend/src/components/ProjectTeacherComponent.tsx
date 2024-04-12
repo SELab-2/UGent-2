@@ -6,9 +6,9 @@ import 'react-calendar/dist/Calendar.css';
 import {FaUpload} from "react-icons/fa";
 import {ProjectTeacher, Value} from "../types/project.ts";
 import "../assets/styles/teacher_components.css"
-import { dummy_data } from "./SimpleTests/DummyData.tsx";
+import {dummy_data} from "./SimpleTests/DummyData.tsx";
 import SimpleTests from "./SimpleTests/SimpleTests.tsx";
-import { TeacherOrStudent } from "./SimpleTests/TeacherOrStudentEnum.tsx";
+import {TeacherOrStudent} from "./SimpleTests/TeacherOrStudentEnum.tsx";
 
 // SimpleTests
 const CHECK_SIMPLE_TESTS = false
@@ -22,6 +22,7 @@ export function ProjectTeacherComponent(props: { project: ProjectTeacher }): JSX
     const [minutes, setMinutes] = useState<number>(props.project.minutes);
     const [deadline, setDeadline] = useState<Value>(props.project.deadline);
     const [description, setDescription] = useState(props.project.description);
+    const [max_students, setMaxStudents] = useState(props.project.maxGroupMembers);
     // Dit zou een json-object moeten zijn (of toch stringified versie ervan).
     // const [requiredFiles, setRequiredFiles] = useState(props.project.requiredFiles);
     // Deze wordt niet gebruikt. Dit zit verwerkt in het json-object als OnlyPresentConstraint.
@@ -40,6 +41,8 @@ export function ProjectTeacherComponent(props: { project: ProjectTeacher }): JSX
         setGroup(!showGroup);
         setGroupProject(checked);
     };
+
+    const course_options = props.project.all_courses.map(course => course.subject_name);
 
     const hours_array = Array.from({length: 24}, (_, index) => index.toString().padStart(2, '0'));
     const minutes_array = Array.from({length: 60}, (_, index) => index.toString().padStart(2, '0'));
@@ -66,7 +69,7 @@ export function ProjectTeacherComponent(props: { project: ProjectTeacher }): JSX
                     <label className="label">Vak:</label>
                 </div>
                 <div className="field-body field">
-                    <SelectionBox options={["vak1", "vak2", "vak3"]} value={courseName}
+                    <SelectionBox options={course_options} value={courseName}
                                   setValue={setCourseName}/>
                 </div>
             </div>
@@ -156,6 +159,20 @@ export function ProjectTeacherComponent(props: { project: ProjectTeacher }): JSX
                                checked={groupProject}/>
                         {showGroup &&
                             <>
+                                <div className="field is-horizontal">
+                                    <div className="field-label">
+                                        <input
+                                            className={"input is-rounded"}
+                                            type="number"
+                                            value={max_students}
+                                            onChange={e => setMaxStudents(parseInt(e.target.value))}
+                                        />
+                                    </div>
+                                    <div className="field-body">
+                                        <label className="label">Aantal personen per groep</label>
+                                    </div>
+                                </div>
+                                <br/>
                                 <div className="field is-horizontal">
                                     <div className="field-label">
                                         <input type="checkbox"/>
