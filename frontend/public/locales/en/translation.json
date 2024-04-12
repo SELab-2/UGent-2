@@ -28,5 +28,13 @@
             }
             
         }
+    },
+    "create_course": {
+        "title": "Create course",
+        "name": {
+            "tag": "Course name:",
+            "placeholder": "Enter a name"
+        },
+        "confirm": "Confirm"
     }
 }

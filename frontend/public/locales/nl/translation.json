@@ -28,5 +28,13 @@
             }
             
         }
+    },
+    "create_course": {
+        "title": "Maak een vak aan",
+        "name": {
+            "tag": "Vaknaam:",
+            "placeholder": "Voer een naam in"
+        },
+        "confirm": "Bevestigen"
     }
 }
