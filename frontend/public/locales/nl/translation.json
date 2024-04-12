@@ -36,5 +36,71 @@
             "placeholder": "Voer een naam in"
         },
         "confirm": "Bevestigen"
+    },
+    "create_project": {
+        "title": "Maak een project aan",
+        "name": {
+            "tag": "Projectnaam:",
+            "placeholder": "Voer een naam in"
+        },
+        "course": {
+            "tag": "Vak:"
+        },
+        "deadline": {
+            "tag": "Deadline:",
+            "locale": "nl"
+        },
+        "description": {
+            "tag": "Beschrijving:",
+            "placeholder": "Optionele beschrijving van het project"
+        },
+        "docker_file": {
+            "tag": "Docker-bestand",
+            "choose_button": "Kies een bestand"
+        },
+        "submission_files": {
+            "tag": "Indieningsbestanden:"
+        },
+        "teamwork": {
+            "tag": "Groepswerk:",
+            "changes": "Verwisselingen toestaan",
+            "groups": {
+                "tag": "Groepsindeling (kies één van onderstaande):",
+                "random": "willekeurig",
+                "own_choice": "studenten kiezen zelf"
+            }
+        },
+        "save_button": "Opslaan"
+    },
+    "submission_files": {
+        "changes_text": "",
+        "root_switch": {
+            "single_file": "enkel bestand",
+            "zip_file": "zip-bestand"
+        },
+        "color_codes": {
+            "tag": "Kleurencodes:",
+            "zip": "zip",
+            "folder_refuse_others": "folder (enkel gespecifieerde bestanden)",
+            "folder_allow_others": "folder (ook andere bestanden toegestaan)",
+            "file": "bestand"
+        },
+        "specify_files": {
+            "teacher": "Specifieer de structuur van de indieningsbestanden:",
+            "student": "Structuur van de bestanden:"
+        },
+        "menu": {
+            "remove": "verwijderen",
+            "allow_others": "andere toestaan"
+        },
+        "warning": {
+            "type_switch": "Alle huidige file-specificaties zullen verwijderd worden. Ben je zeker dat je het root-type wil aanpassen?",
+            "remove": "Ben je zeker?"
+        }
+    },
+    "warneable": {
+        "title": "Waarschuwing!",
+        "cancel": "Annuleren",
+        "proceed": "Doorgaan"
     }
 }

@@ -44,7 +44,7 @@ const router = createBrowserRouter(
         <Route path={"/"}>
 
 
-            <Route path={"test"} element={<CreateCourse/>}/>
+            <Route path={"test"} element={<CreateProject/>}/>
 
 
             {/* Public routes */}

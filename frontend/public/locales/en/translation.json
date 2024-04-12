@@ -36,5 +36,71 @@
             "placeholder": "Enter a name"
         },
         "confirm": "Confirm"
+    },
+    "create_project": {
+        "title": "Create project",
+        "name": {
+            "tag": "Project name:",
+            "placeholder": "Enter a name"
+        },
+        "course": {
+            "tag": "Course:"
+        },
+        "deadline": {
+            "tag": "Deadline:",
+            "locale": "en"
+        },
+        "description": {
+            "tag": "Description:",
+            "placeholder": "Optional description of the project"
+        },
+        "docker_file": {
+            "tag": "Docker file",
+            "choose_button": "Choose a file"
+        },
+        "submission_files": {
+            "tag": "Submission files:"
+        },
+        "teamwork": {
+            "tag": "Teamwork:",
+            "changes": "Allow mix-ups",
+            "groups": {
+                "tag": "Groups (choose one of the below):",
+                "random": "random",
+                "own_choice": "students choose themselves"
+            }
+        },
+        "save_button": "Save"
+    },
+    "submission_files": {
+        "changes_text": "",
+        "root_switch": {
+            "single_file": "single file",
+            "zip_file": "zip-file"
+        },
+        "color_codes": {
+            "tag": "Color codes:",
+            "zip": "zip",
+            "folder_refuse_others": "folder (only specified files)",
+            "folder_allow_others": "folder (other files allowed)",
+            "file": "file"
+        },
+        "specify_files": {
+            "teacher": "Specify the structure of the submission files:",
+            "student": "File-structure:"
+        },
+        "menu": {
+            "remove": "remove",
+            "allow_others": "allow others"
+        },
+        "warning": {
+            "type_switch": "All current file-specifications will be removed. Are you sure you want to change the type of the root?",
+            "remove": "Are you sure?"
+        }
+    },
+    "warneable": {
+        "title": "Warning!",
+        "cancel": "Cancel",
+        "proceed": "Proceed"
     }
 }
