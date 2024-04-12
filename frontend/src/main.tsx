@@ -43,6 +43,8 @@ const router = createBrowserRouter(
     createRoutesFromElements(
         <Route path={"/"}>
 
+            <Route path={"test"} element={<HomeStudent/>}/>
+
             {/* Public routes */}
             <Route path={"login"} id={LOGIN_ROUTER_ID} element={<LoginScreen/>} loader={loginLoader}
                    errorElement={<ErrorLogin/>}/>
