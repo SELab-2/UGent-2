@@ -11,10 +11,10 @@ export function Header(props: { page_title: string, home: string }): JSX.Element
             <Link to={`/${props.home}`} className={"logo-div is-flex is-align-items-center"}>
                 <img src={"/logo.png"} alt={"image"}/>
             </Link>
-            <p className={"is-align-self-center"}><p>{props.page_title}</p></p>
+            <div className={"is-align-self-center"}><p>{props.page_title}</p></div>
             <button className={"button mx-2 is-transparent"}>
                 <div className={"icon-text"}>
-                    <p>{user?.name}</p>
+                    <p>{user?.user_name}</p>
                     <RiAccountPinBoxLine className={"icon"}/>
                 </div>
             </button>

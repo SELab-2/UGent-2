@@ -8,11 +8,11 @@ export default function Root(): JSX.Element {
     const {user} = useAuth()
     let to: string = "/error"
 
-    if (user?.roles.includes('TEACHER')) {
+    if (user?.user_roles.includes('TEACHER')) {
         to = "/teacher";
-    } else if (user?.roles.includes('STUDENT')) {
+    } else if (user?.user_roles.includes('STUDENT')) {
         to = "/student";
-    } else if (user?.roles.includes('ADMIN')) {
+    } else if (user?.user_roles.includes('ADMIN')) {
         to = "/admin";
     }
 

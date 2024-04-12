@@ -1,13 +1,11 @@
 from typing import TypeVar
 
-from sqlalchemy import select
-from sqlalchemy.orm import Session
+from sqlmodel import Session, SQLModel, select
 
-from db.errors.database_errors import ItemNotFoundError
-from db.models.models import AbstractModel
+from db.database_errors import ItemNotFoundError
 
 # Create a generic type variable bound to subclasses of AbstractModel.
-T = TypeVar("T", bound=AbstractModel)
+T = TypeVar("T", bound=SQLModel)
 
 
 def get(session: Session, object_type: type[T], ident: int) -> T:

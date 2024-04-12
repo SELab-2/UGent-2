@@ -1,0 +1,20 @@
+repos:
+  - repo: local
+    hooks:
+      - id: ruff-check
+        name: ruff linting check
+        entry: ruff check
+        language: system
+        types: [python]
+        always_run: true
+      - id: pyright
+        name: pyright linting check
+        entry: pyright
+        language: system
+        types: [python]
+        always_run: true
+      - id: eslint-and-tsc
+        name: eslint and tsc linting checks
+        entry: ./frontend-lint-check.sh
+        language: system
+        always_run: true
