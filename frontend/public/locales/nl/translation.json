@@ -156,5 +156,11 @@
         "active": "actief",
         "archived": "gearchiveerd",
         "new_project": "nieuw project"
+    },
+    "course": {
+        "teachers": "lesgevers",
+        "projects": "projecten",
+        "students": "studenten",
+        "new_project": "nieuw project"
     }
 }

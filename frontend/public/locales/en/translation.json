@@ -156,5 +156,11 @@
         "active": "active",
         "archived": "archived",
         "new_project": "new project"
+    },
+    "course": {
+        "teachers": "teachers",
+        "projects": "projects",
+        "students": "students",
+        "new_project": "new project"
     }
 }

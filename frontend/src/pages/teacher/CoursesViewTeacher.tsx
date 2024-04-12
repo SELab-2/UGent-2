@@ -13,8 +13,8 @@ export default function CoursesViewTeacher(): JSX.Element {
 
     const { t } = useTranslation();
 
-    //const data = useRouteLoaderData(COURSES_TEACHER_ROUTER_ID) as coursesTeacherLoaderObject;
-    //console.log(data.courses);
+    const data = useRouteLoaderData(COURSES_TEACHER_ROUTER_ID) as coursesTeacherLoaderObject;
+    console.log(data.courses);
 
     const tableCoursesActive: TableRowCourses[] = [
         {

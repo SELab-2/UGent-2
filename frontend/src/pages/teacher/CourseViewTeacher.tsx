@@ -8,8 +8,12 @@ import {FaArchive} from "react-icons/fa";
 import {CiLink} from "react-icons/ci";
 import {MdManageAccounts} from "react-icons/md";
 import {TableRowOverviewProjects, TableRowPeople} from "../../types/tableRows.ts";
+import { useTranslation } from 'react-i18next';
 
 export default function CourseViewTeacher(): JSX.Element {
+
+    const { t } = useTranslation();
+
     const tableProjects: TableRowOverviewProjects[] = [
         {
             project: {
@@ -55,7 +59,7 @@ export default function CourseViewTeacher(): JSX.Element {
     return (
         <>
             <div className={"main-header"}>
-                <Header page_title={"Courses"} home={"teacher"}/>
+                <Header page_title={"...my_course..."} home={"teacher"}/>
             </div>
             <div className={"main-content is-flex is-flex-direction-row"}>
                 <div className={"side-bar is-flex is-justify-content-center"}>
@@ -65,7 +69,7 @@ export default function CourseViewTeacher(): JSX.Element {
                     <div className={"table-page is-flex is-flex-direction-column"}>
                         <div className={"is-flex is-align-items-center is-justify-content-space-between"}>
                             <div className={"my-5"}>
-                                <RegularATag link={"teacher/projects/create"} text={"nieuw project"} add={true}/>
+                                <RegularATag link={"teacher/projects/create"} text={t('course.new_project')} add={true}/>
                                 <button className={"button ml-4 mr-2"}><CiLink size={25}/></button>
                                 <button className={"button mx-2"}><MdManageAccounts size={25}/></button>
                                 <button className={"button mx-2"}><FaArchive size={25}/></button>
@@ -73,11 +77,11 @@ export default function CourseViewTeacher(): JSX.Element {
                             <button className={"button mx-2 is-danger"}><IoExitOutline size={25}/></button>
                         </div>
                         <div className={"my-5"}/>
-                        <Table title={"projecten"} data={tableProjects} ignoreKeys={["status"]} home={"teacher"}/>
+                        <Table title={t('course.projects')} data={tableProjects} ignoreKeys={["status"]} home={"teacher"}/>
                         <div className={"my-5"}/>
-                        <Table title={"lesgevers"} data={teachers} ignoreKeys={[]} home={"teacher"}/>
+                        <Table title={t('course.teachers')} data={teachers} ignoreKeys={[]} home={"teacher"}/>
                         <div className={"my-5"}/>
-                        <Table title={"studenten"} data={students} ignoreKeys={[]} home={"teacher"}/>
+                        <Table title={t('course.students')} data={students} ignoreKeys={[]} home={"teacher"}/>
                     </div>
                 </div>
             </div>
