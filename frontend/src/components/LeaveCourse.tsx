@@ -2,7 +2,7 @@ import {JSX, useState} from "react";
 import {RegularButton} from "./RegularButton.tsx";
 import {IoExitOutline} from "react-icons/io5";
 
-export default function LeaveCourse(): JSX.Element {
+export default function LeaveCourse(props: {amountOfTeachers: number}): JSX.Element {
     const [modalActive, setModalActive] = useState(false);
 
     const changeModal = () => {
@@ -22,8 +22,12 @@ export default function LeaveCourse(): JSX.Element {
                         <button className="delete" aria-label="close" onClick={changeModal}></button>
                     </header>
                     <section className="modal-card-body py-6">
+                        { props.amountOfTeachers == 1 &&
+                            <p>
+                                Indien u de laatste lesgever bent, zal het vak gearchiveerd worden voor alle studenten.
+                            </p>
+                        }
                         <p>
-                            Indien u de laatste lesgever bent, zal het vak gearchiveerd worden voor alle studenten.
                             Bent u zeker dat u dit vak wil verlaten?
                         </p>
                     </section>

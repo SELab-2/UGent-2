@@ -69,7 +69,7 @@ export default function CourseViewTeacher(): JSX.Element {
                                 <div className={"mx-2"}><ManageCourse teachers={teachers}/></div>
                                 <div className={"mx-2"}><Archive/></div>
                             </div>
-                            <LeaveCourse/>
+                            <LeaveCourse amountOfTeachers={teachers.length}/>
                         </div>
                         <div className={"my-5"}/>
                         <Table title={"projecten"} data={tableProjects} ignoreKeys={["status"]} home={"teacher"}/>
