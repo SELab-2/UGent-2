@@ -4,7 +4,7 @@ import {SelectionBox} from "./SelectionBox.tsx";
 import Calendar from "react-calendar";
 import 'react-calendar/dist/Calendar.css';
 import {FaUpload} from "react-icons/fa";
-import {ProjectTeacher, Value} from "../types/project.ts";
+import {ProjectTeacher} from "../types/project.ts";
 import "../assets/styles/teacher_components.css"
 import {dummy_data} from "./SimpleTests/DummyData.tsx";
 import SimpleTests from "./SimpleTests/SimpleTests.tsx";
@@ -20,7 +20,7 @@ export function ProjectTeacherComponent(props: { project: ProjectTeacher }): JSX
     const [courseName, setCourseName] = useState<string>(props.project.courseName)
     const [hours, setHours] = useState<number>(props.project.hours);
     const [minutes, setMinutes] = useState<number>(props.project.minutes);
-    const [deadline, setDeadline] = useState<Value>(props.project.deadline);
+    const [deadline, setDeadline] = useState<Date>(props.project.deadline);
     const [description, setDescription] = useState(props.project.description);
     const [max_students, setMaxStudents] = useState(props.project.maxGroupMembers);
     // Dit zou een json-object moeten zijn (of toch stringified versie ervan).
