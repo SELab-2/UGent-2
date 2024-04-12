@@ -24,7 +24,7 @@ export default function LeaveCourse(props: {amountOfTeachers: number}): JSX.Elem
                     <section className="modal-card-body py-6">
                         { props.amountOfTeachers == 1 &&
                             <p>
-                                Indien u de laatste lesgever bent, zal het vak gearchiveerd worden voor alle studenten.
+                                U bent de laatste lesgever, dus zal het vak gearchiveerd worden voor alle studenten.
                             </p>
                         }
                         <p>
