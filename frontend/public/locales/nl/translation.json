@@ -162,5 +162,17 @@
         "projects": "projecten",
         "students": "studenten",
         "new_project": "nieuw project"
+    },
+    "admin": {
+        "title": "Beheerder operaties",
+        "teacher_rights": {
+            "tag": "Geef lesgever-rechten:",
+            "sub": "(kies tussen alle niet-lesgevers)"
+        },
+        "admin_rights": {
+            "tag": "Geef beheerder-rechten:",
+            "sub": "(kies tussen alle personen)"
+        },
+        "search_placeholder": "zoek een persoon"
     }
 }

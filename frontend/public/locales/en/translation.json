@@ -162,5 +162,17 @@
         "projects": "projects",
         "students": "students",
         "new_project": "new project"
+    },
+    "admin": {
+        "title": "Admin operations",
+        "teacher_rights": {
+            "tag": "Give teacher-rights:",
+            "sub": "(choose between all non-teachers)"
+        },
+        "admin_rights": {
+            "tag": "Give admin-rights:",
+            "sub": "(choose between all persons)"
+        },
+        "search_placeholder": "search a person"
     }
 }
