@@ -46,10 +46,10 @@ export default function ProjectViewStudent(): JSX.Element {
         deadline: deadline,
         status: project_status,
         description: project_data?.project_description ?? "description",
-        requiredFiles: ["Diagram.dgr", "verslag.pdf"],
+        requiredFiles: ["Diagram.dgr", "verslag.pdf"], //TODO aanpassen
         groupMembers: groupMembers,
         maxGroupMembers: project_data?.project_max_students ?? NaN,
-        submission: "submission.zip"
+        submission: project_data?.submission_file ?? ""
     }
 
     return (
