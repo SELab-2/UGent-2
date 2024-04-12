@@ -49,7 +49,7 @@ export default function ProjectViewTeacher() {
                         <RegularButton placeholder={"Save"} add={false} onClick={() => {
                         }}/>
                         <div className={"mr-5"}/>
-                        <Statistics/>
+                        <Statistics statistics={project_data.submission_statistics}/>
                     </div>
                     <ProjectTeacherComponent project={project}/>
                 </div>

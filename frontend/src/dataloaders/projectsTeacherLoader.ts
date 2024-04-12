@@ -35,6 +35,8 @@ export async function LoadProjectsForTeacher(filter_on_current: boolean = false,
         return mapGroupList(groups);
     }));
 
+    const statistics = [0, 0, 0]
+
     const groups: Group[][] = (await groupPromises)
     const amount_of_submissions: number[] = []
     for (const groupArray of groups) {
@@ -43,6 +45,7 @@ export async function LoadProjectsForTeacher(filter_on_current: boolean = false,
             try {
                 const submission = await apiFetch(`/groups/${group.group_id}/submission`) as Submission;
                 if (submission) {
+                    statistics[submission.submission_state - 1] += 1;
                     amount++;
                 }
             } catch (e) {
@@ -61,6 +64,7 @@ export async function LoadProjectsForTeacher(filter_on_current: boolean = false,
             ...subject,
             subjects: subjects,
             submission_amount: amount_of_submissions[index],
+            submission_statistics: statistics
         }
     })
 }

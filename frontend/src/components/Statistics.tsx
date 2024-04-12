@@ -2,11 +2,18 @@ import {JSX, useState} from "react";
 import {PieChart} from "react-minimal-pie-chart";
 import {IoIosStats} from "react-icons/io";
 
-export default function Statistics(): JSX.Element {
-    const mockdata = [
-        {title: 'Succes', value: 10, color: '#50C878'},
-        {title: 'Fail', value: 15, color: '#C13C37'},
-        {title: 'Nothing yet', value: 20, color: '#D3D3D3'},
+export default function Statistics(props: { statistics: number[] }): JSX.Element {
+
+    /*
+    Pending = 1,
+    Approved = 2,
+    Rejected = 3
+     */
+
+    const data = [
+        {title: 'Succes', value: props.statistics[1], color: '#50C878'},
+        {title: 'Fail', value: props.statistics[2], color: '#C13C37'},
+        {title: 'Nothing yet', value: props.statistics[0], color: '#D3D3D3'},
     ]
 
     const [modalActive, setModalActive] = useState(false);
@@ -35,15 +42,17 @@ export default function Statistics(): JSX.Element {
                         <button className="delete" aria-label="close" onClick={closeModal}></button>
                     </header>
                     <section className="modal-card-body">
-                        <PieChart
-                            label={({dataEntry}) => `${dataEntry.title}: ${Math.round(dataEntry.percentage)} %`}
-                            labelStyle={() => ({
-                                fontSize: '5px',
-                            })}
-                            segmentsShift={0.2}
-                            radius={45}
-                            data={mockdata}
-                        />
+                        {props.statistics[1] + props.statistics[2] + props.statistics[0] !== 0 ?
+                            <PieChart
+                                label={({dataEntry}) => `${dataEntry.title}: ${Math.round(dataEntry.percentage)} %`}
+                                labelStyle={() => ({
+                                    fontSize: '5px',
+                                })}
+                                segmentsShift={0.2}
+                                radius={45}
+                                data={data}
+                            />
+                            : <p>Er zijn nog geen inzendingen</p>}
                     </section>
                     <footer className="modal-card-foot"/>
                 </div>
