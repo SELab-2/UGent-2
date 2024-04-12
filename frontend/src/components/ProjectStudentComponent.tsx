@@ -4,8 +4,8 @@ import {FaCheck, FaUpload} from "react-icons/fa";
 import {FaDownload} from "react-icons/fa6";
 import {ProjectStatus, ProjectStudent} from "../types/project.ts";
 import SimpleTests from "./SimpleTests/SimpleTests.tsx";
-import { dummy_data } from "./SimpleTests/DummyData.tsx";
-import { TeacherOrStudent } from "./SimpleTests/TeacherOrStudentEnum.tsx";
+import {dummy_data} from "./SimpleTests/DummyData.tsx";
+import {TeacherOrStudent} from "./SimpleTests/TeacherOrStudentEnum.tsx";
 
 // SimpleTests
 const calledData = dummy_data
@@ -43,32 +43,36 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
                     </div>
                 </div>
             </div>
-            <div className="field is-horizontal">
-                <div className="field-label">
-                    <label
-                        className="label">Groepsleden({props.project.groupMembers.length}/{props.project.maxGroupMembers}): </label>
+            {props.project.groupMembers !== undefined &&
+                <div className="field is-horizontal">
+
+                    <div className="field-label">
+                        <label
+                            className="label">Groepsleden({props.project.groupMembers.length}/{props.project.maxGroupMembers}): </label>
+                    </div>
+                    <div className="field-body field">
+                        <table className={"table is-fullwidth"}>
+                            <thead>
+                            <tr>
+                                <th>Naam</th>
+                                <th>Email</th>
+                                <th>Laatste indiening</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {props.project.groupMembers.map((member, index) => {
+                                return (<tr key={index}>
+                                    <td>{member.name}</td>
+                                    <td>{member.email}</td>
+                                    <td>{member.lastSubmission ? <FaCheck/> : "-"}</td>
+                                </tr>)
+                            })}
+                            </tbody>
+                        </table>
+                    </div>
+
                 </div>
-                <div className="field-body field">
-                    <table className={"table is-fullwidth"}>
-                        <thead>
-                        <tr>
-                            <th>Naam</th>
-                            <th>Email</th>
-                            <th>Laatste indiening</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {props.project.groupMembers.map((member, index) => {
-                            return (<tr key={index}>
-                                <td>{member.name}</td>
-                                <td>{member.email}</td>
-                                <td>{member.lastSubmission ? <FaCheck/> : "-"}</td>
-                            </tr>)
-                        })}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            }
             <div className="field is-horizontal">
                 <div className="field-label">
                     <label className="label">Indiening(zip): </label>
