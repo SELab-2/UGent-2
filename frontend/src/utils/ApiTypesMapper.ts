@@ -7,18 +7,22 @@ import {
     Backend_user
 } from "./BackendInterfaces.ts";
 
+export function mapSubject(subjectData: Backend_Subject): Subject{
+    return {
+        subject_id: subjectData.id,
+        subject_name: subjectData.name,
+    }
+}
+
 export function mapSubjectList(subjectList: Backend_Subject[]): Subject[] {
     if (!Array.isArray(subjectList)) {
         throw new Error('projectList is not an array');
     }
-    return subjectList.map(subjectData => ({
-        subject_id: subjectData.id,
-        subject_name: subjectData.name,
-    }));
+    return subjectList.map(subjectData => mapSubject(subjectData));
 }
 
-export function mapProjectList(projectList: Backend_Project[]): Project[] {
-    return projectList.map(projectData => ({
+export function mapProject(projectData: Backend_Project): Project{
+    return {
         project_id: projectData.id,
         project_name: projectData.name,
         project_deadline: projectData.deadline,
@@ -28,7 +32,11 @@ export function mapProjectList(projectList: Backend_Project[]): Project[] {
         project_visible: projectData.visible,
         project_max_students: projectData.max_students,
         subject_id: projectData.subject_id,
-    }));
+    }
+}
+
+export function mapProjectList(projectList: Backend_Project[]): Project[] {
+    return projectList.map(projectData => mapProject(projectData));
 }
 
 export function mapSubmission(submission: Backend_submission): Submission {
