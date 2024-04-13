@@ -10,7 +10,7 @@ export interface Project {
     project_archived: boolean,
     project_description: string,
     project_requirements: string,
-    project_visible: string,
+    project_visible: boolean,
     project_max_students: number,
     subject_id: number,
 }
@@ -38,10 +38,13 @@ export interface Group {
 }
 
 export interface CompleteProject extends Project, Subject {
+}
+
+export interface CompleteProjectStudent extends CompleteProject {
     submission_state: SUBMISSION_STATE,
 }
 
-export interface CompleteProjectTeacher extends Project, Subject {
+export interface CompleteProjectTeacher extends CompleteProject {
     submission_amount: number,
 }
 

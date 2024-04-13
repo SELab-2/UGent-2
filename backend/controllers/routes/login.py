@@ -7,6 +7,8 @@ from controllers.authentication.errors import InvalidAuthenticationError
 from controllers.authentication.token_controller import create_token, verify_token
 from controllers.swagger_tags import Tags
 from db.models import User
+from debug import DEBUG
+from domain.logic.user import get_user
 
 # test url: https://login.ugent.be/login?service=https://localhost:8080/api/login
 login_router = APIRouter()
@@ -45,3 +47,12 @@ def login(request: Request, ticket: str) -> LoginResponse:
     if not user:
         raise InvalidAuthenticationError
     return LoginResponse(token=create_token(user))
+
+
+if DEBUG:
+
+    @login_router.post("/fake-login", tags=[Tags.LOGIN], summary="Development only: Generate a login token for a user.")
+    def fake_login(request: Request, uid: int) -> LoginResponse:
+        session = request.state.session
+        user = get_user(session, uid)
+        return LoginResponse(token=create_token(user))

@@ -3,11 +3,11 @@ import {Header} from "../../components/Header.tsx";
 import {Sidebar} from "../../components/Sidebar.tsx";
 import {RegularATag} from "../../components/RegularATag.tsx";
 import {Table} from "../../components/Table.tsx";
-import {IoExitOutline} from "react-icons/io5";
-import {FaArchive} from "react-icons/fa";
-import {CiLink} from "react-icons/ci";
-import {MdManageAccounts} from "react-icons/md";
 import {TableRowOverviewProjects, TableRowPeople} from "../../types/tableRows.ts";
+import CopyLink from "../../components/CopyLink.tsx";
+import Archive from "../../components/Archive.tsx";
+import ManageCourse from "../../components/ManageCourse.tsx";
+import LeaveCourse from "../../components/LeaveCourse.tsx";
 
 export default function CourseViewTeacher(): JSX.Element {
     const tableProjects: TableRowOverviewProjects[] = [
@@ -51,7 +51,6 @@ export default function CourseViewTeacher(): JSX.Element {
         }
     ];
 
-
     return (
         <>
             <div className={"main-header"}>
@@ -64,13 +63,13 @@ export default function CourseViewTeacher(): JSX.Element {
                 <div className={"student-main is-flex is-justify-content-center"}>
                     <div className={"table-page is-flex is-flex-direction-column"}>
                         <div className={"is-flex is-align-items-center is-justify-content-space-between"}>
-                            <div className={"my-5"}>
+                            <div className={"my-5 is-flex"}>
                                 <RegularATag link={"teacher/projects/create"} text={"nieuw project"} add={true}/>
-                                <button className={"button ml-4 mr-2"}><CiLink size={25}/></button>
-                                <button className={"button mx-2"}><MdManageAccounts size={25}/></button>
-                                <button className={"button mx-2"}><FaArchive size={25}/></button>
+                                <div className={"ml-4 mr-2"}><CopyLink/></div>
+                                <div className={"mx-2"}><ManageCourse teachers={teachers}/></div>
+                                <div className={"mx-2"}><Archive/></div>
                             </div>
-                            <button className={"button mx-2 is-danger"}><IoExitOutline size={25}/></button>
+                            <LeaveCourse amountOfTeachers={teachers.length}/>
                         </div>
                         <div className={"my-5"}/>
                         <Table title={"projecten"} data={tableProjects} ignoreKeys={["status"]} home={"teacher"}/>

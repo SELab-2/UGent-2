@@ -1,5 +1,5 @@
 import {CompleteProjectTeacher, Group, Submission} from "../utils/ApiInterfaces.ts";
-import {getAllProjectsAndSubjects, teacherStudentRole} from "./SharedFunctions.ts";
+import {getAllProjectsAndSubjects, teacherStudentRole} from "./loader_helpers/SharedFunctions.ts";
 import apiFetch from "../utils/ApiFetch.ts";
 import {Backend_group} from "../utils/BackendInterfaces.ts";
 import {mapGroupList} from "../utils/ApiTypesMapper.ts";
@@ -15,10 +15,19 @@ export default async function projectsTeacherLoader(): Promise<projectsTeacherLo
     return {projects};
 }
 
-export async function LoadProjectsForTeacher(): Promise<CompleteProjectTeacher[]> {
-    const {subjects, projects} = await getAllProjectsAndSubjects(teacherStudentRole.TEACHER);
+export async function LoadProjectsForTeacher(filter_on_current: boolean = false, project_id?: number): Promise<CompleteProjectTeacher[]> {
+    if (project_id) {
+        filter_on_current = false;
+    }
+    const temp = await getAllProjectsAndSubjects(teacherStudentRole.TEACHER, filter_on_current);
+    const subjects = temp.subjects;
+    let projects = temp.projects;
     if (!Array.isArray(projects) || !Array.isArray(subjects)) {
         throw Error("Problem loading projects or courses.");
+    }
+
+    if (project_id) {
+        projects = projects.filter(project => project.project_id === project_id);
     }
 
     const groupPromises: Promise<Group[][]> = Promise.all(projects.map(async project => {

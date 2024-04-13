@@ -12,7 +12,7 @@ export interface Backend_Project {
     archived: boolean,
     description: string,
     requirements: string,
-    visible: string,
+    visible: boolean,
     max_students: number,
     subject_id: number,
 }

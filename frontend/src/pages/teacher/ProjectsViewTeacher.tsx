@@ -2,8 +2,9 @@ import {JSX} from "react";
 import {Header} from "../../components/Header.tsx";
 import {Sidebar} from "../../components/Sidebar.tsx";
 import {SearchBar} from "../../components/SearchBar.tsx";
-import {Table, TableRowProjects} from "../../components/Table.tsx";
+import {Table} from "../../components/Table.tsx";
 import {RegularATag} from "../../components/RegularATag.tsx";
+import {TableRowProjects} from "../../types/tableRows.ts";
 import {useRouteLoaderData} from "react-router-dom";
 import {teacherLoaderObject} from "../../dataloaders/TeacherLoader.ts";
 import {PROJECTS_TEACHER_ROUTER_ID} from "../../dataloaders/projectsTeacherLoader.ts";
@@ -11,15 +12,27 @@ import {PROJECTS_TEACHER_ROUTER_ID} from "../../dataloaders/projectsTeacherLoade
 export default function ProjectsViewTeacher(): JSX.Element {
     const tableProjectsActive: TableRowProjects[] = [
         {
-            name: "RSA security",
-            course: "Information Security",
+            project: {
+                name: "RSA security",
+                id: 1478
+            },
+            course: {
+                name: "Information Security",
+                id: 9632,
+            },
             status: null,
             numberOfSubmissions: 35,
             deadline: "23:59 - 23/02/2024"
         },
         {
-            name: "Bachelorproef",
-            course: "Rechtsgeschiedenis",
+            project: {
+                name: "Bachelorproef",
+                id: 7536
+            },
+            course: {
+                name: "Rechtsgeschiedenis",
+                id: 4521,
+            },
             status: null,
             numberOfSubmissions: 3,
             deadline: "23:59 - 21/03/2024"
@@ -33,8 +46,14 @@ export default function ProjectsViewTeacher(): JSX.Element {
 
     const tableProjectsArchived: TableRowProjects[] = [
         {
-            name: "samenvatting \"The Social Contract\"",
-            course: "Rechtsgeschiedenis",
+            project: {
+                name: "samenvatting \"The Social Contract\"",
+                id: 6874
+            },
+            course: {
+                name: "Rechtsgeschiedenis",
+                id: 4521,
+            },
             status: null,
             numberOfSubmissions: null,
             deadline: null
@@ -57,13 +76,13 @@ export default function ProjectsViewTeacher(): JSX.Element {
                             <SearchBar placeholder={"zoek een project..."}/>
                             <RegularATag link={"teacher/projects/create"} text={"nieuw project"} add={true}/>
                         </div>
-                        <Table title={"actief"} data={tableProjectsActive} ignoreKeys={["status"]}/>
+                        <Table title={"actief"} data={tableProjectsActive} ignoreKeys={["status"]} home={"teacher"}/>
                         <div className={"my-5"}/>
                         <Table title={"verborgen"} data={tableProjectsHidden}
-                               ignoreKeys={["status", "numberOfSubmissions"]}/>
+                               ignoreKeys={["status", "numberOfSubmissions"]} home={"teacher"}/>
                         <div className={"my-5"}/>
                         <Table title={"gearchiveerd"} data={tableProjectsArchived}
-                               ignoreKeys={["status", "numberOfSubmissions", "deadline"]}/>
+                               ignoreKeys={["status", "numberOfSubmissions", "deadline"]} home={"teacher"}/>
                     </div>
                 </div>
             </div>
