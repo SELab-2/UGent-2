@@ -18,7 +18,6 @@ export function CreateProject(): JSX.Element {
         </>
     }
 
-    // het enige dat we hier moeten laden zijn alle courses van de teacher
     const emptyProjectTeacher: ProjectTeacher = {
         courseName: data.courses[0].subject_name,
         all_courses: data.courses,
