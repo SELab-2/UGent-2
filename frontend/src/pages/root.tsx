@@ -2,17 +2,17 @@ import {JSX} from "react";
 import useAuth from "../hooks/useAuth.ts";
 import {Navigate} from "react-router-dom";
 
-export const DEBUG: boolean = false; // should always be false on the repo.
+export const DEBUG: boolean = true; // should always be false on the repo.
 
 export default function Root(): JSX.Element {
     const {user} = useAuth()
     let to: string = "/error"
 
-    if (user?.roles.includes('TEACHER')) {
+    if (user?.user_roles.includes('TEACHER')) {
         to = "/teacher";
-    } else if (user?.roles.includes('STUDENT')) {
+    } else if (user?.user_roles.includes('STUDENT')) {
         to = "/student";
-    } else if (user?.roles.includes('ADMIN')) {
+    } else if (user?.user_roles.includes('ADMIN')) {
         to = "/admin";
     }
 

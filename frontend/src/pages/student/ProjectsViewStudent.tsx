@@ -2,15 +2,11 @@ import {JSX} from "react";
 import {Header} from "../../components/Header.tsx";
 import {Sidebar} from "../../components/Sidebar.tsx";
 import {SearchBar} from "../../components/SearchBar.tsx";
-<<<<<<< HEAD
-import {Table, TableRowProjects} from "../../components/Table.tsx";
-import {useRouteLoaderData} from "react-router-dom";
-import {PROJECTS_STUDENT_ROUTER_ID} from "../../dataloaders/ProjectsStudentLoader.ts";
-import {studentLoaderObject} from "../../dataloaders/StudentLoader.ts";
-=======
 import {Table} from "../../components/Table.tsx";
 import {TableRowProjects} from "../../types/tableRows.ts";
->>>>>>> 685d6cb (feat: last pages added)
+import {studentLoaderObject} from "../../dataloaders/StudentLoader.ts";
+import {useRouteLoaderData} from "react-router-dom";
+import {PROJECTS_STUDENT_ROUTER_ID} from "../../dataloaders/ProjectsStudentLoader.ts";
 
 export default function ProjectsViewStudent(): JSX.Element {
 
@@ -76,12 +72,7 @@ export default function ProjectsViewStudent(): JSX.Element {
                         <SearchBar placeholder={"zoek een project..."}/>
                         <Table title={"actief"} data={tableProjectsActive} ignoreKeys={["numberOfSubmissions"]} home={"student"}/>
                         <div className={"my-5"}/>
-<<<<<<< HEAD
-                        <Table title={"gearchiveerd"} data={tableProjectsArchived}
-                               ignoreKeys={["numberOfSubmissions", "deadline"]}/>
-=======
                         <Table title={"gearchiveerd"} data={tableProjectsArchived} ignoreKeys={["numberOfSubmissions", "deadline"]} home={"student"}/>
->>>>>>> 685d6cb (feat: last pages added)
                     </div>
                 </div>
             </div>

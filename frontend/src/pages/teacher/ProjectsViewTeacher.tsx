@@ -4,13 +4,10 @@ import {Sidebar} from "../../components/Sidebar.tsx";
 import {SearchBar} from "../../components/SearchBar.tsx";
 import {Table} from "../../components/Table.tsx";
 import {RegularATag} from "../../components/RegularATag.tsx";
-<<<<<<< HEAD
-import {useRouteLoaderData} from "react-router-dom";
-import {teacherLoaderObject} from "../../dataloaders/TeacherLoader.ts";
-import {PROJECTS_TEACHER_ROUTER_ID} from "../../dataloaders/projectsTeacherLoader.ts";
-=======
 import {TableRowProjects} from "../../types/tableRows.ts";
->>>>>>> 685d6cb (feat: last pages added)
+import {teacherLoaderObject} from "../../dataloaders/TeacherLoader.ts";
+import {useRouteLoaderData} from "react-router-dom";
+import {PROJECTS_TEACHER_ROUTER_ID} from "../../dataloaders/projectsTeacherLoader.ts";
 
 export default function ProjectsViewTeacher(): JSX.Element {
     const tableProjectsActive: TableRowProjects[] = [

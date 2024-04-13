@@ -4,15 +4,12 @@ import {Header} from "../../components/Header.tsx";
 import {Sidebar} from "../../components/Sidebar.tsx";
 import {SearchBar} from "../../components/SearchBar.tsx";
 import {RegularATag} from "../../components/RegularATag.tsx";
-<<<<<<< HEAD
-import {COURSES_TEACHER_ROUTER_ID, coursesTeacherLoaderObject} from "../../dataloaders/CoursesTeacherLoader.ts";
-import {useRouteLoaderData} from "react-router-dom";
-=======
 import {TableRowCourses} from "../../types/tableRows.ts";
+import {useRouteLoaderData} from "react-router-dom";
+import {COURSES_TEACHER_ROUTER_ID, coursesTeacherLoaderObject} from "../../dataloaders/CoursesTeacherLoader.ts";
 
 // import {useRouteLoaderData} from "react-router-dom";
 // import {SUBJECT_TEACHER_ROUTER_ID, subjectsTeacherLoaderObject} from "../../dataloaders/SubjectsTeacherLoader.ts";
->>>>>>> 685d6cb (feat: last pages added)
 
 
 export default function CoursesViewTeacher(): JSX.Element {

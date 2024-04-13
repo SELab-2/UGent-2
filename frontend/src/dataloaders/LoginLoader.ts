@@ -1,15 +1,7 @@
 import {User} from "../utils/ApiInterfaces.ts";
-import apiFetch from "../utils/ApiFetch.ts";
 import {Backend_user} from "../utils/BackendInterfaces.ts";
 import {mapUser} from "../utils/ApiTypesMapper.ts";
-<<<<<<< HEAD:frontend/src/dataloaders/LoginLoader.tsx
-<<<<<<< HEAD:frontend/src/dataloaders/LoginLoader.ts
-=======
 import apiFetch from "../utils/ApiFetch.ts";
->>>>>>> 81deb20 (Functies user, projects, subjects, group, course):frontend/src/dataloaders/LoginLoader.tsx
-=======
-import apiFetch from "../utils/api/ApiFetch.ts";
->>>>>>> 135265f (Revert "Functies user, projects, subjects, group, course"):frontend/src/dataloaders/LoginLoader.ts
 
 export const LOGIN_ROUTER_ID = "login";
 
@@ -19,7 +11,6 @@ export interface loginLoaderObject {
 
 const isUser = (data?: Backend_user) => {
     return (data && data.id && data.name && data.email && data.roles && data.language);
-
 }
 
 export default async function loginLoader(): Promise<loginLoaderObject> {

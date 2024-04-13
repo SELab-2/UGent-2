@@ -1,8 +1,6 @@
-import {projectGroup} from "../utils/api/Groups.ts";
 
 export default function Test () {
     function clickEvent () {
-        console.log(projectGroup(2))
     }
 
     return (<div>

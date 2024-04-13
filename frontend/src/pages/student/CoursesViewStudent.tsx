@@ -3,19 +3,15 @@ import {Header} from "../../components/Header.tsx";
 import {Sidebar} from "../../components/Sidebar.tsx";
 import '../../assets/styles/students_components.css'
 import {SearchBar} from "../../components/SearchBar.tsx";
-<<<<<<< HEAD
-import {Table, TableRowCourses} from "../../components/Table.tsx";
-import {useRouteLoaderData} from "react-router-dom";
-import {COURSES_STUDENT_ROUTER_ID, coursesStudentLoaderObject} from "../../dataloaders/CoursesStudentLoader.ts";
-=======
 import {Table} from "../../components/Table.tsx";
 import {TableRowCourses} from "../../types/tableRows.ts";
->>>>>>> 685d6cb (feat: last pages added)
+import {COURSES_STUDENT_ROUTER_ID, coursesStudentLoaderObject} from "../../dataloaders/CoursesStudentLoader.ts";
+import {useRouteLoaderData} from "react-router-dom";
 
 export default function CoursesViewStudent(): JSX.Element {
 
     const data: coursesStudentLoaderObject = useRouteLoaderData(COURSES_STUDENT_ROUTER_ID) as coursesStudentLoaderObject
-    console.log(data.courses)
+    console.log(data)
 
     const tableCoursesActive: TableRowCourses[] = [
         {
@@ -60,7 +56,8 @@ export default function CoursesViewStudent(): JSX.Element {
                         <SearchBar placeholder={"zoek een vak..."}/>
                         <Table title={"actief"} data={tableCoursesActive} ignoreKeys={[]} home={"student"}/>
                         <div className={"my-5"}/>
-                        <Table title={"gearchiveerd"} data={tableCoursesArchived} ignoreKeys={["shortestDeadline"]} home={"student"}/>
+                        <Table title={"gearchiveerd"} data={tableCoursesArchived} ignoreKeys={["shortestDeadline"]}
+                               home={"student"}/>
                     </div>
                 </div>
             </div>

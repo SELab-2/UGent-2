@@ -56,19 +56,11 @@ const router = createBrowserRouter(
 
             <Route element={<RequireAuth allowedRoles={['STUDENT', 'TEACHER']}/>}>
                 <Route id={TEACHER_ROUTER_ID} path={"/teacher"} element={<HomeTeacher/>} loader={teacherLoader}/>
-<<<<<<< HEAD
-                <Route id={PROJECTS_TEACHER_ROUTER_ID} path={"/teacher/projects"} element={<ProjectsViewTeacher/>}
-                       loader={projectsTeacherLoader}/>
-                <Route path={"/teacher/projects/create"} element={<CreateProject/>}/>
-                <Route id={COURSES_TEACHER_ROUTER_ID} path={"/teacher/courses"} element={
-                    <CoursesViewTeacher/>} loader={coursesTeacherLoader}/>
-=======
                 <Route path={"/teacher/projects"} element={<ProjectsViewTeacher/>}/>
                 <Route path={"/teacher/project/:id"} element={<ProjectViewTeacher/>}/>
                 <Route path={"/teacher/projects/create"} element={<CreateProject/>}/>
                 <Route path={"/teacher/courses"} element={<CoursesViewTeacher/>} /*loader={subjectsTeacherLoader} id={SUBJECT_TEACHER_ROUTER_ID}*//>
                 <Route path={"/teacher/course/:id"} element={<CourseViewTeacher/>}/>
->>>>>>> 685d6cb (feat: last pages added)
                 <Route path={"/teacher/courses/create"} element={<CreateCourse/>}/>
             </Route>
         </Route>

@@ -34,24 +34,6 @@ const ticketLogin = async (ticket: string, setUser: React.Dispatch<React.SetStat
     return token;
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-const isUser = (data?: User) => {
-    return (data && data.id && data.name && data.email && data.roles);
-
-}
-
-=======
->>>>>>> a25cbf2 (mapping backend_user <> user)
-=======
-const isUser = (data?: User) => {
-    return (data && data.user_id && data.user_name && data.user_email && data.user_roles);
-}
-
->>>>>>> 81deb20 (Functies user, projects, subjects, group, course)
-=======
->>>>>>> 135265f (Revert "Functies user, projects, subjects, group, course")
 export default function LoginScreen(): JSX.Element {
     const {user, setUser} = useAuth();
     const location = useLocation() as location_type;
