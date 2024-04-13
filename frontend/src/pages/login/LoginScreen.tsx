@@ -1,7 +1,7 @@
 import React, {JSX, useEffect} from "react";
 import {Navigate, useLocation, useRouteLoaderData} from 'react-router-dom';
 import useAuth from "../../hooks/useAuth.ts";
-import loginLoader, {LOGIN_ROUTER_ID, loginLoaderObject} from "../../dataloaders/LoginLoader.tsx";
+import loginLoader, {LOGIN_ROUTER_ID, loginLoaderObject} from "../../dataloaders/LoginLoader.ts";
 import LoginForm from "../../components/authentication/LoginForm.tsx";
 import {Token, User} from "../../utils/ApiInterfaces.ts";
 import {post_ticket} from "../../utils/api/Login.ts";
