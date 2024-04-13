@@ -5,6 +5,7 @@ export interface coursesTeacherLoaderObject {
     courses: properSubject[]
 }
 
+export const CREATE_PROJECT_TEACHER_ID = "create_project_teacher";
 export const COURSES_TEACHER_ROUTER_ID = "courses_teacher";
 
 export default async function coursesTeacherLoader(): Promise<coursesTeacherLoaderObject> {
