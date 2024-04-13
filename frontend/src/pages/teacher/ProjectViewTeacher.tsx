@@ -30,9 +30,9 @@ export default function ProjectViewTeacher() {
         deadline: deadline_date,
         description: project_data.project_description,
         maxGroupMembers: project_data.project_max_students,
-        requiredFiles: 'Diagram.dgr,verslag.pdf',
+        requiredFiles: 'Diagram.dgr,verslag.pdf', //TODO dit veranderen naar een echte file structue
         otherFilesAllow: true,
-        groupProject: project_data.project_max_students !== 0,
+        groupProject: project_data.project_max_students > 1,
     }
 
     return (
