@@ -32,7 +32,7 @@ export default function ProjectViewTeacher() {
         maxGroupMembers: project_data.project_max_students,
         requiredFiles: 'Diagram.dgr,verslag.pdf',
         otherFilesAllow: true,
-        groupProject: project_data.project_max_students === 0,
+        groupProject: project_data.project_max_students !== 0,
     }
 
     return (
