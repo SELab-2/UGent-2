@@ -12,6 +12,4 @@ export default function ErrorLogin(): JSX.Element {
             </div>
         </div>
     )
-        ;
-
 }
