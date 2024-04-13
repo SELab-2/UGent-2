@@ -29,6 +29,7 @@ from db.database_errors import (
     NoSuchRelationError,
 )
 from debug import DEBUG
+from domain.logic.errors import InvalidConstraintsError, InvalidSubmissionError
 
 pathlib.Path.mkdir(pathlib.Path("submissions"), exist_ok=True)
 app = FastAPI(
@@ -120,6 +121,20 @@ def invalid_authentication_error_handler(request: Request, exc: NoSuchRelationEr
 
 @app.exception_handler(ConflictingRelationError)
 def conflicting_relation_error_handler(request: Request, exc: ConflictingRelationError) -> JSONResponse:
+    return JSONResponse(
+        status_code=status.HTTP_400_BAD_REQUEST,
+        content={"detail": str(exc)},
+    )
+
+@app.exception_handler(InvalidConstraintsError)
+def invalid_constraints_error_handler(request: Request, exc: InvalidConstraintsError) -> JSONResponse:
+    return JSONResponse(
+        status_code=status.HTTP_400_BAD_REQUEST,
+        content={"detail": str(exc)},
+    )
+
+@app.exception_handler(InvalidSubmissionError)
+def invalid_submission_error_handler(request: Request, exc: InvalidSubmissionError) -> JSONResponse:
     return JSONResponse(
         status_code=status.HTTP_400_BAD_REQUEST,
         content={"detail": str(exc)},
