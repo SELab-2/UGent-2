@@ -5,13 +5,17 @@ import {Project} from "../ApiInterfaces.ts";
 import {mapProject} from "../ApiTypesMapper.ts";
 
 export async function subject_create_project(subjectId: number, projectInput: ProjectInput): Promise<Project> {
-    const projectData: Backend_Project = (await ApiFetch(`/subjects/${subjectId}/projects`, {
+    const projectData = (await ApiFetch<Backend_Project>(`/subjects/${subjectId}/projects`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(projectInput)
-    }) as Backend_Project);
-
-    return mapProject(projectData);
+    }));
+    if (projectData.ok) {
+        return mapProject(projectData.content);
+    }else{
+        // TODO: error handling
+        throw projectData.status_code
+    }
 }

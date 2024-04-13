@@ -74,12 +74,26 @@ export interface projectsAndSubjects {
 }
 
 export async function getAllProjectsAndSubjects(role: teacherStudentRole, filter_on_current: boolean = false): Promise<projectsAndSubjects> {
-    const apiSubjects = (await apiFetch(`/${role}/subjects`)) as Backend_Subject[];
-    const apiProjects = (await apiFetch(`/${role}/projects`)) as Backend_Project[];
-    let projects: Project[] = mapProjectList(apiProjects);
-    if (filter_on_current) {
-        projects = projects.filter(project => project.project_visible && !project.project_archived)
+    const apiProjects = (await apiFetch<Backend_Project[]>(`/${role}/projects`));
+    let projects: Project[] = []
+
+    if (apiProjects.ok) {
+        projects = mapProjectList(apiProjects.content);
+        if (filter_on_current) {
+            projects = projects.filter(project => project.project_visible && !project.project_archived)
+        }
+    }else{
+        // TODO error handling
     }
-    const subjects: Subject[] = mapSubjectList(apiSubjects);
+
+    const apiSubjects = (await apiFetch<Backend_Subject[]>(`/${role}/subjects`));
+    let subjects: Subject[] = []
+
+    if (apiSubjects.ok){
+        subjects = mapSubjectList(apiSubjects.content);
+    }else{
+        // TODO error handling
+    }
+
     return {projects, subjects}
 }

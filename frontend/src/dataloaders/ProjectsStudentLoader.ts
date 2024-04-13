@@ -32,16 +32,22 @@ export async function LoadProjectsForStudent(filter_on_current: boolean = false,
 
     //TODO aanpassen, dit geeft gelijk alle groepen terug
     const groupPromises: Promise<Group | undefined>[] = projects.map(async project => {
-        const apiGroup = await apiFetch(`/projects/${project.project_id}/group`) as Backend_group;
-        if (apiGroup) {
-            return mapGroup(apiGroup);
-        } else return undefined;
+        const apiGroup = await apiFetch<Backend_group>(`/projects/${project.project_id}/group`);
+        if (apiGroup.ok && apiGroup.content) {
+            return mapGroup(apiGroup.content);
+        }
+        // TODO: error handling
+        return undefined;
     });
 
     const submissionPromises: Promise<Submission | undefined>[] = (await Promise.all(groupPromises)).map(async group => {
         if (group) {
-            const apiSubmission = await apiFetch(`/groups/${group.group_id}/submission`) as Backend_submission;
-            return mapSubmission(apiSubmission);
+            const apiSubmission = await apiFetch<Backend_submission>(`/groups/${group.group_id}/submission`);
+            if (apiSubmission.ok) {
+                return mapSubmission(apiSubmission.content);
+            }else{
+                // TODO: error handling
+            }
         }
         return undefined;
     });

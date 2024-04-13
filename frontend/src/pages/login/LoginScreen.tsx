@@ -12,21 +12,18 @@ interface location_type {
     pathname: string
 }
 
-const ticketLogin = async (ticket: string, setUser: React.Dispatch<React.SetStateAction<User | undefined>>) => {
-    const token: Token = await post_ticket(ticket)
-
-    if (token.token) {
+const ticketLogin = async (ticket: string, setUser: React.Dispatch<React.SetStateAction<User | undefined>>)=> {
+    const token: Token | undefined = await post_ticket(ticket)
+    if (token?.token) {
         localStorage.setItem('token', token.token)
         const result: loginLoaderObject = await loginLoader()
         if (result.user) {
             setUser(result.user)
-        }else{
+        } else {
             localStorage.removeItem('token')
             setUser(undefined)
         }
     }
-
-    return token;
 }
 
 export default function LoginScreen(): JSX.Element {
@@ -48,9 +45,12 @@ export default function LoginScreen(): JSX.Element {
         // If the saved token is valid => the user will be logged in
         if (data && data.user) {
             setUser(data.user)
-        }
-        else if (!user && ticket) {
-            void ticketLogin(ticket, setUser);
+        } else if (!user && ticket) {
+            try {
+                void ticketLogin(ticket, setUser);
+            } catch (error) {
+                console.log("Ticket wasn't accepted")
+            }
         }
     }, [data, setUser, ticket, user]);
 

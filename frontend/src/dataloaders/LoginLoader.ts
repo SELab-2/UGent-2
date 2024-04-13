@@ -17,9 +17,11 @@ const isUser = (data?: Backend_user) => {
 export default async function loginLoader(): Promise<loginLoaderObject> {
     const token = localStorage.getItem('token')
     if (token) {
-        const user = (await apiFetch('/user')) as Backend_user;
-        if (isUser(user)) {
-            return {user: mapUser(user)}
+        const user_request = (await apiFetch<Backend_user>('/user'));
+        if (user_request.ok && isUser(user_request.content)) {
+            return {user: mapUser(user_request.content)}
+        }else{
+            // TODO error handling
         }
     }
     return {user: undefined}

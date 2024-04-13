@@ -1,8 +1,8 @@
-import {CompleteProjectTeacher, Group, Submission} from "../utils/ApiInterfaces.ts";
+import {CompleteProjectTeacher, Group} from "../utils/ApiInterfaces.ts";
 import {getAllProjectsAndSubjects, teacherStudentRole} from "./loader_helpers/SharedFunctions.ts";
 import apiFetch from "../utils/ApiFetch.ts";
-import {Backend_group} from "../utils/BackendInterfaces.ts";
-import {mapGroupList} from "../utils/ApiTypesMapper.ts";
+import {Backend_group, Backend_submission} from "../utils/BackendInterfaces.ts";
+import {mapGroupList, mapSubmission} from "../utils/ApiTypesMapper.ts";
 
 export interface projectsTeacherLoaderObject {
     projects: CompleteProjectTeacher[]
@@ -31,8 +31,13 @@ export async function LoadProjectsForTeacher(filter_on_current: boolean = false,
     }
 
     const groupPromises: Promise<Group[][]> = Promise.all(projects.map(async project => {
-        const groups = await apiFetch(`/projects/${project.project_id}/groups`) as Backend_group[];
-        return mapGroupList(groups);
+        const groups = await apiFetch<Backend_group[]>(`/projects/${project.project_id}/groups`);
+        if (groups.ok){
+            return mapGroupList(groups.content);
+        }else{
+            // TODO: error handling
+            return []
+        }
     }));
 
     const groups: Group[][] = (await groupPromises)
@@ -41,8 +46,8 @@ export async function LoadProjectsForTeacher(filter_on_current: boolean = false,
         let amount = 0
         for (const group of groupArray) {
             try {
-                const submission = await apiFetch(`/groups/${group.group_id}/submission`) as Submission;
-                if (submission) {
+                const submission = await apiFetch<Backend_submission>(`/groups/${group.group_id}/submission`);
+                if (submission.ok && mapSubmission(submission.content)) {
                     amount++;
                 }
             } catch (e) {
