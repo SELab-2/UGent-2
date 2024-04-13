@@ -13,8 +13,14 @@ export default function ProjectViewStudent(): JSX.Element {
     const project_data = data.project
     console.log(project_data)
 
+    if (!project_data) {
+        return <>
+            there was an error loading the project
+        </>
+    }
+
     let project_status;
-    switch (project_data?.submission_state) {
+    switch (project_data.submission_state) {
         case SUBMISSION_STATE.Pending:
             project_status = ProjectStatus.PENDING;
             break;
@@ -29,7 +35,7 @@ export default function ProjectViewStudent(): JSX.Element {
         name: string;
         email: string;
         lastSubmission: boolean
-    }[] | undefined = project_data?.group_members?.map((member) => {
+    }[] | undefined = project_data.group_members?.map((member) => {
         return {
             name: member?.user_name ?? "name",
             email: member?.user_email ?? "email",
@@ -37,19 +43,19 @@ export default function ProjectViewStudent(): JSX.Element {
         }
     });
 
-    const deadline_date = new Date(project_data?.project_deadline ?? "")
+    const deadline_date = new Date(project_data.project_deadline)
     const deadline = `${deadline_date.getHours()}:${deadline_date.getMinutes()} - ${deadline_date.getDate()}/${deadline_date.getMonth()}/${deadline_date.getFullYear()}`
 
     const project: ProjectStudent = {
-        projectName: project_data?.project_name ?? "projectName",
-        courseName: project_data?.subject_name ?? "courseName",
+        projectName: project_data.project_name,
+        courseName: project_data.subject_name,
         deadline: deadline,
         status: project_status,
-        description: project_data?.project_description ?? "description",
+        description: project_data.project_description,
         requiredFiles: ["Diagram.dgr", "verslag.pdf"], //TODO aanpassen
         groupMembers: groupMembers,
-        maxGroupMembers: project_data?.project_max_students ?? NaN,
-        submission: project_data?.submission_file ?? ""
+        maxGroupMembers: project_data.project_max_students,
+        submission: project_data.submission_file
     }
 
     return (
