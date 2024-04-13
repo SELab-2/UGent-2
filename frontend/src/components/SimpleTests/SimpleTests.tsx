@@ -41,9 +41,6 @@ In de sectie 'text literals' vind je de tekst-constanten terug, klaar voor inter
 
 !!! WARNING: een not_present_constraint wordt (nog) niet ondersteund. !!!
 
-FIXME:  Bij het verwijderen van een file, wordt er nog geen warning ondersteund (zie FIXME's in code).
-        Zonder warning werkt dit wel al (eerste van de twee buttons).
-
 ================================================================================================================================================ */
 
 /* text literals */
@@ -465,32 +462,28 @@ export default function SimpleTests(
                                     ?   <Popup trigger={
 
                                             <div className="more row">
-                                                {/* FIXME:  warneable.proceed works */}
                                                 <IoMdMore className="hover-shadow" />
                                             </div>
 
-                                        } position="left center" arrow={true} on="click">
-
-                                            {/* FIXME:  warneable.proceed doesn't work */}
+                                        } position="left center" arrow={true} on="click" nested>
 
                                             <div className="menu">
 
                                                 {/* ... menu-remove ... */}
                                                 <div className="menu-item" id={"x"+v.item.id} key={"y"+v.item.id} >
-                                                    <button onClick={() => handleRemove(v.item.parent_id, v.item.id)}>remove</button>
                                                     <Warneable 
                                                         text="Are you sure?" 
                                                         trigger={onClick => 
                                                             <button onClick={onClick}>remove</button>
                                                         }
-                                                        proceed={() => handleRemove(v.item.parent_id, v.item.id)} /* FIXME: proceed doesn't fire here for some reason */
+                                                        proceed={() => handleRemove(v.item.parent_id, v.item.id)}
                                                     />
                                                 </div>
 
                                                 {/* ... menu-allow-others ... */}
                                                 {(v.item.type === LOCKED_DIR || v.item.type === DIR) &&
                                                     <div className="menu-item">
-                                                        <label className="checkbox"> { /* FIXME: sometimes a border appear around the checkbox -> bulma thing? */}
+                                                        <label className="checkbox">
                                                             {v.item.type === LOCKED_DIR
                                                                 ? <input type="checkbox" onChange={() => handleSwitchDirType(v.item.id)} id={"others"+v.item.id}/>
                                                                 : <input type="checkbox" onChange={() => handleSwitchDirType(v.item.id)} id={"others"+v.item.id} checked/>
