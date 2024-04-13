@@ -4,11 +4,12 @@ import '../assets/styles/small_components.css'
 import {Link} from "react-router-dom";
 import {IoMdClose} from "react-icons/io";
 import {MdLanguage, MdOutlineKeyboardArrowDown} from "react-icons/md";
+import useAuth from "../hooks/useAuth.ts";
+import {User} from "../utils/ApiInterfaces.ts";
 
 export type Language = "NL" | "EN";
 
 function DropdownLanguage(props: { language: Language, changeLanguage: (language: Language) => void }): JSX.Element {
-
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
     const toggle = (): void => {
@@ -41,10 +42,14 @@ function DropdownLanguage(props: { language: Language, changeLanguage: (language
     )
 }
 
-function Settings(props: { closeSettings: () => void }): JSX.Element {
+function workstationsAvailable(user: User | undefined, home: string, workstation: string) {
+    return user?.user_roles.includes(workstation.toUpperCase()) && home != workstation;
+}
 
-    // TODO: get current language from user
-    const currLang: Language = "NL";
+function Settings(props: { closeSettings: () => void, home: string}): JSX.Element {
+    const {user} = useAuth()
+
+    const currLang: Language = user? user.user_language as Language : "EN";
     const [language, setLanguage] = useState<Language>(currLang);
 
     const changeLanguage = (newLang: Language): void => {
@@ -77,12 +82,21 @@ function Settings(props: { closeSettings: () => void }): JSX.Element {
                 <div>
                     <p className={"py-2"}>Select workstation: </p>
                     <div className={"is-flex is-justify-content-space-evenly"}>
-                        <Link to={"/teacher"}>
-                            <button className={"button is-success"}>teacher</button>
-                        </Link>
-                        <Link to={"/admin"}>
-                            <button className={"button is-danger"}>admin</button>
-                        </Link>
+                        { workstationsAvailable(user, props.home, "student") &&
+                            <Link to={"/student"}>
+                                <button className={"button is-info mx-1"}>student</button>
+                            </Link>
+                        }
+                        { workstationsAvailable(user, props.home, "teacher") &&
+                            <Link to={"/teacher"}>
+                                <button className={"button is-success mx-1"}>teacher</button>
+                            </Link>
+                        }
+                        { workstationsAvailable(user, props.home, "admin") &&
+                            <Link to={"/admin"}>
+                                <button className={"button is-danger mx-1"}>admin</button>
+                            </Link>
+                        }
                     </div>
                 </div>
             </div>
