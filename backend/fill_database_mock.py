@@ -107,7 +107,7 @@ if __name__ == "__main__":
         student4 = create_student(session, "Ruben", "Ruben.Vandamme@UGent.be")
         student5 = create_student(session, "Emma", "emmavdwa.Vandewalle@UGent.be")
         student6 = create_student(session, "Robbe", "Robbe.VandeKeere@UGent.be")
-        student7 = create_student(session, "Stef", "Stef.Osse@UGent.be")
+        student7 = create_student(session, "Stef", "stef.osse@ugent.be")
         student8 = create_student(session, "Mathieu", "Mathieu.Strypsteen@UGent.be")
 
         # Create teachers

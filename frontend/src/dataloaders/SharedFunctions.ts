@@ -1,47 +1,19 @@
 import {Project, properSubject, Subject} from "../utils/ApiInterfaces.ts";
-import apiFetch from "../utils/ApiFetch.ts";
-import {Backend_Project, Backend_Subject} from "../utils/BackendInterfaces.ts";
 import {mapProjectList, mapSubjectList} from "../utils/ApiTypesMapper.ts";
+import {Backend_Project, Backend_Subject} from "../utils/BackendInterfaces.ts";
+import apiFetch from "../utils/ApiFetch.ts";
 
 export enum teacherStudentRole {
     STUDENT = "student",
     TEACHER = "teacher"
 }
 
-export interface CourseLoaderObject {
-    course?: properSubject
-}
-
-export async function parse_id_and_get_item<T>(id: string | undefined, loader: (id: number) => Promise<T[]>): Promise<T | undefined> {
-    if (!id || isNaN(parseInt(id))) {
-        return undefined;
-    }
-    const parsed_id = parseInt(id);
-    return (await loader(parsed_id)).find(() => true);
-}
-
-export async function courseLoader(role: teacherStudentRole, course_id: string | undefined): Promise<CourseLoaderObject> {
-    return {
-        course: await parse_id_and_get_item(
-            course_id,
-            (id) => coursesLoader(role, id)
-        )
-    };
-}
-
-export async function coursesLoader(role: teacherStudentRole, course_id?: number): Promise<properSubject[]> {
-    const temp = await getAllProjectsAndSubjects(role);
-    let courses = temp.subjects;
-    const projects = temp.projects;
-    if (!Array.isArray(projects) || !Array.isArray(courses)) {
+export async function coursesLoader(role: teacherStudentRole): Promise<properSubject[]> {
+    const {subjects, projects} = await getAllProjectsAndSubjects(role);
+    if (!Array.isArray(projects) || !Array.isArray(subjects)) {
         throw Error("Problem loading projects or courses.");
     }
-
-    if (course_id) {
-        courses = courses.filter(course => course.subject_id === course_id);
-    }
-
-    return courses.map((subject) => {
+    return subjects.map((subject) => {
         const subjectProjects = projects.filter(project => project.subject_id === subject.subject_id);
         if (subjectProjects.length === 0) {
             return {
@@ -73,13 +45,10 @@ export interface projectsAndSubjects {
     subjects: Subject[]
 }
 
-export async function getAllProjectsAndSubjects(role: teacherStudentRole, filter_on_current: boolean = false): Promise<projectsAndSubjects> {
+export async function getAllProjectsAndSubjects(role: teacherStudentRole): Promise<projectsAndSubjects> {
     const apiSubjects = (await apiFetch(`/${role}/subjects`)) as Backend_Subject[];
     const apiProjects = (await apiFetch(`/${role}/projects`)) as Backend_Project[];
-    let projects: Project[] = mapProjectList(apiProjects);
-    if (filter_on_current) {
-        projects = projects.filter(project => project.project_visible && !project.project_archived)
-    }
+    const projects: Project[] = mapProjectList(apiProjects);
     const subjects: Subject[] = mapSubjectList(apiSubjects);
     return {projects, subjects}
 }

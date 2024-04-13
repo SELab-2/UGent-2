@@ -1,7 +1,7 @@
 import apiFetch from "../ApiFetch.ts";
+import {ProjectInput} from "../InputInterfaces.ts";
 import {Backend_group, Backend_Project} from "../BackendInterfaces.ts";
 import {mapGroup} from "../ApiTypesMapper.ts";
-import {ProjectInput} from "../InputInterfaces.ts";
 
 export async function project_create_group(project_id: number){
     const groupData = await apiFetch(`/projects/${project_id}/groups`, {
@@ -33,3 +33,4 @@ export async function update_project(project_id: number, projectInput: ProjectIn
         subject_id: projectData.subject_id
     }
 }
+

@@ -11,6 +11,7 @@ export interface loginLoaderObject {
 
 const isUser = (data?: Backend_user) => {
     return (data && data.id && data.name && data.email && data.roles && data.language);
+
 }
 
 export default async function loginLoader(): Promise<loginLoaderObject> {
