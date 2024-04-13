@@ -248,7 +248,7 @@ export default function SimpleTests(
             }
             if (constraint.parent_id !== undefined && ids.includes(constraint.parent_id)) {
                 constraint.expanded = false
-                ids.push(constraint.parent_id)
+                ids.push(constraint.id)
             }
 
             constraint.sub_constraints = constraint.sub_constraints?.map(e => collaps_sub(e))
