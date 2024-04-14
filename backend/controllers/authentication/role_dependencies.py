@@ -109,6 +109,12 @@ def ensure_student_authorized_for_group(request: Request, group_id: int) -> Stud
     return ensure_student_authorized_for_project(request, group.project_id)
 
 
+def ensure_teacher_authorized_for_group(request: Request, group_id: int) -> Teacher:
+    session = next(get_session())
+    group = get_group(session, group_id)
+    return ensure_teacher_authorized_for_project(request, group.project_id)
+
+
 def ensure_user_authorized_for_group(request: Request, group_id: int) -> None:
     session = next(get_session())
     group = get_group(session, group_id)
