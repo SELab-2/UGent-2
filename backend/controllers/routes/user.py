@@ -18,7 +18,7 @@ def get_current_user(request: Request) -> User:
     return get_user(session, uid)
 
 
-@users_router.patch("/user", tags=[Tags.USER], summary="Modify the language of the user.")
+@users_router.put("/user", tags=[Tags.USER], summary="Modify the the current user")
 def modify_current_user(request: Request, language: str) -> Response:
     session = request.state.session
     uid = get_authenticated_user(request)
@@ -43,7 +43,7 @@ def admin_get_user(request: Request, uid: int) -> User:
     return get(session, User, uid)
 
 
-@users_router.patch("/users/{uid}", tags=[Tags.USER], summary="Modify the roles of a certain user.")
+@users_router.put("/users/{uid}", tags=[Tags.USER], summary="Modify the roles of a certain user.")
 def modify_user(request: Request, uid: int, roles: list[Role]) -> Response:
     session = request.state.session
     get_authenticated_admin(request)

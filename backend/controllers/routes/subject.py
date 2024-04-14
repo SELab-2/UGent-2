@@ -61,8 +61,8 @@ def new_project(request: Request, subject_id: int, project: ProjectInput) -> Pro
     )
 
 
-@subject_router.patch("/subjects/{subject_id}", tags=[Tags.SUBJECT], summary="Update a subject")
-def patch_update_subject(request: Request, subject_id: int, subject: SubjectInput) -> None:
+@subject_router.put("/subjects/{subject_id}", tags=[Tags.SUBJECT], summary="Update a subject")
+def put_update_subject(request: Request, subject_id: int, subject: SubjectInput) -> None:
     session = request.state.session
     ensure_teacher_authorized_for_subject(request, subject_id)
     update_subject(session, subject_id, subject)

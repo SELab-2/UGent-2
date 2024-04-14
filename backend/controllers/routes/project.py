@@ -35,8 +35,8 @@ def project_create_group(request: Request, project_id: int) -> Group:
     return create_group(session, project_id)
 
 
-@project_router.patch("/projects/{project_id}", tags=[Tags.PROJECT], summary="Update a project.")
-def patch_update_project(request: Request, project_id: int, project: ProjectInput) -> None:
+@project_router.put("/projects/{project_id}", tags=[Tags.PROJECT], summary="Update a project.")
+def put_update_project(request: Request, project_id: int, project: ProjectInput) -> None:
     session = request.state.session
     ensure_teacher_authorized_for_project(request, project_id)
     if project.requirements:
