@@ -78,7 +78,7 @@ export async function getAllProjectsAndSubjects(role: teacherStudentRole, filter
     const apiProjects = (await apiFetch(`/${role}/projects`)) as Backend_Project[];
     let projects: Project[] = mapProjectList(apiProjects);
     if (filter_on_current) {
-        projects = projects.filter(project => project.project_visible && !project.project_archived)
+        projects = projects.filter(project => project.project_visible)
     }
     const subjects: Subject[] = mapSubjectList(apiSubjects);
     return {projects, subjects}
