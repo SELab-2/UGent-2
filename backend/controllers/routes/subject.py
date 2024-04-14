@@ -7,9 +7,9 @@ from controllers.authentication.role_dependencies import (
     get_authenticated_user,
 )
 from controllers.swagger_tags import Tags
-from db.models import Project, ProjectInput, Student, Subject, Teacher
+from db.models import Project, ProjectInput, Student, Subject, SubjectInput, Teacher
 from domain.logic.project import create_project, get_projects_of_subject, validate_constraints
-from domain.logic.subject import get_students_of_subject, get_subject, get_teachers_of_subject
+from domain.logic.subject import get_students_of_subject, get_subject, get_teachers_of_subject, update_subject
 
 subject_router = APIRouter()
 
@@ -59,3 +59,10 @@ def new_project(request: Request, subject_id: int, project: ProjectInput) -> Pro
         visible=project.visible,
         max_students=project.max_students,
     )
+
+
+@subject_router.patch("/subjects/{subject_id}", tags=[Tags.SUBJECT], summary="Update a subject")
+def patch_update_subject(request: Request, subject_id: int, subject: SubjectInput) -> None:
+    session = request.state.session
+    ensure_teacher_authorized_for_subject(request, subject_id)
+    update_subject(session, subject_id, subject)

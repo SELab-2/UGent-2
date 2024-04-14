@@ -66,6 +66,7 @@ class Student(SQLModel, table=True):
 
 class SubjectInput(SQLModel):
     name: str
+    archived: bool
 
 
 class Subject(SubjectInput, table=True):  # Inherits from SubjectInput
