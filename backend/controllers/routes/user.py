@@ -38,7 +38,7 @@ def get_users(request: Request) -> list[User]:
 @users_router.get("/users/{uid}", tags=[Tags.USER], summary="Get a certain user.")
 def admin_get_user(request: Request, uid: int) -> User:
     session = request.state.session
-    get_authenticated_admin(request)
+    get_authenticated_user(request)
 
     return get(session, User, uid)
 
