@@ -5,7 +5,7 @@ from controllers.authentication.role_dependencies import get_authenticated_stude
 from controllers.swagger_tags import Tags
 from db.models import Project, Subject
 from domain.logic.project import get_projects_of_student
-from domain.logic.subject import add_student_to_subject, get_subjects_of_student
+from domain.logic.subject import add_student_to_subject, get_subjects_of_student, remove_student_from_subject
 
 student_router = APIRouter()
 
@@ -26,3 +26,9 @@ def projects_of_student_get(request: Request) -> list[Project]:
 def student_subject_join(request: Request, subject_id: int) -> None:
     student = get_authenticated_student(request)
     add_student_to_subject(request.state.session, student.id, subject_id)
+
+
+@student_router.post("/student/subjects/{subject_id}/leave", tags=[Tags.STUDENT], summary="Leave a subject.")
+def student_subject_leave(request: Request, subject_id: int) -> None:
+    student = get_authenticated_student(request)
+    remove_student_from_subject(request.state.session, student.id, subject_id)

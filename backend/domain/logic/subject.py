@@ -1,6 +1,6 @@
 from sqlmodel import Session
 
-from db.database_errors import ActionAlreadyPerformedError
+from db.database_errors import ActionAlreadyPerformedError, NoSuchRelationError
 from db.models import Student, Subject, Teacher
 from domain.logic.basic_operations import get, get_all
 from domain.logic.student import is_user_student
@@ -75,3 +75,27 @@ def get_teachers_of_subject(session: Session, subject_id: int) -> list[Teacher]:
 def get_students_of_subject(session: Session, subject_id: int) -> list[Student]:
     subject: Subject = get(session, Subject, ident=subject_id)
     return subject.students
+
+
+def remove_student_from_subject(session: Session, student_id: int, subject_id: int) -> None:
+    student = get(session, Student, ident=student_id)
+    subject = get(session, Subject, ident=subject_id)
+
+    if subject not in student.subjects:
+        msg = "Student is not enrolled in subject"
+        raise NoSuchRelationError(msg)
+
+    student.subjects.remove(subject)
+    session.commit()
+
+
+def remove_teacher_from_subject(session: Session, teacher_id: int, subject_id: int) -> None:
+    teacher = get(session, Teacher, ident=teacher_id)
+    subject = get(session, Subject, ident=subject_id)
+
+    if subject not in teacher.subjects:
+        msg = "Teacher doesn't teach subject"
+        raise NoSuchRelationError(msg)
+
+    teacher.subjects.remove(subject)
+    session.commit()

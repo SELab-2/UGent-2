@@ -5,7 +5,12 @@ from controllers.authentication.role_dependencies import get_authenticated_teach
 from controllers.swagger_tags import Tags
 from db.models import Project, Subject, SubjectInput
 from domain.logic.project import get_projects_of_teacher
-from domain.logic.subject import add_teacher_to_subject, create_subject, get_subjects_of_teacher
+from domain.logic.subject import (
+    add_teacher_to_subject,
+    create_subject,
+    get_subjects_of_teacher,
+    remove_teacher_from_subject,
+)
 
 teacher_router = APIRouter()
 
@@ -32,3 +37,9 @@ def create_subject_post(request: Request, subject: SubjectInput) -> Subject:
     new_subject = create_subject(session, name=subject.name)
     add_teacher_to_subject(session, teacher_id=teacher.id, subject_id=new_subject.id)
     return new_subject
+
+
+@teacher_router.post("/teacher/subjects/{subject_id}/leave", tags=[Tags.STUDENT], summary="Leave a subject.")
+def teacher_subject_leave(request: Request, subject_id: int) -> None:
+    teacher = get_authenticated_teacher(request)
+    remove_teacher_from_subject(request.state.session, teacher.id, subject_id)

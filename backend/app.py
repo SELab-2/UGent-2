@@ -35,6 +35,7 @@ pathlib.Path.mkdir(pathlib.Path("submissions"), exist_ok=True)
 app = FastAPI(
     docs_url="/api/docs",
     openapi_tags=tags_metadata,
+    swagger_ui_parameters={"persistAuthorization": True},
     dependencies=[Depends(HTTPBearer(auto_error=False))],  # To authenticate via Swagger UI
 )
 
