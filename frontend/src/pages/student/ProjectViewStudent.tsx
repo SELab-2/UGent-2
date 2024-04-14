@@ -11,7 +11,8 @@ export default function ProjectViewStudent(): JSX.Element {
 
     const data: ProjectStudentLoaderObject = useRouteLoaderData(PROJECT_STUDENT) as ProjectStudentLoaderObject
     const project_data = data.project
-    console.log(project_data)
+
+    // TODO DIT WERKT OOK ALS DE STUDENT NOG NIET IN EEN GROEP ZIT
 
     if (!project_data) {
         return <>
