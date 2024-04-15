@@ -1,4 +1,4 @@
-import {Project, properSubject, Subject, TeacherInfo} from "../../utils/ApiInterfaces.ts";
+import {Project, properSubject, SmallProjectInfo, Subject, TeacherInfo} from "../../utils/ApiInterfaces.ts";
 import apiFetch from "../../utils/ApiFetch.ts";
 import {mapProjectList, mapSubjectList, mapUser} from "../../utils/ApiTypesMapper.ts";
 import {Backend_Project, Backend_Subject, Backend_user} from "../../utils/BackendInterfaces.ts";
@@ -98,7 +98,7 @@ export async function coursesLoader(role: teacherStudentRole, course_id?: number
                 project_visible: project.project_visible,
                 project_deadline: project.project_deadline,
                 project_id: project.project_id,
-            };
+            } as SmallProjectInfo;
         });
 
         const active_projects = all_projects_info.filter(project => !project.project_archived && project.project_visible).length
