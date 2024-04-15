@@ -5,7 +5,7 @@ from sqlmodel import Session
 
 from db.models import Group, Student, Submission, SubmissionState
 from domain.logic.basic_operations import get, get_all
-from domain.logic.errors import InvalidSubmissionError
+from domain.logic.errors import ArchivedError, InvalidSubmissionError
 from domain.simple_submission_checks.constraints.submission_constraint import create_constraint_from_json
 
 
@@ -23,6 +23,9 @@ def create_submission(
     """
     student: Student = get(session, Student, ident=student_id)
     group: Group = get(session, Group, ident=group_id)
+
+    if group.project.archived:
+        raise ArchivedError
 
     new_submission: Submission = Submission(
         student_id=student.id,

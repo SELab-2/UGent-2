@@ -8,3 +8,7 @@ class InvalidSubmissionError(Exception):
 
 class UserNotEnrolledError(Exception):
     ERROR_MESSAGE = "User is not enrolled for this subject"
+
+
+class ArchivedError(Exception):
+    ERROR_MESSAGE = "Can't modify archived data"

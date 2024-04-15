@@ -29,7 +29,7 @@ from db.database_errors import (
     NoSuchRelationError,
 )
 from debug import DEBUG
-from domain.logic.errors import InvalidConstraintsError, InvalidSubmissionError, UserNotEnrolledError
+from domain.logic.errors import ArchivedError, InvalidConstraintsError, InvalidSubmissionError, UserNotEnrolledError
 
 pathlib.Path.mkdir(pathlib.Path("submissions"), exist_ok=True)
 app = FastAPI(
@@ -140,7 +140,7 @@ def invalid_constraints_error_handler(request: Request, exc: InvalidConstraintsE
 def invalid_submission_error_handler(request: Request, exc: InvalidSubmissionError) -> JSONResponse:
     return JSONResponse(
         status_code=status.HTTP_400_BAD_REQUEST,
-        content={"detail": str(exc)},
+        content={"detail": exc.ERROR_MESSAGE},
     )
 
 
@@ -148,7 +148,15 @@ def invalid_submission_error_handler(request: Request, exc: InvalidSubmissionErr
 def user_not_enrolled_error_handler(request: Request, exc: UserNotEnrolledError) -> JSONResponse:
     return JSONResponse(
         status_code=status.HTTP_400_BAD_REQUEST,
-        content={"detail": str(exc)},
+        content={"detail": exc.ERROR_MESSAGE},
+    )
+
+
+@app.exception_handler(ArchivedError)
+def archived_error_handler(request: Request, exc: ArchivedError) -> JSONResponse:
+    return JSONResponse(
+        status_code=status.HTTP_400_BAD_REQUEST,
+        content={"detail": exc.ERROR_MESSAGE},
     )
 
 
