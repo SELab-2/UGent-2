@@ -11,10 +11,10 @@ import {CompleteProjectStudent, SUBMISSION_STATE} from "../../utils/ApiInterface
 import {ProjectStatus} from "../../types/project.ts";
 
 
-function generateTableRowProjects(data: CompleteProjectStudent[], active: boolean): TableRowProjects[] {
+function generateTableRowProjects(data: CompleteProjectStudent[]): TableRowProjects[] {
     return data.map((project_item) => {
 
-        let project_status;
+        let project_status: ProjectStatus.PENDING | ProjectStatus.SUCCESS | ProjectStatus.FAILED
         switch (project_item.submission_state) {
             case SUBMISSION_STATE.Pending:
                 project_status = ProjectStatus.PENDING;
@@ -39,7 +39,7 @@ function generateTableRowProjects(data: CompleteProjectStudent[], active: boolea
                 id: project_item.subject_id
             },
             numberOfSubmissions: null,
-            deadline: active ? deadline : null,
+            deadline: deadline,
             status: project_status
         }
     })
@@ -51,11 +51,9 @@ export default function ProjectsViewStudent(): JSX.Element {
     const projects_data = data.projects
 
     const active_projects = projects_data.filter((project) => project.project_visible && !project.project_archived)
-    const archived_projects = projects_data.filter((project) => project.project_visible && project.project_archived)
 
 
-    const tableProjectsActive: TableRowProjects[] = generateTableRowProjects(active_projects, true)
-    const tableProjectsArchived: TableRowProjects[] = generateTableRowProjects(archived_projects, false)
+    const tableProjectsActive: TableRowProjects[] = generateTableRowProjects(active_projects)
 
     return (
         <>
@@ -72,8 +70,6 @@ export default function ProjectsViewStudent(): JSX.Element {
                         <Table title={"actief"} data={tableProjectsActive} ignoreKeys={["numberOfSubmissions"]}
                                home={"student"}/>
                         <div className={"my-5"}/>
-                        <Table title={"gearchiveerd"} data={tableProjectsArchived}
-                               ignoreKeys={["numberOfSubmissions", "deadline"]} home={"student"}/>
                     </div>
                 </div>
             </div>
