@@ -132,7 +132,7 @@ def conflicting_relation_error_handler(request: Request, exc: ConflictingRelatio
 def invalid_constraints_error_handler(request: Request, exc: InvalidConstraintsError) -> JSONResponse:
     return JSONResponse(
         status_code=status.HTTP_400_BAD_REQUEST,
-        content={"detail": str(exc)},
+        content={"detail": exc.ERROR_MESSAGE},
     )
 
 
@@ -140,7 +140,7 @@ def invalid_constraints_error_handler(request: Request, exc: InvalidConstraintsE
 def invalid_submission_error_handler(request: Request, exc: InvalidSubmissionError) -> JSONResponse:
     return JSONResponse(
         status_code=status.HTTP_400_BAD_REQUEST,
-        content={"detail": exc.ERROR_MESSAGE},
+        content={"detail": str(exc)},
     )
 
 

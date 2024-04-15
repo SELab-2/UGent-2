@@ -67,5 +67,6 @@ def check_submission(session: Session, group_id: int, path: str) -> None:
     group = get(session, Group, group_id)
     project = group.project
     constraints = create_constraint_from_json(project.requirements)
-    if not constraints.validate_constraint(Path(path)).is_ok:
-        raise InvalidSubmissionError
+    validation = constraints.validate_constraint(Path(path))
+    if not validation.is_ok:
+        raise InvalidSubmissionError(validation)
