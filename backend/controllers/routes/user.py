@@ -30,7 +30,7 @@ def modify_current_user(request: Request, language: str) -> Response:
 @users_router.get("/users", tags=[Tags.USER], summary="Get all users.")
 def get_users(request: Request) -> list[User]:
     session = request.state.session
-    get_authenticated_admin(request)
+    get_authenticated_user(request)
 
     return get_all(session, User)
 
