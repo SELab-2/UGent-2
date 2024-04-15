@@ -32,7 +32,7 @@ jobs:
       - name: Reset database
         run: psql -U githubactions -h localhost -d delphi-test -c "DROP OWNED BY current_user;"
         env:
-          PGPASSWORD=postgres
+          PGPASSWORD: postgres
       - name: Run tests
         run: cd backend && poetry run python -m unittest discover tests
         env:
