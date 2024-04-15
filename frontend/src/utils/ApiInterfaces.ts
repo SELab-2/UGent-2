@@ -53,9 +53,25 @@ export interface CompleteProjectTeacher extends CompleteProject {
     submission_statistics: number[]
 }
 
+export interface SmallProjectInfo {
+    project_id: number,
+    project_name: string,
+    project_deadline: Date | string,
+    project_archived: boolean,
+    project_visible: boolean,
+}
+
 export interface properSubject extends Subject {
     active_projects: number,
-    first_deadline: Date | null | string
+    first_deadline: Date | null | string,
+    all_projects: SmallProjectInfo[] | null,
+    teachers: TeacherInfo[]
+}
+
+export interface TeacherInfo {
+    name: string,
+    email: string,
+    course_id: number,
 }
 
 export interface Token {
