@@ -36,7 +36,7 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
                 </div>
             }
             <FieldWithLabel fieldLabel={"Beschrijving"} fieldBody={props.project.description} arrow={false}/>
-            {group &&
+            {group && props.project.groupMembers &&
                 <div>
                     <div className="field is-horizontal">
                         <div className="field-label">
@@ -53,8 +53,6 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
                             </div>
                         </div>
                     </div>
-
-                    {props.project.groupMembers !== undefined &&
                         <div className="field is-horizontal">
 
                             <div className="field-label">
@@ -81,9 +79,7 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
                                     </tbody>
                                 </table>
                             </div>
-
                         </div>
-                    }
                     <div className="field is-horizontal">
                         <div className="field-label">
                             <label className="label">Indiening(zip): </label>
