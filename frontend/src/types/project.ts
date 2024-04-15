@@ -29,7 +29,7 @@ export type ProjectStudent = {
     deadline: string,
     status: ProjectStatus,
     description: string,
-    requiredFiles: string[],
+    requiredFiles: object,
     groupMembers: {
         name: string,
         email: string,
