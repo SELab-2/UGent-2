@@ -12,3 +12,7 @@ class UserNotEnrolledError(Exception):
 
 class ArchivedError(Exception):
     ERROR_MESSAGE = "Can't modify archived data"
+
+
+class NotATeacherError(Exception):
+    ERROR_MESSAGE = "User isn't a teacher"
