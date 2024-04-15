@@ -44,7 +44,7 @@ export default function ProjectViewStudent(): JSX.Element {
 
     const deadline_date = new Date(project_data.project_deadline)
     const deadline = `${deadline_date.getHours()}:${deadline_date.getMinutes()} - ${deadline_date.getDate()}/${deadline_date.getMonth()}/${deadline_date.getFullYear()}`
-    console.log(project_data.project_requirements)
+
     const project: ProjectStudent = {
         projectName: project_data.project_name,
         courseName: project_data.subject_name,
