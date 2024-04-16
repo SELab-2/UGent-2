@@ -17,31 +17,6 @@ export function Header(props: { page_title: string, home: string }): JSX.Element
             </Link>
             <div className={"is-align-self-center"}><p>{props.page_title}</p></div>
             <div className="above-all-others">
-                
-                <Popup trigger={
-                    <button className={"button mx-2 is-transparent"}>
-                        <div className={"icon-text"}>
-                            <p>{i18n.resolvedLanguage}</p>
-                            <MdLanguage className={"icon"}/>
-                        </div>
-                    </button>
-                } position="left center" arrow={true} on="hover">
-                    <div className="menu">
-                        <div className="menu-item" id="language" key="language">
-                            <button className={"button mx-2 is-transparent is-small is-primary"} 
-                                    disabled={i18n.resolvedLanguage === "en"}
-                                    onClick={() => void i18n.changeLanguage("en")}>
-                                <p>en</p>
-                            </button>
-                            <button className={"button mx-2 is-transparent is-small is-primary"}
-                                    disabled={i18n.resolvedLanguage === "nl"}
-                                    onClick={() => void i18n.changeLanguage("nl")}>
-                                <p>nl</p>
-                            </button>
-                        </div>
-                    </div>
-                </Popup>
-                    
                 <button className={"button mx-2 is-transparent"}>
                     <div className={"icon-text"}>
                         <p>{user?.user_name}</p>
