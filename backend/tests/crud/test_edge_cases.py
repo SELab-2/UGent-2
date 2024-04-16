@@ -1,4 +1,5 @@
 # test_edge_cases.py
+import os
 import unittest
 from datetime import datetime
 
@@ -8,6 +9,8 @@ from db.database_errors import ItemNotFoundError
 from db.models import SubmissionState
 from domain.logic import group, student, submission
 from tests.crud.test_main import get_db, test_engine
+
+os.environ["DB_DATABASE"] = "delphi-test"
 
 
 class TestEdgeCases(unittest.TestCase):
