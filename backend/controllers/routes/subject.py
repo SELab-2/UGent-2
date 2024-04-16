@@ -8,7 +8,7 @@ from controllers.authentication.role_dependencies import (
 )
 from controllers.swagger_tags import Tags
 from db.models import Project, ProjectInput, Student, Subject, Teacher
-from domain.logic.project import create_project, get_projects_of_subject
+from domain.logic.project import create_project, get_projects_of_subject, validate_constraints
 from domain.logic.subject import get_students_of_subject, get_subject, get_teachers_of_subject
 
 subject_router = APIRouter()
@@ -46,6 +46,8 @@ def get_subject_students(request: Request, subject_id: int) -> list[Student]:
 def new_project(request: Request, subject_id: int, project: ProjectInput) -> Project:
     session = request.state.session
     ensure_teacher_authorized_for_subject(request, subject_id)
+    if project.requirements:
+        validate_constraints(project.requirements)
     return create_project(
         session,
         subject_id=subject_id,
