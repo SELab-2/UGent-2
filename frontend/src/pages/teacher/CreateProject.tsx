@@ -4,11 +4,13 @@ import {Header} from "../../components/Header.tsx";
 import {Sidebar} from "../../components/Sidebar.tsx";
 import {ProjectTeacher} from "../../types/project.ts";
 import {RegularButton} from "../../components/RegularButton.tsx";
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 import {useRouteLoaderData} from "react-router-dom";
 import {coursesTeacherLoaderObject, CREATE_PROJECT_TEACHER_ID} from "../../dataloaders/CoursesTeacherLoader.ts";
 
 export function CreateProject(): JSX.Element {
+
+    const { t } = useTranslation();
 
     const data = useRouteLoaderData(CREATE_PROJECT_TEACHER_ID) as coursesTeacherLoaderObject;
     console.log(data.courses);
@@ -33,7 +35,6 @@ export function CreateProject(): JSX.Element {
         maxGroupMembers: 0,
     };
 
-    const { t } = useTranslation();
 
     return (
         <>

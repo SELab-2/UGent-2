@@ -6,9 +6,11 @@ import Statistics from "../../components/Statistics.tsx";
 import {RegularButton} from "../../components/RegularButton.tsx";
 import {useRouteLoaderData} from "react-router-dom";
 import {PROJECT_TEACHER, ProjectTeacherLoaderObject} from "../../dataloaders/ProjectTeacher.ts";
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 
 export default function ProjectViewTeacher() {
+
+    const { t } = useTranslation();
 
     const data: ProjectTeacherLoaderObject = useRouteLoaderData(PROJECT_TEACHER) as ProjectTeacherLoaderObject
     const project_data = data.project
@@ -22,7 +24,6 @@ export default function ProjectViewTeacher() {
 
     const deadline_date = new Date(project_data.project_deadline)
 
-    const { t } = useTranslation();
 
     const project: ProjectTeacher = {
         projectName: project_data.project_name,
