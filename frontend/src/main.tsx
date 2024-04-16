@@ -38,6 +38,7 @@ import courseStudentLoader, {COURSE_STUDENT} from "./dataloaders/CourseStudentLo
 
 // import i18n (needs to be bundled ;))
 import './i18n';
+import adminLoader, {ADMIN_LOADER} from "./dataloaders/AdminLoader.ts";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -54,7 +55,7 @@ const router = createBrowserRouter(
             </Route>
 
             <Route element={<RequireAuth allowedRoles={['ADMIN']}/>}>
-                <Route path={"admin"} element={<HomeAdmin/>}/>
+                <Route id={ADMIN_LOADER} path={"admin"} element={<HomeAdmin/>} loader={adminLoader}/>
             </Route>
 
             <Route element={<RequireAuth allowedRoles={['STUDENT']}/>}>
