@@ -2,9 +2,6 @@ import {JSX} from "react";
 import {RiAccountPinBoxLine} from "react-icons/ri";
 import {Link} from "react-router-dom";
 import useAuth from "../hooks/useAuth.ts";
-import { MdLanguage } from "react-icons/md";
-import Popup from 'reactjs-popup';
-import i18n from "../i18n.tsx";
 
 export function Header(props: { page_title: string, home: string }): JSX.Element {
     
