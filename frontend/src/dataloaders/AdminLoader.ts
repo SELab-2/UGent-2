@@ -17,7 +17,7 @@ function filter_on_role(users: User[], role: string): User[] {
 }
 
 export default async function adminLoader(): Promise<AdminLoaderObject> {
-    const users_backend: Backend_user[] = (await apiFetch("/api/users")) as Backend_user[];
+    const users_backend: Backend_user[] = (await apiFetch("/users")) as Backend_user[];
     const users: User[] = users_backend.map((user) => mapUser(user));
     const students = filter_on_role(users, "STUDENT");
     const teachers = filter_on_role(users, "TEACHER");
