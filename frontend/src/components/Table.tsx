@@ -18,7 +18,7 @@ function TableDataElement<T extends TableRow>(props: {home: string, row: T, colI
         <td style={{width: `${widthElement}%`, textAlign: props.colIndex == 0 ? "start" : "center"}}>
             { typeof values[props.index] === "object" && "id" in values[props.index] ? (
                 <Link to={`/${props.home}/${Object.keys(props.row)[props.index]}/${(values[props.index] as {name: string, id: number}).id}`}>
-                    <a>{(values[props.index] as {name: string, id: number}).name}</a>
+                    {(values[props.index] as {name: string, id: number}).name}
                 </Link>
             ) : (
                 <>{values[props.index]}</>

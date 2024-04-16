@@ -40,9 +40,6 @@ Roep 'SimpleTests' als component om deze in te laden.
 
 !!! WARNING: een not_present_constraint wordt (nog) niet ondersteund. !!!
 
-FIXME:  Bij het verwijderen van een file, wordt er nog geen warning ondersteund (zie FIXME's in code).
-        Zonder warning werkt dit wel al (eerste van de twee buttons).
-
 ================================================================================================================================================ */
 
 /* Definieer constraint-types. */
@@ -234,7 +231,7 @@ export default function SimpleTests(
             }
             if (constraint.parent_id !== undefined && ids.includes(constraint.parent_id)) {
                 constraint.expanded = false
-                ids.push(constraint.parent_id)
+                ids.push(constraint.id)
             }
 
             constraint.sub_constraints = constraint.sub_constraints?.map(e => collaps_sub(e))
@@ -454,32 +451,28 @@ export default function SimpleTests(
                                     ?   <Popup trigger={
 
                                             <div className="more row">
-                                                {/* FIXME:  warneable.proceed works */}
                                                 <IoMdMore className="hover-shadow" />
                                             </div>
 
-                                        } position="left center" arrow={true} on="click">
-
-                                            {/* FIXME:  warneable.proceed doesn't work */}
+                                        } position="left center" arrow={true} on="click" nested>
 
                                             <div className="menu">
 
                                                 {/* ... menu-remove ... */}
                                                 <div className="menu-item" id={"x"+v.item.id} key={"y"+v.item.id} >
-                                                    <button onClick={() => handleRemove(v.item.parent_id, v.item.id)}>{t('submission_files.menu.remove')}</button>
                                                     <Warneable 
                                                         text={t('submission_files.warning.remove')}
                                                         trigger={onClick => 
                                                             <button onClick={onClick}>{t('submission_files.menu.remove')}</button>
                                                         }
-                                                        proceed={() => handleRemove(v.item.parent_id, v.item.id)} /* FIXME: proceed doesn't fire here for some reason */
+                                                        proceed={() => handleRemove(v.item.parent_id, v.item.id)}
                                                     />
                                                 </div>
 
                                                 {/* ... menu-allow-others ... */}
                                                 {(v.item.type === LOCKED_DIR || v.item.type === DIR) &&
                                                     <div className="menu-item">
-                                                        <label className="checkbox"> { /* FIXME: sometimes a border appear around the checkbox -> bulma thing? */}
+                                                        <label className="checkbox">
                                                             {v.item.type === LOCKED_DIR
                                                                 ? <input type="checkbox" onChange={() => handleSwitchDirType(v.item.id)} id={"others"+v.item.id}/>
                                                                 : <input type="checkbox" onChange={() => handleSwitchDirType(v.item.id)} id={"others"+v.item.id} checked/>
