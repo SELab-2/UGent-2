@@ -109,7 +109,10 @@
         "active": "active",
         "archived": "archived",
         "hidden": "hidden",
-        "new_project": "new project"
+        "new_project": "new project",
+        "succes": "Success",
+        "failed": "Failed",
+        "pending": "Pending"
     },
     "table": {
         "project": "project",
@@ -142,7 +145,9 @@
             "choose_file": "Choose a file"
         },
         "confirm": "Confirm",
-        "save": "Save"
+        "save": "Save",
+        "failed": "Failed",
+        "success": "Success"
     },
     "statistics": {
         "tag": "Statistics",

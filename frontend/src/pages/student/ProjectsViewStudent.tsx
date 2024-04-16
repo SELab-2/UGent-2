@@ -9,21 +9,24 @@ import {PROJECTS_STUDENT_ROUTER_ID} from "../../dataloaders/ProjectsStudentLoade
 import {studentLoaderObject} from "../../dataloaders/StudentLoader.ts";
 import {CompleteProjectStudent, SUBMISSION_STATE} from "../../utils/ApiInterfaces.ts";
 import {ProjectStatus} from "../../types/project.ts";
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 
-function generateTableRowProjects(data: CompleteProjectStudent[]): TableRowProjects[] {
+function GenerateTableRowProjects(data: CompleteProjectStudent[]): TableRowProjects[] {
+
+    const { t } = useTranslation();
+
     return data.map((project_item) => {
 
         let project_status: ProjectStatus.PENDING | ProjectStatus.SUCCESS | ProjectStatus.FAILED
         switch (project_item.submission_state) {
-            case SUBMISSION_STATE.Pending:
-                project_status = ProjectStatus.PENDING;
+            case SUBMISSION_STATE.Rejected:
+                project_status = t('projects.failed');
                 break;
             case SUBMISSION_STATE.Approved:
-                project_status = ProjectStatus.SUCCESS;
+                project_status = t('projects.success');
                 break;
             default:
-                project_status = ProjectStatus.FAILED;
+                project_status = t('projects.pending');
         }
 
         const deadline_date = new Date(project_item.project_deadline)
@@ -54,7 +57,7 @@ export default function ProjectsViewStudent(): JSX.Element {
 
     const { t } = useTranslation();
 
-    const tableProjectsActive: TableRowProjects[] = generateTableRowProjects(active_projects)
+    const tableProjectsActive: TableRowProjects[] = GenerateTableRowProjects(active_projects)
 
     return (
         <>

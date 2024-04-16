@@ -33,9 +33,9 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
                     </div>
                     <div className="field-body field">
                         {props.project.status == ProjectStatus.FAILED &&
-                            <label className={"has-text-danger"}>{props.project.status}</label>}
+                            <label className={"has-text-danger"}>{t('propject.failed')}</label>}
                         {props.project.status == ProjectStatus.SUCCESS &&
-                            <label className={"has-text-success"}>{props.project.status}</label>}
+                            <label className={"has-text-success"}>{t('propject.succes')}</label>}
                     </div>
                 </div>
             }
