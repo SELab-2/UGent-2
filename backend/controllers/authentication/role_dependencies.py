@@ -94,7 +94,7 @@ def ensure_teacher_authorized_for_subject(request: Request, subject_id: int) -> 
 def ensure_student_authorized_for_project(request: Request, project_id: int) -> Student:
     session = next(get_session())
     project = get_project(session, project_id)
-    return ensure_student_authorized_for_project(request, project.project_id)
+    return ensure_student_authorized_for_subject(request, project.subject_id)
 
 
 def ensure_teacher_authorized_for_project(request: Request, project_id: int) -> Teacher:
