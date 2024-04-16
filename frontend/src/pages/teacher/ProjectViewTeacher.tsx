@@ -6,6 +6,7 @@ import Statistics from "../../components/Statistics.tsx";
 import {RegularButton} from "../../components/RegularButton.tsx";
 import {useRouteLoaderData} from "react-router-dom";
 import {PROJECT_TEACHER, ProjectTeacherLoaderObject} from "../../dataloaders/ProjectTeacher.ts";
+import { useTranslation } from 'react-i18next';
 
 export default function ProjectViewTeacher() {
 
@@ -20,6 +21,8 @@ export default function ProjectViewTeacher() {
     }
 
     const deadline_date = new Date(project_data.project_deadline)
+
+    const { t } = useTranslation();
 
     const project: ProjectTeacher = {
         projectName: project_data.project_name,
@@ -46,8 +49,7 @@ export default function ProjectViewTeacher() {
                 </div>
                 <div className={"student-main my-3 is-flex is-flex-direction-column"}>
                     <div className={"mx-5 mb-5 is-flex is-justify-content-start"}>
-                        <RegularButton placeholder={"Save"} add={false} onClick={() => {
-                        }}/>
+                        <RegularButton placeholder={t('project.save')} add={false} onClick={() => {}}/>
                         <div className={"mr-5"}/>
                         <Statistics statistics={project_data.submission_statistics}/>
                     </div>

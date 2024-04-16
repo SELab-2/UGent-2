@@ -1,0 +1,190 @@
+{
+    "login": {
+        "title": "Welcome to Delphi!",
+        "text": "To login, please click the button below, you'll get redirected to the login page of UGent CAS.",
+        "button": "Log in"
+    },
+    "login_error": {
+        "title": "There was an error logging in!",
+        "text": "To retry, please press the button below.",
+        "button": "Retry"
+    },
+    "unauthorized": {
+        "title": "Access to this page is restricted!",
+        "text": "Please check with an admin if you believe this is a mistake.",
+        "back": "Go back to the homepage"
+    },
+    "home_student": {
+        "title": "Home",
+        "deadlines": "Upcoming deadlines",
+        "card": {
+            "tag": {
+                "course": "course:",
+                "status": "status:"
+            },
+            "status": {
+                "success": "Success",
+                "failed": "Failed"
+            }
+            
+        }
+    },
+    "create_course": {
+        "title": "Create course",
+        "name": {
+            "tag": "Course name:",
+            "placeholder": "Enter a name"
+        },
+        "confirm": "Confirm"
+    },
+    "create_project": {
+        "title": "Create project",
+        "name": {
+            "tag": "Project name:",
+            "placeholder": "Enter a name"
+        },
+        "course": {
+            "tag": "Course:"
+        },
+        "deadline": {
+            "tag": "Deadline:",
+            "locale": "en"
+        },
+        "description": {
+            "tag": "Description:",
+            "placeholder": "Optional description of the project"
+        },
+        "docker_file": {
+            "tag": "Docker file",
+            "choose_button": "Choose a file"
+        },
+        "submission_files": {
+            "tag": "Submission files:"
+        },
+        "teamwork": {
+            "tag": "Teamwork:",
+            "changes": "Allow mix-ups",
+            "groups": {
+                "tag": "Groups (choose one of the below):",
+                "random": "random",
+                "own_choice": "students choose themselves"
+            }
+        },
+        "save_button": "Save"
+    },
+    "submission_files": {
+        "changes_text": "",
+        "root_switch": {
+            "single_file": "single file",
+            "zip_file": "zip-file"
+        },
+        "color_codes": {
+            "tag": "Color codes:",
+            "zip": "zip",
+            "folder_refuse_others": "folder (only specified files)",
+            "folder_allow_others": "folder (other files allowed)",
+            "file": "file"
+        },
+        "specify_files": {
+            "teacher": "Specify the structure of the submission files:",
+            "student": "File-structure:"
+        },
+        "menu": {
+            "remove": "remove",
+            "allow_others": "allow others"
+        },
+        "warning": {
+            "type_switch": "All current file-specifications will be removed. Are you sure you want to change the type of the root?",
+            "remove": "Are you sure?"
+        }
+    },
+    "warneable": {
+        "title": "Warning!",
+        "cancel": "Cancel",
+        "proceed": "Proceed"
+    },
+    "projects": {
+        "title": "Projects",
+        "search_placeholder": "search a project...",
+        "active": "active",
+        "archived": "archived",
+        "hidden": "hidden",
+        "new_project": "new project"
+    },
+    "table": {
+        "project": "project",
+        "course": "course",
+        "deadline": "deadline",
+        "status": "status",
+        "number_of_submissions": "number of submissions",
+        "shortest_deadline": "shortest deadline",
+        "name": "name",
+        "email": "email",
+        "no_data_yet": "No data yet.",
+        "number_of_projects": "number of projects"
+    },
+    "project": {
+        "name": "Name",
+        "course": "Course",
+        "deadline": "Deadline",
+        "status": "Status",
+        "description": "Description",
+        "submission_files": "Submission must contain",
+        "groupmembers": {
+            "tag": "Groupmembers",
+            "name": "Name",
+            "email": "Email",
+            "latest_submission": "Latest submission",
+            "amount_of_members": "Amount of members per group"
+        },
+        "submission": {
+            "tag": "Submission",
+            "choose_file": "Choose a file"
+        },
+        "confirm": "Confirm",
+        "save": "Save"
+    },
+    "statistics": {
+        "tag": "Statistics",
+        "submissions": "Submissions",
+        "nothing_yet": "Nothing yet",
+        "failed": "Failed",
+        "success": "Success"
+    },
+    "courses": {
+        "title": "Courses",
+        "search_placeholder": "search a course...",
+        "active": "active",
+        "archived": "archived",
+        "new_project": "new project"
+    },
+    "course": {
+        "teachers": "teachers",
+        "projects": "projects",
+        "students": "students",
+        "new_project": "new project"
+    },
+    "admin": {
+        "title": "Admin operations",
+        "teacher_rights": {
+            "tag": "Give teacher-rights:",
+            "sub": "(choose between all non-teachers)"
+        },
+        "admin_rights": {
+            "tag": "Give admin-rights:",
+            "sub": "(choose between all persons)"
+        },
+        "search_placeholder": "search a person"
+    },
+    "settings": {
+        "english": "English",
+        "dutch": "Dutch",
+        "current_language": "EN",
+        "settings": "Settings",
+        "logout": "Logout:",
+        "workstation": "Select workstation:",
+        "student": "student",
+        "teacher": "teacher",
+        "admin": "admin"
+    }
+}

@@ -3,11 +3,14 @@ import {TableRowOverviewProjects, TableRowPeople} from "../../types/tableRows.ts
 import {Header} from "../../components/Header.tsx";
 import {Sidebar} from "../../components/Sidebar.tsx";
 import {Table} from "../../components/Table.tsx";
+import { useTranslation } from 'react-i18next';
 import {useRouteLoaderData} from "react-router-dom";
 import {CourseLoaderObject} from "../../dataloaders/loader_helpers/SharedFunctions.ts";
 import {COURSE_STUDENT} from "../../dataloaders/CourseStudentLoader.ts";
 
 export default function CourseViewStudent(): JSX.Element {
+
+    const { t } = useTranslation();
 
     const data: CourseLoaderObject = useRouteLoaderData(COURSE_STUDENT) as CourseLoaderObject
     const course_data = data.course
@@ -53,11 +56,11 @@ export default function CourseViewStudent(): JSX.Element {
                 <div className={"student-main is-flex is-justify-content-center"}>
                     <div className={"table-page is-flex is-flex-direction-column"}>
                         <div className={"my-5"}/>
-                        <Table title={"lesgevers"} data={teachers} ignoreKeys={[]} home={"student"}/>
+                        <Table title={t('course.teachers')} data={teachers} ignoreKeys={[]} home={"student"}/>
                         {course_data.active_projects > 0 &&
                             <>
                                 <div className={"my-5"}/>
-                                <Table title={"projecten"} data={tableProjects} ignoreKeys={["status"]}
+                                <Table title={t('course.projects')} data={tableProjects} ignoreKeys={["status"]}
                                        home={"student"}/>
                             </>
                         }

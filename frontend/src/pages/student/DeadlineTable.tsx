@@ -1,6 +1,7 @@
 import {JSX} from "react";
 import {FaArrowRightLong} from "react-icons/fa6";
 import {CompleteProjectStudent} from "../../utils/ApiInterfaces.ts";
+import { useTranslation } from 'react-i18next';
 
 function DeadlineElement(props: {project: CompleteProjectStudent}): JSX.Element {
     const deadline_date = new Date(props.project.project_deadline)
@@ -17,10 +18,13 @@ function DeadlineElement(props: {project: CompleteProjectStudent}): JSX.Element 
 }
 
 function DeadlineTable(props: {projects: CompleteProjectStudent[]}): JSX.Element {
+
+    const { t } = useTranslation();
+
     return (
         <div className={"deadline"}>
             <div className={"deadline-head is-flex is-justify-content-center py-2"}>
-                <p>komende deadlines</p>
+                <p>{t('home_student.deadlines')}</p>
             </div>
             <div className={"deadline-elements"}>
                 {props.projects.map((project) => {

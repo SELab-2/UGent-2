@@ -11,6 +11,8 @@ export default defineConfig({
             cert: fs.readFileSync('./.cert/cert.pem')
         },
         port: 8080, // nodig voor CAS
+    },
+    build: {
+        target: "es2022"
     }
 })
-

@@ -7,7 +7,7 @@ import DeadlineTable from "./DeadlineTable.tsx";
 import {STUDENT_ROUTER_ID, studentLoaderObject} from "../../dataloaders/StudentLoader.ts";
 import {useRouteLoaderData} from "react-router-dom";
 import {CompleteProjectStudent} from "../../utils/ApiInterfaces.ts";
-
+import { useTranslation } from 'react-i18next';
 
 export function RenderProjectCards(props: {projects: CompleteProjectStudent[]}): JSX.Element {
     return (
@@ -25,10 +25,12 @@ export default function HomeStudent(): JSX.Element {
 
     const active_projects = projects.filter((project) => !project.project_archived && project.project_visible);
 
+    const { t } = useTranslation();
+
     return (
         <>
             <div className={"main-header"}>
-                <Header page_title={"Home"} home={"student"}/>
+                <Header page_title={t('home_student.title')} home={"student"}/>
             </div>
             <div className={"main-content is-flex is-flex-direction-row"}>
                 <div className={"side-bar is-flex is-justify-content-center"}>

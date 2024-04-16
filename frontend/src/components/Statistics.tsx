@@ -1,6 +1,7 @@
 import {JSX, useState} from "react";
 import {PieChart} from "react-minimal-pie-chart";
 import {IoIosStats} from "react-icons/io";
+import { useTranslation } from 'react-i18next';
 
 export default function Statistics(props: { statistics: number[] }): JSX.Element {
 
@@ -10,10 +11,12 @@ export default function Statistics(props: { statistics: number[] }): JSX.Element
     Rejected = 3
      */
 
+    const { t } = useTranslation();
+
     const data = [
-        {title: 'Succes', value: props.statistics[1], color: '#50C878'},
-        {title: 'Fail', value: props.statistics[2], color: '#C13C37'},
-        {title: 'Nothing yet', value: props.statistics[0], color: '#D3D3D3'},
+        {title: t('statistics.success'), value: props.statistics[1], color: '#50C878'},
+        {title: t('statistics.failed'), value: props.statistics[2], color: '#C13C37'},
+        {title: t('statistics.nothing_yet'), value: props.statistics[0], color: '#D3D3D3'}
     ]
 
     const [modalActive, setModalActive] = useState(false);
@@ -32,7 +35,7 @@ export default function Statistics(props: { statistics: number[] }): JSX.Element
                 <span className="icon is-small">
                     <IoIosStats/>
                 </span>
-                <span>Statistieken</span>
+                <span>{t('statistics.tag')}</span>
             </button>
             <div id="modal-stats" className={`modal ${modalActive ? 'is-active' : ''}`}>
                 <div className="modal-background" onClick={closeModal}></div>
