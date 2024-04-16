@@ -1,12 +1,15 @@
 import Popup from 'reactjs-popup';
 import '../../assets/styles/SimpleTests/warneable.css'
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default function Warneable(props: {
     text: string, 
     trigger: (onClick: () => void) => JSX.Element, 
     proceed: () => void,
 }) {
+
+    const { t } = useTranslation();
 
     const [open, setOpen] = useState(false);
     const closeModal = () => setOpen(false);
@@ -20,7 +23,7 @@ export default function Warneable(props: {
                 {props.trigger(() => {setOpen(o => !o)})}
 
                 <Popup open={open} closeOnDocumentClick onClose={closeModal} modal>
-                    <div className="warning-header"> Warning! </div>
+                    <div className="warning-header">{t('warneable.title')}</div>
 
                     <div className="warning-content">
                         {props.text}
@@ -29,11 +32,11 @@ export default function Warneable(props: {
                     <div className="warning-actions">
 
                         <button className="warning-button warning-proceed" onClick={onProceed}> 
-                            Doorgaan 
+                            {t('warneable.proceed')}
                         </button>
                         
                         <button className="warning-button warning-close" onClick={closeModal}>
-                            Annuleren
+                            {t('warneable.cancel')}
                         </button>
 
                     </div>

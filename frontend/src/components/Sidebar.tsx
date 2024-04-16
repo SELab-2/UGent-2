@@ -43,7 +43,7 @@ export function Sidebar(props: {home: string, buttons?: SidebarButton[]}): JSX.E
                 </ul>
             </aside>
             {isOpen &&
-                <Settings closeSettings={handleSettings}/>
+                <Settings closeSettings={handleSettings} home={props.home} />
             }
         </>
     )

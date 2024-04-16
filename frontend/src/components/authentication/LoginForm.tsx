@@ -1,5 +1,6 @@
 import {JSX} from "react";
 import {DEBUG} from "../../pages/root.tsx";
+import { useTranslation } from 'react-i18next';
 
 export default function LoginForm(): JSX.Element {
     let url = 'https://login.ugent.be/login?service=https://sel2-2.ugent.be/login'
@@ -7,14 +8,15 @@ export default function LoginForm(): JSX.Element {
         url = "https://login.ugent.be/login?service=https://localhost:8080/login"
     }
 
+    const { t } = useTranslation();
+
     return (
         <div className="centered-card">
             <div className="card m-6 p-6 content has-text-centered">
                 <img src={"/logo.png"} alt="Delphi logo"/>
-                <h1 className="title width"> Welcome to Delphi!</h1>
-                <p className="subtitle">{"To login, please click the button below, " +
-                    "you'll get redirected to the login page of UGent CAS."}</p>
-                <a className="button is-primary is-large" href={url}>Log in</a>
+                <h1 className="title width"> {t('login.title')}</h1>
+                <p className="subtitle">{t('login.text')}</p>
+                <a className="button is-primary is-large" href={url}>{t('login.button')}</a>
             </div>
         </div>
     )

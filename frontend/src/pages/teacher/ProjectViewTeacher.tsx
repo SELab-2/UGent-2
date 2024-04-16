@@ -4,8 +4,11 @@ import {ProjectTeacherComponent} from "../../components/ProjectTeacherComponent.
 import {ProjectTeacher} from "../../types/project.ts";
 import Statistics from "../../components/Statistics.tsx";
 import {RegularButton} from "../../components/RegularButton.tsx";
+import { useTranslation } from 'react-i18next';
 
 export default function ProjectViewTeacher() {
+
+    const { t } = useTranslation();
 
     const project: ProjectTeacher = {
         projectName: "RSA security",
@@ -30,7 +33,7 @@ export default function ProjectViewTeacher() {
                 </div>
                 <div className={"student-main my-3 is-flex is-flex-direction-column"}>
                     <div className={"mx-5 mb-5 is-flex is-justify-content-start"}>
-                        <RegularButton placeholder={"Save"} add={false} onClick={() => {}}/>
+                        <RegularButton placeholder={t('project.save')} add={false} onClick={() => {}}/>
                         <div className={"mr-5"}/>
                         <Statistics/>
                     </div>
