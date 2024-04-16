@@ -174,5 +174,16 @@
             "sub": "(choose between all persons)"
         },
         "search_placeholder": "search a person"
-    } 
+    },
+    "settings": {
+        "english": "English",
+        "dutch": "Dutch",
+        "current_language": "EN",
+        "settings": "Settings",
+        "logout": "Logout:",
+        "workstation": "Select workstation:",
+        "student": "student",
+        "teacher": "teacher",
+        "admin": "admin"
+    }
 }

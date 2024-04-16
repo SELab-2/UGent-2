@@ -174,5 +174,16 @@
             "sub": "(kies tussen alle personen)"
         },
         "search_placeholder": "zoek een persoon"
+    },
+    "settings": {
+        "english": "Engels",
+        "dutch": "Nederlands",
+        "current_language": "NL",
+        "settings": "Instellingen",
+        "logout": "Uitloggen:",
+        "workstation": "Selecteer werkstation:",
+        "student": "student",
+        "teacher": "lesgever",
+        "admin": "beheerder"
     }
 }
