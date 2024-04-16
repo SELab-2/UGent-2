@@ -6,7 +6,7 @@ import {IoMdClose} from "react-icons/io";
 import {MdLanguage, MdOutlineKeyboardArrowDown} from "react-icons/md";
 import useAuth from "../hooks/useAuth.ts";
 import {User} from "../utils/ApiInterfaces.ts";
-import { useTranslation } from "react-i18next";
+import {useTranslation} from "react-i18next";
 import i18n from "../i18n.tsx";
 
 function DropdownLanguage(): JSX.Element {
@@ -16,7 +16,7 @@ function DropdownLanguage(): JSX.Element {
         setIsOpen(!isOpen);
     }
 
-    const { t } = useTranslation();
+    const {t} = useTranslation();
 
     return (
         <div className={`dropdown ${isOpen ? 'is-active' : ''}`}>
@@ -33,14 +33,20 @@ function DropdownLanguage(): JSX.Element {
             <div className={"dropdown-menu"}>
                 <div className="dropdown-content">
                     <a
-                        className="dropdown-item" 
-                        onClick={() => {void i18n.changeLanguage("en"); toggle()}}
+                        className="dropdown-item"
+                        onClick={() => {
+                            void i18n.changeLanguage("en");
+                            toggle()
+                        }}
                     >
                         {t('settings.english')}
                     </a>
-                    <a 
-                        className="dropdown-item" 
-                        onClick={() => {void i18n.changeLanguage("nl"); toggle()}}
+                    <a
+                        className="dropdown-item"
+                        onClick={() => {
+                            void i18n.changeLanguage("nl");
+                            toggle()
+                        }}
                     >
                         {t('settings.dutch')}
                     </a>
@@ -54,10 +60,12 @@ function workstationsAvailable(user: User | undefined, home: string, workstation
     return user?.user_roles.includes(workstation.toUpperCase()) && home != workstation;
 }
 
-function Settings(props: { closeSettings: () => void, home: string}): JSX.Element {
+function Settings(props: { closeSettings: () => void, home: string }): JSX.Element {
     const {user} = useAuth()
 
-    const { t } = useTranslation();
+    const {t} = useTranslation();
+    const ROLES = ["STUDENT", "TEACHER", "ADMIN"];
+    const available_workstations = ROLES.filter(role => user?.user_roles.includes(role)).length;
 
     function logout() {
         localStorage.removeItem("token")
@@ -68,7 +76,7 @@ function Settings(props: { closeSettings: () => void, home: string}): JSX.Elemen
         <div className={"card popup"}>
             <div className={"is-flex is-align-items-center is-justify-content-right"}>
                 <span className={"py-2"}>
-                    <DropdownLanguage />
+                    <DropdownLanguage/>
                 </span>
                 <button className={"button mx-2 my-1"} onClick={props.closeSettings}><IoMdClose/></button>
             </div>
@@ -79,26 +87,28 @@ function Settings(props: { closeSettings: () => void, home: string}): JSX.Elemen
                     <p>{t('settings.logout')}</p>
                     <a className={"button mx-5 px-2"} onClick={logout} href={"/"}><BiLogOut size={25}></BiLogOut></a>
                 </div>
-                <div>
-                    <p className={"py-2"}>{t('settings.workstation')}</p>
-                    <div className={"is-flex is-justify-content-space-evenly"}>
-                        { workstationsAvailable(user, props.home, "student") &&
-                            <Link to={"/student"}>
-                                <button className={"button is-info mx-1"}>{t('settings.student')}</button>
-                            </Link>
-                        }
-                        { workstationsAvailable(user, props.home, "teacher") &&
-                            <Link to={"/teacher"}>
-                                <button className={"button is-success mx-1"}>{t('settings.teacher')}</button>
-                            </Link>
-                        }
-                        { workstationsAvailable(user, props.home, "admin") &&
-                            <Link to={"/admin"}>
-                                <button className={"button is-danger mx-1"}>{t('settings.admin')}</button>
-                            </Link>
-                        }
+                {available_workstations > 1 &&
+                    <div>
+                        <p className={"py-2"}>{t('settings.workstation')}</p>
+                        <div className={"is-flex is-justify-content-space-evenly"}>
+                            {workstationsAvailable(user, props.home, "student") &&
+                                <Link to={"/student"}>
+                                    <button className={"button is-info mx-1"}>{t('settings.student')}</button>
+                                </Link>
+                            }
+                            {workstationsAvailable(user, props.home, "teacher") &&
+                                <Link to={"/teacher"}>
+                                    <button className={"button is-success mx-1"}>{t('settings.teacher')}</button>
+                                </Link>
+                            }
+                            {workstationsAvailable(user, props.home, "admin") &&
+                                <Link to={"/admin"}>
+                                    <button className={"button is-danger mx-1"}>{t('settings.admin')}</button>
+                                </Link>
+                            }
+                        </div>
                     </div>
-                </div>
+                }
             </div>
         </div>
     )
