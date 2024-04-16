@@ -36,9 +36,13 @@ import projectTeacherLoader, {PROJECT_TEACHER} from "./dataloaders/ProjectTeache
 import courseTeacherLoader, {COURSE_TEACHER} from "./dataloaders/CourseTeacherLoader.ts";
 import courseStudentLoader, {COURSE_STUDENT} from "./dataloaders/CourseStudentLoader.ts";
 
+// import i18n (needs to be bundled ;))
+import './i18n';
+
 const router = createBrowserRouter(
     createRoutesFromElements(
         <Route path={"/"}>
+
             {/* Public routes */}
             <Route path={"login"} id={LOGIN_ROUTER_ID} element={<LoginScreen/>} loader={loginLoader}
                    errorElement={<ErrorLogin/>}/>

@@ -4,12 +4,16 @@ import {Sidebar} from "../../components/Sidebar.tsx";
 import {RegularATag} from "../../components/RegularATag.tsx";
 import {Table} from "../../components/Table.tsx";
 import {TableRowOverviewProjects, TableRowPeople} from "../../types/tableRows.ts";
+import { useTranslation } from 'react-i18next';
 import CopyLink from "../../components/CopyLink.tsx";
 import Archive from "../../components/Archive.tsx";
 import ManageCourse from "../../components/ManageCourse.tsx";
 import LeaveCourse from "../../components/LeaveCourse.tsx";
 
 export default function CourseViewTeacher(): JSX.Element {
+
+    const { t } = useTranslation();
+
     const tableProjects: TableRowOverviewProjects[] = [
         {
             project: {
@@ -54,7 +58,7 @@ export default function CourseViewTeacher(): JSX.Element {
     return (
         <>
             <div className={"main-header"}>
-                <Header page_title={"Courses"} home={"teacher"}/>
+                <Header page_title={"...my_course..."} home={"teacher"}/>
             </div>
             <div className={"main-content is-flex is-flex-direction-row"}>
                 <div className={"side-bar is-flex is-justify-content-center"}>
@@ -64,7 +68,7 @@ export default function CourseViewTeacher(): JSX.Element {
                     <div className={"table-page is-flex is-flex-direction-column"}>
                         <div className={"is-flex is-align-items-center is-justify-content-space-between"}>
                             <div className={"my-5 is-flex"}>
-                                <RegularATag link={"teacher/projects/create"} text={"nieuw project"} add={true}/>
+                                <RegularATag link={"teacher/projects/create"} text={t('course.new_project')} add={true}/>
                                 <div className={"ml-4 mr-2"}><CopyLink/></div>
                                 <div className={"mx-2"}><ManageCourse teachers={teachers}/></div>
                                 <div className={"mx-2"}><Archive/></div>
@@ -72,11 +76,11 @@ export default function CourseViewTeacher(): JSX.Element {
                             <LeaveCourse amountOfTeachers={teachers.length}/>
                         </div>
                         <div className={"my-5"}/>
-                        <Table title={"projecten"} data={tableProjects} ignoreKeys={["status"]} home={"teacher"}/>
+                        <Table title={t('course.projects')} data={tableProjects} ignoreKeys={["status"]} home={"teacher"}/>
                         <div className={"my-5"}/>
-                        <Table title={"lesgevers"} data={teachers} ignoreKeys={[]} home={"teacher"}/>
+                        <Table title={t('course.teachers')} data={teachers} ignoreKeys={[]} home={"teacher"}/>
                         <div className={"my-5"}/>
-                        <Table title={"studenten"} data={students} ignoreKeys={[]} home={"teacher"}/>
+                        <Table title={t('course.students')} data={students} ignoreKeys={[]} home={"teacher"}/>
                     </div>
                 </div>
             </div>
