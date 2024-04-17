@@ -1,9 +1,4 @@
-import os
-
 from httpx import Response
-
-os.environ["DB_DATABASE"] = "delphi-test"
-os.environ["DELPHI_DEBUG"] = "1"
 
 
 def assert_status_code(response: Response, expected_status_code: int) -> None:
