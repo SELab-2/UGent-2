@@ -36,4 +36,9 @@ jobs:
       - name: Run tests
         run: cd backend && poetry run python -m unittest discover tests
         env:
-          TEST_DB_USER: githubactions
+          DB_HOST: localhost
+          DB_PORT: 5432
+          DB_USERNAME: githubactions
+          DB_PASSWORD: postgres
+          DB_DATABASE: delphi-test
+          
