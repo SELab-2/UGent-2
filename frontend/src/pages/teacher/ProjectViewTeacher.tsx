@@ -7,6 +7,7 @@ import {RegularButton} from "../../components/RegularButton.tsx";
 import {useRouteLoaderData} from "react-router-dom";
 import {PROJECT_TEACHER, ProjectTeacherLoaderObject} from "../../dataloaders/ProjectTeacher.ts";
 import {useTranslation} from 'react-i18next';
+import DefaultErrorPage from "../../components/DefaultErrorPage.tsx";
 
 export default function ProjectViewTeacher() {
 
@@ -14,12 +15,9 @@ export default function ProjectViewTeacher() {
 
     const data: ProjectTeacherLoaderObject = useRouteLoaderData(PROJECT_TEACHER) as ProjectTeacherLoaderObject
     const project_data = data.project
-    console.log(project_data)
 
     if (!project_data) {
-        return <>
-            there was an error loading the project
-        </>
+        return <DefaultErrorPage title={t("project_error.title")} body={"project_error.text"}/>
     }
 
     const deadline_date = new Date(project_data.project_deadline)
