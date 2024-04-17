@@ -8,7 +8,7 @@ import useAuth from "../hooks/useAuth.ts";
 import {User} from "../utils/ApiInterfaces.ts";
 import {useTranslation} from "react-i18next";
 import i18n from "../i18n.tsx";
-import {modify_language, modify_roles} from "../utils/api/User.ts";
+import {modify_language} from "../utils/api/User.ts";
 
 function DropdownLanguage(): JSX.Element {
     const [isOpen, setIsOpen] = useState<boolean>(false);
