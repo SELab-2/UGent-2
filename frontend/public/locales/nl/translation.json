@@ -1,189 +1,196 @@
 {
-    "login": {
-        "title": "Welkom bij Delphi!",
-        "text": "Om in te loggen, drup op de knop hieronder. Je wordt doorgestuurd naar de aanmeldpagina van UGent CAS. ",
-        "button": "Aanmelden"
+  "login": {
+    "title": "Welkom bij Delphi!",
+    "text": "Om in te loggen, drup op de knop hieronder. Je wordt doorgestuurd naar de aanmeldpagina van UGent CAS. ",
+    "button": "Aanmelden"
+  },
+  "login_error": {
+    "title": "Er is een fout opgetreden bij het inloggen!",
+    "text": "Om opnieuw te proberen, druk op de knop hieronder.",
+    "button": "Opnieuw proberen"
+  },
+  "unauthorized": {
+    "title": "Toegang tot deze pagina is beperkt!",
+    "text": "Contacteer een beheerder als u denkt dat dit een vergissing is.",
+    "back": "Ga terug naar de startpagina"
+  },
+  "home_student": {
+    "title": "Startpagina",
+    "deadlines": "Komende deadlines",
+    "card": {
+      "tag": {
+        "course": "vak:",
+        "status": "status:"
+      },
+      "status": {
+        "success": "Geslaagd",
+        "failed": "Mislukt"
+      }
+    }
+  },
+  "home_teacher": {
+    "title": "Startpagina",
+    "card": {
+      "tag": {
+        "course": "vak:"
+      }
+    }
+  },
+  "create_course": {
+    "title": "Maak een vak aan",
+    "name": {
+      "tag": "Vaknaam:",
+      "placeholder": "Voer een naam in"
     },
-    "login_error": {
-        "title": "Er is een fout opgetreden bij het inloggen!",
-        "text": "Om opnieuw te proberen, druk op de knop hieronder.",
-        "button": "Opnieuw proberen"
-    },
-    "unauthorized": {
-        "title": "Toegang tot deze pagina is beperkt!",
-        "text": "Contacteer een beheerder als u denkt dat dit een vergissing is.",
-        "back": "Ga terug naar de startpagina"
-    },
-    "home_student": {
-        "title": "Startpagina",
-        "deadlines": "Komende deadlines",
-        "card": {
-            "tag": {
-                "course": "vak:",
-                "status": "status:"
-            },
-            "status": {
-                "success": "Geslaagd",
-                "failed": "Mislukt"
-            }
-            
-        }
-    },
-    "create_course": {
-        "title": "Maak een vak aan",
-        "name": {
-            "tag": "Vaknaam:",
-            "placeholder": "Voer een naam in"
-        },
-        "confirm": "Bevestigen"
-    },
-    "create_project": {
-        "title": "Maak een project aan",
-        "name": {
-            "tag": "Projectnaam:",
-            "placeholder": "Voer een naam in"
-        },
-        "course": {
-            "tag": "Vak:"
-        },
-        "deadline": {
-            "tag": "Deadline:",
-            "locale": "nl"
-        },
-        "description": {
-            "tag": "Beschrijving:",
-            "placeholder": "Optionele beschrijving van het project"
-        },
-        "docker_file": {
-            "tag": "Docker-bestand",
-            "choose_button": "Kies een bestand"
-        },
-        "submission_files": {
-            "tag": "Indieningsbestanden:"
-        },
-        "teamwork": {
-            "tag": "Groepswerk:",
-            "changes": "Verwisselingen toestaan",
-            "groups": {
-                "tag": "Groepsindeling (kies één van onderstaande):",
-                "random": "willekeurig",
-                "own_choice": "studenten kiezen zelf"
-            }
-        },
-        "save_button": "Opslaan"
-    },
-    "submission_files": {
-        "changes_text": "",
-        "root_switch": {
-            "single_file": "enkel bestand",
-            "zip_file": "zip-bestand"
-        },
-        "color_codes": {
-            "tag": "Kleurencodes:",
-            "zip": "zip",
-            "folder_refuse_others": "folder (enkel gespecifieerde bestanden)",
-            "folder_allow_others": "folder (ook andere bestanden toegestaan)",
-            "file": "bestand"
-        },
-        "specify_files": {
-            "teacher": "Specifieer de structuur van de indieningsbestanden:",
-            "student": "Structuur van de bestanden:"
-        },
-        "menu": {
-            "remove": "verwijderen",
-            "allow_others": "andere toestaan"
-        },
-        "warning": {
-            "type_switch": "Alle huidige file-specificaties zullen verwijderd worden. Ben je zeker dat je het root-type wil aanpassen?",
-            "remove": "Ben je zeker?"
-        }
-    },
-    "warneable": {
-        "title": "Waarschuwing!",
-        "cancel": "Annuleren",
-        "proceed": "Doorgaan"
-    },
-    "projects": {
-        "title": "Projecten",
-        "search_placeholder": "zoek een project...",
-        "active": "actief",
-        "archived": "gearchiveerd",
-        "hidden": "verborgen",
-        "new_project": "nieuw project"
-    },
-    "table": {
-        "project": "project",
-        "course": "vak",
-        "deadline": "deadline",
-        "status": "status",
-        "number_of_submissions": "aantal indieningen",
-        "shortest_deadline": "eerstvolgende deadline",
-        "name": "naam",
-        "email": "email",
-        "no_data_yet": "Nog geen data beschikbaar.",
-        "number_of_projects": "aantal projecten"
-    },
-    "project": {
-        "name": "Naam",
-        "course": "Vak",
-        "deadline": "Deadline",
-        "status": "Status",
-        "description": "Beschrijving",
-        "submission_files": "Indiening moet bevatten",
-        "groupmembers": {
-            "tag": "Groepsleden",
-            "name": "Naam",
-            "email": "Email",
-            "latest_submission": "Laatste indiening"
-        },
-        "submission": {
-            "tag": "Indiening",
-            "choose_file": "Kies een bestand"
-        },
-        "confirm": "Bevestigen",
-        "save": "Opslaan"
-    },
-    "statistics": {
-        "tag": "StatiStatistiekenstics",
-        "submissions": "Indieningen",
-        "nothing_yet": "Nog niets",
-        "failed": "Mislukt",
-        "success": "Geslaagd"
-    },
-    "courses": {
-        "title": "Vakken",
-        "search_placeholder": "zoek een vak...",
-        "active": "actief",
-        "archived": "gearchiveerd",
-        "new_project": "nieuw project"
+    "confirm": "Bevestigen"
+  },
+  "create_project": {
+    "title": "Maak een project aan",
+    "name": {
+      "tag": "Projectnaam:",
+      "placeholder": "Voer een naam in"
     },
     "course": {
-        "teachers": "lesgevers",
-        "projects": "projecten",
-        "students": "studenten",
-        "new_project": "nieuw project"
+      "tag": "Vak:"
     },
-    "admin": {
-        "title": "Beheerder operaties",
-        "teacher_rights": {
-            "tag": "Geef lesgever-rechten:",
-            "sub": "(kies tussen alle niet-lesgevers)"
-        },
-        "admin_rights": {
-            "tag": "Geef beheerder-rechten:",
-            "sub": "(kies tussen alle personen)"
-        },
-        "search_placeholder": "zoek een persoon"
+    "deadline": {
+      "tag": "Deadline:",
+      "locale": "nl"
     },
-    "settings": {
-        "english": "Engels",
-        "dutch": "Nederlands",
-        "current_language": "NL",
-        "settings": "Instellingen",
-        "logout": "Uitloggen:",
-        "workstation": "Selecteer werkstation:",
-        "student": "student",
-        "teacher": "lesgever",
-        "admin": "beheerder"
+    "description": {
+      "tag": "Beschrijving:",
+      "placeholder": "Optionele beschrijving van het project"
+    },
+    "docker_file": {
+      "tag": "Docker-bestand",
+      "choose_button": "Kies een bestand"
+    },
+    "submission_files": {
+      "tag": "Indieningsbestanden:"
+    },
+    "teamwork": {
+      "tag": "Groepswerk:",
+      "changes": "Verwisselingen toestaan",
+      "groups": {
+        "tag": "Groepsindeling (kies één van onderstaande):",
+        "random": "willekeurig",
+        "own_choice": "studenten kiezen zelf"
+      }
+    },
+    "save_button": "Opslaan"
+  },
+  "submission_files": {
+    "changes_text": "",
+    "root_switch": {
+      "single_file": "enkel bestand",
+      "zip_file": "zip-bestand"
+    },
+    "color_codes": {
+      "tag": "Kleurencodes:",
+      "zip": "zip",
+      "folder_refuse_others": "folder (enkel gespecifieerde bestanden)",
+      "folder_allow_others": "folder (ook andere bestanden toegestaan)",
+      "file": "bestand"
+    },
+    "specify_files": {
+      "teacher": "Specifieer de structuur van de indieningsbestanden:",
+      "student": "Structuur van de bestanden:"
+    },
+    "menu": {
+      "remove": "verwijderen",
+      "allow_others": "andere toestaan"
+    },
+    "warning": {
+      "type_switch": "Alle huidige file-specificaties zullen verwijderd worden. Ben je zeker dat je het root-type wil aanpassen?",
+      "remove": "Ben je zeker?"
     }
+  },
+  "warneable": {
+    "title": "Waarschuwing!",
+    "cancel": "Annuleren",
+    "proceed": "Doorgaan"
+  },
+  "projects": {
+    "title": "Projecten",
+    "search_placeholder": "zoek een project...",
+    "active": "actief",
+    "archived": "gearchiveerd",
+    "hidden": "verborgen",
+    "new_project": "nieuw project"
+  },
+  "table": {
+    "project": "project",
+    "course": "vak",
+    "deadline": "deadline",
+    "status": "status",
+    "number_of_submissions": "aantal indieningen",
+    "shortest_deadline": "eerstvolgende deadline",
+    "name": "naam",
+    "email": "email",
+    "no_data_yet": "Nog geen data beschikbaar.",
+    "number_of_projects": "aantal projecten"
+  },
+  "project": {
+    "name": "Naam",
+    "course": "Vak",
+    "deadline": "Deadline",
+    "status": "Status",
+    "description": "Beschrijving",
+    "submission_files": "Indiening moet bevatten",
+    "groupmembers": {
+      "tag": "Groepsleden",
+      "name": "Naam",
+      "email": "Email",
+      "latest_submission": "Laatste indiening"
+    },
+    "submission": {
+      "tag": "Indiening",
+      "choose_file": "Kies een bestand"
+    },
+    "confirm": "Bevestigen",
+    "save": "Opslaan"
+  },
+  "statistics": {
+    "tag": "StatiStatistiekenstics",
+    "submissions": "Indieningen",
+    "nothing_yet": "Nog niets",
+    "failed": "Mislukt",
+    "success": "Geslaagd"
+  },
+  "courses": {
+    "title": "Vakken",
+    "search_placeholder": "zoek een vak...",
+    "active": "actief",
+    "archived": "gearchiveerd",
+    "new_project": "nieuw project"
+  },
+  "course": {
+    "teachers": "lesgevers",
+    "projects": "projecten",
+    "students": "studenten",
+    "new_project": "nieuw project"
+  },
+  "admin": {
+    "title": "Beheerder operaties",
+    "teacher_rights": {
+      "tag": "Geef lesgever-rechten:",
+      "sub": "(kies tussen alle niet-lesgevers)"
+    },
+    "admin_rights": {
+      "tag": "Geef beheerder-rechten:",
+      "sub": "(kies tussen alle personen)"
+    },
+    "search_placeholder": "zoek een persoon"
+  },
+  "settings": {
+    "english": "Engels",
+    "dutch": "Nederlands",
+    "current_language": "NL",
+    "settings": "Instellingen",
+    "logout": "Uitloggen:",
+    "workstation": "Selecteer werkstation:",
+    "student": "student",
+    "teacher": "lesgever",
+    "admin": "beheerder"
+  }
 }
