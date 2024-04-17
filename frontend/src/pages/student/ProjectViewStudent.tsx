@@ -6,29 +6,28 @@ import {ProjectStatus, ProjectStudent} from "../../types/project.ts";
 import {useRouteLoaderData} from "react-router-dom";
 import {PROJECT_STUDENT, ProjectStudentLoaderObject} from "../../dataloaders/ProjectStudent.ts";
 import {SUBMISSION_STATE} from "../../utils/ApiInterfaces.ts";
+import DefaultErrorPage from "../../components/DefaultErrorPage.tsx";
+import {useTranslation} from "react-i18next";
 
 export default function ProjectViewStudent(): JSX.Element {
+
+    const { t } = useTranslation();
 
     const data: ProjectStudentLoaderObject = useRouteLoaderData(PROJECT_STUDENT) as ProjectStudentLoaderObject
     const project_data = data.project
 
     if (!project_data) {
-        return <>
-            there was an error loading the project
-        </>
+        return <DefaultErrorPage title={t("project_error.title")} body={t("project_error.text")}/>
     }
 
-    let project_status;
-    switch (project_data.submission_state) {
-        case SUBMISSION_STATE.Pending:
-            project_status = ProjectStatus.PENDING;
-            break;
-        case SUBMISSION_STATE.Approved:
-            project_status = ProjectStatus.SUCCESS;
-            break;
-        default:
-            project_status = ProjectStatus.FAILED;
-    }
+    const statusMap = {
+        [SUBMISSION_STATE.Pending]: ProjectStatus.PENDING,
+        [SUBMISSION_STATE.Approved]: ProjectStatus.SUCCESS,
+        [SUBMISSION_STATE.Rejected]: ProjectStatus.FAILED
+    };
+
+    const project_status = statusMap[project_data.submission_state] || ProjectStatus.FAILED;
+
 
     const groupMembers: {
         name: string;
