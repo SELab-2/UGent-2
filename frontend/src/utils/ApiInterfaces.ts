@@ -13,6 +13,7 @@ export interface Project {
     project_visible: boolean,
     project_max_students: number,
     subject_id: number,
+    subject_name: string
 }
 
 

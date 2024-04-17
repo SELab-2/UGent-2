@@ -3,14 +3,8 @@ import FieldWithLabel from "./FieldWithLabel.tsx";
 import {FaCheck, FaUpload} from "react-icons/fa";
 import {FaDownload} from "react-icons/fa6";
 import {ProjectStatus, ProjectStudent} from "../types/project.ts";
-import SimpleTests from "./SimpleTests/SimpleTests.tsx";
-import { dummy_data } from "./SimpleTests/DummyData.tsx";
-import { TeacherOrStudent } from "./SimpleTests/TeacherOrStudentEnum.tsx";
 
-// SimpleTests
-const calledData = dummy_data
-
-export default function ProjectStudentComponent(props: { project: ProjectStudent }): JSX.Element {
+export default function ViewProjectStudentComponent(props: { project: ProjectStudent }): JSX.Element {
     return (
         <>
             <FieldWithLabel fieldLabel={"Naam"} fieldBody={props.project.projectName} arrow={true}/>
@@ -34,12 +28,9 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
                 </div>
                 <div className="field-body">
                     <div className="field"> {/*Deze moet blijven, anders gaan de elementen in elkaar*/}
-                        <SimpleTests
-                            teacherOrStudent={TeacherOrStudent.STUDENT}
-                            initialData={calledData}
-                            setData={undefined}
-                            setHasChanged={undefined}
-                        />
+                        {props.project.requiredFiles.map((file, index) => {
+                            return <li key={index}>{file}</li>
+                        })}
                     </div>
                 </div>
             </div>

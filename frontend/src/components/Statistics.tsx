@@ -21,7 +21,7 @@ export default function Statistics(): JSX.Element {
 
     return (
         <>
-            <button className="js-modal-trigger button is-rounded is-pulled-right" onClick={openModal}>
+            <button className="js-modal-trigger button is-primary is-pulled-right" onClick={openModal}>
                 <span className="icon is-small">
                     <IoIosStats/>
                 </span>

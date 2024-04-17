@@ -1,8 +1,8 @@
-import {CompleteProjectTeacher} from "../utils/ApiInterfaces.ts";
+import {CompleteProjectTeacher, Project} from "../utils/ApiInterfaces.ts";
 import {LoadProjectsForTeacher} from "./projectsTeacherLoader.ts";
 
 export interface teacherLoaderObject {
-    projects: CompleteProjectTeacher[]
+    projects: Project[]
 }
 
 export const TEACHER_ROUTER_ID = "teacher";

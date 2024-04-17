@@ -4,6 +4,7 @@ import '../assets/styles/small_components.css'
 import {Link} from "react-router-dom";
 import {IoMdClose} from "react-icons/io";
 import {MdLanguage, MdOutlineKeyboardArrowDown} from "react-icons/md";
+import {modify_language} from "../utils/api/User.ts";
 
 export type Language = "NL" | "EN";
 
@@ -49,7 +50,7 @@ function Settings(props: { closeSettings: () => void }): JSX.Element {
 
     const changeLanguage = (newLang: Language): void => {
         if (language !== newLang) {
-            // TODO: send it to the database
+            modify_language(newLang);
             setLanguage(newLang);
         }
     }
