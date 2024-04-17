@@ -50,7 +50,7 @@ export interface CompleteProjectStudent extends CompleteProject {
 export interface CompleteProjectTeacher extends CompleteProject {
     submission_amount: number,
     subjects: Subject[],
-    submission_statistics: number[]
+    submission_statistics: { [key: number]: number }
 }
 
 export interface SmallProjectInfo {
