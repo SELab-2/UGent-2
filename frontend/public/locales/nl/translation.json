@@ -26,7 +26,14 @@
                 "success": "Geslaagd",
                 "failed": "Mislukt"
             }
-            
+        }
+    },
+    "home_teacher": {
+        "title": "Startpagina",
+        "card": {
+            "tag": {
+                "course": "vak:"
+            }
         }
     },
     "create_course": {
@@ -175,11 +182,12 @@
         "teachers": "lesgevers",
         "projects": "projecten",
         "students": "studenten",
-        "new_project": "nieuw project"
+        "new_project": "nieuw project",
+        "error": "Er ging iets mis bij het laden van het vak"
     },
     "course_error": {
         "title": "Oeps, er is iets fout gegaan!",
-        "text": "Het vak dat je probeert te bekijken bestaat niet of je hebt geen toegang tot dit vak.",
+        "text": "Het vak dat je probeert te bekijken bestaat niet of je hebt geen toegang tot dit vak."
     },
     "admin": {
         "title": "Beheerder operaties",
