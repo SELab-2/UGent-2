@@ -3,10 +3,11 @@ import {TableRowOverviewProjects, TableRowPeople} from "../../types/tableRows.ts
 import {Header} from "../../components/Header.tsx";
 import {Sidebar} from "../../components/Sidebar.tsx";
 import {Table} from "../../components/Table.tsx";
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 import {useRouteLoaderData} from "react-router-dom";
 import {CourseLoaderObject} from "../../dataloaders/loader_helpers/SharedFunctions.ts";
 import {COURSE_STUDENT} from "../../dataloaders/CourseStudentLoader.ts";
+import DefaultErrorPage from "../../components/DefaultErrorPage.tsx";
 
 export default function CourseViewStudent(): JSX.Element {
 
@@ -16,9 +17,7 @@ export default function CourseViewStudent(): JSX.Element {
     const course_data = data.course
 
     if (!course_data) {
-        return <>
-            there was an error loading the course
-        </>
+        return <DefaultErrorPage title={t("course_error.title")} body={t("course_error.text")}/>
     }
 
     const active_projects = course_data.all_projects?.filter(project => !project.project_archived && project.project_visible) ?? [];
