@@ -10,7 +10,7 @@ export async function createSubject(name: string): Promise<Subject> {
                 'Content-Type': 'application/json'
             },
             method: 'POST',
-            body: JSON.stringify({name: name})
+            body: JSON.stringify({name: name, archived: false})
         }));
 
     if (subjectData.ok){
