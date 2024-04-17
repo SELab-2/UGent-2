@@ -27,7 +27,7 @@ export async function ApiFetch<Type> (url: string, options?: RequestInit) {
     return {
         ok: response.ok,
         status_code: response.status,
-        content: await response.json() as Type
+        content: response.status !== 204 ? await response.json() as Type : {}
     } as ApiFetchResponse<Type>
 }
 
