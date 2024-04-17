@@ -1,5 +1,6 @@
 import {JSX} from "react";
 import { FaArrowRightLong } from "react-icons/fa6";
+import { useTranslation } from 'react-i18next';
 
 function DeadlineElement(): JSX.Element {
     return (
@@ -14,10 +15,13 @@ function DeadlineElement(): JSX.Element {
 }
 
 function DeadlineTable(): JSX.Element {
+
+    const { t } = useTranslation();
+
     return (
         <div className={"deadline"}>
             <div className={"deadline-head is-flex is-justify-content-center py-2"}>
-                <p>komende deadlines</p>
+                <p>{t('home_student.deadlines')}</p>
             </div>
             <div className={"deadline-elements"}>
                 <DeadlineElement/>

@@ -2,6 +2,7 @@ from sqlalchemy import Engine
 from sqlalchemy_utils import create_database, database_exists
 from sqlmodel import Session, SQLModel
 
+import db.models  # noqa: F401
 from db.extensions import engine
 
 

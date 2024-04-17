@@ -2,6 +2,7 @@ import {JSX} from "react";
 import "../assets/styles/table.css"
 import {Link} from "react-router-dom";
 import {TableRow} from "../types/tableRows.ts";
+import { useTranslation } from 'react-i18next';
 
 const firstFieldWidth: number = 40;
 
@@ -26,11 +27,30 @@ function TableDataElement<T extends TableRow>(props: {home: string, row: T, colI
     )
 }
 
+const field_string_mapper = new Map<string, string>(Object.entries({
+    project: "table.project",
+    course: "table.course",
+    deadline: "table.deadline",
+    status: "table.status",
+    numberOfSubmissions: "table.number_of_submissions",
+    shortestDeadline: "table.shortest_deadline",
+    name: "table.name",
+    email: "table.email",
+    numberOfProjects: "table.number_of_projects",
+}))
+
+function getField(map: Map<string, string>, key: string): string {
+    const value = map.get(key)
+    return value !== undefined ? value : key // if key not found in map, use key itself (should not happen)
+}
+
 export function Table<T extends TableRow>(props: { title: string, data: T[], ignoreKeys: string[], home: string }): JSX.Element {
 
     // todo: translate the keys for i18n way
     // right now only the name of the key will be written as it will be completely different with i18n
     const keys = props.data.length > 0 ? Object.keys(props.data[0]) : [];
+
+    const { t } = useTranslation();
 
     return (
         <div className={"is-flex is-flex-direction-column is-align-content-center"}>
@@ -41,10 +61,10 @@ export function Table<T extends TableRow>(props: { title: string, data: T[], ign
                     {keys.map((field, index) => (
                         !props.ignoreKeys.some(item => field === item) ?
                             index === 0 ?
-                                <th style={{width: `${firstFieldWidth}%`}} key={index}>{field}</th>
+                                <th style={{width: `${firstFieldWidth}%`}} key={index}>{t(getField(field_string_mapper, field))}</th>
                                 :
                                 <th style={{width: `${otherFieldsWidth(keys.length)}%`, textAlign: "center"}}
-                                    key={index}>{field}</th>
+                                    key={index}>{t(getField(field_string_mapper, field))}</th>
                             : <td style={{width: `${otherFieldsWidth(keys.length)}%`}} key={index}></td>
                     ))}
                 </tr>
@@ -62,7 +82,7 @@ export function Table<T extends TableRow>(props: { title: string, data: T[], ign
                 ))}
                 </tbody>
             </table>}
-            {keys.length == 0 && <p className={"is-flex is-justify-content-center is-italic pt-5"}>No data yet.</p>}
+            {keys.length == 0 && <p className={"is-flex is-justify-content-center is-italic pt-5"}>{t('table.no_data_yet')}</p>}
         </div>
     );
 }

@@ -11,7 +11,7 @@ from debug import DEBUG
 from domain.logic.user import get_user
 
 # test url: https://login.ugent.be/login?service=https://localhost:8080/api/login
-login_router = APIRouter()
+login_router = APIRouter(tags=[Tags.LOGIN])
 
 
 class LoginResponse(BaseModel):
@@ -22,7 +22,7 @@ class ValidateResponse(BaseModel):
     valid: bool
 
 
-@login_router.post("/validate", tags=[Tags.LOGIN], summary="Validate a session token.")
+@login_router.post("/validate", summary="Validate a session token.")
 def validate_token(token: str) -> ValidateResponse:
     uid = verify_token(token)
     if uid:
@@ -30,7 +30,7 @@ def validate_token(token: str) -> ValidateResponse:
     return ValidateResponse(valid=False)
 
 
-@login_router.post("/login", tags=[Tags.LOGIN], summary="Starts a session for the user.")
+@login_router.post("/login", summary="Starts a session for the user.")
 def login(request: Request, ticket: str) -> LoginResponse:
     """
     This function starts a session for the user.
@@ -51,7 +51,7 @@ def login(request: Request, ticket: str) -> LoginResponse:
 
 if DEBUG:
 
-    @login_router.post("/fake-login", tags=[Tags.LOGIN], summary="Development only: Generate a login token for a user.")
+    @login_router.post("/fake-login", summary="Development only: Generate a login token for a user.")
     def fake_login(request: Request, uid: int) -> LoginResponse:
         session = request.state.session
         user = get_user(session, uid)
