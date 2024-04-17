@@ -5,3 +5,9 @@ export function join_subject(subjectId: number): void{
         method: 'POST'
     });
 }
+
+export function leave_subject(subjectId: number): void{
+    void apiFetch(`/student/subjects/${subjectId}/leave`, {
+        method: 'POST'
+    });
+}
