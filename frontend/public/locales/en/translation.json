@@ -70,7 +70,9 @@
                 "own_choice": "students choose themselves"
             }
         },
-        "save_button": "Save"
+        "save_button": "Save",
+        "error_title": "Oops, something went wrong!",
+        "error_text": "You don't have any courses yet, please create a course first in order to create a project"
     },
     "submission_files": {
         "changes_text": "",
@@ -110,7 +112,7 @@
         "archived": "archived",
         "hidden": "hidden",
         "new_project": "new project",
-        "succes": "Success",
+        "success": "Success",
         "failed": "Failed",
         "pending": "Pending"
     },
@@ -147,14 +149,20 @@
         "confirm": "Confirm",
         "save": "Save",
         "failed": "Failed",
-        "success": "Success"
+        "success": "Success",
+        "not_in_group": "You don't have a group yet, please sign yourself up in order to start this project."
+    },
+    "project_error": {
+        "title": "Oops, something went wrong!",
+        "text": "The project you are trying to view does not exist or you do not have access to this project."
     },
     "statistics": {
         "tag": "Statistics",
         "submissions": "Submissions",
         "nothing_yet": "Nothing yet",
         "failed": "Failed",
-        "success": "Success"
+        "success": "Success",
+        "no_submissions": "No submissions yet"
     },
     "courses": {
         "title": "Courses",
@@ -167,7 +175,12 @@
         "teachers": "teachers",
         "projects": "projects",
         "students": "students",
-        "new_project": "new project"
+        "new_project": "new project",
+        "error": "there was an error loading the course"
+    },
+    "course_error": {
+        "title": "Oops, something went wrong!",
+        "text": "The course you are trying to view does not exist or you do not have access to this course."
     },
     "admin": {
         "title": "Admin operations",
