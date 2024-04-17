@@ -11,7 +11,6 @@ import HomeTeacher from "./pages/teacher/HomeTeacher.tsx";
 import studentLoader, {STUDENT_ROUTER_ID} from "./dataloaders/StudentLoader.ts";
 import Unauthorized from "./components/authentication/Unauthorized.tsx";
 import teacherLoader, {TEACHER_ROUTER_ID} from "./dataloaders/TeacherLoader.ts";
-// import subjectsTeacherLoader, {SUBJECT_TEACHER_ROUTER_ID} from "./dataloaders/SubjectsTeacherLoader.ts";
 import loginLoader, {LOGIN_ROUTER_ID} from "./dataloaders/LoginLoader.ts";
 import ErrorLogin from "./components/authentication/ErrorLogin.tsx";
 import ProjectsViewStudent from "./pages/student/ProjectsViewStudent.tsx";

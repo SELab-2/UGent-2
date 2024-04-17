@@ -1,4 +1,4 @@
-import {CompleteProjectTeacher, Group} from "../utils/ApiInterfaces.ts";
+import {CompleteProjectTeacher, Group, Submission} from "../utils/ApiInterfaces.ts";
 import {getAllProjectsAndSubjects, teacherStudentRole} from "./loader_helpers/SharedFunctions.ts";
 import apiFetch from "../utils/ApiFetch.ts";
 import {Backend_group, Backend_submission} from "../utils/BackendInterfaces.ts";
