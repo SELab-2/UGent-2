@@ -41,4 +41,4 @@ jobs:
           DB_USERNAME: githubactions
           DB_PASSWORD: postgres
           DB_DATABASE: delphi-test
-          
+          DELPHI_DEBUG: 1
