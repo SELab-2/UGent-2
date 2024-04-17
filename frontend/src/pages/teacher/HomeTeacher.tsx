@@ -4,18 +4,21 @@ import {useRouteLoaderData} from "react-router-dom";
 import { Header } from "../../components/Header.tsx";
 import { Sidebar } from "../../components/Sidebar.tsx";
 import ProjectCardTeacher from "./ProjectCardTeacher.tsx";
+import {useTranslation} from "react-i18next";
 
 export default function HomeTeacher(): JSX.Element {
 
     const data: teacherLoaderObject = useRouteLoaderData(TEACHER_ROUTER_ID) as teacherLoaderObject;
     console.log(data);
 
+    const { t } = useTranslation();
+
     // TODO: echte data gebruiken
 
     return (
         <>
             <div className={"main-header"}>
-                <Header page_title={"Home"} home={"teacher"}/>
+                <Header page_title={t('home_teacher.title')} home={"teacher"}/>
             </div>
             <div className={"main-content is-flex is-flex-direction-row"}>
                 <div className={"side-bar is-flex is-justify-content-center"}>
