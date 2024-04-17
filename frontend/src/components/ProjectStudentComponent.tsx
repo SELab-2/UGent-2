@@ -11,36 +11,36 @@ import {useTranslation} from 'react-i18next';
 export default function ProjectStudentComponent(props: { project: ProjectStudent }): JSX.Element {
 
     // true als er een groep is, anders false.
-    const group = props.project.groupMembers && props.project.groupMembers.length > 0;
+    const is_in_group = props.project.groupMembers && props.project.groupMembers.length > 0;
 
 
     const { t } = useTranslation();
 
     return (
         <>
-            {!group &&
+            {!is_in_group &&
                 <div className="notification is-danger" style={{width: "75%"}}>
-                    Je hebt nog geen groep, gelieve jezelf in te schrijven om zo aan dit project te kunnen beginnen.
+                    {t('project.not_in_group')}
                 </div>
             }
             <FieldWithLabel fieldLabel={t('project.name')} fieldBody={props.project.projectName} arrow={true}/>
             <FieldWithLabel fieldLabel={t('project.course')} fieldBody={props.project.courseName} arrow={true}/>
             <FieldWithLabel fieldLabel={t('project.deadline')} fieldBody={props.project.deadline} arrow={true}/>
-            {group &&
+            {is_in_group &&
                 <div className="field is-horizontal">
                     <div className="field-label">
                         <label className="label">{"> "}Status: </label>
                     </div>
                     <div className="field-body field">
                         {props.project.status == ProjectStatus.FAILED &&
-                            <label className={"has-text-danger"}>{t('propject.failed')}</label>}
+                            <label className={"has-text-danger"}>{t('project.failed')}</label>}
                         {props.project.status == ProjectStatus.SUCCESS &&
-                            <label className={"has-text-success"}>{t('propject.succes')}</label>}
+                            <label className={"has-text-success"}>{t('project.success')}</label>}
                     </div>
                 </div>
             }
             <FieldWithLabel fieldLabel={"> " + t('project.description')} fieldBody={props.project.description} arrow={false}/>
-            {group && props.project.groupMembers &&
+            {is_in_group && props.project.groupMembers &&
                 <div>
                     <div className="field is-horizontal">
                         <div className="field-label">
