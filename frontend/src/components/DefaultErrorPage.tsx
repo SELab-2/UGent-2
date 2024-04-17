@@ -1,7 +1,11 @@
 import {JSX} from "react";
 import {BiError} from "react-icons/bi";
+import { useTranslation } from 'react-i18next';
 
 export default function DefaultErrorPage(title: string, body: string): JSX.Element {
+
+    const { t } = useTranslation();
+
     return (
         <div id="error-page" className={"container is-max-desktop mt-6"}>
             <article className="message">
@@ -16,7 +20,7 @@ export default function DefaultErrorPage(title: string, body: string): JSX.Eleme
                 <div className="message-body">
                     {body}
                     <br/>
-                    <a href={"/"}>Go back to the homepage</a>
+                    <a href={"/"}>{t('unauthorized.back')}</a>
                 </div>
             </article>
         </div>

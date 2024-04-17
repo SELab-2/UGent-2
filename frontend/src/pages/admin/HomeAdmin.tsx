@@ -8,14 +8,11 @@ import { OperationButton } from "./OperationButton.tsx";
 import { Roles, admin_test_data, teacher_test_data } from "./test_data.tsx";
 import { OperationType } from "../../others/enums.tsx";
 import { getKey } from "../../others/key_generator.tsx";
+import { useTranslation } from 'react-i18next';
 
 export default function HomeAdmin(): JSX.Element {
 
-    const placeholder = "Zoek persoon"
-    const teacher_main = "Geef lesgever-rechten:"
-    const teacher_sub = "(kies tussen alle niet-lesgevers)"
-    const admin_main = "Verander admin-rechten:"
-    const admin_sub = "(kies tussen alle personen)"
+    const { t } = useTranslation();
 
     function renderForTeacher(person: {
         name: string,
@@ -65,7 +62,7 @@ export default function HomeAdmin(): JSX.Element {
     return (
         <>
             <div className={"main-header"}>
-                <Header page_title={"Admin"} home={"admin"}/>
+                <Header page_title={t('admin.title')} home={"admin"}/>
             </div>
             <div className={"main-content"}>
                 <div className={"side-bar"}>
@@ -75,10 +72,10 @@ export default function HomeAdmin(): JSX.Element {
                     <div className={"rights-list"}>
                         <div className={"rights-block"}>
                             <p className={"explanation"}>
-                                <p className={"main"}>{teacher_main}</p>
-                                <p className={"sub"}>{teacher_sub}</p>
+                                <p className={"main"}>{t('admin.teacher_rights.tag')}</p>
+                                <p className={"sub"}>{t('admin.teacher_rights.sub')}</p>
                             </p>
-                            <SearchBar placeholder={placeholder}></SearchBar>
+                            <SearchBar placeholder={t('admin.search_placeholder')}></SearchBar>
                             <div className="person-list">
                                 {teacher_test_data.map(person => (
                                     renderForTeacher(person)
@@ -87,10 +84,10 @@ export default function HomeAdmin(): JSX.Element {
                         </div>
                         <div className={"rights-block"}>
                             <p className={"explanation"}>
-                                <p className={"main"}>{admin_main}</p>
-                                <p className={"sub"}>{admin_sub}</p>
+                                <p className={"main"}>{t('admin.admin_rights.tag')}</p>
+                                <p className={"sub"}>{t('admin.admin_rights.sub')}</p>
                             </p>
-                            <SearchBar placeholder={placeholder}></SearchBar>
+                            <SearchBar placeholder={t('admin.search_placeholder')}></SearchBar>
                             <div className="person-list">
                                 {admin_test_data.map(person => (
                                     renderForAdmin(person)

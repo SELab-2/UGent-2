@@ -4,6 +4,7 @@ import {Header} from "../../components/Header.tsx";
 import {Sidebar} from "../../components/Sidebar.tsx";
 import {ProjectTeacher} from "../../types/project.ts";
 import {RegularButton} from "../../components/RegularButton.tsx";
+import { useTranslation } from 'react-i18next';
 
 export function CreateProject(): JSX.Element {
     const emptyProjectTeacher: ProjectTeacher = {
@@ -18,10 +19,12 @@ export function CreateProject(): JSX.Element {
         requiredFiles: "",
     };
 
+    const { t } = useTranslation();
+
     return (
         <>
             <div className={"main-header"}>
-                <Header page_title={"Create project"} home={"teacher"}/>
+                <Header page_title={t('create_project.title')} home={"teacher"}/>
             </div>
             <div className={"main-content is-flex is-flex-direction-row"}>
                 <div className={"side-bar is-flex is-justify-content-center"}>
@@ -29,7 +32,7 @@ export function CreateProject(): JSX.Element {
                 </div>
                 <div className={"student-main my-3 is-flex is-flex-direction-column"}>
                     <div className={"mx-5"}>
-                        <RegularButton placeholder={"Save"} add={false} onClick={() => {}}/>
+                        <RegularButton placeholder={t('create_project.save_button')} add={false} onClick={() => {}}/>
                     </div>
                     <ProjectTeacherComponent project={emptyProjectTeacher}/>
                 </div>

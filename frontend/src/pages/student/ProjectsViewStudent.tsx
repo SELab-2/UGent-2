@@ -7,11 +7,14 @@ import {TableRowProjects} from "../../types/tableRows.ts";
 import {useRouteLoaderData} from "react-router-dom";
 import {PROJECTS_STUDENT_ROUTER_ID} from "../../dataloaders/ProjectsStudentLoader.ts";
 import {studentLoaderObject} from "../../dataloaders/StudentLoader.ts";
+import { useTranslation } from 'react-i18next';
 
 export default function ProjectsViewStudent(): JSX.Element {
 
     const data: studentLoaderObject = useRouteLoaderData(PROJECTS_STUDENT_ROUTER_ID) as studentLoaderObject
     console.log(data.projects)
+
+    const { t } = useTranslation();
 
     const tableProjectsActive: TableRowProjects[] = [
         {
@@ -61,7 +64,7 @@ export default function ProjectsViewStudent(): JSX.Element {
     return (
         <>
             <div className={"main-header"}>
-                <Header page_title={"Projects"} home={"student"}/>
+                <Header page_title={t('projects.title')} home={"student"}/>
             </div>
             <div className={"main-content is-flex is-flex-direction-row"}>
                 <div className={"side-bar is-flex is-justify-content-center"}>
@@ -69,10 +72,10 @@ export default function ProjectsViewStudent(): JSX.Element {
                 </div>
                 <div className={"student-main is-flex is-justify-content-center"}>
                     <div className={"table-page is-flex is-flex-direction-column"}>
-                        <SearchBar placeholder={"zoek een project..."}/>
-                        <Table title={"actief"} data={tableProjectsActive} ignoreKeys={["numberOfSubmissions"]} home={"student"}/>
+                        <SearchBar placeholder={t('projects.search_placeholder')}/>
+                        <Table title={t('projects.active')} data={tableProjectsActive} ignoreKeys={["numberOfSubmissions"]} home={"student"}/>
                         <div className={"my-5"}/>
-                        <Table title={"gearchiveerd"} data={tableProjectsArchived}
+                        <Table title={t('projects.archived')} data={tableProjectsArchived}
                                ignoreKeys={["numberOfSubmissions", "deadline"]} home={"student"}/>
                     </div>
                 </div>

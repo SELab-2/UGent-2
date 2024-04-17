@@ -7,9 +7,12 @@ import {RegularATag} from "../../components/RegularATag.tsx";
 import {TableRowCourses} from "../../types/tableRows.ts";
 import {COURSES_TEACHER_ROUTER_ID, coursesTeacherLoaderObject} from "../../dataloaders/CoursesTeacherLoader.ts";
 import {useRouteLoaderData} from "react-router-dom";
-
+import { useTranslation } from 'react-i18next';
 
 export default function CoursesViewTeacher(): JSX.Element {
+
+    const { t } = useTranslation();
+
     const data = useRouteLoaderData(COURSES_TEACHER_ROUTER_ID) as coursesTeacherLoaderObject;
     console.log(data.courses);
 
@@ -45,7 +48,7 @@ export default function CoursesViewTeacher(): JSX.Element {
     return (
         <>
             <div className={"main-header"}>
-                <Header page_title={"Courses"} home={"teacher"}/>
+                <Header page_title={t('courses.title')} home={"teacher"}/>
             </div>
             <div className={"main-content is-flex is-flex-direction-row"}>
                 <div className={"side-bar is-flex is-justify-content-center"}>
@@ -54,12 +57,12 @@ export default function CoursesViewTeacher(): JSX.Element {
                 <div className={"student-main is-flex is-justify-content-center"}>
                     <div className={"table-page is-flex is-flex-direction-column"}>
                         <div className={"is-flex is-align-items-center is-justify-content-space-between"}>
-                            <SearchBar placeholder={"zoek een vak..."}/>
-                            <RegularATag link={"teacher/courses/create"} text={"nieuw vak"} add={true}/>
+                            <SearchBar placeholder={t('courses.search_placeholder')}/>
+                            <RegularATag link={"teacher/courses/create"} text={t('courses.new_project')} add={true}/>
                         </div>
-                        <Table title={"actief"} data={tableCoursesActive} ignoreKeys={[]} home={"teacher"}/>
+                        <Table title={t('courses.active')} data={tableCoursesActive} ignoreKeys={[]} home={"teacher"}/>
                         <div className={"my-5"}/>
-                        <Table title={"gearchiveerd"} data={tableCoursesArchived}
+                        <Table title={t('courses.archived')} data={tableCoursesArchived}
                                ignoreKeys={["shortestDeadline", "numberOfProjects"]} home={"teacher"}/>
                     </div>
                 </div>

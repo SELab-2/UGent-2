@@ -162,6 +162,3 @@ cython_debug/
 
 # Ruff linter
 .ruff_cache
-
-# Uneeded npm package-lock from pyright in backend
-backend/package-lock.json

@@ -4,24 +4,26 @@ import '../assets/styles/small_components.css'
 import {Link} from "react-router-dom";
 import {IoMdClose} from "react-icons/io";
 import {MdLanguage, MdOutlineKeyboardArrowDown} from "react-icons/md";
-import {modify_language} from "../utils/api/User.ts";
+import useAuth from "../hooks/useAuth.ts";
+import {User} from "../utils/ApiInterfaces.ts";
+import {useTranslation} from "react-i18next";
+import i18n from "../i18n.tsx";
 
-export type Language = "NL" | "EN";
-
-function DropdownLanguage(props: { language: Language, changeLanguage: (language: Language) => void }): JSX.Element {
-
+function DropdownLanguage(): JSX.Element {
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
     const toggle = (): void => {
         setIsOpen(!isOpen);
     }
 
+    const {t} = useTranslation();
+
     return (
         <div className={`dropdown ${isOpen ? 'is-active' : ''}`}>
             <div className="dropdown-trigger">
                 <button className="button" aria-haspopup="true" aria-controls="dropdown-menu" onClick={toggle}>
                     <span className={"is-flex is-align-items-center px"}>
-                        <MdLanguage className={"mr-2"}/><p>{props.language}</p>
+                        <MdLanguage className={"mr-2"}/><p>{t('settings.current_language')}</p>
                     </span>
                     <span className="icon is-small">
                         <MdOutlineKeyboardArrowDown/>
@@ -30,11 +32,23 @@ function DropdownLanguage(props: { language: Language, changeLanguage: (language
             </div>
             <div className={"dropdown-menu"}>
                 <div className="dropdown-content">
-                    <a href="#" className="dropdown-item" onClick={() => {props.changeLanguage("EN"); toggle()}}>
-                        English
+                    <a
+                        className="dropdown-item"
+                        onClick={() => {
+                            void i18n.changeLanguage("en");
+                            toggle()
+                        }}
+                    >
+                        {t('settings.english')}
                     </a>
-                    <a className="dropdown-item" onClick={() => {props.changeLanguage("NL"); toggle()}}>
-                        Nederlands
+                    <a
+                        className="dropdown-item"
+                        onClick={() => {
+                            void i18n.changeLanguage("nl");
+                            toggle()
+                        }}
+                    >
+                        {t('settings.dutch')}
                     </a>
                 </div>
             </div>
@@ -42,18 +56,16 @@ function DropdownLanguage(props: { language: Language, changeLanguage: (language
     )
 }
 
-function Settings(props: { closeSettings: () => void }): JSX.Element {
+function workstationsAvailable(user: User | undefined, home: string, workstation: string) {
+    return user?.user_roles.includes(workstation.toUpperCase()) && home != workstation;
+}
 
-    // TODO: get current language from user
-    const currLang: Language = "NL";
-    const [language, setLanguage] = useState<Language>(currLang);
+function Settings(props: { closeSettings: () => void, home: string }): JSX.Element {
+    const {user} = useAuth()
 
-    const changeLanguage = (newLang: Language): void => {
-        if (language !== newLang) {
-            modify_language(newLang);
-            setLanguage(newLang);
-        }
-    }
+    const {t} = useTranslation();
+    const ROLES = ["STUDENT", "TEACHER", "ADMIN"];
+    const available_workstations = ROLES.filter(role => user?.user_roles.includes(role)).length;
 
     function logout() {
         localStorage.removeItem("token")
@@ -64,28 +76,39 @@ function Settings(props: { closeSettings: () => void }): JSX.Element {
         <div className={"card popup"}>
             <div className={"is-flex is-align-items-center is-justify-content-right"}>
                 <span className={"py-2"}>
-                    <DropdownLanguage language={language} changeLanguage={changeLanguage}/>
+                    <DropdownLanguage/>
                 </span>
                 <button className={"button mx-2 my-1"} onClick={props.closeSettings}><IoMdClose/></button>
             </div>
             <div className={"px-5 pb-5"}>
-                <p className={"title is-flex is-justify-content-center"}>Settings</p>
+                <p className={"title is-flex is-justify-content-center"}>{t('settings.settings')}</p>
                 <img src={"/delphi_full.png"} alt={"image"}/>
                 <div className={"is-flex px-5 py-1 is-align-items-center"}>
-                    <p>Logout: </p>
+                    <p>{t('settings.logout')}</p>
                     <a className={"button mx-5 px-2"} onClick={logout} href={"/"}><BiLogOut size={25}></BiLogOut></a>
                 </div>
-                <div>
-                    <p className={"py-2"}>Select workstation: </p>
-                    <div className={"is-flex is-justify-content-space-evenly"}>
-                        <Link to={"/teacher"}>
-                            <button className={"button is-success"}>teacher</button>
-                        </Link>
-                        <Link to={"/admin"}>
-                            <button className={"button is-danger"}>admin</button>
-                        </Link>
+                {available_workstations > 1 &&
+                    <div>
+                        <p className={"py-2"}>{t('settings.workstation')}</p>
+                        <div className={"is-flex is-justify-content-space-evenly"}>
+                            {workstationsAvailable(user, props.home, "student") &&
+                                <Link to={"/student"}>
+                                    <button className={"button is-info mx-1"}>{t('settings.student')}</button>
+                                </Link>
+                            }
+                            {workstationsAvailable(user, props.home, "teacher") &&
+                                <Link to={"/teacher"}>
+                                    <button className={"button is-success mx-1"}>{t('settings.teacher')}</button>
+                                </Link>
+                            }
+                            {workstationsAvailable(user, props.home, "admin") &&
+                                <Link to={"/admin"}>
+                                    <button className={"button is-danger mx-1"}>{t('settings.admin')}</button>
+                                </Link>
+                            }
+                        </div>
                     </div>
-                </div>
+                }
             </div>
         </div>
     )

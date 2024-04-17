@@ -6,10 +6,18 @@ import 'react-calendar/dist/Calendar.css';
 import {FaUpload} from "react-icons/fa";
 import {ProjectTeacher, Value} from "../types/project.ts";
 import "../assets/styles/teacher_components.css"
+import { dummy_data } from "./SimpleTests/DummyData.tsx";
+import SimpleTests from "./SimpleTests/SimpleTests.tsx";
+import { TeacherOrStudent } from "./SimpleTests/TeacherOrStudentEnum.tsx";
+import { useTranslation } from 'react-i18next';
 
-export function ViewProjectTeacherComponent(props: {
-    project: ProjectTeacher
-}): JSX.Element {
+// SimpleTests
+const CHECK_SIMPLE_TESTS = false
+const calledData = dummy_data
+
+export function ProjectTeacherComponent(props: { project: ProjectTeacher }): JSX.Element {
+
+    const { t } = useTranslation();
 
     const [projectName, setProjectName] = useState<string>(props.project.projectName)
     const [courseName, setCourseName] = useState<string>(props.project.courseName)
@@ -17,8 +25,10 @@ export function ViewProjectTeacherComponent(props: {
     const [minutes, setMinutes] = useState<number>(props.project.minutes);
     const [deadline, setDeadline] = useState<Value>(props.project.deadline);
     const [description, setDescription] = useState(props.project.description);
-    const [requiredFiles, setRequiredFiles] = useState(props.project.requiredFiles);
-    const [otherFilesAllow, setOtherFilesAllow] = useState(props.project.otherFilesAllow);
+    // Dit zou een json-object moeten zijn (of toch stringified versie ervan).
+    // const [requiredFiles, setRequiredFiles] = useState(props.project.requiredFiles);
+    // Deze wordt niet gebruikt. Dit zit verwerkt in het json-object als OnlyPresentConstraint.
+    // const [otherFilesAllow, setOtherFilesAllow] = useState(props.project.otherFilesAllow);
     const [groupProject, setGroupProject] = useState(props.project.groupProject);
 
     // helpers
@@ -37,23 +47,26 @@ export function ViewProjectTeacherComponent(props: {
     const hours_array = Array.from({length: 24}, (_, index) => index.toString().padStart(2, '0'));
     const minutes_array = Array.from({length: 60}, (_, index) => index.toString().padStart(2, '0'));
 
+    // SimpleTests
+    const [data, setData] = useState<object>(calledData);
+    const [hasChanged, setHasChanged] = useState(false);
 
     return (
         <div className={"create-project"}>
             {/* PROJECT NAME FIELD */}
             <div className={"field is-horizontal"}>
                 <div className={"field-label"}>
-                    <label className="label">Project naam:</label>
+                    <label className="label">{t('create_project.name.tag')}</label>
                 </div>
                 <div className="field-body field">
-                    <Inputfield placeholder="Geef een naam in" value={projectName}
+                    <Inputfield placeholder={t('create_project.name.placeholder')} value={projectName}
                                 setValue={setProjectName}/>
                 </div>
             </div>
             {/* COURSE NAME FIELD */}
             <div className="field is-horizontal">
                 <div className="field-label">
-                    <label className="label">Vak:</label>
+                    <label className="label">{t('create_project.course.tag')}</label>
                 </div>
                 <div className="field-body field">
                     <SelectionBox options={["vak1", "vak2", "vak3"]} value={courseName}
@@ -63,33 +76,34 @@ export function ViewProjectTeacherComponent(props: {
             {/* DEADLINE FIELD */}
             <div className="field is-horizontal">
                 <div className="field-label">
-                    <label className="label">Deadline:</label>
+                    <label className="label">{t('create_project.deadline.tag')}</label>
                 </div>
-                <div className="field-body">
-                    <label>
-                        <input type="checkbox" onChange={expandDeadline} checked={showCalender}/>
-                        {showCalender &&
-                            <>
-                                <Calendar onChange={e => setDeadline(e)} value={deadline}/>
-                                <div className="is-horizontal field">
-                                    <SelectionBox options={hours_array} value={hours.toString()}
-                                                  setValue={setHours}/>
-                                    <label className={"title ml-3 mr-3"}>:</label>
-                                    <SelectionBox options={minutes_array} value={minutes.toString()}
-                                                  setValue={setMinutes}/>
-                                </div>
-                            </>
-                        }
-                    </label>
+                <div
+                    className="field-body is-flex is-flex-direction-column is-align-items-start is-justify-content-center">
+                    <input type="checkbox" onChange={expandDeadline} checked={showCalender}/>
+                    {showCalender &&
+                        <div>
+                            <div>
+                                <Calendar onChange={e => setDeadline(e)} value={deadline} locale={t('create_project.deadline.locale')} />
+                            </div>
+                            <div className="is-horizontal field is-justify-content-center mt-2">
+                                <SelectionBox options={hours_array} value={hours.toString()}
+                                              setValue={setHours}/>
+                                <label className={"title mx-3"}>:</label>
+                                <SelectionBox options={minutes_array} value={minutes.toString()}
+                                              setValue={setMinutes}/>
+                            </div>
+                        </div>
+                    }
                 </div>
             </div>
             <div className="field is-horizontal">
                 <div className="field-label">
-                    <label className="label">Beschrijving:</label>
+                    <label className="label">{t('create_project.description.tag')}</label>
                 </div>
                 <div className="field-body field">
                     <div style={{width: "33%"}}> {/* Deze moet er blijven, anders doet css raar*/}
-                        <textarea className="textarea" placeholder="Optionele beschrijving van het project"
+                        <textarea className="textarea" placeholder={t('create_project.description.placeholder')}
                                   value={description}
                                   onChange={e => setDescription(e.target.value)}/>
                     </div>
@@ -97,7 +111,7 @@ export function ViewProjectTeacherComponent(props: {
             </div>
             <div className="field is-horizontal">
                 <div className="field-label">
-                    <label className="label">Docker file:</label>
+                    <label className="label">{t('create_project.docker_file.tag')}</label>
                 </div>
                 <div className="field-body field file has-name">
                     <label className="file-label">
@@ -107,7 +121,7 @@ export function ViewProjectTeacherComponent(props: {
                                 <FaUpload/>
                             </span>
                             <span className="file-label">
-                                Kies een bestand
+                                {t('create_project.docker_file.choose_button')}
                             </span>
                         </span>
                         <span className="file-name">
@@ -118,32 +132,26 @@ export function ViewProjectTeacherComponent(props: {
             </div>
             <div className="field is-horizontal">
                 <div className="field-label">
-                    <label className="label">Indiening files:</label>
+                    <label className="label">{t('create_project.submission_files.tag')}</label>
                 </div>
                 <div className="field-body field">
                     <div className="field"> {/* Deze moet er blijven, anders doet css raar*/}
-                        <label>Specifieer welke files de ingediende zip moet bevatten. Splits per komma.</label>
-                        <br/>
-                        <Inputfield placeholder="vb: diagram.dgr,verslag.pdf,textbestand.txt"
-                                    value={requiredFiles}
-                                    setValue={setRequiredFiles}/>
-                        <br/>
-                        <div className="field is-horizontal">
-                            <div className="field-label">
-                                <input type="checkbox"
-                                       onChange={e => setOtherFilesAllow(e.target.checked)}
-                                       checked={otherFilesAllow}/>
-                            </div>
-                            <div className="field-body">
-                                <label className="label is-fullwidth">ook andere files toegelaten</label>
-                            </div>
-                        </div>
+                        {CHECK_SIMPLE_TESTS && <>
+                            <button onClick={() => console.log(hasChanged)}>hasChanged</button>
+                            <button onClick={() => console.log(data)}>data</button>
+                        </>}
+                        <SimpleTests
+                            teacherOrStudent={TeacherOrStudent.TEACHER}
+                            initialData={calledData}
+                            setData={setData}
+                            setHasChanged={setHasChanged}
+                        />
                     </div>
                 </div>
             </div>
             <div className="field is-horizontal">
                 <div className="field-label">
-                    <label className="label">Groepswerk:</label>
+                    <label className="label">{t('create_project.teamwork.tag')}</label>
                 </div>
                 <div className="field-body">
                     <label>
@@ -156,13 +164,14 @@ export function ViewProjectTeacherComponent(props: {
                                         <input type="checkbox"/>
                                     </div>
                                     <div className="field-body">
-                                        <label className="label is-fullwidth">verwisselingen toestaan</label>
+                                        <label className="label is-fullwidth">{t('create_project.teamwork.changes')}</label>
                                     </div>
                                 </div>
                                 <br/>
                                 <div className="field-label">
-                                    <label className="label is-fullwidth">Groepsindeling (kies 1 van
-                                        onderstaande):</label>
+                                    <label className="label is-fullwidth">
+                                        {t('create_project.teamwork.groups.tag')}
+                                    </label>
                                 </div>
                                 <br/>
                                 <div className="field-body field is-horizontal">
@@ -170,7 +179,9 @@ export function ViewProjectTeacherComponent(props: {
                                         <input type="checkbox"/>
                                     </div>
                                     <div className="field-body">
-                                        <label className="label is-fullwidth">random</label>
+                                        <label className="label is-fullwidth">
+                                            {t('create_project.teamwork.groups.random')}
+                                        </label>
                                     </div>
                                 </div>
                                 <div className="field is-horizontal">
@@ -178,7 +189,9 @@ export function ViewProjectTeacherComponent(props: {
                                         <input type="checkbox"/>
                                     </div>
                                     <div className="field-body">
-                                        <label className="label is-fullwidth">studenten kiezen zelf</label>
+                                        <label className="label is-fullwidth">
+                                            {t('create_project.teamwork.groups.own_choice')}
+                                        </label>
                                     </div>
                                 </div>
                             </>
