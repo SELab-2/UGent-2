@@ -6,10 +6,10 @@ from starlette.testclient import TestClient
 
 from app import app
 from fill_database_mock import fill_database_mock
+from tests.endpoints import assert_json_length, assert_status_code
 
 
 class TestSubjectAsStudent(unittest.TestCase):
-
     TESTED_USER_ID = 1
 
     def setUp(self) -> None:
@@ -25,19 +25,9 @@ class TestSubjectAsStudent(unittest.TestCase):
         headers = {"Authorization": f"Bearer {token}"}
         return getattr(self.client, method)(url, headers=headers, **kwargs)
 
-    @staticmethod
-    def assert_status_code(response: Response, expected_status_code: int) -> None:
-        assert response.status_code == expected_status_code, \
-            f"Expected status code {expected_status_code}, but got {response.status_code}"
-
-    @staticmethod
-    def assert_json_length(response: Response, expected_length: int) -> None:
-        json_data = response.json()
-        assert len(json_data) == expected_length, f"Expected JSON length {expected_length}, but got {len(json_data)}"
-
     def login_as(self, uid: int) -> str:
         response = self.client.post(f"/api/fake-login?uid={uid}")
-        self.assert_status_code(response, status.HTTP_200_OK)
+        assert_status_code(response, status.HTTP_200_OK)
         token = response.json().get("token")
         assert token
         self.token = token
@@ -48,32 +38,32 @@ class TestSubjectAsStudent(unittest.TestCase):
 
     def test_subjects(self) -> None:
         response = self.make_authenticated_request(self.TESTED_USER_ID, "get", "/api/student/subjects")
-        self.assert_status_code(response, status.HTTP_200_OK)
-        self.assert_json_length(response, 3)
+        assert_status_code(response, status.HTTP_200_OK)
+        assert_json_length(response, 3)
 
     def test_join_subject_already_enrolled(self) -> None:
         response = self.make_authenticated_request(self.TESTED_USER_ID, "post", "/api/student/subjects/1/join")
-        self.assert_status_code(response, status.HTTP_400_BAD_REQUEST)
+        assert_status_code(response, status.HTTP_400_BAD_REQUEST)
 
     def test_leave_and_join_subject(self) -> None:
         response = self.make_authenticated_request(self.TESTED_USER_ID, "post", "/api/student/subjects/1/leave")
-        self.assert_status_code(response, status.HTTP_200_OK)
+        assert_status_code(response, status.HTTP_200_OK)
 
         response = self.make_authenticated_request(self.TESTED_USER_ID, "get", "/api/student/subjects")
-        self.assert_status_code(response, status.HTTP_200_OK)
-        self.assert_json_length(response, 2)
+        assert_status_code(response, status.HTTP_200_OK)
+        assert_json_length(response, 2)
 
         response = self.make_authenticated_request(self.TESTED_USER_ID, "post", "/api/student/subjects/1/join")
-        self.assert_status_code(response, status.HTTP_200_OK)
+        assert_status_code(response, status.HTTP_200_OK)
 
         response = self.make_authenticated_request(self.TESTED_USER_ID, "get", "/api/student/subjects")
-        self.assert_status_code(response, status.HTTP_200_OK)
-        self.assert_json_length(response, 3)
+        assert_status_code(response, status.HTTP_200_OK)
+        assert_json_length(response, 3)
 
     def test_projects(self) -> None:
         response = self.make_authenticated_request(self.TESTED_USER_ID, "get", "/api/student/projects")
-        self.assert_status_code(response, status.HTTP_200_OK)
-        self.assert_json_length(response, 4)
+        assert_status_code(response, status.HTTP_200_OK)
+        assert_json_length(response, 4)
 
 
 if __name__ == "__main__":
