@@ -7,18 +7,16 @@ import {RegularButton} from "../../components/RegularButton.tsx";
 import {useTranslation} from 'react-i18next';
 import {useRouteLoaderData} from "react-router-dom";
 import {coursesTeacherLoaderObject, CREATE_PROJECT_TEACHER_ID} from "../../dataloaders/CoursesTeacherLoader.ts";
+import DefaultErrorPage from "../../components/DefaultErrorPage.tsx";
 
 export function CreateProject(): JSX.Element {
 
     const { t } = useTranslation();
 
     const data = useRouteLoaderData(CREATE_PROJECT_TEACHER_ID) as coursesTeacherLoaderObject;
-    console.log(data.courses);
 
     if (data.courses.length === 0) {
-        return <>
-            there was an error loading the courses
-        </>
+        return <DefaultErrorPage title={t("create_project.error_title")} body={t("create_project.error_text")}/>
     }
 
     const emptyProjectTeacher: ProjectTeacher = {
