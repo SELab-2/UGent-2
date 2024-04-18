@@ -16,7 +16,7 @@ export function Sidebar(props: {home: string, buttons?: SidebarButton[]}): JSX.E
     if (buttons == undefined) {
         buttons = [SidebarButton.COURSES, SidebarButton.PROJECTS];
     }
-    
+
     return (
         <>
             <aside className={"menu is-flex is-flex-direction-column is-justify-content-space-between"}>

@@ -3,8 +3,8 @@ import {Navigate, useLocation, useRouteLoaderData} from 'react-router-dom';
 import useAuth from "../../hooks/useAuth.ts";
 import loginLoader, {LOGIN_ROUTER_ID, loginLoaderObject} from "../../dataloaders/LoginLoader.ts";
 import LoginForm from "../../components/authentication/LoginForm.tsx";
-import {DEBUG} from "../root.tsx";
 import {Token, User} from "../../utils/ApiInterfaces.ts";
+import {post_ticket} from "../../utils/api/Login.ts";
 
 interface location_type {
     search?: { ticket?: string },
@@ -12,26 +12,18 @@ interface location_type {
     pathname: string
 }
 
-const ticketLogin = async (ticket: string, setUser: React.Dispatch<React.SetStateAction<User | undefined>>) => {
-    let url = '/api/login?ticket=' + ticket
-    if (DEBUG) {
-        url = 'http://127.0.0.1:8000/api/login?ticket=' + ticket
-    }
-    const token = await (await fetch(url, {method: 'POST', headers: {'Content-Type': 'application/json'}}))
-        .json() as Token
-
-    if (token.token) {
+async function ticketLogin (ticket: string, setUser: React.Dispatch<React.SetStateAction<User | undefined>>) {
+    const token: Token | undefined = await post_ticket(ticket)
+    if (token?.token) {
         localStorage.setItem('token', token.token)
         const result: loginLoaderObject = await loginLoader()
         if (result.user) {
             setUser(result.user)
-        }else{
+        } else {
             localStorage.removeItem('token')
             setUser(undefined)
         }
     }
-
-    return token;
 }
 
 export default function LoginScreen(): JSX.Element {
@@ -53,9 +45,12 @@ export default function LoginScreen(): JSX.Element {
         // If the saved token is valid => the user will be logged in
         if (data && data.user) {
             setUser(data.user)
-        }
-        else if (!user && ticket) {
-            void ticketLogin(ticket, setUser);
+        } else if (!user && ticket) {
+            try {
+                void ticketLogin(ticket, setUser);
+            } catch (error) {
+                console.log("Ticket wasn't accepted")
+            }
         }
     }, [data, setUser, ticket, user]);
 

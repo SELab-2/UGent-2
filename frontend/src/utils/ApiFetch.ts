@@ -1,7 +1,12 @@
 import {DEBUG} from "../pages/root.tsx";
 
+export interface ApiFetchResponse<Type>{
+    ok: boolean,
+    status_code: number,
+    content: Type
+}
 
-const ApiFetch = async (url: string, options?: RequestInit) => {
+export async function ApiFetch<Type> (url: string, options?: RequestInit) {
     if (typeof options === 'undefined') {
         options = {}
     }
@@ -18,7 +23,12 @@ const ApiFetch = async (url: string, options?: RequestInit) => {
     if (DEBUG) {
         url = "http://127.0.0.1:8000" + url;
     }
-    return (await fetch(url, options)).json()
+    const response = await fetch(url, options)
+    return {
+        ok: response.ok,
+        status_code: response.status,
+        content: response.status !== 204 ? await response.json() as Type : {}
+    } as ApiFetchResponse<Type>
 }
 
 export default ApiFetch

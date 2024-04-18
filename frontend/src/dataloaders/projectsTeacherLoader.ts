@@ -31,8 +31,11 @@ export async function LoadProjectsForTeacher(filter_on_current: boolean = false,
     }
 
     const groupPromises: Promise<Group[][]> = Promise.all(projects.map(async project => {
-        const groups = await apiFetch(`/projects/${project.project_id}/groups`) as Backend_group[];
-        return mapGroupList(groups);
+        const groups = await apiFetch<Backend_group[]>(`/projects/${project.project_id}/groups`);
+        if (!groups.ok) {
+            // TODO: error handling
+        }
+        return mapGroupList(groups.content);
     }));
 
     const statistics: { [key: number]: number } = {
@@ -47,9 +50,13 @@ export async function LoadProjectsForTeacher(filter_on_current: boolean = false,
         let amount = 0
         for (const group of groupArray) {
             try {
-                const submissionBackend = await apiFetch(`/groups/${group.group_id}/submission`) as Backend_submission;
-                const submission = mapSubmission(submissionBackend);
-                if (submission) {
+                const submissionData = await apiFetch<Backend_submission>(`/groups/${group.group_id}/submission`);
+                if (!submissionData.ok){
+                    // TODO error handling
+                }
+                const submissionBackend = submissionData.content
+                if (submissionBackend) {
+                    const submission = mapSubmission(submissionData.content)
                     console.log(submission)
                     statistics[submission.submission_state] += 1;
                     amount++;
