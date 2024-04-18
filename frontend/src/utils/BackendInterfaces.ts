@@ -18,13 +18,13 @@ export interface Backend_Project {
 }
 
 export interface Backend_submission {
-    id: number,
-    date: string | Date,
-    group_id: number,
-    student_id: number,
+    date_time: string | Date,
     state: SUBMISSION_STATE,
     message: string,
     filename: string,
+    id: number,
+    group_id: number,
+    student_id: number,
 }
 
 export interface Backend_group {

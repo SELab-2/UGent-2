@@ -8,42 +8,33 @@ import {TableRowCourses} from "../../types/tableRows.ts";
 import {useRouteLoaderData} from "react-router-dom";
 import {COURSES_STUDENT_ROUTER_ID, coursesStudentLoaderObject} from "../../dataloaders/CoursesStudentLoader.ts";
 import { useTranslation } from 'react-i18next';
+import {properSubject} from "../../utils/ApiInterfaces.ts";
 
 export default function CoursesViewStudent(): JSX.Element {
 
     const { t } = useTranslation();
 
     const data: coursesStudentLoaderObject = useRouteLoaderData(COURSES_STUDENT_ROUTER_ID) as coursesStudentLoaderObject
-    console.log(data.courses)
+    const courses_data = data.courses
 
-    const tableCoursesActive: TableRowCourses[] = [
-        {
-            course: {
-                name: "Automaten, berekenbaarheid & complexiteit",
-                id: 5896
-            },
-            shortestDeadline: "17:00 - 23/02/2024",
-            numberOfProjects: 1
-        },
-        {
-            course: {
-                name: "Computationele Biologie",
-                id: 5741
-            },
-            shortestDeadline: "19:00 - 25/02/2024",
-            numberOfProjects: 2
-        },
-    ];
-    const tableCoursesArchived: TableRowCourses[] = [
-        {
-            course: {
-                name: "Logisch Programmeren",
-                id: 2569
-            },
-            shortestDeadline: null,
-            numberOfProjects: 1,
+    const tableCoursesActive: TableRowCourses[] = courses_data.map((course: properSubject) => {
+
+        const deadline_date = course.first_deadline ? new Date(course.first_deadline) : null
+
+        let deadline = null
+        if (deadline_date){
+            deadline = `${deadline_date.getHours()}:${deadline_date.getMinutes()} - ${deadline_date.getDate()}/${deadline_date.getMonth()}/${deadline_date.getFullYear()}`
         }
-    ];
+
+        return{
+            course: {
+                name: course.subject_name,
+                id: course.subject_id,
+            },
+            shortestDeadline: deadline,
+            numberOfProjects: course.active_projects
+        }
+    })
 
     return (
         <>
@@ -58,8 +49,6 @@ export default function CoursesViewStudent(): JSX.Element {
                     <div className={"table-page is-flex is-flex-direction-column"}>
                         <SearchBar placeholder={t('courses.search_placeholder')}/>
                         <Table title={t('courses.active')} data={tableCoursesActive} ignoreKeys={[]} home={"student"}/>
-                        <div className={"my-5"}/>
-                        <Table title={t('courses.archived')} data={tableCoursesArchived} ignoreKeys={["shortestDeadline"]} home={"student"}/>
                     </div>
                 </div>
             </div>

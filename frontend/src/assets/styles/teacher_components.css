@@ -3,3 +3,12 @@
     flex-wrap: wrap;
     overflow-x: scroll;
 }
+
+.teacher-main {
+    width: calc(100vw - var(--sidebar-width));
+}
+
+.teacher-left {
+    flex-wrap: wrap;
+    overflow-y: scroll;
+}

@@ -1,13 +1,11 @@
-import os
 from collections.abc import Generator
 
-from sqlmodel import Session, create_engine
+from sqlmodel import Session
 
-# Construct the database connection string using environment variables
-DB_TEST_URI = f"postgresql://{os.getenv('TEST_DB_USER', 'postgres')}:postgres@localhost:5432/delphi-test"
+from db.extensions import engine
 
 # Create an engine using SQLModel's create_engine
-test_engine = create_engine(DB_TEST_URI)
+test_engine = engine
 
 
 # Function to get a new database session

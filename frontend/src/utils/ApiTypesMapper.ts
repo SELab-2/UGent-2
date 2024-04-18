@@ -42,7 +42,7 @@ export function mapProjectList(projectList: Backend_Project[]): Project[] {
 export function mapSubmission(submission: Backend_submission): Submission {
     return {
         submission_id: submission.id,
-        submission_date: submission.date,
+        submission_date: submission.date_time,
         submission_group_id: submission.group_id,
         submission_student_id: submission.student_id,
         submission_state: submission.state,
