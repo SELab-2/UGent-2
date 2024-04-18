@@ -3,6 +3,7 @@ from pathlib import Path
 
 from sqlmodel import Session
 
+from db.database_errors import ItemNotFoundError
 from db.models import Group, Student, Submission, SubmissionState
 from domain.logic.basic_operations import get, get_all
 from domain.logic.errors import ArchivedError, InvalidSubmissionError
@@ -60,6 +61,9 @@ def get_submissions_of_group(session: Session, group_id: int) -> list[Submission
 
 def get_last_submission(session: Session, group_id: int) -> Submission:
     submissions = get_submissions_of_group(session, group_id)
+    if len(submissions) == 0:
+        err_string = "No submissions for this group"
+        raise ItemNotFoundError(err_string)
     return max(submissions, key=lambda submission: submission.date_time)
 
 
