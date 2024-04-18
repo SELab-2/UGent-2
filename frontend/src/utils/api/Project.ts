@@ -11,12 +11,11 @@ export async function project_create_group(project_id: number): Promise<Group> {
             'Content-Type': 'application/json'
         }
     });
-    if (groupData.ok){
+    if (groupData.ok) {
         return mapGroup(groupData.content);
-    }else{
-        // TODO: error handling
-        throw groupData.status_code
     }
+    // TODO: error handling
+    throw groupData.status_code
 }
 
 export async function update_project(project_id: number, projectInput: ProjectInput): Promise<boolean> {

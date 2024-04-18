@@ -12,7 +12,7 @@ interface location_type {
     pathname: string
 }
 
-const ticketLogin = async (ticket: string, setUser: React.Dispatch<React.SetStateAction<User | undefined>>)=> {
+async function ticketLogin (ticket: string, setUser: React.Dispatch<React.SetStateAction<User | undefined>>) {
     const token: Token | undefined = await post_ticket(ticket)
     if (token?.token) {
         localStorage.setItem('token', token.token)

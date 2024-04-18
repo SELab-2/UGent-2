@@ -17,7 +17,7 @@ function filter_on_role(users: User[], role: string): User[] {
 }
 
 export default async function adminLoader(): Promise<AdminLoaderObject> {
-    const users_backend: ApiFetchResponse<Backend_user[]> = (await apiFetch<Backend_user[]>("/users"));
+    const users_backend: ApiFetchResponse<Backend_user[]> = await apiFetch<Backend_user[]>("/users");
     let users: User[] = []
     if (users_backend.ok){
         users = users_backend.content.map((user) => mapUser(user));

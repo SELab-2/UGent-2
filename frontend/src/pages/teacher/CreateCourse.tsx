@@ -3,13 +3,13 @@ import Inputfield from "../../components/Inputfield.tsx";
 import {Header} from "../../components/Header.tsx";
 import {Sidebar} from "../../components/Sidebar.tsx";
 import {RegularButton} from "../../components/RegularButton.tsx";
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 import {createSubject} from "../../utils/api/Teacher.ts";
 
 export default function CreateCourse(): JSX.Element {
     const [courseName, setCourseName] = useState<string>("");
 
-    const { t } = useTranslation();
+    const {t} = useTranslation();
 
     const createCourse = () => {
         // todo: what after succes/failure
@@ -39,7 +39,7 @@ export default function CreateCourse(): JSX.Element {
                     <div className={"is-flex is-justify-content-center"}>
                         {/*Waiting for the post requests to implement the on click*/}
                         <RegularButton placeholder={t('create_course.confirm')} add={false} onClick={() => {
-                            createCourse()
+                            createCourse
                         }}/>
                     </div>
                 </div>

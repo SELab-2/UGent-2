@@ -2,7 +2,7 @@ import {CompleteProjectTeacher, Group} from "../utils/ApiInterfaces.ts";
 import {getAllProjectsAndSubjects, teacherStudentRole} from "./loader_helpers/SharedFunctions.ts";
 import apiFetch from "../utils/ApiFetch.ts";
 import {Backend_group, Backend_submission} from "../utils/BackendInterfaces.ts";
-import {mapGroupList, mapSubmission} from "../utils/ApiTypesMapper.ts";
+import {mapGroupList} from "../utils/ApiTypesMapper.ts";
 
 export interface projectsTeacherLoaderObject {
     projects: CompleteProjectTeacher[]
@@ -47,7 +47,7 @@ export async function LoadProjectsForTeacher(filter_on_current: boolean = false,
         for (const group of groupArray) {
             try {
                 const submission = await apiFetch<Backend_submission>(`/groups/${group.group_id}/submission`);
-                if (submission.ok && mapSubmission(submission.content)) {
+                if (submission.ok && submission.content) {
                     amount++;
                 }
             } catch (e) {
