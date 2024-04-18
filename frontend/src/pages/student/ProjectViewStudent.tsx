@@ -3,24 +3,57 @@ import {Header} from "../../components/Header.tsx";
 import {Sidebar} from "../../components/Sidebar.tsx";
 import ViewProjectStudent from "../../components/ProjectStudentComponent.tsx";
 import {ProjectStatus, ProjectStudent} from "../../types/project.ts";
+import {useRouteLoaderData} from "react-router-dom";
+import {PROJECT_STUDENT, ProjectStudentLoaderObject} from "../../dataloaders/ProjectStudent.ts";
+import {SUBMISSION_STATE} from "../../utils/ApiInterfaces.ts";
+import DefaultErrorPage from "../../components/DefaultErrorPage.tsx";
+import {useTranslation} from "react-i18next";
 
 export default function ProjectViewStudent(): JSX.Element {
-    const groupMembers: { name: string, email: string, lastSubmission: boolean }[] = [
-        {name: "jan", email: "jan@ugent.be", lastSubmission: false},
-        {name: "erik", email: "erik@ugent.be", lastSubmission: false},
-        {name: "peter", email: "peter@ugent.be", lastSubmission: true}
-    ]
+
+    const { t } = useTranslation();
+
+    const data: ProjectStudentLoaderObject = useRouteLoaderData(PROJECT_STUDENT) as ProjectStudentLoaderObject
+    const project_data = data.project
+
+    if (!project_data) {
+        return <DefaultErrorPage title={t("project_error.title")} body={t("project_error.text")}/>
+    }
+
+    const statusMap = {
+        [SUBMISSION_STATE.Pending]: ProjectStatus.PENDING,
+        [SUBMISSION_STATE.Approved]: ProjectStatus.SUCCESS,
+        [SUBMISSION_STATE.Rejected]: ProjectStatus.FAILED
+    };
+
+    const project_status = statusMap[project_data.submission_state] || ProjectStatus.FAILED;
+
+
+    const groupMembers: {
+        name: string;
+        email: string;
+        lastSubmission: boolean
+    }[] | undefined = project_data.group_members?.map((member) => {
+        return {
+            name: member?.user_name ?? "name",
+            email: member?.user_email ?? "email",
+            lastSubmission: project_data.submission_student_id === member?.user_id
+        }
+    });
+
+    const deadline_date = new Date(project_data.project_deadline)
+    const deadline = `${deadline_date.getHours()}:${deadline_date.getMinutes()} - ${deadline_date.getDate()}/${deadline_date.getMonth()}/${deadline_date.getFullYear()}`
 
     const project: ProjectStudent = {
-        projectName: "Markov Decision Diagram",
-        courseName: "Automaten, berekenbaarheid en complexiteit",
-        deadline: "17:00 - 23/02/2024",
-        status: ProjectStatus.FAILED,
-        description: "Lorem ipsum dolor sit amet.",
-        requiredFiles: ["Diagram.dgr", "verslag.pdf"],
+        projectName: project_data.project_name,
+        courseName: project_data.subject_name,
+        deadline: deadline,
+        status: project_status,
+        description: project_data.project_description,
+        requiredFiles: JSON.parse(project_data.project_requirements) as object,
         groupMembers: groupMembers,
-        maxGroupMembers: 4,
-        submission: "submission.zip"
+        maxGroupMembers: project_data.project_max_students,
+        submission: project_data.submission_file
     }
 
     return (

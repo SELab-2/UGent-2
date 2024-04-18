@@ -1,8 +1,8 @@
 import {JSX} from "react";
 import {BiError} from "react-icons/bi";
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 
-export default function DefaultErrorPage(title: string, body: string): JSX.Element {
+export default function DefaultErrorPage(props: {title: string, body: string}): JSX.Element {
 
     const { t } = useTranslation();
 
@@ -14,11 +14,11 @@ export default function DefaultErrorPage(title: string, body: string): JSX.Eleme
                       <span className="icon">
                         <i><BiError/></i>
                       </span>
-                      <span>{title}</span>
+                      <span>{props.title}</span>
                     </span>
                 </div>
                 <div className="message-body">
-                    {body}
+                    {props.body}
                     <br/>
                     <a href={"/"}>{t('unauthorized.back')}</a>
                 </div>
