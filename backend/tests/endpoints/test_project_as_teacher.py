@@ -10,7 +10,7 @@ from tests.endpoints import assert_status_code
 
 
 class TestProjectAsTeacher(unittest.TestCase):
-    TESTED_USER_ID = 9  # Assuming the teacher's user ID is 1
+    TESTED_USER_ID = 9  # Assuming the teacher's user ID is 9
 
     def setUp(self) -> None:
         self.client = TestClient(app)
