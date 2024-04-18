@@ -7,7 +7,7 @@ import {MdLanguage, MdOutlineKeyboardArrowDown} from "react-icons/md";
 import useAuth from "../hooks/useAuth.ts";
 import {User} from "../utils/ApiInterfaces.ts";
 import {useTranslation} from "react-i18next";
-import i18n from "../i18n.tsx";
+import {modify_language} from "../utils/api/User.ts";
 
 function DropdownLanguage(): JSX.Element {
     const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -35,7 +35,7 @@ function DropdownLanguage(): JSX.Element {
                     <a
                         className="dropdown-item"
                         onClick={() => {
-                            void i18n.changeLanguage("en");
+                            modify_language("en")
                             toggle()
                         }}
                     >
@@ -44,7 +44,7 @@ function DropdownLanguage(): JSX.Element {
                     <a
                         className="dropdown-item"
                         onClick={() => {
-                            void i18n.changeLanguage("nl");
+                            modify_language("nl")
                             toggle()
                         }}
                     >

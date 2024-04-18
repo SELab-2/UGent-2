@@ -45,12 +45,15 @@ export async function LoadProjectsForStudent(filter_on_current: boolean = false,
     const project_ids = projects.map(project => project.project_id);
 
     const apiGroups = project_ids.map(async project_id => {
-        const apiGroup = await apiFetch(`/projects/${project_id}/group`) as Backend_group;
+        const apiGroupData = await apiFetch<Backend_group>(`/projects/${project_id}/group`);
+        if (!apiGroupData.ok){
+            // TODO: error handling
+        }
+        const apiGroup = apiGroupData.content;
         if (apiGroup) {
             return mapGroup(apiGroup);
-        } else {
-            return null
         }
+        return null;
     })
 
     const groups = (await Promise.all(apiGroups))
@@ -58,14 +61,21 @@ export async function LoadProjectsForStudent(filter_on_current: boolean = false,
     const group_ids = groups_without_null.map(group => group?.group_id);
 
     const submissionPromises: Promise<Submission>[] = group_ids.map(async group_id => {
-        const apiSubmission = await apiFetch(`/groups/${group_id}/submission`) as Backend_submission;
-        return mapSubmission(apiSubmission);
+        const apiSubmission = await apiFetch<Backend_submission>(`/groups/${group_id}/submission`);
+        if (!apiSubmission.ok) {
+            // TODO error handling
+        }
+        return mapSubmission(apiSubmission.content);
     });
 
     const submissions: Submission[] = (await Promise.all(submissionPromises));
 
     const groupMemberIdsPromises: Promise<groupInfo>[] = groups_without_null.map(async group => {
-        const members = await apiFetch(`/groups/${group.group_id}/members`) as memberInfo[]
+        const membersData = await apiFetch<memberInfo[]>(`/groups/${group.group_id}/members`)
+        if (!membersData.ok) {
+            // TODO error handling
+        }
+        const members = membersData.content;
         return {group_id: group.group_id, project_id: group.project_id, member_ids: members};
     });
 
@@ -73,8 +83,11 @@ export async function LoadProjectsForStudent(filter_on_current: boolean = false,
 
     const groupMembersPromises: Promise<groupInfo>[] = groupMemberInfo.map(async (groupinfo) => {
         const memberPromises = groupinfo.member_ids.map(async (memberId) => {
-            const apiMember = await apiFetch(`/users/${memberId.id}`) as Backend_user;
-            return mapUser(apiMember);
+            const apiMemberData = await apiFetch<Backend_user>(`/users/${memberId.id}`);
+            if (!apiMemberData.ok) {
+                // TODO error handling
+            }
+            return mapUser(apiMemberData.content);
         });
         const users = await Promise.all(memberPromises);
         return {

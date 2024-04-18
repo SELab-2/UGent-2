@@ -10,6 +10,7 @@ import SimpleTests from "./SimpleTests/SimpleTests.tsx";
 import {TeacherOrStudent} from "./SimpleTests/TeacherOrStudentEnum.tsx";
 import Calendar from "react-calendar";
 import {useTranslation} from 'react-i18next';
+import {RegularButton} from "./RegularButton.tsx";
 
 // SimpleTests
 const CHECK_SIMPLE_TESTS = false
@@ -53,6 +54,10 @@ export function ProjectTeacherComponent(props: { project: ProjectTeacher }): JSX
     // SimpleTests
     const [data, setData] = useState<object>(calledData);
     const [hasChanged, setHasChanged] = useState(false);
+
+    const save = () => {
+        // TODO save button
+    }
 
     return (
         <div className={"create-project"}>
@@ -181,7 +186,8 @@ export function ProjectTeacherComponent(props: { project: ProjectTeacher }): JSX
                                         <input type="checkbox"/>
                                     </div>
                                     <div className="field-body">
-                                        <label className="label is-fullwidth">{t('create_project.teamwork.changes')}</label>
+                                        <label
+                                            className="label is-fullwidth">{t('create_project.teamwork.changes')}</label>
                                     </div>
                                 </div>
                                 <br/>
@@ -214,6 +220,9 @@ export function ProjectTeacherComponent(props: { project: ProjectTeacher }): JSX
                             </>
                         }
                     </label>
+                </div>
+                <div className={"mx-5"}>
+                    <RegularButton placeholder={t('create_project.save_button')} add={false} onClick={save}/>
                 </div>
             </div>
         </div>

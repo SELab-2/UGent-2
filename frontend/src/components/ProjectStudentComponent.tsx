@@ -10,9 +10,9 @@ import {useTranslation} from 'react-i18next';
 
 export default function ProjectStudentComponent(props: { project: ProjectStudent }): JSX.Element {
 
+
     // true als er een groep is, anders false.
     const is_in_group = props.project.groupMembers && props.project.groupMembers.length > 0;
-
 
     const { t } = useTranslation();
 

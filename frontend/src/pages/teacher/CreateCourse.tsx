@@ -3,12 +3,19 @@ import Inputfield from "../../components/Inputfield.tsx";
 import {Header} from "../../components/Header.tsx";
 import {Sidebar} from "../../components/Sidebar.tsx";
 import {RegularButton} from "../../components/RegularButton.tsx";
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
+import {createSubject} from "../../utils/api/Teacher.ts";
 
 export default function CreateCourse(): JSX.Element {
-    const [projectName, setProjectName] = useState<string>("");
+    const [courseName, setCourseName] = useState<string>("");
 
-    const { t } = useTranslation();
+    const {t} = useTranslation();
+
+    const createCourse = () => {
+        // todo: what after succes/failure
+        // Default: archived false
+        void createSubject(courseName)
+    }
 
     return (
         <>
@@ -25,13 +32,15 @@ export default function CreateCourse(): JSX.Element {
                             <label className="label">{t('create_course.name.tag')}</label>
                         </div>
                         <div className="field-body field">
-                            <Inputfield placeholder={t('create_course.name.placeholder')} value={projectName}
-                                        setValue={setProjectName}/>
+                            <Inputfield placeholder={t('create_course.name.placeholder')} value={courseName}
+                                        setValue={setCourseName}/>
                         </div>
                     </div>
                     <div className={"is-flex is-justify-content-center"}>
                         {/*Waiting for the post requests to implement the on click*/}
-                        <RegularButton placeholder={t('create_course.confirm')} add={false} onClick={() => {}}/>
+                        <RegularButton placeholder={t('create_course.confirm')} add={false} onClick={() => {
+                            createCourse
+                        }}/>
                     </div>
                 </div>
             </div>

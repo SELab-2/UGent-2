@@ -47,11 +47,17 @@ export async function coursesLoader(role: teacherStudentRole, course_id?: number
     }
 
     const teachers = (await Promise.all(courses.map(async course => {
-        const teacher_ids = await apiFetch(`/subjects/${course.subject_id}/teachers`) as TeacherIdInfo[];
-
+        const teacher_ids_data = await apiFetch<TeacherIdInfo[]>(`/subjects/${course.subject_id}/teachers`);
+        if (!teacher_ids_data.ok){
+            // TODO error handling
+        }
+        const teacher_ids = teacher_ids_data.content
         const teachers_promises = teacher_ids.map(async teacher_id => {
-            const user = await apiFetch(`/users/${teacher_id.id}`) as Backend_user
-            return mapUser(user);
+            const userData = await apiFetch<Backend_user>(`/users/${teacher_id.id}`);
+            if (!userData.ok){
+                // TODO error handling
+            }
+            return mapUser(userData.content);
         });
 
         const teachers = await Promise.all(teachers_promises);
@@ -121,12 +127,18 @@ export interface projectsAndSubjects {
 }
 
 export async function getAllProjectsAndSubjects(role: teacherStudentRole, filter_on_current: boolean = false): Promise<projectsAndSubjects> {
-    const apiSubjects = (await apiFetch(`/${role}/subjects`)) as Backend_Subject[];
-    const apiProjects = (await apiFetch(`/${role}/projects`)) as Backend_Project[];
-    let projects: Project[] = mapProjectList(apiProjects);
+    const apiProjects = (await apiFetch<Backend_Project[]>(`/${role}/projects`));
+    const apiSubjects = (await apiFetch<Backend_Subject[]>(`/${role}/subjects`));
+
+    if (!apiProjects.ok || !apiSubjects.ok) {
+        // TODO error handling
+        // throw ...
+    }
+    let projects = mapProjectList(apiProjects.content);
     if (filter_on_current) {
         projects = projects.filter(project => project.project_visible && !project.project_archived)
     }
-    const subjects: Subject[] = mapSubjectList(apiSubjects);
+
+    const subjects = mapSubjectList(apiSubjects.content);
     return {projects, subjects}
 }
