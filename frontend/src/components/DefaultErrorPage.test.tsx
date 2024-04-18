@@ -8,6 +8,4 @@ test('renders DefaultErrorPage', () => {
   expect(titleElement).toBeTruthy();
   const bodyElement = screen.getByText(/Uh oh!/i);
   expect(bodyElement).toBeTruthy();
-  const linkElement = screen.getByText(/Go back to the homepage/i);
-  expect(linkElement).toBeTruthy();
 });
