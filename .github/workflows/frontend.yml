@@ -15,3 +15,5 @@ jobs:
         run: cd frontend && npx eslint .
       - name: Run TypeScript checks
         run: cd frontend && npx tsc --noEmit
+      - name: Build frontend
+        run: cd frontend && npm run build

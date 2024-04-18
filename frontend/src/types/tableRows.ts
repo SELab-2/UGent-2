@@ -1,4 +1,5 @@
-export interface TableRow {}
+export interface TableRow {
+}
 
 
 export interface TableRowProjects extends TableRow {
@@ -10,7 +11,7 @@ export interface TableRowProjects extends TableRow {
         name: string,
         id: number,
     }
-    deadline: string | null,
+    deadline: string | Date | null,
     status: string | null,                      // for student
     numberOfSubmissions: number | null          // for teacher and only for visible projects
 }

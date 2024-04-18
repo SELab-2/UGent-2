@@ -14,3 +14,7 @@ class SubmissionConstraint(BaseModel):
 
     def validate_constraint(self, path: Path) -> ConstraintResult:
         return self.root_constraint.validate_constraint(path)
+
+
+def create_constraint_from_json(json: str) -> SubmissionConstraint:
+    return SubmissionConstraint.model_validate_json(f'{{"root_constraint": {json} }}')

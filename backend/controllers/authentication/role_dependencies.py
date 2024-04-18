@@ -9,7 +9,6 @@ from controllers.authentication.errors import (
 )
 from controllers.authentication.token_controller import verify_token
 from db.models import Admin, Student, Teacher
-from db.sessions import get_session
 from domain.logic.admin import get_admin, is_user_admin
 from domain.logic.group import get_group, get_students_of_group
 from domain.logic.project import get_project, get_projects_of_teacher
@@ -30,7 +29,7 @@ def get_authenticated_user(request: Request) -> int:
 
 
 def get_authenticated_admin(request: Request) -> Admin:
-    session = next(get_session())
+    session = request.state.session
     uid = get_authenticated_user(request)
 
     if not is_user_admin(session, uid):
@@ -39,7 +38,7 @@ def get_authenticated_admin(request: Request) -> Admin:
 
 
 def get_authenticated_teacher(request: Request) -> Teacher:
-    session = next(get_session())
+    session = request.state.session
     uid = get_authenticated_user(request)
 
     if not is_user_teacher(session, uid):
@@ -48,7 +47,7 @@ def get_authenticated_teacher(request: Request) -> Teacher:
 
 
 def get_authenticated_student(request: Request) -> Student:
-    session = next(get_session())
+    session = request.state.session
     uid = get_authenticated_user(request)
 
     if not is_user_student(session, uid):
@@ -58,7 +57,7 @@ def get_authenticated_student(request: Request) -> Student:
 
 
 def ensure_user_authorized_for_subject(request: Request, subject_id: int) -> None:
-    session = next(get_session())
+    session = request.state.session
     uid = get_authenticated_user(request)
 
     if not is_user_authorized_for_subject(subject_id, session, uid):
@@ -66,13 +65,13 @@ def ensure_user_authorized_for_subject(request: Request, subject_id: int) -> Non
 
 
 def ensure_user_authorized_for_project(request: Request, project_id: int) -> None:
-    session = next(get_session())
+    session = request.state.session
     project = get_project(session, project_id)
     return ensure_user_authorized_for_subject(request, project.subject_id)
 
 
 def ensure_student_authorized_for_subject(request: Request, subject_id: int) -> Student:
-    session = next(get_session())
+    session = request.state.session
     student = get_authenticated_student(request)
 
     subjects_of_student = get_subjects_of_student(session, student.id)
@@ -82,7 +81,7 @@ def ensure_student_authorized_for_subject(request: Request, subject_id: int) -> 
 
 
 def ensure_teacher_authorized_for_subject(request: Request, subject_id: int) -> Teacher:
-    session = next(get_session())
+    session = request.state.session
     teacher = get_authenticated_teacher(request)
 
     subjects_of_teacher = get_subjects_of_teacher(session, teacher.id)
@@ -92,31 +91,37 @@ def ensure_teacher_authorized_for_subject(request: Request, subject_id: int) -> 
 
 
 def ensure_student_authorized_for_project(request: Request, project_id: int) -> Student:
-    session = next(get_session())
+    session = request.state.session
     project = get_project(session, project_id)
-    return ensure_student_authorized_for_project(request, project.project_id)
+    return ensure_student_authorized_for_subject(request, project.subject_id)
 
 
 def ensure_teacher_authorized_for_project(request: Request, project_id: int) -> Teacher:
-    session = next(get_session())
+    session = request.state.session
     project = get_project(session, project_id)
-    return ensure_teacher_authorized_for_subject(request, project.project_id)
+    return ensure_teacher_authorized_for_subject(request, project.subject_id)
 
 
 def ensure_student_authorized_for_group(request: Request, group_id: int) -> Student:
-    session = next(get_session())
+    session = request.state.session
     group = get_group(session, group_id)
     return ensure_student_authorized_for_project(request, group.project_id)
 
 
+def ensure_teacher_authorized_for_group(request: Request, group_id: int) -> Teacher:
+    session = request.state.session
+    group = get_group(session, group_id)
+    return ensure_teacher_authorized_for_project(request, group.project_id)
+
+
 def ensure_user_authorized_for_group(request: Request, group_id: int) -> None:
-    session = next(get_session())
+    session = request.state.session
     group = get_group(session, group_id)
     ensure_user_authorized_for_project(request, group.project_id)
 
 
 def ensure_student_in_group(request: Request, group_id: int) -> Student:
-    session = next(get_session())
+    session = request.state.session
     student = get_authenticated_student(request)
 
     if student not in get_students_of_group(session, group_id):
@@ -125,7 +130,7 @@ def ensure_student_in_group(request: Request, group_id: int) -> Student:
 
 
 def ensure_user_authorized_for_submission(request: Request, group_id: int) -> None:
-    session = next(get_session())
+    session = request.state.session
     uid = get_authenticated_user(request)
 
     group = get_group(session, group_id)

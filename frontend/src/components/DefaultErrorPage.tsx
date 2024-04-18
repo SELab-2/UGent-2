@@ -1,52 +1,26 @@
-// import {JSX} from "react";
-// import {BiError} from "react-icons/bi";
-//
-// export default function DefaultErrorPage(title: string, body: string): JSX.Element {
-//     return (
-//         <div id="error-page" className={"container is-max-desktop mt-6"}>
-//             <article className="message">
-//                 <div className="message-header has-background-danger-dark">
-//                     <span className="icon-text">
-//                       <span className="icon">
-//                         <i><BiError/></i>
-//                       </span>
-//                       <span>{title}</span>
-//                     </span>
-//                 </div>
-//                 <div className="message-body">
-//                     {body}
-//                     <br/>
-//                     <a href={"/"}>Go back to the homepage</a>
-//                 </div>
-//             </article>
-//         </div>
-//     );
-// }
-// import React, { JSX } from "react";
-import { BiError } from "react-icons/bi";
-import React from "react";
+import {JSX} from "react";
+import {BiError} from "react-icons/bi";
+import {useTranslation} from 'react-i18next';
 
-interface DefaultErrorPageProps {
-    title: string;
-    body: string;
-}
+export default function DefaultErrorPage(props: {title: string, body: string}): JSX.Element {
 
-const DefaultErrorPage: React.FC<DefaultErrorPageProps> = ({ title, body }) => {
+    const { t } = useTranslation();
+
     return (
         <div id="error-page" className={"container is-max-desktop mt-6"}>
             <article className="message">
                 <div className="message-header has-background-danger-dark">
-          <span className="icon-text">
-            <span className="icon">
-              <i><BiError /></i>
-            </span>
-            <span>{title}</span>
-          </span>
+                    <span className="icon-text">
+                      <span className="icon">
+                        <i><BiError/></i>
+                      </span>
+                      <span>{props.title}</span>
+                    </span>
                 </div>
                 <div className="message-body">
-                    {body}
-                    <br />
-                    <a href={"/"}>Go back to the homepage</a>
+                    {props.body}
+                    <br/>
+                    <a href={"/"}>{t('unauthorized.back')}</a>
                 </div>
             </article>
         </div>

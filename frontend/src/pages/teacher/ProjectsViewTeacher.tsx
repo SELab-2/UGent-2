@@ -8,8 +8,12 @@ import {TableRowProjects} from "../../types/tableRows.ts";
 import {useRouteLoaderData} from "react-router-dom";
 import {teacherLoaderObject} from "../../dataloaders/TeacherLoader.ts";
 import {PROJECTS_TEACHER_ROUTER_ID} from "../../dataloaders/projectsTeacherLoader.ts";
+import { useTranslation } from 'react-i18next';
 
 export default function ProjectsViewTeacher(): JSX.Element {
+
+    const { t } = useTranslation();
+
     const tableProjectsActive: TableRowProjects[] = [
         {
             project: {
@@ -64,7 +68,7 @@ export default function ProjectsViewTeacher(): JSX.Element {
     return (
         <>
             <div className={"main-header"}>
-                <Header page_title={"Projects"} home={"teacher"}/>
+                <Header page_title={t('projects.title')} home={"teacher"}/>
             </div>
             <div className={"main-content is-flex is-flex-direction-row"}>
                 <div className={"side-bar is-flex is-justify-content-center"}>
@@ -74,14 +78,14 @@ export default function ProjectsViewTeacher(): JSX.Element {
                     <div className={"table-page is-flex is-flex-direction-column"}>
                         <div className={"is-flex is-align-items-center is-justify-content-space-between"}>
                             <SearchBar placeholder={"zoek een project..."}/>
-                            <RegularATag link={"teacher/projects/create"} text={"nieuw project"} add={true}/>
+                            <RegularATag link={"teacher/projects/create"} text={t('projects.new_project')} add={true}/>
                         </div>
-                        <Table title={"actief"} data={tableProjectsActive} ignoreKeys={["status"]} home={"teacher"}/>
+                        <Table title={t('projects.active')} data={tableProjectsActive} ignoreKeys={["status"]} home={"teacher"}/>
                         <div className={"my-5"}/>
-                        <Table title={"verborgen"} data={tableProjectsHidden}
+                        <Table title={t('projects.hidden')} data={tableProjectsHidden}
                                ignoreKeys={["status", "numberOfSubmissions"]} home={"teacher"}/>
                         <div className={"my-5"}/>
-                        <Table title={"gearchiveerd"} data={tableProjectsArchived}
+                        <Table title={t('projects.archived')} data={tableProjectsArchived}
                                ignoreKeys={["status", "numberOfSubmissions", "deadline"]} home={"teacher"}/>
                     </div>
                 </div>

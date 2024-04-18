@@ -25,6 +25,8 @@ export default defineConfig({
             '**/{karma,rollup,webpack,vite,vitest,jest,ava,babel,nyc,cypress,tsup,build}.config.*',
             '**/*.spec.ts', // Exclude all .spec.ts files
         ],
+    },
+    build: {
+        target: "es2022"
     }
 })
-

@@ -13,6 +13,7 @@ import Warneable from "./Warneable";
 import { stringify } from 'flatted';
 import 'bulma-switch/dist/css/bulma-switch.min.css'
 import { TeacherOrStudent } from "./TeacherOrStudentEnum";
+import { useTranslation } from 'react-i18next';
 
 
 /* === DOCUMENTATION ============================================================================================================================
@@ -37,29 +38,9 @@ Roep 'SimpleTests' als component om deze in te laden.
                          gebruik setHasChanged om een échte verandering te detecteren."
                         -> undefined als STUDENT
 
-In de sectie 'text literals' vind je de tekst-constanten terug, klaar voor internationalisatie.
-
 !!! WARNING: een not_present_constraint wordt (nog) niet ondersteund. !!!
 
-FIXME:  Bij het verwijderen van een file, wordt er nog geen warning ondersteund (zie FIXME's in code).
-        Zonder warning werkt dit wel al (eerste van de twee buttons).
-
 ================================================================================================================================================ */
-
-/* text literals */
-const CONTROLE_TEXT = "Bij veranderingen zullen alle indieningen opnieuw gecontroleerd worden."
-const WARNING_CHANGE_ROOT = "Alle huidige file-specificaties zullen verwijderd worden. Ben je zeker dat je het root-type wil aanpassen?"
-const SINGLE_FILE_TEXT = "enkele file"
-const ZIP_FILE_TEXT = "zip-bestand"
-const SPECIFY_TEXT_TEACHER = "Specifieer welke files de zip moet bevatten:" 
-const SPECIFY_TEXT_STUDENT = "File-structuur:" 
-const COLOR_CODES_TEXT = "Kleurencodes:"
-const COLOR_CODES = [
-    "zip", 
-    "folder (enkel gespecifieerde files)",
-    "folder (ook andere files toegestaan)",
-    "file",
-]
 
 /* Definieer constraint-types. */
 const ZIP = "zip_constraint"
@@ -182,6 +163,8 @@ export default function SimpleTests(
     }
 ): JSX.Element {
 
+    const { t } = useTranslation();
+
     const original: BEConstraint = structuredClone(props.initialData) as BEConstraint
 
     const [data, setData] = useState<FEConstraint>(BE_2_FE(props.initialData as BEConstraint))
@@ -248,7 +231,7 @@ export default function SimpleTests(
             }
             if (constraint.parent_id !== undefined && ids.includes(constraint.parent_id)) {
                 constraint.expanded = false
-                ids.push(constraint.parent_id)
+                ids.push(constraint.id)
             }
 
             constraint.sub_constraints = constraint.sub_constraints?.map(e => collaps_sub(e))
@@ -391,13 +374,13 @@ export default function SimpleTests(
                 ? 
                     <>
                         {/* ...warning-text... */}
-                        <div className="warning-text">{CONTROLE_TEXT}</div>
+                        <div className="warning-text">{t('submission_files.changes_text')}</div>
 
                         {/* ...type-switch... */}
                         <div className="type">
                             <div className="field">
                                 <Warneable 
-                                    text={WARNING_CHANGE_ROOT}
+                                    text={t('submission_files.warning.type_switch')}
                                     trigger={ onClick =>
                                         <input 
                                             id="switchOutlinedDefault" 
@@ -414,16 +397,16 @@ export default function SimpleTests(
                                 {fileOrZip
                                 ?   <>
                                         <label htmlFor="switchOutlinedDefault">
-                                            <div className="thin">{SINGLE_FILE_TEXT}</div>
+                                            <div className="thin">{t('submission_files.root_switch.single_file')}</div>
                                             <div className="divider">/</div>
-                                            <div className="thick">{ZIP_FILE_TEXT}</div>
+                                            <div className="thick">{t('submission_files.root_switch.zip_file')}</div>
                                         </label>
                                     </>
                                 :   <>
                                         <label htmlFor="switchOutlinedDefault">
-                                            <div className="thick">{SINGLE_FILE_TEXT}</div>
+                                            <div className="thick">{t('submission_files.root_switch.single_file')}</div>
                                             <div className="divider">/</div>
-                                            <div className="thin">{ZIP_FILE_TEXT}</div>
+                                            <div className="thin">{t('submission_files.root_switch.zip_file')}</div>
                                         </label>
                                     </>
                             }
@@ -436,16 +419,19 @@ export default function SimpleTests(
             
 
             {/* ...color-codes... */}
-            <div>{COLOR_CODES_TEXT}</div>
+            <div>{t('submission_files.color_codes.tag')}</div>
             <ul>
-                <li className="zip-color">{COLOR_CODES[0]}</li>
-                <li className="locked-dir-color">{COLOR_CODES[1]}</li>
-                <li className="dir-color">{COLOR_CODES[2]}</li>
-                <li>{COLOR_CODES[3]}</li>
+                <li className="zip-color">{t('submission_files.color_codes.zip')}</li>
+                <li className="locked-dir-color">{t('submission_files.color_codes.folder_refuse_others')}</li>
+                <li className="dir-color">{t('submission_files.color_codes.folder_allow_others')}</li>
+                <li>{t('submission_files.color_codes.file')}</li>
             </ul>
 
             {/* ...specify-text... */}
-            <div className="specify-text">{props.teacherOrStudent == TeacherOrStudent.TEACHER ? SPECIFY_TEXT_TEACHER : SPECIFY_TEXT_STUDENT}</div>
+            <div className="specify-text">{props.teacherOrStudent == TeacherOrStudent.TEACHER 
+                ? t('submission_files.specify_files.teacher')
+                : t('submission_files.specify_files.student')}
+            </div>
             
             {/* ...constraints... */}
             <div className="constraints">
@@ -465,37 +451,33 @@ export default function SimpleTests(
                                     ?   <Popup trigger={
 
                                             <div className="more row">
-                                                {/* FIXME:  warneable.proceed works */}
                                                 <IoMdMore className="hover-shadow" />
                                             </div>
 
-                                        } position="left center" arrow={true} on="click">
-
-                                            {/* FIXME:  warneable.proceed doesn't work */}
+                                        } position="left center" arrow={true} on="click" nested>
 
                                             <div className="menu">
 
                                                 {/* ... menu-remove ... */}
                                                 <div className="menu-item" id={"x"+v.item.id} key={"y"+v.item.id} >
-                                                    <button onClick={() => handleRemove(v.item.parent_id, v.item.id)}>remove</button>
                                                     <Warneable 
-                                                        text="Are you sure?" 
+                                                        text={t('submission_files.warning.remove')}
                                                         trigger={onClick => 
-                                                            <button onClick={onClick}>remove</button>
+                                                            <button onClick={onClick}>{t('submission_files.menu.remove')}</button>
                                                         }
-                                                        proceed={() => handleRemove(v.item.parent_id, v.item.id)} /* FIXME: proceed doesn't fire here for some reason */
+                                                        proceed={() => handleRemove(v.item.parent_id, v.item.id)}
                                                     />
                                                 </div>
 
                                                 {/* ... menu-allow-others ... */}
                                                 {(v.item.type === LOCKED_DIR || v.item.type === DIR) &&
                                                     <div className="menu-item">
-                                                        <label className="checkbox"> { /* FIXME: sometimes a border appear around the checkbox -> bulma thing? */}
+                                                        <label className="checkbox">
                                                             {v.item.type === LOCKED_DIR
                                                                 ? <input type="checkbox" onChange={() => handleSwitchDirType(v.item.id)} id={"others"+v.item.id}/>
                                                                 : <input type="checkbox" onChange={() => handleSwitchDirType(v.item.id)} id={"others"+v.item.id} checked/>
                                                             }
-                                                            Andere toestaan
+                                                            {t('submission_files.menu.allow_others')}
                                                         </label>
                                                     </div>
                                                 }

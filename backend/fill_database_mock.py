@@ -17,7 +17,6 @@ from domain.logic.teacher import create_teacher
 from domain.logic.user import modify_user_roles
 
 if __name__ == "__main__":
-
     with Session(engine) as session:
         initialize_tables(session, engine)
 
@@ -34,7 +33,7 @@ if __name__ == "__main__":
             archived=False,
             visible=True,
             description="Maak iets in JavaFX",
-            requirements="Een zip bestand met Java-code",
+            requirements='{"type": "zip_constraint", "name": "submission.zip", "sub_constraints": []}',
             max_students=3,
             deadline=datetime(2024, 12, 31, 23, 59, 59, tzinfo=tz.LOCAL),
         )
@@ -46,16 +45,16 @@ if __name__ == "__main__":
             archived=True,
             visible=True,
             description="Een wedstrijdklok is een apparaat waarbij in één behuizing twee uurwerken zijn aangebracht "
-                        "zodanig"
-                        "dat er slechts één tegelijk kan lopen. Een wedstrijdklok wordt gebruikt bij een bordspel voor"
-                        "twee spelers om de bedenktijd te meten. Een speler moet een aantal zetten binnen een bepaalde"
-                        "tijd doen, of alle zetten binnen de aangegeven tijd, of eerst een aantal zetten binnen een"
-                        "bepaalde tijd en de resterende zetten binnen een bepaalde tijd. Een speler die zijn tijd"
-                        'overschrijdt, verliest de partij. Hij ging "door zijn vlag".\n\n\n'
-                        "Een wedstrijdklok kan worden gebruikt bij dammen, go, schaken en andere bordspellen."
-                        "Men kan dus ook van schaakklok, damklok, goklok of iets anders spreken, maar het gaat om"
-                        "hetzelfde apparaat en wedstrijdklok is de gebruikelijke benaming.",
-            requirements="Een bestand genaamd klok.java",
+            "zodanig"
+            "dat er slechts één tegelijk kan lopen. Een wedstrijdklok wordt gebruikt bij een bordspel voor"
+            "twee spelers om de bedenktijd te meten. Een speler moet een aantal zetten binnen een bepaalde"
+            "tijd doen, of alle zetten binnen de aangegeven tijd, of eerst een aantal zetten binnen een"
+            "bepaalde tijd en de resterende zetten binnen een bepaalde tijd. Een speler die zijn tijd"
+            'overschrijdt, verliest de partij. Hij ging "door zijn vlag".\n\n\n'
+            "Een wedstrijdklok kan worden gebruikt bij dammen, go, schaken en andere bordspellen."
+            "Men kan dus ook van schaakklok, damklok, goklok of iets anders spreken, maar het gaat om"
+            "hetzelfde apparaat en wedstrijdklok is de gebruikelijke benaming.",
+            requirements='{"type": "file_constraint", "name": "klok.java"}',
             max_students=999,
             deadline=datetime(2024, 2, 29, 00, tzinfo=tz.LOCAL),
         )
@@ -67,7 +66,7 @@ if __name__ == "__main__":
             archived=False,
             visible=True,
             description="Implementeer verschillende sorteeralgoritmen",
-            requirements="Code in Python",
+            requirements='{"type": "file_constraint", "name": "sort.py"}',
             max_students=1,
             deadline=datetime(2024, 11, 15, 23, 59, 59, tzinfo=tz.LOCAL),
         )
@@ -79,7 +78,7 @@ if __name__ == "__main__":
             archived=False,
             visible=True,
             description="Bouw een eenvoudige webshop",
-            requirements="Gebruik van HTML, CSS, en JavaScript",
+            requirements='{"type": "zip_constraint", "name": "submission.zip", "sub_constraints": []}',
             max_students=4,
             deadline=datetime(2024, 10, 30, 23, 59, 59, tzinfo=tz.LOCAL),
         )

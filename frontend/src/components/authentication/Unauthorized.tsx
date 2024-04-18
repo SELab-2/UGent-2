@@ -1,13 +1,10 @@
 import {JSX} from "react";
 import DefaultErrorPage from "../DefaultErrorPage.tsx";
+import {useTranslation} from 'react-i18next';
 
 export default function Unauthorized(): JSX.Element {
-    return (
-        // DefaultErrorPage(
-        //     "Access to this page is restricted",
-        //     "Please check with an admin if you believe this is a mistake."
-        // )
-        <DefaultErrorPage title="Access to this page is restricted"
-                          body="Please check with an admin if you believe this is a mistake." />
-    )
+
+    const { t } = useTranslation();
+
+    return <DefaultErrorPage title={ t('unauthorized.title')} body={t('unauthorized.text')} />
 }

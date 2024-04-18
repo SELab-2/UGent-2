@@ -1,19 +1,24 @@
+import {Subject} from "../utils/ApiInterfaces.ts";
+
 export type ValuePiece = Date | null; // nodig voor de deadline
 export type Value = ValuePiece | [ValuePiece, ValuePiece]; // nodig voor de deadline
 
 export type ProjectTeacher = {
     projectName: string,
+    all_courses: Subject[],
     courseName: string,
     hours: number,
     minutes: number,
-    deadline: Value, // TODO dit aanpassen naar Date of iets anders
+    deadline: Value,
     description: string,
     requiredFiles: string,
     otherFilesAllow: boolean,
     groupProject: boolean,
+    maxGroupMembers: number
 }
 
 export enum ProjectStatus {
+    PENDING = "Pending",
     FAILED = "Failed",
     SUCCESS = "Succes",
 }
@@ -24,12 +29,12 @@ export type ProjectStudent = {
     deadline: string,
     status: ProjectStatus,
     description: string,
-    requiredFiles: string[],
+    requiredFiles: object,
     groupMembers: {
         name: string,
         email: string,
         lastSubmission: boolean
-    }[],
+    }[] | undefined,
     maxGroupMembers: number,
     submission: string | null
 }
