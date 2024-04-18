@@ -5,13 +5,13 @@ from sqlmodel import Session
 
 from create_database_tables import initialize_tables
 from db.extensions import engine
-from db.models import SubmissionState
+from db.models import SubjectInput, SubmissionState
 from domain.logic.admin import create_admin
 from domain.logic.group import add_student_to_group, create_group
 from domain.logic.project import create_project
 from domain.logic.role_enum import Role
 from domain.logic.student import create_student
-from domain.logic.subject import add_student_to_subject, add_teacher_to_subject, create_subject
+from domain.logic.subject import add_student_to_subject, add_teacher_to_subject, create_subject, update_subject
 from domain.logic.submission import create_submission
 from domain.logic.teacher import create_teacher
 from domain.logic.user import modify_user_roles
@@ -25,6 +25,7 @@ def fill_database_mock() -> None:
         objeprog = create_subject(session, name="Objectgericht Programmeren")
         algoritmen = create_subject(session, name="Algoritmen en Datastructuren")
         webtech = create_subject(session, name="Webtechnologie")
+        funcprog = create_subject(session, name="Haskell")
 
         # Create projects for subjects
         objprog_project = create_project(
@@ -84,6 +85,18 @@ def fill_database_mock() -> None:
             deadline=datetime(2024, 10, 30, 23, 59, 59, tzinfo=tz.LOCAL),
         )
 
+        haskell_project = create_project(
+            session=session,
+            subject_id=funcprog.id,
+            name="RPG Game in Haskell",
+            archived=False,
+            visible=True,
+            description="Maak een RPG game in Haskell!",
+            requirements='{"type": "zip_constraint", "name": "submission.zip", "sub_constraints": []}',
+            max_students=1,
+            deadline=datetime(2023, 7, 17, 22, 33, 44, tzinfo=tz.LOCAL),
+        )
+
         # Create groups for projects
         groep1_objprog = create_group(session, objprog_project.id)
         groep2_objprog = create_group(session, objprog_project.id)
@@ -99,16 +112,21 @@ def fill_database_mock() -> None:
         groep8_algo = create_group(session, algo_project.id)
         groep1_web = create_group(session, web_project.id)
         create_group(session, web_project.id)
+        groep1funcprog = create_group(session, haskell_project.id)
+        groep2funcprog = create_group(session, haskell_project.id)
+        groep3funcprog = create_group(session, haskell_project.id)
+        groep4funcprog = create_group(session, haskell_project.id)
+        create_group(session, haskell_project.id)  # lege groep
 
         # Create students
-        student1 = create_student(session, "Lukas", "Lukas.BarraganTorres@UGent.be")
-        student2 = create_student(session, "Alberic", "Alberic.Loos@UGent.be")
-        student3 = create_student(session, "Matthias", "matseghe.Seghers@UGent.be")
-        student4 = create_student(session, "Ruben", "Ruben.Vandamme@UGent.be")
-        student5 = create_student(session, "Emma", "emmavdwa.Vandewalle@UGent.be")
-        student6 = create_student(session, "Robbe", "Robbe.VandeKeere@UGent.be")
+        student1 = create_student(session, "Lukas", "lukas.barragantorres@ugent.be")
+        student2 = create_student(session, "Alberic", "alberic.loos@ugent.be")
+        student3 = create_student(session, "Matthias", "matseghe.seghers@ugent.be")
+        student4 = create_student(session, "Ruben", "ruben.vandamme@ugent.be")
+        student5 = create_student(session, "Emma", "emmavdwa.vandewalle@ugent.be")
+        student6 = create_student(session, "Robbe", "robbe.vandekeere@ugent.be")
         student7 = create_student(session, "Stef", "stef.osse@ugent.be")
-        student8 = create_student(session, "Mathieu", "Mathieu.Strypsteen@UGent.be")
+        student8 = create_student(session, "Mathieu", "mathieu.strypsteen@ugent.be")
 
         # Create teachers
         teacher1 = create_teacher(session, "Kris Coolsaet", "kris.coolsaet@ugent.be")
@@ -139,9 +157,9 @@ def fill_database_mock() -> None:
         add_student_to_subject(session, student1.id, algoritmen.id)
         add_student_to_subject(session, student2.id, algoritmen.id)
         add_student_to_subject(session, student3.id, algoritmen.id)
-        # noinspection DuplicatedCode
         add_student_to_subject(session, student4.id, algoritmen.id)
         add_student_to_subject(session, student5.id, algoritmen.id)
+        # noinspection DuplicatedCode
         add_student_to_subject(session, student6.id, algoritmen.id)
         add_student_to_subject(session, student7.id, algoritmen.id)
         add_student_to_subject(session, student8.id, algoritmen.id)
@@ -149,9 +167,14 @@ def fill_database_mock() -> None:
         add_student_to_subject(session, student1.id, webtech.id)
         add_student_to_subject(session, student2.id, webtech.id)
         add_student_to_subject(session, student3.id, webtech.id)
-        add_student_to_subject(session, student5.id, webtech.id)  # 4 en 8 zullen assistent zijn bij dit vak
-        add_student_to_subject(session, student6.id, webtech.id)
-        add_student_to_subject(session, student7.id, webtech.id)
+        add_student_to_subject(session, student4.id, webtech.id)
+        add_student_to_subject(session, student5.id, webtech.id)
+        add_student_to_subject(session, student7.id, webtech.id)  # 6 en 8 zullen assistent zijn bij dit vak
+
+        add_student_to_subject(session, student2.id, funcprog.id)
+        add_student_to_subject(session, student4.id, funcprog.id)
+        add_student_to_subject(session, student6.id, funcprog.id)
+        add_student_to_subject(session, student8.id, funcprog.id)
 
         # Add students to groups
 
@@ -166,9 +189,9 @@ def fill_database_mock() -> None:
         add_student_to_group(session, student8.id, groep3_objprog.id)
 
         add_student_to_group(session, student4.id, groep1_algo.id)
-        # noinspection DuplicatedCode
         add_student_to_group(session, student5.id, groep2_algo.id)
         add_student_to_group(session, student6.id, groep3_algo.id)
+        # noinspection DuplicatedCode
         add_student_to_group(session, student1.id, groep4_algo.id)
         add_student_to_group(session, student2.id, groep5_algo.id)
         add_student_to_group(session, student3.id, groep6_algo.id)
@@ -178,6 +201,11 @@ def fill_database_mock() -> None:
         add_student_to_group(session, student1.id, groep1_web.id)
         add_student_to_group(session, student3.id, groep1_web.id)
         add_student_to_group(session, student5.id, groep1_web.id)
+
+        add_student_to_group(session, student2.id, groep1funcprog.id)
+        add_student_to_group(session, student4.id, groep2funcprog.id)
+        add_student_to_group(session, student6.id, groep3funcprog.id)
+        add_student_to_group(session, student8.id, groep4funcprog.id)
 
         # Create submissions (one per group)
         create_submission(
@@ -250,12 +278,38 @@ def fill_database_mock() -> None:
             filename="sorteer_algoritmen.py",
         )
 
+        create_submission(
+            session=session,
+            student_id=student2.id,
+            group_id=groep1funcprog.id,
+            message="nieuwe sprites",
+            state=SubmissionState.Approved,
+            date_time=datetime(2023, 7, 16, 23, 0, 0, tzinfo=tz.LOCAL),
+            filename="RPG.zip",
+        )
+
+        create_submission(
+            session=session,
+            student_id=student8.id,
+            group_id=groep4funcprog.id,
+            message="fix inventory bug",
+            state=SubmissionState.Approved,
+            date_time=datetime(2023, 7, 18, 21, 2, 5, tzinfo=tz.LOCAL),
+            filename="fungame.zip",
+        )
+
         # make assistants
         modify_user_roles(session, student4.id, [Role.TEACHER])
         add_teacher_to_subject(session, student4.id, webtech.id)
 
         modify_user_roles(session, student8.id, [Role.TEACHER])
         add_teacher_to_subject(session, student8.id, webtech.id)
+
+        modify_user_roles(session, student6.id, [Role.TEACHER])
+        add_teacher_to_subject(session, student6.id, funcprog.id)
+
+        # Archive a subject
+        update_subject(session, funcprog.id, SubjectInput(name="Functioneel Programmeren", archived=True))
 
         session.commit()
         session.close()

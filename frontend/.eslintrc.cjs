@@ -10,7 +10,7 @@ module.exports = {
   ],
   ignorePatterns: ['dist', '.eslintrc.cjs'],
   parser: '@typescript-eslint/parser',
-  plugins: ['react-refresh'],
+  plugins: ['vitest', 'react-refresh'],
   rules: {
     'react-refresh/only-export-components': [
       'warn',
@@ -24,6 +24,9 @@ module.exports = {
     tsconfigRootDir: __dirname,
   },
   settings: {
+    "vitest": {
+      "typecheck": true
+    },
     "react": {
       "version": "detect", // React version
       "flowVersion": "0.53" // Flow version
