@@ -53,8 +53,8 @@ class TestGroupEndpoints(unittest.TestCase):
         assert_status_code(response, status.HTTP_200_OK)
 
     def test_remove_student_from_group(self) -> None:
-        response = self.make_authenticated_request(9, "post", "/api/groups/1/remove", json={"uid": 2})
-        assert_status_code(response, status.HTTP_422_UNPROCESSABLE_ENTITY)
+        response = self.make_authenticated_request(9, "post", "/api/groups/1/remove?uid=2")
+        assert_status_code(response, status.HTTP_200_OK)
 
 
 if __name__ == "__main__":
