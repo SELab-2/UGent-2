@@ -1,12 +1,11 @@
 import unittest
 
-from httpx import Response
 from starlette import status
 from starlette.testclient import TestClient
 
 from app import app
 from fill_database_mock import fill_database_mock
-from tests.endpoints import assert_status_code
+from tests.endpoints import assert_status_code, login_as, make_authenticated_request
 
 
 class TestSubjectEndpoints(unittest.TestCase):
@@ -20,36 +19,23 @@ class TestSubjectEndpoints(unittest.TestCase):
     def tearDown(self) -> None:
         pass
 
-    def make_authenticated_request(self, user_id: int, method: str, url: str, **kwargs: dict[str, int]) -> Response:
-        token = self.login_as(user_id)
-        headers = {"Authorization": f"Bearer {token}"}
-        return getattr(self.client, method)(url, headers=headers, **kwargs)
-
-    def login_as(self, uid: int) -> str:
-        response = self.client.post(f"/api/fake-login?uid={uid}")
-        assert_status_code(response, status.HTTP_200_OK)
-        token = response.json().get("token")
-        assert token
-        self.token = token
-        return token
-
     def test_fake_login(self) -> None:
-        self.login_as(1)
+        login_as(self.client, 1)
 
     def test_get_subject(self) -> None:
-        response = self.make_authenticated_request(self.TESTED_USER_ID, "get", "/api/subjects/1")
+        response = make_authenticated_request(self.client, self.TESTED_USER_ID, "get", "/api/subjects/1")
         assert_status_code(response, status.HTTP_200_OK)
 
     def test_get_subject_projects(self) -> None:
-        response = self.make_authenticated_request(self.TESTED_USER_ID, "get", "/api/subjects/1/projects")
+        response = make_authenticated_request(self.client, self.TESTED_USER_ID, "get", "/api/subjects/1/projects")
         assert_status_code(response, status.HTTP_200_OK)
 
     def test_get_subject_teachers(self) -> None:
-        response = self.make_authenticated_request(self.TESTED_USER_ID, "get", "/api/subjects/1/teachers")
+        response = make_authenticated_request(self.client, self.TESTED_USER_ID, "get", "/api/subjects/1/teachers")
         assert_status_code(response, status.HTTP_200_OK)
 
     def test_get_subject_students(self) -> None:
-        response = self.make_authenticated_request(self.TESTED_USER_ID, "get", "/api/subjects/1/students")
+        response = make_authenticated_request(self.client, self.TESTED_USER_ID, "get", "/api/subjects/1/students")
         assert_status_code(response, status.HTTP_200_OK)
 
     def test_create_project_in_subject(self) -> None:
@@ -62,7 +48,7 @@ class TestSubjectEndpoints(unittest.TestCase):
             "visible": True,
             "max_students": 5,
         }
-        response = self.make_authenticated_request(9, "post", "/api/subjects/1/projects", json=project_data)
+        response = make_authenticated_request(self.client, 9, "post", "/api/subjects/1/projects", json=project_data)
         assert_status_code(response, status.HTTP_200_OK)
 
     def test_update_subject(self) -> None:
@@ -70,7 +56,7 @@ class TestSubjectEndpoints(unittest.TestCase):
             "name": "Updated Subject",
             "archived": False,
         }
-        response = self.make_authenticated_request(9, "put", "/api/subjects/1", json=subject_data)
+        response = make_authenticated_request(self.client, 9, "put", "/api/subjects/1", json=subject_data)
         assert_status_code(response, status.HTTP_200_OK)
 
 
