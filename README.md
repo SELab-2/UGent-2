@@ -52,11 +52,11 @@ Volg deze stappen om de backend van het project op te zetten:
     ```
 6. Voer het `fill_database_mock.py` script uit als een module om de database te vullen met mock data:
     ```bash
-    python -m db.fill_database_mock
+    python fill_database_mock.py
     ```
     Je kan ook een lege databank initialiseren met het `create_database_tables.py` script als volgt:
     ```bash
-    python -m db.create_database_tables
+    python create_database_tables.py
     ```
     *Opgelet: beide scripts zullen de huidige databankinhoud verwijderen indien die bestaat en daarna de tabellen opnieuw aanmaken.*
 7. Start de API door het `app.py` script uit te voeren:
