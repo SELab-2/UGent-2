@@ -54,10 +54,15 @@ class TestUserEndpoints(unittest.TestCase):
         response = self.make_authenticated_request(self.TESTED_USER_ID, "get", "/api/users/1")
         assert_status_code(response, status.HTTP_200_OK)
 
-    def test_modify_user(self) -> None:
+    def test_modify_user_fail(self) -> None:
         response = self.make_authenticated_request(self.TESTED_USER_ID, "put", "/api/users/1",
                                                    json={"roles": ["STUDENT", "ADMIN", "TEACHER"]})
         assert_status_code(response, status.HTTP_422_UNPROCESSABLE_ENTITY)
+
+    def test_modify_user_pass(self) -> None:
+        response = self.make_authenticated_request(12, "put", "/api/users/1",
+                                                   json=["STUDENT", "ADMIN", "TEACHER"])
+        assert_status_code(response, status.HTTP_204_NO_CONTENT)
 
 
 if __name__ == "__main__":
