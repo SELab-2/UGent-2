@@ -14,7 +14,6 @@ class TestSubjectEndpoints(unittest.TestCase):
     def setUp(self) -> None:
         self.client = TestClient(app)
         fill_database_mock()
-        self.token = None
 
     def tearDown(self) -> None:
         pass
