@@ -7,7 +7,6 @@ test.skip('base url without backend leads to login screen root element', async (
   await expect(page).toHaveTitle(/Delphi/);
 
   const loginButton = page.getByRole('link', { name: 'Log in' })
-  // await retryButton.waitFor({ timeout: 10000 });
   await expect(loginButton).toBeVisible();
   await loginButton.click();
   await page.waitForURL(/^https:\/\/login\.microsoftonline\.com\//);
