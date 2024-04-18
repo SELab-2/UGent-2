@@ -25,4 +25,4 @@ export default function DefaultErrorPage(props: {title: string, body: string}): 
             </article>
         </div>
     );
-};
+}

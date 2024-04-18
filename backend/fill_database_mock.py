@@ -100,13 +100,13 @@ if __name__ == "__main__":
         groep2_web = create_group(session, web_project.id)  # empty group
 
         # Create students
-        student1 = create_student(session, "Lukas", "Lukas.BarraganTorres@UGent.be")
-        student2 = create_student(session, "Alberic", "Alberic.Loos@UGent.be")
-        student3 = create_student(session, "Matthias", "matseghe.Seghers@UGent.be")
-        student4 = create_student(session, "Ruben", "Ruben.Vandamme@UGent.be")
-        student5 = create_student(session, "Emma", "emmavdwa.Vandewalle@UGent.be")
+        student1 = create_student(session, "Lukas", "lukas.barragantorres@ugent.be")
+        student2 = create_student(session, "Alberic", "alberic.loos@ugent.be")
+        student3 = create_student(session, "Matthias", "matseghe.seghers@ugent.be")
+        student4 = create_student(session, "Ruben", "ruben.vandamme@ugent.be")
+        student5 = create_student(session, "Emma", "emmavdwa.vandewalle@ugent.be")
         student6 = create_student(session, "Robbe", "robbe.vandekeere@ugent.be")
-        student7 = create_student(session, "Stef", "Stef.Osse@UGent.be")
+        student7 = create_student(session, "Stef", "stef.osse@ugent.be")
         student8 = create_student(session, "Mathieu", "mathieu.strypsteen@ugent.be")
 
         # Create teachers
