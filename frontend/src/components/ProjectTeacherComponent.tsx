@@ -222,7 +222,7 @@ export function ProjectTeacherComponent(props: { project: ProjectTeacher }): JSX
                     </label>
                 </div>
                 <div className={"mx-5"}>
-                    <RegularButton placeholder={t('create_project.save_button')} add={false} onClick={() => save()}/>
+                    <RegularButton placeholder={t('create_project.save_button')} add={false} onClick={save}/>
                 </div>
             </div>
         </div>
