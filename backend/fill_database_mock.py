@@ -5,7 +5,7 @@ from sqlmodel import Session
 
 from create_database_tables import initialize_tables
 from db.extensions import engine
-from db.models import SubmissionState, SubjectInput
+from db.models import SubjectInput, SubmissionState
 from domain.logic.admin import create_admin
 from domain.logic.group import add_student_to_group, create_group
 from domain.logic.project import create_project
