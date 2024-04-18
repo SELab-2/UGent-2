@@ -47,11 +47,17 @@ export async function coursesLoader(role: teacherStudentRole, course_id?: number
     }
 
     const teachers = (await Promise.all(courses.map(async course => {
-        const teacher_ids = await apiFetch(`/subjects/${course.subject_id}/teachers`) as TeacherIdInfo[];
-
+        const teacher_ids_data = await apiFetch<TeacherIdInfo[]>(`/subjects/${course.subject_id}/teachers`);
+        if (!teacher_ids_data.ok){
+            // TODO error handling
+        }
+        const teacher_ids = teacher_ids_data.content
         const teachers_promises = teacher_ids.map(async teacher_id => {
-            const user = await apiFetch(`/users/${teacher_id.id}`) as Backend_user
-            return mapUser(user);
+            const userData = await apiFetch<Backend_user>(`/users/${teacher_id.id}`);
+            if (!userData.ok){
+                // TODO error handling
+            }
+            return mapUser(userData.content);
         });
 
         const teachers = await Promise.all(teachers_promises);

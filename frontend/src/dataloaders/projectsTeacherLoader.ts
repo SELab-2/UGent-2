@@ -32,12 +32,10 @@ export async function LoadProjectsForTeacher(filter_on_current: boolean = false,
 
     const groupPromises: Promise<Group[][]> = Promise.all(projects.map(async project => {
         const groups = await apiFetch<Backend_group[]>(`/projects/${project.project_id}/groups`);
-        if (groups.ok){
-            return mapGroupList(groups.content);
-        }else{
+        if (!groups.ok) {
             // TODO: error handling
-            return []
         }
+        return mapGroupList(groups.content);
     }));
 
     const statistics: { [key: number]: number } = {
@@ -53,7 +51,11 @@ export async function LoadProjectsForTeacher(filter_on_current: boolean = false,
         for (const group of groupArray) {
             try {
                 const submissionData = await apiFetch<Backend_submission>(`/groups/${group.group_id}/submission`);
-                if (submissionData.ok && submissionData.content) {
+                if (!submissionData.ok){
+                    // TODO error handling
+                }
+                const submissionBackend = submissionData.content
+                if (submissionBackend) {
                     const submission = mapSubmission(submissionData.content)
                     console.log(submission)
                     statistics[submission.submission_state] += 1;

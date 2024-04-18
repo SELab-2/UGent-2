@@ -10,6 +10,7 @@ import SimpleTests from "./SimpleTests/SimpleTests.tsx";
 import {TeacherOrStudent} from "./SimpleTests/TeacherOrStudentEnum.tsx";
 import Calendar from "react-calendar";
 import {useTranslation} from 'react-i18next';
+import {RegularButton} from "./RegularButton.tsx";
 
 // SimpleTests
 const CHECK_SIMPLE_TESTS = false
