@@ -26,5 +26,3 @@ export default function DefaultErrorPage(props: {title: string, body: string}): 
         </div>
     );
 };
-
-export default DefaultErrorPage;
