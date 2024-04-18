@@ -16,7 +16,8 @@ from domain.logic.submission import create_submission
 from domain.logic.teacher import create_teacher
 from domain.logic.user import modify_user_roles
 
-if __name__ == "__main__":
+
+def fill_database_mock() -> None:
     with Session(engine) as session:
         initialize_tables(session, engine)
 
@@ -38,22 +39,22 @@ if __name__ == "__main__":
             deadline=datetime(2024, 12, 31, 23, 59, 59, tzinfo=tz.LOCAL),
         )
 
-        objprog_project_2 = create_project(
+        create_project(
             session=session,
             subject_id=objeprog.id,
             name="Schaakklok",
             archived=True,
             visible=True,
             description="Een wedstrijdklok is een apparaat waarbij in één behuizing twee uurwerken zijn aangebracht "
-            "zodanig"
-            "dat er slechts één tegelijk kan lopen. Een wedstrijdklok wordt gebruikt bij een bordspel voor"
-            "twee spelers om de bedenktijd te meten. Een speler moet een aantal zetten binnen een bepaalde"
-            "tijd doen, of alle zetten binnen de aangegeven tijd, of eerst een aantal zetten binnen een"
-            "bepaalde tijd en de resterende zetten binnen een bepaalde tijd. Een speler die zijn tijd"
-            'overschrijdt, verliest de partij. Hij ging "door zijn vlag".\n\n\n'
-            "Een wedstrijdklok kan worden gebruikt bij dammen, go, schaken en andere bordspellen."
-            "Men kan dus ook van schaakklok, damklok, goklok of iets anders spreken, maar het gaat om"
-            "hetzelfde apparaat en wedstrijdklok is de gebruikelijke benaming.",
+                        "zodanig"
+                        "dat er slechts één tegelijk kan lopen. Een wedstrijdklok wordt gebruikt bij een bordspel voor"
+                        "twee spelers om de bedenktijd te meten. Een speler moet een aantal zetten binnen een bepaalde"
+                        "tijd doen, of alle zetten binnen de aangegeven tijd, of eerst een aantal zetten binnen een"
+                        "bepaalde tijd en de resterende zetten binnen een bepaalde tijd. Een speler die zijn tijd"
+                        'overschrijdt, verliest de partij. Hij ging "door zijn vlag".\n\n\n'
+                        "Een wedstrijdklok kan worden gebruikt bij dammen, go, schaken en andere bordspellen."
+                        "Men kan dus ook van schaakklok, damklok, goklok of iets anders spreken, maar het gaat om"
+                        "hetzelfde apparaat en wedstrijdklok is de gebruikelijke benaming.",
             requirements='{"type": "file_constraint", "name": "klok.java"}',
             max_students=999,
             deadline=datetime(2024, 2, 29, 00, tzinfo=tz.LOCAL),
@@ -87,7 +88,7 @@ if __name__ == "__main__":
         groep1_objprog = create_group(session, objprog_project.id)
         groep2_objprog = create_group(session, objprog_project.id)
         groep3_objprog = create_group(session, objprog_project.id)
-        groep4_objprog = create_group(session, objprog_project.id)  # empty group
+        create_group(session, objprog_project.id)
         groep1_algo = create_group(session, algo_project.id)
         groep2_algo = create_group(session, algo_project.id)
         groep3_algo = create_group(session, algo_project.id)
@@ -97,7 +98,7 @@ if __name__ == "__main__":
         groep7_algo = create_group(session, algo_project.id)
         groep8_algo = create_group(session, algo_project.id)
         groep1_web = create_group(session, web_project.id)
-        groep2_web = create_group(session, web_project.id)  # empty group
+        create_group(session, web_project.id)
 
         # Create students
         student1 = create_student(session, "Lukas", "lukas.barragantorres@ugent.be")
@@ -115,7 +116,7 @@ if __name__ == "__main__":
         teacher3 = create_teacher(session, "Pieter-Jan De Smet", "pj.desmet@ugent.be")
 
         # Create admin
-        admin = create_admin(session, "Admin", "admin@gmail.com")
+        create_admin(session, "Admin", "admin@gmail.com")
 
         # Add teachers to subjects
         add_teacher_to_subject(session, teacher1.id, objeprog.id)
@@ -258,3 +259,7 @@ if __name__ == "__main__":
 
         session.commit()
         session.close()
+
+
+if __name__ == "__main__":
+    fill_database_mock()

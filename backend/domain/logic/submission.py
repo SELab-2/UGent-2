@@ -62,7 +62,7 @@ def get_submissions_of_group(session: Session, group_id: int) -> list[Submission
 def get_last_submission(session: Session, group_id: int) -> Submission:
     submissions = get_submissions_of_group(session, group_id)
     if len(submissions) == 0:
-        err_string = "No submissions found for this group"
+        err_string = "No submissions for this group"
         raise ItemNotFoundError(err_string)
     return max(submissions, key=lambda submission: submission.date_time)
 
