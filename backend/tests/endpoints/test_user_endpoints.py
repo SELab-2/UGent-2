@@ -21,7 +21,8 @@ class TestUserEndpoints(unittest.TestCase):
     def tearDown(self) -> None:
         pass
 
-    def make_authenticated_request(self, user_id: int, method: str, url: str, **kwargs: dict[Any, Any]) -> Response:
+    def make_authenticated_request(self, user_id: int, method: str, url: str,
+                                   **kwargs: dict[Any, Any] | list[str]) -> Response:
         token = self.login_as(user_id)
         headers = {"Authorization": f"Bearer {token}"}
         return getattr(self.client, method)(url, headers=headers, **kwargs)
