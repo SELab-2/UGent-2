@@ -13,7 +13,7 @@
     "preview": "vite preview",
     "test:unit": "vitest",
     "test:coverage": "vitest --coverage",
-    "test:e2e": "DEBUG=true playwright test",
+    "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui-port=8008 --ui-host=0.0.0.0",
     "tests": "npm run test:unit && npm run test:e2e"
   },
