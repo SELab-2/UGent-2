@@ -78,7 +78,7 @@ if __name__ == "__main__":
             archived=False,
             visible=True,
             description="Bouw een eenvoudige webshop",
-            requirements="Gebruik van HTML, CSS, en JavaScript",
+            requirements='{"type": "zip_constraint", "name": "submission.zip", "sub_constraints": []}',
             max_students=4,
             deadline=datetime(2024, 10, 30, 23, 59, 59, tzinfo=tz.LOCAL),
         )
