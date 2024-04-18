@@ -68,7 +68,7 @@ export async function LoadProjectsForStudent(filter_on_current: boolean = false,
         return mapSubmission(apiSubmission.content);
     });
 
-    const submissions: (Submission)[] = (await Promise.all(submissionPromises));
+    const submissions: Submission[] = (await Promise.all(submissionPromises));
 
     const groupMemberIdsPromises: Promise<groupInfo>[] = groups_without_null.map(async group => {
         const membersData = await apiFetch<memberInfo[]>(`/groups/${group.group_id}/members`)
