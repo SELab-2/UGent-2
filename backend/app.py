@@ -13,11 +13,11 @@ from controllers.authentication.errors import (
     NoAccessToDataError,
 )
 from controllers.middleware import DatabaseSessionMiddleware
+from controllers.routes.course import course_router
 from controllers.routes.group import group_router
 from controllers.routes.login import login_router
 from controllers.routes.project import project_router
 from controllers.routes.student import student_router
-from controllers.routes.subject import subject_router
 from controllers.routes.submission import submission_router
 from controllers.routes.teacher import teacher_router
 from controllers.routes.user import users_router
@@ -51,7 +51,7 @@ app.include_router(student_router, prefix="/api")
 app.include_router(teacher_router, prefix="/api")
 app.include_router(users_router, prefix="/api")
 app.include_router(project_router, prefix="/api")
-app.include_router(subject_router, prefix="/api")
+app.include_router(course_router, prefix="/api")
 app.include_router(group_router, prefix="/api")
 app.include_router(submission_router, prefix="/api")
 

@@ -12,7 +12,7 @@ For test purposes, mockup data is available in [fill_database_mock.py]. A visual
 
 #### II) tables
 
-Using our EER diagram, we now want to create the corresponding tables. We use SQLAlchemy's declarative base pattern. Start by defining a Base class. This class contains the necessary functionality to interact with the database. Next, we create a python class for each table we need, and make it inherit the Base class. We call this a model (see [db/models/models.py]). For specifics on how to define these models, see [this link](https://docs.sqlalchemy.org/en/20/orm/declarative_styles.html#using-a-declarative-base-class). 
+Using our EER diagram, we now want to create the corresponding tables. We use SQLAlchemy's declarative base pattern. Start by defining a Base class. This class contains the necessary functionality to interact with the database. Next, we create a python class for each table we need, and make it inherit the Base class. We call this a model (see [db/models/models.py]). For specifics on how to define these models, see [this link](https://docs.sqlalchemy.org/en/20/orm/declarative_styles.html#using-a-declarative-base-class).
 
 An important thing to notice in this file is that other than the Base class, all models also inherit a class named AbstractModel. It makes sure that each model implements *to_domain_model*. We will come back to this function later on.
 
@@ -29,11 +29,11 @@ In [db/sessions.py], we define a generator for these session objects using our e
 ## 2) Domain layer
 
 #### I) operations
-in [domain/logic/] we define the actual backend functionality. Examples are *get_subjects_of_teacher* or *create_submission*. Some things to notice is that every function needs a session object, and that we manually commit changes. In [domain/logic/basic_operations.py], we define an abstract *get* and *get_all*, as these type of operations happen a lot. This *get* is of course not the same as a get request to the API. Three main errors that we provide manual coverage for are ItemNotFoundError, ActionAlreadyPerformedError and NoSuchRelationError (see [db/errors/]).
+in [domain/logic/] we define the actual backend functionality. Examples are *get_courses_of_teacher* or *create_submission*. Some things to notice is that every function needs a session object, and that we manually commit changes. In [domain/logic/basic_operations.py], we define an abstract *get* and *get_all*, as these type of operations happen a lot. This *get* is of course not the same as a get request to the API. Three main errors that we provide manual coverage for are ItemNotFoundError, ActionAlreadyPerformedError and NoSuchRelationError (see [db/errors/]).
 
 #### II) dataclasses
 
-Now is a good time to explain the function *to_domain_model* from earlier. When we call a logic function, we don't want to return an instance of the Base class from SQLAlchemy. Instead we want to return very universal objects with that correspond one-to-one with an entity + attribute from our EER diagram. That's what a dataclass is. They are defined in [domain/models/]. 
+Now is a good time to explain the function *to_domain_model* from earlier. When we call a logic function, we don't want to return an instance of the Base class from SQLAlchemy. Instead we want to return very universal objects with that correspond one-to-one with an entity + attribute from our EER diagram. That's what a dataclass is. They are defined in [domain/models/].
 
 > In our code, we use the name dataclass for two seperate things. The first is the @dataclass tag from the standard python library [dataclasses](https://docs.python.org/3/library/dataclasses.html). The other is the domain layer object just explained like SubmissionDataclass and TeacherDataclass.
 
@@ -48,7 +48,7 @@ These universal dataclasses inherit the **Pydantic** BaseModel. It allows for au
 - Does not contain a certain file or folder
 - Only contains files with certain names
 
-These constraints can be nested indefinitely. 
+These constraints can be nested indefinitely.
 
 The frontend should send a json file containing a `SubmissionConstraint`. Such a submission constraint has a `root_constraint`
 which is one of two things: A `FileConstraint` or a `Zipconstraint`, as a submission is OR a file, OR a zip file.

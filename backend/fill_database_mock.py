@@ -5,13 +5,13 @@ from sqlmodel import Session
 
 from create_database_tables import initialize_tables
 from db.extensions import engine
-from db.models import SubjectInput, SubmissionState
+from db.models import CourseInput, SubmissionState
 from domain.logic.admin import create_admin
+from domain.logic.course import add_student_to_course, add_teacher_to_course, create_course, update_course
 from domain.logic.group import add_student_to_group, create_group
 from domain.logic.project import create_project
 from domain.logic.role_enum import Role
 from domain.logic.student import create_student
-from domain.logic.subject import add_student_to_subject, add_teacher_to_subject, create_subject, update_subject
 from domain.logic.submission import create_submission
 from domain.logic.teacher import create_teacher
 from domain.logic.user import modify_user_roles
@@ -21,16 +21,16 @@ def fill_database_mock() -> None:
     with Session(engine) as session:
         initialize_tables(session, engine)
 
-        # Create subjects
-        objeprog = create_subject(session, name="Objectgericht Programmeren")
-        algoritmen = create_subject(session, name="Algoritmen en Datastructuren")
-        webtech = create_subject(session, name="Webtechnologie")
-        funcprog = create_subject(session, name="Haskell")
+        # Create courses
+        objeprog = create_course(session, name="Objectgericht Programmeren")
+        algoritmen = create_course(session, name="Algoritmen en Datastructuren")
+        webtech = create_course(session, name="Webtechnologie")
+        funcprog = create_course(session, name="Haskell")
 
-        # Create projects for subjects
+        # Create projects for courses
         objprog_project = create_project(
             session=session,
-            subject_id=objeprog.id,
+            course_id=objeprog.id,
             name="Flash Cards",
             archived=False,
             visible=True,
@@ -42,20 +42,20 @@ def fill_database_mock() -> None:
 
         create_project(
             session=session,
-            subject_id=objeprog.id,
+            course_id=objeprog.id,
             name="Schaakklok",
             archived=True,
             visible=True,
             description="Een wedstrijdklok is een apparaat waarbij in één behuizing twee uurwerken zijn aangebracht "
-                        "zodanig"
-                        "dat er slechts één tegelijk kan lopen. Een wedstrijdklok wordt gebruikt bij een bordspel voor"
-                        "twee spelers om de bedenktijd te meten. Een speler moet een aantal zetten binnen een bepaalde"
-                        "tijd doen, of alle zetten binnen de aangegeven tijd, of eerst een aantal zetten binnen een"
-                        "bepaalde tijd en de resterende zetten binnen een bepaalde tijd. Een speler die zijn tijd"
-                        'overschrijdt, verliest de partij. Hij ging "door zijn vlag".\n\n\n'
-                        "Een wedstrijdklok kan worden gebruikt bij dammen, go, schaken en andere bordspellen."
-                        "Men kan dus ook van schaakklok, damklok, goklok of iets anders spreken, maar het gaat om"
-                        "hetzelfde apparaat en wedstrijdklok is de gebruikelijke benaming.",
+            "zodanig"
+            "dat er slechts één tegelijk kan lopen. Een wedstrijdklok wordt gebruikt bij een bordspel voor"
+            "twee spelers om de bedenktijd te meten. Een speler moet een aantal zetten binnen een bepaalde"
+            "tijd doen, of alle zetten binnen de aangegeven tijd, of eerst een aantal zetten binnen een"
+            "bepaalde tijd en de resterende zetten binnen een bepaalde tijd. Een speler die zijn tijd"
+            'overschrijdt, verliest de partij. Hij ging "door zijn vlag".\n\n\n'
+            "Een wedstrijdklok kan worden gebruikt bij dammen, go, schaken en andere bordspellen."
+            "Men kan dus ook van schaakklok, damklok, goklok of iets anders spreken, maar het gaat om"
+            "hetzelfde apparaat en wedstrijdklok is de gebruikelijke benaming.",
             requirements='{"type": "file_constraint", "name": "klok.java"}',
             max_students=999,
             deadline=datetime(2024, 2, 29, 00, tzinfo=tz.LOCAL),
@@ -63,7 +63,7 @@ def fill_database_mock() -> None:
 
         algo_project = create_project(
             session=session,
-            subject_id=algoritmen.id,
+            course_id=algoritmen.id,
             name="Sorteer Algoritmen Implementatie",
             archived=False,
             visible=True,
@@ -75,7 +75,7 @@ def fill_database_mock() -> None:
 
         web_project = create_project(
             session=session,
-            subject_id=webtech.id,
+            course_id=webtech.id,
             name="Webshop",
             archived=False,
             visible=True,
@@ -87,7 +87,7 @@ def fill_database_mock() -> None:
 
         haskell_project = create_project(
             session=session,
-            subject_id=funcprog.id,
+            course_id=funcprog.id,
             name="RPG Game in Haskell",
             archived=False,
             visible=True,
@@ -136,45 +136,45 @@ def fill_database_mock() -> None:
         # Create admin
         create_admin(session, "Admin", "admin@gmail.com")
 
-        # Add teachers to subjects
-        add_teacher_to_subject(session, teacher1.id, objeprog.id)
-        add_teacher_to_subject(session, teacher2.id, algoritmen.id)
-        add_teacher_to_subject(session, teacher3.id, webtech.id)
-        add_teacher_to_subject(session, teacher3.id, objeprog.id)
+        # Add teachers to courses
+        add_teacher_to_course(session, teacher1.id, objeprog.id)
+        add_teacher_to_course(session, teacher2.id, algoritmen.id)
+        add_teacher_to_course(session, teacher3.id, webtech.id)
+        add_teacher_to_course(session, teacher3.id, objeprog.id)
 
-        # Add students to subjects
+        # Add students to courses
 
         # noinspection DuplicatedCode
-        add_student_to_subject(session, student1.id, objeprog.id)
-        add_student_to_subject(session, student2.id, objeprog.id)
-        add_student_to_subject(session, student3.id, objeprog.id)
-        add_student_to_subject(session, student4.id, objeprog.id)
-        add_student_to_subject(session, student5.id, objeprog.id)
-        add_student_to_subject(session, student6.id, objeprog.id)
-        add_student_to_subject(session, student7.id, objeprog.id)
-        add_student_to_subject(session, student8.id, objeprog.id)
+        add_student_to_course(session, student1.id, objeprog.id)
+        add_student_to_course(session, student2.id, objeprog.id)
+        add_student_to_course(session, student3.id, objeprog.id)
+        add_student_to_course(session, student4.id, objeprog.id)
+        add_student_to_course(session, student5.id, objeprog.id)
+        add_student_to_course(session, student6.id, objeprog.id)
+        add_student_to_course(session, student7.id, objeprog.id)
+        add_student_to_course(session, student8.id, objeprog.id)
 
-        add_student_to_subject(session, student1.id, algoritmen.id)
-        add_student_to_subject(session, student2.id, algoritmen.id)
-        add_student_to_subject(session, student3.id, algoritmen.id)
-        add_student_to_subject(session, student4.id, algoritmen.id)
-        add_student_to_subject(session, student5.id, algoritmen.id)
+        add_student_to_course(session, student1.id, algoritmen.id)
+        add_student_to_course(session, student2.id, algoritmen.id)
+        add_student_to_course(session, student3.id, algoritmen.id)
+        add_student_to_course(session, student4.id, algoritmen.id)
+        add_student_to_course(session, student5.id, algoritmen.id)
         # noinspection DuplicatedCode
-        add_student_to_subject(session, student6.id, algoritmen.id)
-        add_student_to_subject(session, student7.id, algoritmen.id)
-        add_student_to_subject(session, student8.id, algoritmen.id)
+        add_student_to_course(session, student6.id, algoritmen.id)
+        add_student_to_course(session, student7.id, algoritmen.id)
+        add_student_to_course(session, student8.id, algoritmen.id)
 
-        add_student_to_subject(session, student1.id, webtech.id)
-        add_student_to_subject(session, student2.id, webtech.id)
-        add_student_to_subject(session, student3.id, webtech.id)
-        add_student_to_subject(session, student4.id, webtech.id)
-        add_student_to_subject(session, student5.id, webtech.id)
-        add_student_to_subject(session, student7.id, webtech.id)  # 6 en 8 zullen assistent zijn bij dit vak
+        add_student_to_course(session, student1.id, webtech.id)
+        add_student_to_course(session, student2.id, webtech.id)
+        add_student_to_course(session, student3.id, webtech.id)
+        add_student_to_course(session, student4.id, webtech.id)
+        add_student_to_course(session, student5.id, webtech.id)
+        add_student_to_course(session, student7.id, webtech.id)  # 6 en 8 zullen assistent zijn bij dit vak
 
-        add_student_to_subject(session, student2.id, funcprog.id)
-        add_student_to_subject(session, student4.id, funcprog.id)
-        add_student_to_subject(session, student6.id, funcprog.id)
-        add_student_to_subject(session, student8.id, funcprog.id)
+        add_student_to_course(session, student2.id, funcprog.id)
+        add_student_to_course(session, student4.id, funcprog.id)
+        add_student_to_course(session, student6.id, funcprog.id)
+        add_student_to_course(session, student8.id, funcprog.id)
 
         # Add students to groups
 
@@ -300,16 +300,16 @@ def fill_database_mock() -> None:
 
         # make assistants
         modify_user_roles(session, student4.id, [Role.TEACHER])
-        add_teacher_to_subject(session, student4.id, webtech.id)
+        add_teacher_to_course(session, student4.id, webtech.id)
 
         modify_user_roles(session, student8.id, [Role.TEACHER])
-        add_teacher_to_subject(session, student8.id, webtech.id)
+        add_teacher_to_course(session, student8.id, webtech.id)
 
         modify_user_roles(session, student6.id, [Role.TEACHER])
-        add_teacher_to_subject(session, student6.id, funcprog.id)
+        add_teacher_to_course(session, student6.id, funcprog.id)
 
-        # Archive a subject
-        update_subject(session, funcprog.id, SubjectInput(name="Functioneel Programmeren", archived=True))
+        # Archive a course
+        update_course(session, funcprog.id, CourseInput(name="Functioneel Programmeren", archived=True))
 
         session.commit()
         session.close()

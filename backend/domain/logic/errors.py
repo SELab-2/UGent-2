@@ -7,7 +7,7 @@ class InvalidSubmissionError(Exception):
 
 
 class UserNotEnrolledError(Exception):
-    ERROR_MESSAGE = "User is not enrolled for this subject"
+    ERROR_MESSAGE = "User is not enrolled for this course"
 
 
 class ArchivedError(Exception):

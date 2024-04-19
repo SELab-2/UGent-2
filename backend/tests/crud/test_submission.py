@@ -5,10 +5,10 @@ from datetime import datetime
 from sqlmodel import SQLModel
 
 from db.models import SubmissionState
+from domain.logic.course import create_course
 from domain.logic.group import create_group
 from domain.logic.project import create_project
 from domain.logic.student import create_student
-from domain.logic.subject import create_subject
 from domain.logic.submission import (
     create_submission,
     get_all_submissions,
@@ -31,10 +31,10 @@ class TestSubmission(unittest.TestCase):
 
     def test_create_and_get_submission(self) -> None:
         student = create_student(self.session, "Test Student", "teststudent@gmail.com")
-        subject = create_subject(self.session, "Test Subject")
+        course = create_course(self.session, "Test Course")
         project = create_project(
             self.session,
-            subject.id,
+            course.id,
             "Test Project",
             datetime.now(),
             False,
@@ -59,10 +59,10 @@ class TestSubmission(unittest.TestCase):
     def test_get_all_submissions(self) -> None:
         student1 = create_student(self.session, "Test Student 1", "teststudent1@gmail.com")
         student2 = create_student(self.session, "Test Student 2", "teststudent2@gmail.com")
-        subject = create_subject(self.session, "Test Subject")
+        course = create_course(self.session, "Test Course")
         project = create_project(
             self.session,
-            subject.id,
+            course.id,
             "Test Project",
             datetime.now(),
             False,
@@ -94,10 +94,10 @@ class TestSubmission(unittest.TestCase):
 
     def test_get_submissions_of_student(self) -> None:
         student = create_student(self.session, "Test Student", "teststudent@gmail.com")
-        subject = create_subject(self.session, "Test Subject")
+        course = create_course(self.session, "Test Course")
         project = create_project(
             self.session,
-            subject.id,
+            course.id,
             "Test Project",
             datetime.now(),
             False,
@@ -131,10 +131,10 @@ class TestSubmission(unittest.TestCase):
     def test_get_submissions_of_group(self) -> None:
         student1 = create_student(self.session, "Test Student 1", "teststudent1@gmail.com")
         student2 = create_student(self.session, "Test Student 2", "teststudent2@gmail.com")
-        subject = create_subject(self.session, "Test Subject")
+        course = create_course(self.session, "Test Course")
         project = create_project(
             self.session,
-            subject.id,
+            course.id,
             "Test Project",
             datetime.now(),
             False,

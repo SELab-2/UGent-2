@@ -3,8 +3,8 @@ import unittest
 
 from sqlmodel import SQLModel
 
+from domain.logic.course import add_student_to_course, create_course, get_courses_of_student
 from domain.logic.student import create_student, get_all_students, get_student
-from domain.logic.subject import add_student_to_subject, create_subject, get_subjects_of_student
 from tests.crud.test_main import get_db, test_engine
 
 
@@ -28,12 +28,12 @@ class TestStudent(unittest.TestCase):
         create_student(self.session, "Test Student 2", "teststudent2@gmail.com")
         self.assertEqual(len(get_all_students(self.session)), 2)
 
-    def test_add_student_to_subject(self) -> None:
+    def test_add_student_to_course(self) -> None:
         student = create_student(self.session, "Test Student", "teststudent@gmail.com")
-        subject = create_subject(self.session, "Test Subject")
-        add_student_to_subject(self.session, student.id, subject.id)
-        subjects_of_student = get_subjects_of_student(self.session, student.id)
-        self.assertIn(subject.id, [subject.id for subject in subjects_of_student])
+        course = create_course(self.session, "Test Course")
+        add_student_to_course(self.session, student.id, course.id)
+        courses_of_student = get_courses_of_student(self.session, student.id)
+        self.assertIn(course.id, [course.id for course in courses_of_student])
 
 
 if __name__ == "__main__":
