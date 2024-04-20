@@ -38,8 +38,8 @@ function GenerateTableRowProjects(data: CompleteProjectStudent[]): TableRowProje
                 id: project_item.project_id
             },
             course: {
-                name: project_item.subject_name,
-                id: project_item.subject_id
+                name: project_item.course_name,
+                id: project_item.course_id
             },
             numberOfSubmissions: null,
             deadline: deadline,

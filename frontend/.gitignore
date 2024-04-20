@@ -88,7 +88,7 @@ previewConfig.json
 /coverage/sorter.js
 /coverage/src/components/Statistics.tsx.html
 /coverage/src/dataloaders/StudentLoader.ts.html
-/coverage/src/dataloaders/SubjectsTeacherLoader.ts.html
+/coverage/src/dataloaders/CoursesTeacherLoader.ts.html
 /coverage/src/components/Table.tsx.html
 /coverage/src/dataloaders/TeacherLoader.ts.html
 /coverage/src/components/authentication/Unauthorized.tsx.html

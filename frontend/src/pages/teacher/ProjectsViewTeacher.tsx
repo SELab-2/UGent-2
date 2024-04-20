@@ -7,7 +7,7 @@ import {RegularATag} from "../../components/RegularATag.tsx";
 import {TableRowProjects} from "../../types/tableRows.ts";
 import {useRouteLoaderData} from "react-router-dom";
 import {teacherLoaderObject} from "../../dataloaders/TeacherLoader.ts";
-import {PROJECTS_TEACHER_ROUTER_ID} from "../../dataloaders/projectsTeacherLoader.ts";
+import {PROJECTS_TEACHER_ROUTER_ID} from "../../dataloaders/ProjectsTeacherLoader.ts";
 import { useTranslation } from 'react-i18next';
 
 export default function ProjectsViewTeacher(): JSX.Element {

@@ -25,8 +25,8 @@ export default function ProjectViewTeacher() {
 
     const project: ProjectTeacher = {
         projectName: project_data.project_name,
-        all_courses: project_data.subjects,
-        courseName: project_data.subject_name,
+        all_courses: project_data.courses,
+        courseName: project_data.course_name,
         hours: deadline_date.getHours(),
         minutes: deadline_date.getMinutes(),
         deadline: deadline_date,

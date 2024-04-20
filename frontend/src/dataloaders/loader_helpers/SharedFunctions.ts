@@ -1,7 +1,7 @@
-import {Project, properSubject, SmallProjectInfo, Subject, TeacherInfo} from "../../utils/ApiInterfaces.ts";
+import {Project, properCourse, SmallProjectInfo, Course, TeacherInfo} from "../../utils/ApiInterfaces.ts";
 import apiFetch from "../../utils/ApiFetch.ts";
-import {mapProjectList, mapSubjectList, mapUser} from "../../utils/ApiTypesMapper.ts";
-import {Backend_Project, Backend_Subject, Backend_user} from "../../utils/BackendInterfaces.ts";
+import {mapProjectList, mapCourseList, mapUser} from "../../utils/ApiTypesMapper.ts";
+import {Backend_Project, Backend_Course, Backend_user} from "../../utils/BackendInterfaces.ts";
 
 export enum teacherStudentRole {
     STUDENT = "student",
@@ -9,7 +9,7 @@ export enum teacherStudentRole {
 }
 
 export interface CourseLoaderObject {
-    course?: properSubject
+    course?: properCourse
 }
 
 export interface TeacherIdInfo {
@@ -34,20 +34,20 @@ export async function courseLoader(role: teacherStudentRole, course_id: string |
     };
 }
 
-export async function coursesLoader(role: teacherStudentRole, course_id?: number): Promise<properSubject[]> {
-    const temp = await getAllProjectsAndSubjects(role);
-    let courses = temp.subjects;
+export async function coursesLoader(role: teacherStudentRole, course_id?: number): Promise<properCourse[]> {
+    const temp = await getAllProjectsAndCourses(role);
+    let courses = temp.courses;
     const projects = temp.projects;
     if (!Array.isArray(projects) || !Array.isArray(courses)) {
         throw Error("Problem loading projects or courses.");
     }
 
     if (course_id) {
-        courses = courses.filter(course => course.subject_id === course_id);
+        courses = courses.filter(course => course.course_id === course_id);
     }
 
     const teachers = (await Promise.all(courses.map(async course => {
-        const teacher_ids_data = await apiFetch<TeacherIdInfo[]>(`/subjects/${course.subject_id}/teachers`);
+        const teacher_ids_data = await apiFetch<TeacherIdInfo[]>(`/courses/${course.course_id}/teachers`);
         if (!teacher_ids_data.ok){
             // TODO error handling
         }
@@ -66,16 +66,16 @@ export async function coursesLoader(role: teacherStudentRole, course_id?: number
             return {
                 name: teacher.user_name,
                 email: teacher.user_email,
-                course_id: course.subject_id
+                course_id: course.course_id
             } as TeacherInfo
         })
     }))).flat();
 
 
-    return courses.map( (subject) => {
-        const subjectProjects = projects.filter(project => project.subject_id === subject.subject_id);
+    return courses.map( (course) => {
+        const courseProjects = projects.filter(project => project.course_id === course.course_id);
 
-        if (subjectProjects.length === 0) {
+        if (courseProjects.length === 0) {
             return {
                 active_projects: 0,
                 first_deadline: null,
@@ -83,12 +83,12 @@ export async function coursesLoader(role: teacherStudentRole, course_id?: number
                 project_visible: false,
                 all_projects: [],
                 teachers: [],
-                subject_id: subject.subject_id,
-                subject_name: subject.subject_name
+                course_id: course.course_id,
+                course_name: course.course_name
             };
         }
 
-        const shortestDeadlineProject = subjectProjects.reduce((minProject, project) => {
+        const shortestDeadlineProject = courseProjects.reduce((minProject, project) => {
             if (project.project_deadline < minProject.project_deadline) {
                 return project;
             } else {
@@ -97,7 +97,7 @@ export async function coursesLoader(role: teacherStudentRole, course_id?: number
         });
         const firstDeadline = shortestDeadlineProject.project_deadline;
 
-        const all_projects_info = subjectProjects.map(project => {
+        const all_projects_info = courseProjects.map(project => {
             return {
                 project_name: project.project_name,
                 project_archived: project.project_archived,
@@ -111,26 +111,26 @@ export async function coursesLoader(role: teacherStudentRole, course_id?: number
 
 
         return {
-            teachers: teachers.filter(teacher => teacher.course_id === subject.subject_id),
+            teachers: teachers.filter(teacher => teacher.course_id === course.course_id),
             active_projects: active_projects,
             first_deadline: firstDeadline,
             all_projects: all_projects_info,
-            subject_id: subject.subject_id,
-            subject_name: subject.subject_name
+            course_id: course.course_id,
+            course_name: course.course_name
         }
     });
 }
 
-export interface projectsAndSubjects {
+export interface projectsAndCourses {
     projects: Project[],
-    subjects: Subject[]
+    courses: Course[]
 }
 
-export async function getAllProjectsAndSubjects(role: teacherStudentRole, filter_on_current: boolean = false): Promise<projectsAndSubjects> {
+export async function getAllProjectsAndCourses(role: teacherStudentRole, filter_on_current: boolean = false): Promise<projectsAndCourses> {
     const apiProjects = (await apiFetch<Backend_Project[]>(`/${role}/projects`));
-    const apiSubjects = (await apiFetch<Backend_Subject[]>(`/${role}/subjects`));
+    const apiCourses = (await apiFetch<Backend_Course[]>(`/${role}/courses`));
 
-    if (!apiProjects.ok || !apiSubjects.ok) {
+    if (!apiProjects.ok || !apiCourses.ok) {
         // TODO error handling
         // throw ...
     }
@@ -139,6 +139,6 @@ export async function getAllProjectsAndSubjects(role: teacherStudentRole, filter
         projects = projects.filter(project => project.project_visible && !project.project_archived)
     }
 
-    const subjects = mapSubjectList(apiSubjects.content);
-    return {projects, subjects}
+    const courses = mapCourseList(apiCourses.content);
+    return {projects, courses}
 }

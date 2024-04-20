@@ -8,7 +8,7 @@ import {TableRowCourses} from "../../types/tableRows.ts";
 import {useRouteLoaderData} from "react-router-dom";
 import {COURSES_STUDENT_ROUTER_ID, coursesStudentLoaderObject} from "../../dataloaders/CoursesStudentLoader.ts";
 import { useTranslation } from 'react-i18next';
-import {properSubject} from "../../utils/ApiInterfaces.ts";
+import {properCourse} from "../../utils/ApiInterfaces.ts";
 
 export default function CoursesViewStudent(): JSX.Element {
 
@@ -17,7 +17,7 @@ export default function CoursesViewStudent(): JSX.Element {
     const data: coursesStudentLoaderObject = useRouteLoaderData(COURSES_STUDENT_ROUTER_ID) as coursesStudentLoaderObject
     const courses_data = data.courses
 
-    const tableCoursesActive: TableRowCourses[] = courses_data.map((course: properSubject) => {
+    const tableCoursesActive: TableRowCourses[] = courses_data.map((course: properCourse) => {
 
         const deadline_date = course.first_deadline ? new Date(course.first_deadline) : null
 
@@ -28,8 +28,8 @@ export default function CoursesViewStudent(): JSX.Element {
 
         return{
             course: {
-                name: course.subject_name,
-                id: course.subject_id,
+                name: course.course_name,
+                id: course.course_id,
             },
             shortestDeadline: deadline,
             numberOfProjects: course.active_projects

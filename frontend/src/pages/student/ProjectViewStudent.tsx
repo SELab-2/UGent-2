@@ -46,7 +46,7 @@ export default function ProjectViewStudent(): JSX.Element {
 
     const project: ProjectStudent = {
         projectName: project_data.project_name,
-        courseName: project_data.subject_name,
+        courseName: project_data.course_name,
         deadline: deadline,
         status: project_status,
         description: project_data.project_description,

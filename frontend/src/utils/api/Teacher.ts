@@ -1,10 +1,10 @@
-import {Backend_Subject} from "../BackendInterfaces.ts";
+import {Backend_Course} from "../BackendInterfaces.ts";
 import apiFetch from "../ApiFetch.ts";
-import {Subject} from "../ApiInterfaces.ts";
-import {mapSubject} from "../ApiTypesMapper.ts";
+import {Course} from "../ApiInterfaces.ts";
+import {mapCourse} from "../ApiTypesMapper.ts";
 
-export async function createSubject(name: string): Promise<Subject> {
-    const subjectData = (await apiFetch<Backend_Subject>('/teacher/subjects',
+export async function createCourse(name: string): Promise<Course> {
+    const courseData = (await apiFetch<Backend_Course>('/teacher/courses',
         {
             headers: {
                 'Content-Type': 'application/json'
@@ -13,10 +13,10 @@ export async function createSubject(name: string): Promise<Subject> {
             body: JSON.stringify({name: name, archived: false})
         }));
 
-    if (subjectData.ok){
-        return mapSubject(subjectData.content);
+    if (courseData.ok){
+        return mapCourse(courseData.content);
     }else{
         // TODO: error handling
-        throw subjectData.status_code
+        throw courseData.status_code
     }
 }

@@ -1,11 +1,11 @@
-import {Subject} from "../utils/ApiInterfaces.ts";
+import {Course} from "../utils/ApiInterfaces.ts";
 
 export type ValuePiece = Date | null; // nodig voor de deadline
 export type Value = ValuePiece | [ValuePiece, ValuePiece]; // nodig voor de deadline
 
 export type ProjectTeacher = {
     projectName: string,
-    all_courses: Subject[],
+    all_courses: Course[],
     courseName: string,
     hours: number,
     minutes: number,
