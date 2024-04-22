@@ -5,7 +5,7 @@ from datetime import datetime
 from sqlmodel import SQLModel
 
 from db.models import SubmissionState
-from domain.logic import admin, group, project, student, subject, submission, teacher
+from domain.logic import admin, course, group, project, student, submission, teacher
 from tests.crud.test_main import get_db, test_engine
 
 
@@ -23,7 +23,7 @@ class TestStress(unittest.TestCase):
         # Create multiple instances of each entity
         for i in range(100):
             stud = student.create_student(self.session, f"Test Student {i}", f"teststudent{i}@gmail.com")
-            subj = subject.create_subject(self.session, f"Test Subject {i}")
+            subj = course.create_course(self.session, f"Test Course {i}")
             proj = project.create_project(
                 self.session,
                 subj.id,
@@ -49,13 +49,13 @@ class TestStress(unittest.TestCase):
             adm = admin.create_admin(self.session, f"Test Admin {i}", f"testadmin{i}@gmail.com")
 
             # Perform operations on the entities
-            subject.add_student_to_subject(self.session, stud.id, subj.id)
+            course.add_student_to_course(self.session, stud.id, subj.id)
             group.add_student_to_group(self.session, stud.id, grp.id)
-            subject.add_teacher_to_subject(self.session, teach.id, subj.id)
+            course.add_teacher_to_course(self.session, teach.id, subj.id)
 
             # Assert the expected outcomes
             self.assertEqual(student.get_student(self.session, stud.id).id, stud.id)
-            self.assertEqual(subject.get_subject(self.session, subj.id).id, subj.id)
+            self.assertEqual(course.get_course(self.session, subj.id).id, subj.id)
             self.assertEqual(project.get_project(self.session, proj.id).id, proj.id)
             self.assertEqual(group.get_group(self.session, grp.id).id, grp.id)
             self.assertEqual(submission.get_submission(self.session, subm.id).id, subm.id)
@@ -64,7 +64,7 @@ class TestStress(unittest.TestCase):
 
         # Checks outside the loop
         self.assertEqual(len(student.get_all_students(self.session)), 100)
-        self.assertEqual(len(subject.get_all_subjects(self.session)), 100)
+        self.assertEqual(len(course.get_all_courses(self.session)), 100)
         self.assertEqual(len(project.get_all_projects(self.session)), 100)
         self.assertEqual(len(group.get_all_groups(self.session)), 100)
         self.assertEqual(len(submission.get_all_submissions(self.session)), 100)

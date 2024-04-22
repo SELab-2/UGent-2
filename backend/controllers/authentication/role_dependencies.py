@@ -10,10 +10,10 @@ from controllers.authentication.errors import (
 from controllers.authentication.token_controller import verify_token
 from db.models import Admin, Student, Teacher
 from domain.logic.admin import get_admin, is_user_admin
+from domain.logic.course import get_courses_of_student, get_courses_of_teacher, is_user_authorized_for_course
 from domain.logic.group import get_group, get_students_of_group
 from domain.logic.project import get_project, get_projects_of_teacher
 from domain.logic.student import get_student, is_user_student
-from domain.logic.subject import get_subjects_of_student, get_subjects_of_teacher, is_user_authorized_for_subject
 from domain.logic.teacher import get_teacher, is_user_teacher
 
 
@@ -56,36 +56,36 @@ def get_authenticated_student(request: Request) -> Student:
     return get_student(session, uid)
 
 
-def ensure_user_authorized_for_subject(request: Request, subject_id: int) -> None:
+def ensure_user_authorized_for_course(request: Request, course_id: int) -> None:
     session = request.state.session
     uid = get_authenticated_user(request)
 
-    if not is_user_authorized_for_subject(subject_id, session, uid):
+    if not is_user_authorized_for_course(course_id, session, uid):
         raise NoAccessToDataError
 
 
 def ensure_user_authorized_for_project(request: Request, project_id: int) -> None:
     session = request.state.session
     project = get_project(session, project_id)
-    return ensure_user_authorized_for_subject(request, project.subject_id)
+    return ensure_user_authorized_for_course(request, project.course_id)
 
 
-def ensure_student_authorized_for_subject(request: Request, subject_id: int) -> Student:
+def ensure_student_authorized_for_course(request: Request, course_id: int) -> Student:
     session = request.state.session
     student = get_authenticated_student(request)
 
-    subjects_of_student = get_subjects_of_student(session, student.id)
-    if subject_id not in [subject.id for subject in subjects_of_student]:
+    courses_of_student = get_courses_of_student(session, student.id)
+    if course_id not in [course.id for course in courses_of_student]:
         raise NoAccessToDataError
     return student
 
 
-def ensure_teacher_authorized_for_subject(request: Request, subject_id: int) -> Teacher:
+def ensure_teacher_authorized_for_course(request: Request, course_id: int) -> Teacher:
     session = request.state.session
     teacher = get_authenticated_teacher(request)
 
-    subjects_of_teacher = get_subjects_of_teacher(session, teacher.id)
-    if subject_id not in [subject.id for subject in subjects_of_teacher]:
+    courses_of_teacher = get_courses_of_teacher(session, teacher.id)
+    if course_id not in [course.id for course in courses_of_teacher]:
         raise NoAccessToDataError
     return teacher
 
@@ -93,13 +93,13 @@ def ensure_teacher_authorized_for_subject(request: Request, subject_id: int) -> 
 def ensure_student_authorized_for_project(request: Request, project_id: int) -> Student:
     session = request.state.session
     project = get_project(session, project_id)
-    return ensure_student_authorized_for_subject(request, project.subject_id)
+    return ensure_student_authorized_for_course(request, project.course_id)
 
 
 def ensure_teacher_authorized_for_project(request: Request, project_id: int) -> Teacher:
     session = request.state.session
     project = get_project(session, project_id)
-    return ensure_teacher_authorized_for_subject(request, project.subject_id)
+    return ensure_teacher_authorized_for_course(request, project.course_id)
 
 
 def ensure_student_authorized_for_group(request: Request, group_id: int) -> Student:

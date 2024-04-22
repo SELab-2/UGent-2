@@ -3,7 +3,7 @@ from datetime import datetime
 from pydantic import ValidationError
 from sqlmodel import Session
 
-from db.models import Project, ProjectInput, Student, Subject, Teacher
+from db.models import Course, Project, ProjectInput, Student, Teacher
 from domain.logic.basic_operations import get, get_all
 from domain.logic.errors import InvalidConstraintsError
 from domain.simple_submission_checks.constraints.submission_constraint import create_constraint_from_json
@@ -11,7 +11,7 @@ from domain.simple_submission_checks.constraints.submission_constraint import cr
 
 def create_project(
     session: Session,
-    subject_id: int,
+    course_id: int,
     name: str,
     deadline: datetime,
     archived: bool,
@@ -21,9 +21,9 @@ def create_project(
     max_students: int,
 ) -> Project:
     """
-    Create a project for a certain subject.
+    Create a project for a certain course.
     """
-    subject: Subject = get(session, Subject, subject_id)
+    course: Course = get(session, Course, course_id)
 
     new_project: Project = Project(
         name=name,
@@ -35,7 +35,7 @@ def create_project(
         max_students=max_students,
     )
 
-    subject.projects.append(new_project)
+    course.projects.append(new_project)
     session.commit()
 
     return new_project
@@ -49,25 +49,25 @@ def get_all_projects(session: Session) -> list[Project]:
     return get_all(session, Project)
 
 
-def get_projects_of_subject(session: Session, subject_id: int) -> list[Project]:
-    subject: Subject = get(session, Subject, ident=subject_id)
-    return subject.projects
+def get_projects_of_course(session: Session, course_id: int) -> list[Project]:
+    course: Course = get(session, Course, ident=course_id)
+    return course.projects
 
 
 def get_projects_of_student(session: Session, user_id: int) -> list[Project]:
     student = get(session, Student, ident=user_id)
-    subjects = student.subjects
+    courses = student.courses
     projects = []
-    for i in subjects:
+    for i in courses:
         projects += i.projects
     return projects
 
 
 def get_projects_of_teacher(session: Session, user_id: int) -> list[Project]:
     teacher = get(session, Teacher, ident=user_id)
-    subjects = teacher.subjects
+    courses = teacher.courses
     projects = []
-    for i in subjects:
+    for i in courses:
         projects += i.projects
     return projects
 
