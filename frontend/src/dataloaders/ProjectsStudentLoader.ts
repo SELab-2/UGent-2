@@ -1,5 +1,5 @@
 import {CompleteProjectStudent, Group, Submission, SUBMISSION_STATE, User} from "../utils/ApiInterfaces.ts";
-import {getAllProjectsAndSubjects, teacherStudentRole} from "./loader_helpers/SharedFunctions.ts";
+import {getAllProjectsAndCourses, teacherStudentRole} from "./loader_helpers/SharedFunctions.ts";
 import apiFetch from "../utils/ApiFetch.ts";
 import {Backend_group, Backend_submission, Backend_user} from "../utils/BackendInterfaces.ts";
 import {mapGroup, mapSubmission, mapUser} from "../utils/ApiTypesMapper.ts";
@@ -30,11 +30,11 @@ export async function LoadProjectsForStudent(filter_on_current: boolean = false,
     if (project_id) {
         filter_on_current = false;
     }
-    const temp = await getAllProjectsAndSubjects(teacherStudentRole.STUDENT, filter_on_current);
-    const subjects = temp.subjects;
+    const temp = await getAllProjectsAndCourses(teacherStudentRole.STUDENT, filter_on_current);
+    const courses = temp.courses;
     let projects = temp.projects;
 
-    if (!Array.isArray(projects) || !Array.isArray(subjects)) {
+    if (!Array.isArray(projects) || !Array.isArray(courses)) {
         throw Error("Problem loading projects or courses.");
     }
 
@@ -103,13 +103,13 @@ export async function LoadProjectsForStudent(filter_on_current: boolean = false,
     return projects.map((project) => {
         const group = groupMembers.find(group => group.project_id === project.project_id);
         const submission = submissions.find(submission => submission.submission_group_id === group?.group_id);
-        const subject = subjects.find(subject => subject.subject_id === project.subject_id);
-        if (!subject) {
-            throw Error("Subject not found for project.");
+        const course = courses.find(course => course.course_id === project.course_id);
+        if (!course) {
+            throw Error("Course not found for project.");
         }
         return {
             ...project,
-            ...subject,
+            ...course,
             submission_state: submission?.submission_state ?? SUBMISSION_STATE.Pending,
             submission_file: submission?.submission_filename ?? "",
             submission_student_id: submission?.submission_student_id,

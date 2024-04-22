@@ -1,6 +1,6 @@
-export interface Subject {
-    subject_id: number,
-    subject_name: string
+export interface Course {
+    course_id: number,
+    course_name: string
 }
 
 export interface Project {
@@ -12,7 +12,7 @@ export interface Project {
     project_requirements: string,
     project_visible: boolean,
     project_max_students: number,
-    subject_id: number,
+    course_id: number,
 }
 
 
@@ -37,7 +37,7 @@ export interface Group {
     project_id: number
 }
 
-export interface CompleteProject extends Project, Subject {
+export interface CompleteProject extends Project, Course {
 }
 
 export interface CompleteProjectStudent extends CompleteProject {
@@ -49,7 +49,7 @@ export interface CompleteProjectStudent extends CompleteProject {
 
 export interface CompleteProjectTeacher extends CompleteProject {
     submission_amount: number,
-    subjects: Subject[],
+    courses: Course[],
     submission_statistics: { [key: number]: number }
 }
 
@@ -61,7 +61,7 @@ export interface SmallProjectInfo {
     project_visible: boolean,
 }
 
-export interface properSubject extends Subject {
+export interface properCourse extends Course {
     active_projects: number,
     first_deadline: Date | null | string,
     all_projects: SmallProjectInfo[] | null,

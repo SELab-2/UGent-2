@@ -21,7 +21,7 @@ export default function ProjectCardStudent(props:{project: CompleteProjectStuden
             <p className={"title is-5"}>{props.project.project_name}</p>
             <div className={"card-text is-flex is-flex-direction-row"}>
                 <p className={"pr-2"}>{t('home_student.card.tag.course')}</p>
-                <p>{props.project.subject_name}</p>
+                <p>{props.project.course_name}</p>
             </div>
             <div className={"is-flex is-flex-direction-row is-align-items-center py-5"}>
                 <p className={"pr-2"}>{t('home_student.card.tag.status')}</p>

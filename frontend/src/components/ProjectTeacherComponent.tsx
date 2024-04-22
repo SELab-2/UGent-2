@@ -46,7 +46,7 @@ export function ProjectTeacherComponent(props: { project: ProjectTeacher }): JSX
         setGroupProject(checked);
     };
 
-    const course_options = props.project.all_courses.map(course => course.subject_name);
+    const course_options = props.project.all_courses.map(course => course.course_name);
 
     const hours_array = Array.from({length: 24}, (_, index) => index.toString().padStart(2, '0'));
     const minutes_array = Array.from({length: 60}, (_, index) => index.toString().padStart(2, '0'));

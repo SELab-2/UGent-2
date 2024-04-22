@@ -1,24 +1,24 @@
-import {Group, Project, Subject, Submission, User} from "./ApiInterfaces.ts";
+import {Group, Project, Course, Submission, User} from "./ApiInterfaces.ts";
 import {
     Backend_group,
     Backend_Project,
-    Backend_Subject,
+    Backend_Course,
     Backend_submission,
     Backend_user
 } from "./BackendInterfaces.ts";
 
-export function mapSubject(subjectData: Backend_Subject): Subject{
+export function mapCourse(courseData: Backend_Course): Course{
     return {
-        subject_id: subjectData.id,
-        subject_name: subjectData.name,
+        course_id: courseData.id,
+        course_name: courseData.name,
     }
 }
 
-export function mapSubjectList(subjectList: Backend_Subject[]): Subject[] {
-    if (!Array.isArray(subjectList)) {
+export function mapCourseList(courseList: Backend_Course[]): Course[] {
+    if (!Array.isArray(courseList)) {
         throw new Error('projectList is not an array');
     }
-    return subjectList.map(subjectData => mapSubject(subjectData));
+    return courseList.map(courseData => mapCourse(courseData));
 }
 
 export function mapProject(projectData: Backend_Project): Project{
@@ -31,7 +31,7 @@ export function mapProject(projectData: Backend_Project): Project{
         project_requirements: projectData.requirements,
         project_visible: projectData.visible,
         project_max_students: projectData.max_students,
-        subject_id: projectData.subject_id,
+        course_id: projectData.course_id,
     }
 }
 

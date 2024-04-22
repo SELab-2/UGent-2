@@ -20,7 +20,7 @@ export function CreateProject(): JSX.Element {
     }
 
     const emptyProjectTeacher: ProjectTeacher = {
-        courseName: data.courses[0].subject_name,
+        courseName: data.courses[0].course_name,
         all_courses: data.courses,
         deadline: new Date(Date.now()),
         description: "",

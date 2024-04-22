@@ -1,5 +1,5 @@
 import {CompleteProjectTeacher} from "../utils/ApiInterfaces.ts";
-import {LoadProjectsForTeacher} from "./projectsTeacherLoader.ts";
+import {LoadProjectsForTeacher} from "./ProjectsTeacherLoader.ts";
 
 export interface teacherLoaderObject {
     projects: CompleteProjectTeacher[]

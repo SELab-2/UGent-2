@@ -10,7 +10,7 @@ export interface ProjectInput{
     max_students: number,
 }
 
-export interface SubjectInput{
+export interface CourseInput{
     name: string;
     archived: boolean
 }

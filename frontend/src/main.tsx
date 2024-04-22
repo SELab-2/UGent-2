@@ -27,7 +27,7 @@ import ProjectViewStudent from "./pages/student/ProjectViewStudent.tsx";
 import ProjectViewTeacher from "./pages/teacher/ProjectViewTeacher.tsx";
 import CourseViewStudent from "./pages/student/CourseViewStudent.tsx";
 import CourseViewTeacher from "./pages/teacher/CourseViewTeacher.tsx";
-import projectsTeacherLoader, {PROJECTS_TEACHER_ROUTER_ID} from "./dataloaders/projectsTeacherLoader.ts";
+import projectsTeacherLoader, {PROJECTS_TEACHER_ROUTER_ID} from "./dataloaders/ProjectsTeacherLoader.ts";
 import projectsStudentLoader, {PROJECTS_STUDENT_ROUTER_ID} from "./dataloaders/ProjectsStudentLoader.ts";
 import coursesStudentLoader, {COURSES_STUDENT_ROUTER_ID} from './dataloaders/CoursesStudentLoader.ts';
 import coursesTeacherLoader, {

@@ -46,7 +46,7 @@ export default function CourseViewStudent(): JSX.Element {
     return (
         <>
             <div className={"main-header"}>
-                <Header page_title={course_data.subject_name} home={"student"}/>
+                <Header page_title={course_data.course_name} home={"student"}/>
             </div>
             <div className={"main-content is-flex is-flex-direction-row"}>
                 <div className={"side-bar is-flex is-justify-content-center"}>
