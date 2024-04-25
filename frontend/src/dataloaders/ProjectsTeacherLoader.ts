@@ -52,13 +52,15 @@ export async function LoadProjectsForTeacher(filter_on_current: boolean = false,
             try {
                 const submissionData = await apiFetch<Backend_submission>(`/groups/${group.group_id}/submission`);
                 if (!submissionData.ok){
-                    // TODO error handling
+                    continue
                 }
                 const submissionBackend = submissionData.content
                 if (submissionBackend) {
                     const submission = mapSubmission(submissionData.content)
-                    statistics[submission.submission_state] += 1;
-                    amount++;
+                    if (submission.submission_id !== undefined){
+                        statistics[submission.submission_state] += 1;
+                        amount++;
+                    }
                 }
             } catch (e) {
                 //console.log(e);

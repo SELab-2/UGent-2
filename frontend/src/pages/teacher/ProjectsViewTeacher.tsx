@@ -15,7 +15,7 @@ function GenerateTableRowProjects(data: CompleteProjectTeacher[]): TableRowProje
     return data.map((project_item) => {
         const deadline_date = new Date(project_item.project_deadline)
         const deadline = `${deadline_date.getHours()}:${deadline_date.getMinutes()} - ${deadline_date.getDate()}/${deadline_date.getMonth()}/${deadline_date.getFullYear()}`
-        console.log(project_item.project_name, project_item.submission_amount)
+
         return {
             project: {
                 name: project_item.project_name,
