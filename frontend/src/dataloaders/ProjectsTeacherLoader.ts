@@ -15,7 +15,7 @@ export default async function projectsTeacherLoader(): Promise<projectsTeacherLo
     return {projects};
 }
 
-export async function LoadProjectsForTeacher(filter_on_current: boolean = false, project_id?: number): Promise<projectsTeacherLoaderObject[]> {
+export async function LoadProjectsForTeacher(filter_on_current: boolean = false, project_id?: number): Promise<CompleteProjectTeacher[]> {
     if (project_id) {
         filter_on_current = false;
     }
@@ -57,7 +57,6 @@ export async function LoadProjectsForTeacher(filter_on_current: boolean = false,
                 const submissionBackend = submissionData.content
                 if (submissionBackend) {
                     const submission = mapSubmission(submissionData.content)
-                    console.log(submission)
                     statistics[submission.submission_state] += 1;
                     amount++;
                 }
