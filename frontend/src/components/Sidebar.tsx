@@ -1,16 +1,10 @@
-import {JSX, useState} from "react";
-import { PiProjectorScreen, PiFolder } from "react-icons/pi";
-import { IoMdSettings } from "react-icons/io";
+import {JSX} from "react";
+import {PiFolder, PiProjectorScreen} from "react-icons/pi";
 import Settings from "./Settings.tsx";
-import { SidebarButton } from "../others/enums.tsx";
+import {SidebarButton} from "../others/enums.tsx";
 import {Link} from "react-router-dom";
 
-export function Sidebar(props: {home: string, buttons?: SidebarButton[]}): JSX.Element {
-    const [isOpen, setIsOpen] = useState(false);
-
-    const handleSettings: () => void = () => {
-        setIsOpen(!isOpen)
-    }
+export function Sidebar(props: { home: string, buttons?: SidebarButton[] }): JSX.Element {
 
     let buttons = props.buttons
     if (buttons == undefined) {
@@ -37,14 +31,9 @@ export function Sidebar(props: {home: string, buttons?: SidebarButton[]}): JSX.E
                     }
                 </ul>
                 <ul className={"menu-list"}>
-                    <li>
-                        <a className={"is-transparent mb-5"} onClick={handleSettings}><IoMdSettings/></a>
-                    </li>
+                    <Settings home={props.home}/>
                 </ul>
             </aside>
-            {isOpen &&
-                <Settings closeSettings={handleSettings} home={props.home} />
-            }
         </>
     )
 }
