@@ -15,7 +15,7 @@ export default async function projectsTeacherLoader(): Promise<projectsTeacherLo
     return {projects};
 }
 
-export async function LoadProjectsForTeacher(filter_on_current: boolean = false, project_id?: number): Promise<CompleteProjectTeacher[]> {
+export async function LoadProjectsForTeacher(filter_on_current: boolean = false, project_id?: number): Promise<projectsTeacherLoaderObject[]> {
     if (project_id) {
         filter_on_current = false;
     }
