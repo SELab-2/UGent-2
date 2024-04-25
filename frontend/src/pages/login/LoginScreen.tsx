@@ -54,8 +54,10 @@ export default function LoginScreen(): JSX.Element {
         }
     }, [data, setUser, ticket, user]);
 
-    return <div>
-        {user && <Navigate to={next} replace/>}
-        {!user && ticket === "" && <LoginForm/>}
-    </div>
+    return (
+        <div className={"login-screen is-flex is-justify-content-center is-align-items-center"}>
+            {user && <Navigate to={next} replace/>}
+            {!user && ticket === "" && <LoginForm/>}
+        </div>
+    )
 }

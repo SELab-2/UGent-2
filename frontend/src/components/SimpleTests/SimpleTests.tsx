@@ -368,7 +368,7 @@ export default function SimpleTests(
     }
 
     return (
-        <div className="content">
+        <div className="content-checks">
 
             {props.teacherOrStudent == TeacherOrStudent.TEACHER
                 ? 
