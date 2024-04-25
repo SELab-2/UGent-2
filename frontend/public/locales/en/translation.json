@@ -176,6 +176,7 @@
         "search_placeholder": "search a course...",
         "active": "active",
         "archived": "archived",
+        "new_course": "new course",
         "new_project": "new project"
     },
     "course": {

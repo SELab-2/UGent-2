@@ -176,7 +176,8 @@
         "search_placeholder": "zoek een vak...",
         "active": "actief",
         "archived": "gearchiveerd",
-        "new_project": "nieuw project"
+        "new_project": "nieuw project",
+        "new_course": "nieuw vak"
     },
     "course": {
         "teachers": "lesgevers",
