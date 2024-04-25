@@ -115,7 +115,7 @@ export async function coursesLoader(role: teacherStudentRole, course_id?: number
             };
         }
 
-        const shortestDeadlineProject = courseProjects.reduce((minProject, project) => {
+        const shortestDeadlineProject = courseProjects.filter(course => course.project_visible && !course.project_archived).reduce((minProject, project) => {
             if (project.project_deadline < minProject.project_deadline) {
                 return project;
             } else {
