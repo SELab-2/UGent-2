@@ -8,6 +8,7 @@ import {useRouteLoaderData} from "react-router-dom";
 import {CourseLoaderObject} from "../../dataloaders/loader_helpers/SharedFunctions.ts";
 import {COURSE_STUDENT} from "../../dataloaders/CourseStudentLoader.ts";
 import DefaultErrorPage from "../../components/DefaultErrorPage.tsx";
+import {deadline_to_string} from "../../utils/helper.ts";
 
 export default function CourseViewStudent(): JSX.Element {
 
@@ -23,16 +24,13 @@ export default function CourseViewStudent(): JSX.Element {
     const active_projects = course_data.all_projects?.filter(project => !project.project_archived && project.project_visible) ?? [];
 
     const tableProjects: TableRowOverviewProjects[] = active_projects.map(project => {
-        const deadline_date = new Date(project.project_deadline)
-        const deadline = `${deadline_date.getHours()}:${deadline_date.getMinutes()} - ${deadline_date.getDate()}/${deadline_date.getMonth()}/${deadline_date.getFullYear()}`
-
         return {
             project: {
                 name: project.project_name,
                 id: project.project_id
             },
             status: null,
-            deadline: deadline
+            deadline: deadline_to_string(project.project_deadline)
         }
     }) ?? [];
 

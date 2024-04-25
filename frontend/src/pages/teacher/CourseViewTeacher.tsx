@@ -12,6 +12,7 @@ import LeaveCourse from "../../components/LeaveCourse.tsx";
 import {CourseLoaderObject} from "../../dataloaders/loader_helpers/SharedFunctions.ts";
 import {useRouteLoaderData} from "react-router-dom";
 import {COURSE_TEACHER} from "../../dataloaders/CourseTeacherLoader.ts";
+import {deadline_to_string} from "../../utils/helper.ts";
 
 export default function CourseViewTeacher(): JSX.Element {
     const data: CourseLoaderObject = useRouteLoaderData(COURSE_TEACHER) as CourseLoaderObject;
@@ -24,16 +25,13 @@ export default function CourseViewTeacher(): JSX.Element {
     }
 
     const tableProjects: TableRowOverviewProjects[] = data.course.all_projects?.map((project) => {
-        const deadline_date = new Date(project.project_deadline)
-        const deadline = `${deadline_date.getHours()}:${deadline_date.getMinutes()} - ${deadline_date.getDate()}/${deadline_date.getMonth()}/${deadline_date.getFullYear()}`
-
         return {
             project: {
                 name: project.project_name,
                 id: project.project_id
             },
             status: null,
-            deadline: deadline
+            deadline: deadline_to_string(project.project_deadline)
         }
     }) ?? [];
 

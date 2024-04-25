@@ -9,12 +9,11 @@ import {useRouteLoaderData} from "react-router-dom";
 import {PROJECTS_TEACHER_ROUTER_ID, projectsTeacherLoaderObject} from "../../dataloaders/ProjectsTeacherLoader.ts";
 import {useTranslation} from 'react-i18next';
 import {CompleteProjectTeacher} from "../../utils/ApiInterfaces.ts";
+import {deadline_to_string} from "../../utils/helper.ts";
 
 
 function GenerateTableRowProjects(data: CompleteProjectTeacher[]): TableRowProjects[] {
     return data.map((project_item) => {
-        const deadline_date = new Date(project_item.project_deadline)
-        const deadline = `${deadline_date.getHours()}:${deadline_date.getMinutes()} - ${deadline_date.getDate()}/${deadline_date.getMonth()}/${deadline_date.getFullYear()}`
 
         return {
             project: {
@@ -27,7 +26,7 @@ function GenerateTableRowProjects(data: CompleteProjectTeacher[]): TableRowProje
             },
             status: null,
             numberOfSubmissions: project_item.submission_amount,
-            deadline: deadline,
+            deadline: deadline_to_string(project_item.project_deadline),
         }
     })
 }

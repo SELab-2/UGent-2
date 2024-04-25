@@ -7,8 +7,9 @@ import {Table} from "../../components/Table.tsx";
 import {TableRowCourses} from "../../types/tableRows.ts";
 import {useRouteLoaderData} from "react-router-dom";
 import {COURSES_STUDENT_ROUTER_ID, coursesStudentLoaderObject} from "../../dataloaders/CoursesStudentLoader.ts";
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 import {properCourse} from "../../utils/ApiInterfaces.ts";
+import {deadline_to_string} from "../../utils/helper.ts";
 
 export default function CoursesViewStudent(): JSX.Element {
 
@@ -22,8 +23,8 @@ export default function CoursesViewStudent(): JSX.Element {
         const deadline_date = course.first_deadline ? new Date(course.first_deadline) : null
 
         let deadline = null
-        if (deadline_date){
-            deadline = `${deadline_date.getHours()}:${deadline_date.getMinutes()} - ${deadline_date.getDate()}/${deadline_date.getMonth()}/${deadline_date.getFullYear()}`
+        if (deadline_date !== null){
+            deadline = deadline_to_string(deadline_date)
         }
 
         return{

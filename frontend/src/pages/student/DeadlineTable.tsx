@@ -1,14 +1,13 @@
 import {JSX} from "react";
 import {FaArrowRightLong} from "react-icons/fa6";
 import {CompleteProjectStudent} from "../../utils/ApiInterfaces.ts";
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
+import {deadline_to_string} from "../../utils/helper.ts";
 
 function DeadlineElement(props: {project: CompleteProjectStudent}): JSX.Element {
-    const deadline_date = new Date(props.project.project_deadline)
-    const deadline = `${deadline_date.getHours()}:${deadline_date.getMinutes()} - ${deadline_date.getDate()}/${deadline_date.getMonth()}/${deadline_date.getFullYear()}`
     return (
         <div className={"deadline-card is-flex is-flex-direction-column is-align-items-center py-2"}>
-            <p>{deadline}</p>
+            <p>{deadline_to_string(props.project.project_deadline)}</p>
             <div className={"is-flex is-flex-direction-row is-align-items-center"}>
                 <FaArrowRightLong/>
                 <p className={"pl-2"}>{props.project.project_name}</p>
