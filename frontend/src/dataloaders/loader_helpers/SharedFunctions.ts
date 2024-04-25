@@ -1,7 +1,7 @@
-import {Project, properCourse, SmallProjectInfo, Course, TeacherInfo} from "../../utils/ApiInterfaces.ts";
+import {Course, Project, properCourse, SmallProjectInfo, StudentInfo, TeacherInfo} from "../../utils/ApiInterfaces.ts";
 import apiFetch from "../../utils/ApiFetch.ts";
-import {mapProjectList, mapCourseList, mapUser} from "../../utils/ApiTypesMapper.ts";
-import {Backend_Project, Backend_Course, Backend_user} from "../../utils/BackendInterfaces.ts";
+import {mapCourseList, mapProjectList, mapUser} from "../../utils/ApiTypesMapper.ts";
+import {Backend_Course, Backend_Project, Backend_user} from "../../utils/BackendInterfaces.ts";
 
 export enum teacherStudentRole {
     STUDENT = "student",
@@ -71,6 +71,31 @@ export async function coursesLoader(role: teacherStudentRole, course_id?: number
         })
     }))).flat();
 
+    const students = (await Promise.all(courses.map(async course => {
+        const student_ids_data = await apiFetch<TeacherIdInfo[]>(`/courses/${course.course_id}/students`);
+        if (!student_ids_data.ok){
+            // TODO error handling
+        }
+        const student_ids = student_ids_data.content
+        const student_promises = student_ids.map(async teacher_id => {
+            const userData = await apiFetch<Backend_user>(`/users/${teacher_id.id}`);
+            if (!userData.ok){
+                // TODO error handling
+            }
+            return mapUser(userData.content);
+        });
+
+        const students = await Promise.all(student_promises);
+
+        return students.map(teacher => {
+            return {
+                name: teacher.user_name,
+                email: teacher.user_email,
+                course_id: course.course_id
+            } as StudentInfo
+        })
+    }))).flat();
+
 
     return courses.map( (course) => {
         const courseProjects = projects.filter(project => project.course_id === course.course_id);
@@ -83,6 +108,7 @@ export async function coursesLoader(role: teacherStudentRole, course_id?: number
                 project_visible: false,
                 all_projects: [],
                 teachers: [],
+                students: [],
                 course_id: course.course_id,
                 course_name: course.course_name
             };
@@ -112,6 +138,7 @@ export async function coursesLoader(role: teacherStudentRole, course_id?: number
 
         return {
             teachers: teachers.filter(teacher => teacher.course_id === course.course_id),
+            students: students.filter(student => student.course_id === course.course_id),
             active_projects: active_projects,
             first_deadline: firstDeadline,
             all_projects: all_projects_info,
