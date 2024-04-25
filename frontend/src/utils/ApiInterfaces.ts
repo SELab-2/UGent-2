@@ -65,10 +65,17 @@ export interface properCourse extends Course {
     active_projects: number,
     first_deadline: Date | null | string,
     all_projects: SmallProjectInfo[] | null,
-    teachers: TeacherInfo[]
+    teachers: TeacherInfo[],
+    students: StudentInfo[]
 }
 
 export interface TeacherInfo {
+    name: string,
+    email: string,
+    course_id: number,
+}
+
+export interface StudentInfo{
     name: string,
     email: string,
     course_id: number,
