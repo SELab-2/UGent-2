@@ -1,6 +1,7 @@
 export interface Course {
     course_id: number,
-    course_name: string
+    course_name: string,
+    course_archived: boolean
 }
 
 export interface Project {

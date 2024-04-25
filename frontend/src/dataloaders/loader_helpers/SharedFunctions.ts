@@ -109,6 +109,7 @@ export async function coursesLoader(role: teacherStudentRole, course_id?: number
                 all_projects: [],
                 teachers: [],
                 students: [],
+                course_archived: false,
                 course_id: course.course_id,
                 course_name: course.course_name
             };
@@ -143,7 +144,8 @@ export async function coursesLoader(role: teacherStudentRole, course_id?: number
             first_deadline: firstDeadline,
             all_projects: all_projects_info,
             course_id: course.course_id,
-            course_name: course.course_name
+            course_name: course.course_name,
+            course_archived: course.course_archived
         }
     });
 }
