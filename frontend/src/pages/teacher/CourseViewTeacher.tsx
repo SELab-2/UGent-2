@@ -13,6 +13,7 @@ import {useRouteLoaderData} from "react-router-dom";
 import {COURSE_TEACHER} from "../../dataloaders/CourseTeacherLoader.ts";
 import {deadline_to_string} from "../../utils/helper.ts";
 import {CourseLoaderObject} from "../../utils/ApiInterfaces.ts";
+import DefaultErrorPage from "../../components/DefaultErrorPage.tsx";
 
 export default function CourseViewTeacher(): JSX.Element {
     const data: CourseLoaderObject = useRouteLoaderData(COURSE_TEACHER) as CourseLoaderObject;
@@ -21,7 +22,7 @@ export default function CourseViewTeacher(): JSX.Element {
     const { t } = useTranslation();
 
     if (!data || !data.course) {
-        return <></>
+        return <DefaultErrorPage title={t("course_error.title")} body={t("course_error.text")}/>
     }
 
     const tableProjects: TableRowOverviewProjects[] = data.course.all_projects?.map((project) => {
