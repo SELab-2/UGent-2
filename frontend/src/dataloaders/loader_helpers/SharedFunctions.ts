@@ -1,18 +1,17 @@
-import {Course, Project, properCourse, SmallProjectInfo, StudentInfo, TeacherInfo} from "../../utils/ApiInterfaces.ts";
+import {
+    Course,
+    CourseLoaderObject,
+    Project,
+    properCourse,
+    SmallProjectInfo,
+    SmallUserInfo,
+    teacherStudentRole
+} from "../../utils/ApiInterfaces.ts";
 import apiFetch from "../../utils/ApiFetch.ts";
 import {mapCourseList, mapProjectList, mapUser} from "../../utils/ApiTypesMapper.ts";
 import {Backend_Course, Backend_Project, Backend_user} from "../../utils/BackendInterfaces.ts";
 
-export enum teacherStudentRole {
-    STUDENT = "student",
-    TEACHER = "teacher"
-}
-
-export interface CourseLoaderObject {
-    course?: properCourse
-}
-
-export interface TeacherIdInfo {
+export interface UserIdInfo {
     id: number
 }
 
@@ -46,56 +45,8 @@ export async function coursesLoader(role: teacherStudentRole, course_id?: number
         courses = courses.filter(course => course.course_id === course_id);
     }
 
-    const teachers = (await Promise.all(courses.map(async course => {
-        const teacher_ids_data = await apiFetch<TeacherIdInfo[]>(`/courses/${course.course_id}/teachers`);
-        if (!teacher_ids_data.ok){
-            // TODO error handling
-        }
-        const teacher_ids = teacher_ids_data.content
-        const teachers_promises = teacher_ids.map(async teacher_id => {
-            const userData = await apiFetch<Backend_user>(`/users/${teacher_id.id}`);
-            if (!userData.ok){
-                // TODO error handling
-            }
-            return mapUser(userData.content);
-        });
-
-        const teachers = await Promise.all(teachers_promises);
-
-        return teachers.map(teacher => {
-            return {
-                name: teacher.user_name,
-                email: teacher.user_email,
-                course_id: course.course_id
-            } as TeacherInfo
-        })
-    }))).flat();
-
-    const students = (await Promise.all(courses.map(async course => {
-        const student_ids_data = await apiFetch<TeacherIdInfo[]>(`/courses/${course.course_id}/students`);
-        if (!student_ids_data.ok){
-            // TODO error handling
-        }
-        const student_ids = student_ids_data.content
-        const student_promises = student_ids.map(async teacher_id => {
-            const userData = await apiFetch<Backend_user>(`/users/${teacher_id.id}`);
-            if (!userData.ok){
-                // TODO error handling
-            }
-            return mapUser(userData.content);
-        });
-
-        const students = await Promise.all(student_promises);
-
-        return students.map(teacher => {
-            return {
-                name: teacher.user_name,
-                email: teacher.user_email,
-                course_id: course.course_id
-            } as StudentInfo
-        })
-    }))).flat();
-
+    const teachers = (await getUsersOfCourse(teacherStudentRole.TEACHER, courses))
+    const students = (await getUsersOfCourse(teacherStudentRole.STUDENT, courses))
 
     return courses.map( (course) => {
         const courseProjects = projects.filter(project => project.course_id === course.course_id);
@@ -115,27 +66,13 @@ export async function coursesLoader(role: teacherStudentRole, course_id?: number
             };
         }
 
-        const shortestDeadlineProject = courseProjects.filter(course => course.project_visible && !course.project_archived).reduce((minProject, project) => {
-            if (project.project_deadline < minProject.project_deadline) {
-                return project;
-            } else {
-                return minProject;
-            }
-        });
-        const firstDeadline = shortestDeadlineProject.project_deadline;
+        const firstDeadline = getShortestDeadline(courseProjects);
 
         const all_projects_info = courseProjects.map(project => {
-            return {
-                project_name: project.project_name,
-                project_archived: project.project_archived,
-                project_visible: project.project_visible,
-                project_deadline: project.project_deadline,
-                project_id: project.project_id,
-            } as SmallProjectInfo;
+            return getSmallProjectInfo(project);
         });
 
         const active_projects = all_projects_info.filter(project => !project.project_archived && project.project_visible).length
-
 
         return {
             teachers: teachers.filter(teacher => teacher.course_id === course.course_id),
@@ -148,6 +85,55 @@ export async function coursesLoader(role: teacherStudentRole, course_id?: number
             course_archived: course.course_archived
         }
     });
+}
+
+function getSmallProjectInfo(project: Project): SmallProjectInfo{
+    return {
+        project_id: project.project_id,
+        project_visible: project.project_visible,
+        project_deadline: project.project_deadline,
+        project_name: project.project_name,
+        project_archived: project.project_archived
+    }
+}
+
+
+function getShortestDeadline(courseProjects: Project[]): string | Date {
+    const shortestDeadlineProject = courseProjects.filter(course => course.project_visible && !course.project_archived).reduce((minProject, project) => {
+        if (project.project_deadline < minProject.project_deadline) {
+            return project;
+        } else {
+            return minProject;
+        }
+    });
+    return shortestDeadlineProject.project_deadline;
+}
+
+async function getUsersOfCourse(role: teacherStudentRole, courses: Course[]): Promise<SmallUserInfo[]>{
+    return (await Promise.all(courses.map(async course => {
+        const user_ids_data = await apiFetch<UserIdInfo[]>(`/courses/${course.course_id}/${role + "s"}`);
+        if (!user_ids_data.ok) {
+            // TODO error handling
+        }
+        const user_ids = user_ids_data.content
+        const user_promises = user_ids.map(async user_id => {
+            const userData = await apiFetch<Backend_user>(`/users/${user_id.id}`);
+            if (!userData.ok) {
+                // TODO error handling
+            }
+            return mapUser(userData.content);
+        });
+
+        const users = await Promise.all(user_promises);
+
+        return users.map(user => {
+            return {
+                name: user.user_name,
+                email: user.user_email,
+                course_id: course.course_id
+            } as SmallUserInfo
+        })
+    }))).flat()
 }
 
 export interface projectsAndCourses {

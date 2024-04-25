@@ -1,5 +1,5 @@
-import {Course, Project} from "../utils/ApiInterfaces.ts";
-import {getAllProjectsAndCourses, teacherStudentRole} from "./loader_helpers/SharedFunctions.ts";
+import {Course, Project, teacherStudentRole} from "../utils/ApiInterfaces.ts";
+import {getAllProjectsAndCourses} from "./loader_helpers/SharedFunctions.ts";
 
 export interface teacherLoaderObject {
     projects: Project[]
