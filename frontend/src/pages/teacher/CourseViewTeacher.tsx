@@ -9,10 +9,10 @@ import CopyLink from "../../components/CopyLink.tsx";
 import Archive from "../../components/Archive.tsx";
 import ManageCourse from "../../components/ManageCourse.tsx";
 import LeaveCourse from "../../components/LeaveCourse.tsx";
-import {CourseLoaderObject} from "../../dataloaders/loader_helpers/SharedFunctions.ts";
 import {useRouteLoaderData} from "react-router-dom";
 import {COURSE_TEACHER} from "../../dataloaders/CourseTeacherLoader.ts";
 import {deadline_to_string} from "../../utils/helper.ts";
+import {CourseLoaderObject} from "../../utils/ApiInterfaces.ts";
 
 export default function CourseViewTeacher(): JSX.Element {
     const data: CourseLoaderObject = useRouteLoaderData(COURSE_TEACHER) as CourseLoaderObject;

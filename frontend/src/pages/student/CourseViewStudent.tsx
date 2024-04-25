@@ -5,10 +5,10 @@ import {Sidebar} from "../../components/Sidebar.tsx";
 import {Table} from "../../components/Table.tsx";
 import {useTranslation} from 'react-i18next';
 import {useRouteLoaderData} from "react-router-dom";
-import {CourseLoaderObject} from "../../dataloaders/loader_helpers/SharedFunctions.ts";
 import {COURSE_STUDENT} from "../../dataloaders/CourseStudentLoader.ts";
 import DefaultErrorPage from "../../components/DefaultErrorPage.tsx";
 import {deadline_to_string} from "../../utils/helper.ts";
+import {CourseLoaderObject} from "../../utils/ApiInterfaces.ts";
 
 export default function CourseViewStudent(): JSX.Element {
 
