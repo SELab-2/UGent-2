@@ -13,7 +13,7 @@ import {deadline_to_string} from "../../utils/helper.ts";
 
 export default function CoursesViewStudent(): JSX.Element {
 
-    const { t } = useTranslation();
+    const {t} = useTranslation();
 
     const data: coursesStudentLoaderObject = useRouteLoaderData(COURSES_STUDENT_ROUTER_ID) as coursesStudentLoaderObject
     const courses_data = data.courses
@@ -23,16 +23,16 @@ export default function CoursesViewStudent(): JSX.Element {
         const deadline_date = course.first_deadline ? new Date(course.first_deadline) : null
 
         let deadline = null
-        if (deadline_date !== null){
+        if (deadline_date !== null) {
             deadline = deadline_to_string(deadline_date)
         }
 
-        return{
+        return {
             course: {
                 name: course.course_name,
                 id: course.course_id,
             },
-            shortestDeadline: deadline,
+            firstUpcomingDeadline: deadline,
             numberOfProjects: course.active_projects
         }
     })

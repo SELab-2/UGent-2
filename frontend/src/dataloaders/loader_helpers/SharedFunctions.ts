@@ -48,7 +48,7 @@ export async function coursesLoader(role: teacherStudentRole, course_id?: number
     const teachers = (await getUsersOfCourse(teacherStudentRole.TEACHER, courses))
     const students = (await getUsersOfCourse(teacherStudentRole.STUDENT, courses))
 
-    return courses.map( (course) => {
+    return courses.map((course) => {
         const courseProjects = projects.filter(project => project.course_id === course.course_id);
 
         if (courseProjects.length === 0) {
@@ -66,7 +66,7 @@ export async function coursesLoader(role: teacherStudentRole, course_id?: number
             };
         }
 
-        const firstDeadline = getShortestDeadline(courseProjects);
+        const firstDeadline = getFirstUpcomingDeadline(courseProjects);
 
         const all_projects_info = courseProjects.map(getSmallProjectInfo);
 
@@ -85,7 +85,7 @@ export async function coursesLoader(role: teacherStudentRole, course_id?: number
     });
 }
 
-function getSmallProjectInfo(project: Project): SmallProjectInfo{
+function getSmallProjectInfo(project: Project): SmallProjectInfo {
     return {
         project_id: project.project_id,
         project_visible: project.project_visible,
@@ -96,18 +96,18 @@ function getSmallProjectInfo(project: Project): SmallProjectInfo{
 }
 
 
-function getShortestDeadline(courseProjects: Project[]): string | Date {
-    const shortestDeadlineProject = courseProjects.filter(course => course.project_visible && !course.project_archived).reduce((minProject, project) => {
+function getFirstUpcomingDeadline(courseProjects: Project[]): string | Date {
+    const first_deadline = courseProjects.filter(course => course.project_visible && !course.project_archived).reduce((minProject, project) => {
         if (project.project_deadline < minProject.project_deadline) {
             return project;
         } else {
             return minProject;
         }
     });
-    return shortestDeadlineProject.project_deadline;
+    return first_deadline.project_deadline;
 }
 
-async function getUsersOfCourse(role: teacherStudentRole, courses: Course[]): Promise<SmallUserInfo[]>{
+async function getUsersOfCourse(role: teacherStudentRole, courses: Course[]): Promise<SmallUserInfo[]> {
     return (await Promise.all(courses.map(async course => {
         const user_ids_data = await apiFetch<UserIdInfo[]>(`/courses/${course.course_id}/${role + "s"}`);
         if (!user_ids_data.ok) {

@@ -12,7 +12,7 @@ import {deadline_to_string} from "../../utils/helper.ts";
 
 export default function CoursesViewTeacher(): JSX.Element {
 
-    const { t } = useTranslation();
+    const {t} = useTranslation();
 
     const data = useRouteLoaderData(COURSES_TEACHER_ROUTER_ID) as coursesTeacherLoaderObject;
     console.log(data.courses);
@@ -25,7 +25,7 @@ export default function CoursesViewTeacher(): JSX.Element {
         const deadline_date = course.first_deadline ? new Date(course.first_deadline) : null
 
         let deadline = null
-        if (deadline_date){
+        if (deadline_date) {
             deadline = deadline_to_string(deadline_date)
         }
 
@@ -34,7 +34,7 @@ export default function CoursesViewTeacher(): JSX.Element {
                 name: course.course_name,
                 id: course.course_id
             },
-            shortestDeadline: deadline,
+            firstUpcomingDeadline: deadline,
             numberOfProjects: course.active_projects
         }
     });
@@ -42,14 +42,14 @@ export default function CoursesViewTeacher(): JSX.Element {
 
     const tableCoursesArchived: TableRowCourses[] = archived_courses.map(course => {
 
-            return {
-                course: {
-                    name: course.course_name,
-                    id: course.course_id
-                },
-                shortestDeadline: null,
-                numberOfProjects: null
-            }
+        return {
+            course: {
+                name: course.course_name,
+                id: course.course_id
+            },
+            firstUpcomingDeadline: null,
+            numberOfProjects: null
+        }
     });
 
     return (
@@ -70,7 +70,7 @@ export default function CoursesViewTeacher(): JSX.Element {
                         <Table title={t('courses.active')} data={tableCoursesActive} ignoreKeys={[]} home={"teacher"}/>
                         <div className={"my-5"}/>
                         <Table title={t('courses.archived')} data={tableCoursesArchived}
-                               ignoreKeys={["shortestDeadline", "numberOfProjects"]} home={"teacher"}/>
+                               ignoreKeys={["firstUpcomingDeadline", "numberOfProjects"]} home={"teacher"}/>
                     </div>
                 </div>
             </div>
