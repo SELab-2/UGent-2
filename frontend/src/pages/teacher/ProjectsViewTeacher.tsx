@@ -59,21 +59,13 @@ export default function ProjectsViewTeacher(): JSX.Element {
                             <SearchBar placeholder={"zoek een project..."}/>
                             <RegularATag link={"teacher/projects/create"} text={t('projects.new_project')} add={true}/>
                         </div>
-                        {active_projects.length > 0 &&
-                        <>
-                            <Table title={t('projects.active')} data={tableProjectsActive} ignoreKeys={["status"]} home={"teacher"}/>
-                            <div className={"my-5"}/>
-                        </>}
-                        {hidden_projects.length > 0 &&
-                            <>
-                                <Table title={t('projects.hidden')} data={tableProjectsHidden}
+                        <Table title={t('projects.active')} data={tableProjectsActive} ignoreKeys={["status"]} home={"teacher"}/>
+                        <div className={"my-5"}/>
+                        <Table title={t('projects.hidden')} data={tableProjectsHidden}
                                ignoreKeys={["status", "numberOfSubmissions"]} home={"teacher"}/>
-                                <div className={"my-5"}/>
-                            </>
-                        }
-                        {archived_projects.length > 0 &&
-                            <Table title={t('projects.archived')} data={tableProjectsArchived}
-                                   ignoreKeys={["status", "numberOfSubmissions", "deadline"]} home={"teacher"}/>}
+                        <div className={"my-5"}/>
+                        <Table title={t('projects.archived')} data={tableProjectsArchived}
+                                   ignoreKeys={["status", "numberOfSubmissions", "deadline"]} home={"teacher"}/>
 
                     </div>
                 </div>

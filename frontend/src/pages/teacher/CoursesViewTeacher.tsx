@@ -67,15 +67,10 @@ export default function CoursesViewTeacher(): JSX.Element {
                             <SearchBar placeholder={t('courses.search_placeholder')}/>
                             <RegularATag link={"teacher/courses/create"} text={t('courses.new_project')} add={true}/>
                         </div>
-                        {active_courses.length > 0 &&
-                        <>
-                            <Table title={t('courses.active')} data={tableCoursesActive} ignoreKeys={[]} home={"teacher"}/>
-                            <div className={"my-5"}/>
-                        </>}
-                        {archived_courses.length > 0 &&
-                            <Table title={t('courses.archived')} data={tableCoursesArchived}
-                                   ignoreKeys={["shortestDeadline", "numberOfProjects"]} home={"teacher"}/>
-                        }
+                        <Table title={t('courses.active')} data={tableCoursesActive} ignoreKeys={[]} home={"teacher"}/>
+                        <div className={"my-5"}/>
+                        <Table title={t('courses.archived')} data={tableCoursesArchived}
+                               ignoreKeys={["shortestDeadline", "numberOfProjects"]} home={"teacher"}/>
                     </div>
                 </div>
             </div>
