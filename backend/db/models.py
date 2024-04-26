@@ -117,3 +117,8 @@ class Submission(SQLModel, table=True):
     group: Group = Relationship(back_populates="submissions")
     student_id: int = Field(default=None, foreign_key="student.id")
     student: Student = Relationship(back_populates="submissions")
+
+
+class Config(SQLModel, table=True):
+    key: str = Field(primary_key=True)
+    value: str
