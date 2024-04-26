@@ -17,7 +17,6 @@ import DefaultErrorPage from "../../components/DefaultErrorPage.tsx";
 
 export default function CourseViewTeacher(): JSX.Element {
     const data: CourseLoaderObject = useRouteLoaderData(COURSE_TEACHER) as CourseLoaderObject;
-    console.log(data)
 
     const { t } = useTranslation();
 
