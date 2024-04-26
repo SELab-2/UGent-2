@@ -4,19 +4,9 @@ import {useRouteLoaderData} from "react-router-dom";
 import {Header} from "../../components/Header.tsx";
 import {Sidebar} from "../../components/Sidebar.tsx";
 import {useTranslation} from "react-i18next";
-import {Course, Project} from "../../utils/ApiInterfaces.ts";
-import ProjectCardTeacher from "./ProjectCardTeacher.tsx";
+import RenderProjectCards from "../../others/helper.tsx";
 
 
-function RenderProjectCards(props: {projects: Project[], courses: Course[]}): JSX.Element {
-    return (
-        <>
-            {props.projects.map((project) => {
-                return <ProjectCardTeacher key={project.project_id} project={project} course={props.courses.filter(e => e.course_id == project.course_id)[0]}/>
-            })}
-        </>
-    )
-}
 export default function HomeTeacher(): JSX.Element {
 
     const data: teacherLoaderObject = useRouteLoaderData(TEACHER_ROUTER_ID) as teacherLoaderObject;
