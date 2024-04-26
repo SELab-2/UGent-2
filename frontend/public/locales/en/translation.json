@@ -129,7 +129,7 @@
         "deadline": "deadline",
         "status": "status",
         "number_of_submissions": "number of submissions",
-        "shortest_deadline": "next deadline",
+        "first_upcoming_deadline": "next deadline",
         "name": "name",
         "email": "email",
         "no_data_yet": "No data yet.",

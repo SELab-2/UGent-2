@@ -10,6 +10,7 @@ import {studentLoaderObject} from "../../dataloaders/StudentLoader.ts";
 import {CompleteProjectStudent, SUBMISSION_STATE} from "../../utils/ApiInterfaces.ts";
 import {ProjectStatus} from "../../types/project.ts";
 import {useTranslation} from 'react-i18next';
+import {deadline_to_string} from "../../utils/helper.ts";
 
 function GenerateTableRowProjects(data: CompleteProjectStudent[]): TableRowProjects[] {
 
@@ -29,8 +30,6 @@ function GenerateTableRowProjects(data: CompleteProjectStudent[]): TableRowProje
                 project_status = t('projects.pending');
         }
 
-        const deadline_date = new Date(project_item.project_deadline)
-        const deadline = `${deadline_date.getHours()}:${deadline_date.getMinutes()} - ${deadline_date.getDate()}/${deadline_date.getMonth()}/${deadline_date.getFullYear()}`
 
         return {
             project: {
@@ -42,7 +41,7 @@ function GenerateTableRowProjects(data: CompleteProjectStudent[]): TableRowProje
                 id: project_item.course_id
             },
             numberOfSubmissions: null,
-            deadline: deadline,
+            deadline: deadline_to_string(project_item.project_deadline),
             status: project_status
         }
     })

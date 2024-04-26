@@ -1,6 +1,7 @@
 export interface Course {
     course_id: number,
-    course_name: string
+    course_name: string,
+    course_archived: boolean
 }
 
 export interface Project {
@@ -65,13 +66,23 @@ export interface properCourse extends Course {
     active_projects: number,
     first_deadline: Date | null | string,
     all_projects: SmallProjectInfo[] | null,
-    teachers: TeacherInfo[]
+    teachers: SmallUserInfo[],
+    students: SmallUserInfo[]
 }
 
-export interface TeacherInfo {
+export interface SmallUserInfo {
     name: string,
     email: string,
     course_id: number,
+}
+
+export interface CourseLoaderObject {
+    course?: properCourse
+}
+
+export enum teacherStudentRole {
+    STUDENT = "student",
+    TEACHER = "teacher"
 }
 
 export interface Token {

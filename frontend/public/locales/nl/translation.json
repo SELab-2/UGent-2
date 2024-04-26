@@ -129,7 +129,7 @@
         "deadline": "deadline",
         "status": "status",
         "number_of_submissions": "aantal indieningen",
-        "shortest_deadline": "eerstvolgende deadline",
+        "first_upcoming_deadline": "eerstvolgende deadline",
         "name": "naam",
         "email": "email",
         "no_data_yet": "Nog geen data beschikbaar.",
