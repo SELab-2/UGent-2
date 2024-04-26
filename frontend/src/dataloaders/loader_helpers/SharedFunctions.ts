@@ -68,9 +68,7 @@ export async function coursesLoader(role: teacherStudentRole, course_id?: number
 
         const firstDeadline = getShortestDeadline(courseProjects);
 
-        const all_projects_info = courseProjects.map(project => {
-            return getSmallProjectInfo(project);
-        });
+        const all_projects_info = courseProjects.map(getSmallProjectInfo);
 
         const active_projects = all_projects_info.filter(project => !project.project_archived && project.project_visible).length
 
