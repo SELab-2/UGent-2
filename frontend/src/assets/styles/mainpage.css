@@ -4,6 +4,11 @@
     --primary-light: #9c9afd;
 }
 
+.login-screen {
+    width: 100vw;
+    height: 100vh;
+}
+
 .main-header {
     width: 100vw;
     height: var(--sidebar-width);

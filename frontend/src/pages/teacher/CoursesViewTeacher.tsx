@@ -65,7 +65,7 @@ export default function CoursesViewTeacher(): JSX.Element {
                     <div className={"table-page is-flex is-flex-direction-column"}>
                         <div className={"is-flex is-align-items-center is-justify-content-space-between"}>
                             <SearchBar placeholder={t('courses.search_placeholder')}/>
-                            <RegularATag link={"teacher/courses/create"} text={t('courses.new_project')} add={true}/>
+                            <RegularATag link={"teacher/courses/create"} text={t('courses.new_course')} add={true}/>
                         </div>
                         <Table title={t('courses.active')} data={tableCoursesActive} ignoreKeys={[]} home={"teacher"}/>
                         <div className={"my-5"}/>

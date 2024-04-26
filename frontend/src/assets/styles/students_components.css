@@ -1,11 +1,11 @@
 .student-main {
     width: calc(100vw - var(--sidebar-width));
+    overflow-y: scroll;
 }
 
 .student-left {
     width: 60vw;
     flex-wrap: wrap;
-    overflow-y: scroll;
 }
 
 .project-card {

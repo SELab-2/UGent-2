@@ -8,7 +8,7 @@
 
 /* ====================================== */
 
-.content {
+.content-checks {
     border: solid;
 
     padding: 20px;
@@ -25,7 +25,7 @@
             .thick {
                 font-weight: bolder;
             }
-    
+
             .thin {
                 font-weight: lighter;
             }
@@ -34,10 +34,10 @@
                 margin-left: 3px;
                 margin-right: 3px;
             }
-        
+
         }
     }
-    
+
     .constraints {
         border: solid;
         border-width: 1px;
@@ -62,7 +62,7 @@
             }
         }
     }
-    
+
 }
 
 
