@@ -8,6 +8,7 @@ import {TableRowCourses} from "../../types/tableRows.ts";
 import {COURSES_TEACHER_ROUTER_ID, coursesTeacherLoaderObject} from "../../dataloaders/CoursesTeacherLoader.ts";
 import {useRouteLoaderData} from "react-router-dom";
 import {useTranslation} from 'react-i18next';
+import {deadline_to_string} from "../../utils/helper.ts";
 
 export default function CoursesViewTeacher(): JSX.Element {
 
@@ -25,7 +26,7 @@ export default function CoursesViewTeacher(): JSX.Element {
 
         let deadline = null
         if (deadline_date){
-            deadline = `${deadline_date.getHours()}:${deadline_date.getMinutes()} - ${deadline_date.getDate()}/${deadline_date.getMonth()}/${deadline_date.getFullYear()}`
+            deadline = deadline_to_string(deadline_date)
         }
 
         return {
