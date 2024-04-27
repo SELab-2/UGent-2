@@ -9,12 +9,12 @@ export default function RenderProjectCards(props: { projects: Project[] | Comple
 
             {props.projects.map((project) => {
                 if ('course_id' in project && props.courses) {
-                    return <Link to={`/teacher/project/${project.project_id}`}>
-                        <ProjectCardTeacher key={project.project_id} project={project} course={props.courses.filter(e => e.course_id == project.course_id)[0]}/>
+                    return <Link to={`/teacher/project/${project.project_id}`} key={project.project_id}>
+                        <ProjectCardTeacher project={project} course={props.courses.filter(e => e.course_id == project.course_id)[0]}/>
                     </Link>;
                 } else if ("submission_state" in project) {
-                    return <Link to={`/student/project/${project.project_id}`}>
-                        <ProjectCardStudent key={project.project_id} project={project} />
+                    return <Link to={`/student/project/${project.project_id}`} key={project.project_id}>
+                        <ProjectCardStudent project={project} />
                     </Link>;
                 }
             })}
