@@ -9,6 +9,7 @@ from controllers.authentication.role_dependencies import ensure_student_in_group
 from controllers.swagger_tags import Tags
 from db.models import Submission, SubmissionState
 from domain.logic.errors import InvalidSubmissionError
+from domain.logic.group import get_group
 from domain.logic.submission import check_submission, create_submission, get_last_submission
 
 submission_router = APIRouter(tags=[Tags.SUBMISSION])
@@ -32,12 +33,15 @@ def make_submission(request: Request, group_id: int, file: UploadFile) -> Submis
         f.write(file_content)
     check_submission(session, group_id, dirname)
 
+    project = get_group(session, group_id).project
+    state = SubmissionState.Approved if project.image_id == "" else SubmissionState.Pending
+
     return create_submission(
         session=session,
         student_id=student.id,
         group_id=group_id,
         message="",
-        state=SubmissionState.Pending,
+        state=state,
         date_time=datetime.datetime.now(),
         filename=filename,
     )

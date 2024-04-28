@@ -92,6 +92,7 @@ class Project(ProjectInput, table=True):  # Inherits from ProjectInput
     course_id: int = Field(default=None, foreign_key="course.id")
     course: Course = Relationship(back_populates="projects")
     groups: list["Group"] = Relationship(back_populates="project")
+    image_id: str
 
 
 class Group(SQLModel, table=True):

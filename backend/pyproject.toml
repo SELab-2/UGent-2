@@ -29,6 +29,7 @@ defusedxml = "^0.7.1"
 sqlalchemy-utils = "0.41.2"
 sqlmodel = "^0.0.16"
 coverage = "^7.4.4"
+docker = "^7.0.0"
 
 [build-system]
 requires = ["poetry-core"]

@@ -35,6 +35,7 @@ def create_project(
         visible=visible,
         max_students=max_students,
         dockerfile=dockerfile,
+        image_id="",
     )
 
     course.projects.append(new_project)
