@@ -58,6 +58,7 @@ def new_project(request: Request, course_id: int, project: ProjectInput) -> Proj
         requirements=project.requirements,
         visible=project.visible,
         max_students=project.max_students,
+        dockerfile=project.dockerfile,
     )
 
 

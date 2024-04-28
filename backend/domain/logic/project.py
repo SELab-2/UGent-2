@@ -19,6 +19,7 @@ def create_project(
     requirements: str,
     visible: bool,
     max_students: int,
+    dockerfile: str,
 ) -> Project:
     """
     Create a project for a certain course.
@@ -33,6 +34,7 @@ def create_project(
         requirements=requirements,
         visible=visible,
         max_students=max_students,
+        dockerfile=dockerfile,
     )
 
     course.projects.append(new_project)
@@ -81,6 +83,7 @@ def update_project(session: Session, project_id: int, project: ProjectInput) -> 
     project_db.name = project.name
     project_db.requirements = project.requirements
     project_db.visible = project.visible
+    project_db.dockerfile = project.dockerfile
     session.commit()
 
 

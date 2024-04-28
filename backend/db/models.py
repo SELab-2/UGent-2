@@ -84,6 +84,7 @@ class ProjectInput(SQLModel):
     requirements: str
     visible: bool
     max_students: int
+    dockerfile: str
 
 
 class Project(ProjectInput, table=True):  # Inherits from ProjectInput

@@ -38,6 +38,7 @@ def fill_database_mock() -> None:
             requirements='{"type": "zip_constraint", "name": "submission.zip", "sub_constraints": []}',
             max_students=3,
             deadline=datetime(2024, 12, 31, 23, 59, 59, tzinfo=tz.LOCAL),
+            dockerfile="",
         )
 
         create_project(
@@ -59,6 +60,7 @@ def fill_database_mock() -> None:
             requirements='{"type": "file_constraint", "name": "klok.java"}',
             max_students=999,
             deadline=datetime(2024, 2, 29, 00, tzinfo=tz.LOCAL),
+            dockerfile="",
         )
 
         algo_project = create_project(
@@ -71,6 +73,7 @@ def fill_database_mock() -> None:
             requirements='{"type": "file_constraint", "name": "sort.py"}',
             max_students=1,
             deadline=datetime(2024, 11, 15, 23, 59, 59, tzinfo=tz.LOCAL),
+            dockerfile="",
         )
 
         web_project = create_project(
@@ -83,6 +86,7 @@ def fill_database_mock() -> None:
             requirements='{"type": "zip_constraint", "name": "submission.zip", "sub_constraints": []}',
             max_students=4,
             deadline=datetime(2024, 10, 30, 23, 59, 59, tzinfo=tz.LOCAL),
+            dockerfile="",
         )
 
         haskell_project = create_project(
@@ -95,6 +99,7 @@ def fill_database_mock() -> None:
             requirements='{"type": "zip_constraint", "name": "submission.zip", "sub_constraints": []}',
             max_students=1,
             deadline=datetime(2023, 7, 17, 22, 33, 44, tzinfo=tz.LOCAL),
+            dockerfile="",
         )
 
         # Create groups for projects
