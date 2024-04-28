@@ -2,7 +2,13 @@ import {JSX} from "react";
 import useAuth from "../hooks/useAuth.ts";
 import {Navigate} from "react-router-dom";
 
-export const DEBUG: boolean = false; // should always be false on the repo.
+let debug = undefined;
+if (import.meta.env.VITE_DEBUG) { // VITE_ prefix required
+    debug = true;
+} else {
+    debug = false;
+}
+export const DEBUG: boolean = debug;
 
 export default function Root(): JSX.Element {
     const {user} = useAuth()
