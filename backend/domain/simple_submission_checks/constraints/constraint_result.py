@@ -39,21 +39,21 @@ class NotPresentConstraintResult(ConstraintResult):
 
 class DirectoryConstraintResult(ConstraintResult):
     type: ConstraintType = ConstraintType.DIRECTORY
-    sub_constraint_results: list[ConstraintResult]
+    sub_constraint_results: list[ConstraintResult] = []
 
 
 class OnlyPresentConstraintResult(ConstraintResult):
     type: ConstraintType = ConstraintType.ONLY_PRESENT
-    sub_constraint_results: list[ConstraintResult]
+    sub_constraint_results: list[ConstraintResult] = []
     should_be_in_but_are_not: list[str]
     should_not_be_in_but_are: list[str]
 
 
 class ZipConstraintResult(ConstraintResult):
     type: ConstraintType = ConstraintType.ZIP
-    sub_constraint_results: list[ConstraintResult]
+    sub_constraint_results: list[ConstraintResult] = []
 
 
 class SubmissionConstraintResult(ConstraintResult):
     type: ConstraintType = ConstraintType.SUBMISSION
-    sub_constraint_results: list[ConstraintResult]
+    sub_constraint_results: list[ConstraintResult] = []
