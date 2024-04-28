@@ -49,7 +49,11 @@ class TestProjectEndpoints(unittest.TestCase):
             "dockerfile": "",
         }
         response = make_authenticated_request(
-            self.client, self.TESTED_USER_ID, "put", UPDATE_PROJECT_URL, json=project_data
+            self.client,
+            self.TESTED_USER_ID,
+            "put",
+            UPDATE_PROJECT_URL,
+            json=project_data,
         )
         assert_status_code(response, status.HTTP_200_OK)
 

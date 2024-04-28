@@ -7,7 +7,8 @@ from docker.models.images import Image
 
 def build_image(dockerfile: str) -> str:
     client = docker.from_env()
-    with tempfile.TemporaryDirectory() as tmpdir, open(f"{tmpdir}/Dockerfile", "w") as f:
-        f.write(dockerfile)
-    image, _ = cast(tuple[Image, Any], client.images.build(dockerfile=f"{tmpdir}/Dockerfile"))
+    with tempfile.TemporaryDirectory() as tmpdir:
+        with open(f"{tmpdir}/Dockerfile", "w") as f:
+            f.write(dockerfile)
+        image, _ = cast(tuple[Image, Any], client.images.build(path=tmpdir))
     return cast(str, image.id)
