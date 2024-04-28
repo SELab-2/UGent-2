@@ -8,6 +8,7 @@ import {PROJECT_STUDENT, ProjectStudentLoaderObject} from "../../dataloaders/Pro
 import {SUBMISSION_STATE} from "../../utils/ApiInterfaces.ts";
 import DefaultErrorPage from "../../components/DefaultErrorPage.tsx";
 import {useTranslation} from "react-i18next";
+import {deadline_to_string} from "../../utils/helper.ts";
 
 export default function ProjectViewStudent(): JSX.Element {
 
@@ -40,14 +41,11 @@ export default function ProjectViewStudent(): JSX.Element {
             lastSubmission: project_data.submission_student_id === member?.user_id
         }
     });
-
-    const deadline_date = new Date(project_data.project_deadline)
-    const deadline = `${deadline_date.getHours()}:${deadline_date.getMinutes()} - ${deadline_date.getDate()}/${deadline_date.getMonth()}/${deadline_date.getFullYear()}`
-
+    
     const project: ProjectStudent = {
         projectName: project_data.project_name,
         courseName: project_data.course_name,
-        deadline: deadline,
+        deadline: deadline_to_string(project_data.project_deadline),
         status: project_status,
         description: project_data.project_description,
         requiredFiles: JSON.parse(project_data.project_requirements) as object,

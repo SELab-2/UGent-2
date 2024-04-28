@@ -1,5 +1,5 @@
-import {CompleteProjectTeacher, Group, SUBMISSION_STATE} from "../utils/ApiInterfaces.ts";
-import {getAllProjectsAndCourses, teacherStudentRole} from "./loader_helpers/SharedFunctions.ts";
+import {CompleteProjectTeacher, Group, SUBMISSION_STATE, teacherStudentRole} from "../utils/ApiInterfaces.ts";
+import {getAllProjectsAndCourses} from "./loader_helpers/SharedFunctions.ts";
 import apiFetch from "../utils/ApiFetch.ts";
 import {Backend_group, Backend_submission} from "../utils/BackendInterfaces.ts";
 import {mapGroupList, mapSubmission} from "../utils/ApiTypesMapper.ts";
@@ -52,14 +52,15 @@ export async function LoadProjectsForTeacher(filter_on_current: boolean = false,
             try {
                 const submissionData = await apiFetch<Backend_submission>(`/groups/${group.group_id}/submission`);
                 if (!submissionData.ok){
-                    // TODO error handling
+                    continue
                 }
                 const submissionBackend = submissionData.content
                 if (submissionBackend) {
                     const submission = mapSubmission(submissionData.content)
-                    console.log(submission)
-                    statistics[submission.submission_state] += 1;
-                    amount++;
+                    if (submission.submission_id !== undefined){
+                        statistics[submission.submission_state] += 1;
+                        amount++;
+                    }
                 }
             } catch (e) {
                 //console.log(e);

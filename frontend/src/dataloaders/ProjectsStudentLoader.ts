@@ -1,5 +1,12 @@
-import {CompleteProjectStudent, Group, Submission, SUBMISSION_STATE, User} from "../utils/ApiInterfaces.ts";
-import {getAllProjectsAndCourses, teacherStudentRole} from "./loader_helpers/SharedFunctions.ts";
+import {
+    CompleteProjectStudent,
+    Group,
+    Submission,
+    SUBMISSION_STATE,
+    teacherStudentRole,
+    User
+} from "../utils/ApiInterfaces.ts";
+import {getAllProjectsAndCourses} from "./loader_helpers/SharedFunctions.ts";
 import apiFetch from "../utils/ApiFetch.ts";
 import {Backend_group, Backend_submission, Backend_user} from "../utils/BackendInterfaces.ts";
 import {mapGroup, mapSubmission, mapUser} from "../utils/ApiTypesMapper.ts";

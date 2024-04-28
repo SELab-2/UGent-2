@@ -6,64 +6,43 @@ import {Table} from "../../components/Table.tsx";
 import {RegularATag} from "../../components/RegularATag.tsx";
 import {TableRowProjects} from "../../types/tableRows.ts";
 import {useRouteLoaderData} from "react-router-dom";
-import {teacherLoaderObject} from "../../dataloaders/TeacherLoader.ts";
-import {PROJECTS_TEACHER_ROUTER_ID} from "../../dataloaders/ProjectsTeacherLoader.ts";
-import { useTranslation } from 'react-i18next';
+import {PROJECTS_TEACHER_ROUTER_ID, projectsTeacherLoaderObject} from "../../dataloaders/ProjectsTeacherLoader.ts";
+import {useTranslation} from 'react-i18next';
+import {CompleteProjectTeacher} from "../../utils/ApiInterfaces.ts";
+import {deadline_to_string} from "../../utils/helper.ts";
 
+
+function GenerateTableRowProjects(data: CompleteProjectTeacher[]): TableRowProjects[] {
+    return data.map((project_item) => {
+
+        return {
+            project: {
+                name: project_item.project_name,
+                id: project_item.project_id
+            },
+            course: {
+                name: project_item.course_name,
+                id: project_item.course_id
+            },
+            status: null,
+            numberOfSubmissions: project_item.submission_amount,
+            deadline: deadline_to_string(project_item.project_deadline),
+        }
+    })
+}
 export default function ProjectsViewTeacher(): JSX.Element {
+
+    const data: projectsTeacherLoaderObject = useRouteLoaderData(PROJECTS_TEACHER_ROUTER_ID) as projectsTeacherLoaderObject
+
+    const active_projects = data.projects.filter((project) => !project.project_archived && project.project_visible);
+    const hidden_projects = data.projects.filter((project) => !project.project_archived && !project.project_visible);
+    const archived_projects = data.projects.filter((project) => project.project_archived);
 
     const { t } = useTranslation();
 
-    const tableProjectsActive: TableRowProjects[] = [
-        {
-            project: {
-                name: "RSA security",
-                id: 1478
-            },
-            course: {
-                name: "Information Security",
-                id: 9632,
-            },
-            status: null,
-            numberOfSubmissions: 35,
-            deadline: "23:59 - 23/02/2024"
-        },
-        {
-            project: {
-                name: "Bachelorproef",
-                id: 7536
-            },
-            course: {
-                name: "Rechtsgeschiedenis",
-                id: 4521,
-            },
-            status: null,
-            numberOfSubmissions: 3,
-            deadline: "23:59 - 21/03/2024"
-        }
-    ];
-
-    const data: teacherLoaderObject = useRouteLoaderData(PROJECTS_TEACHER_ROUTER_ID) as teacherLoaderObject
-    console.log(data.projects)
-
-    const tableProjectsHidden: TableRowProjects[] = [];
-
-    const tableProjectsArchived: TableRowProjects[] = [
-        {
-            project: {
-                name: "samenvatting \"The Social Contract\"",
-                id: 6874
-            },
-            course: {
-                name: "Rechtsgeschiedenis",
-                id: 4521,
-            },
-            status: null,
-            numberOfSubmissions: null,
-            deadline: null
-        }
-    ];
-
+    const tableProjectsActive: TableRowProjects[] = GenerateTableRowProjects(active_projects);
+    const tableProjectsHidden: TableRowProjects[] = GenerateTableRowProjects(hidden_projects);
+    const tableProjectsArchived: TableRowProjects[] = GenerateTableRowProjects(archived_projects);
 
     return (
         <>
@@ -86,7 +65,8 @@ export default function ProjectsViewTeacher(): JSX.Element {
                                ignoreKeys={["status", "numberOfSubmissions"]} home={"teacher"}/>
                         <div className={"my-5"}/>
                         <Table title={t('projects.archived')} data={tableProjectsArchived}
-                               ignoreKeys={["status", "numberOfSubmissions", "deadline"]} home={"teacher"}/>
+                                   ignoreKeys={["status", "numberOfSubmissions", "deadline"]} home={"teacher"}/>
+
                     </div>
                 </div>
             </div>

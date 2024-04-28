@@ -1,16 +1,11 @@
-import {Group, Project, Course, Submission, User} from "./ApiInterfaces.ts";
-import {
-    Backend_group,
-    Backend_Project,
-    Backend_Course,
-    Backend_submission,
-    Backend_user
-} from "./BackendInterfaces.ts";
+import {Course, Group, Project, Submission, User} from "./ApiInterfaces.ts";
+import {Backend_Course, Backend_group, Backend_Project, Backend_submission, Backend_user} from "./BackendInterfaces.ts";
 
 export function mapCourse(courseData: Backend_Course): Course{
     return {
         course_id: courseData.id,
         course_name: courseData.name,
+        course_archived: courseData.archived
     }
 }
 

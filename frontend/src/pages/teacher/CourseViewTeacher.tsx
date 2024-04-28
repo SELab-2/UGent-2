@@ -4,61 +4,55 @@ import {Sidebar} from "../../components/Sidebar.tsx";
 import {RegularATag} from "../../components/RegularATag.tsx";
 import {Table} from "../../components/Table.tsx";
 import {TableRowOverviewProjects, TableRowPeople} from "../../types/tableRows.ts";
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 import CopyLink from "../../components/CopyLink.tsx";
 import Archive from "../../components/Archive.tsx";
 import ManageCourse from "../../components/ManageCourse.tsx";
 import LeaveCourse from "../../components/LeaveCourse.tsx";
+import {useRouteLoaderData} from "react-router-dom";
+import {COURSE_TEACHER} from "../../dataloaders/CourseTeacherLoader.ts";
+import {deadline_to_string} from "../../utils/helper.ts";
+import {CourseLoaderObject} from "../../utils/ApiInterfaces.ts";
+import DefaultErrorPage from "../../components/DefaultErrorPage.tsx";
 
 export default function CourseViewTeacher(): JSX.Element {
+    const data: CourseLoaderObject = useRouteLoaderData(COURSE_TEACHER) as CourseLoaderObject;
 
     const { t } = useTranslation();
 
-    const tableProjects: TableRowOverviewProjects[] = [
-        {
+    if (!data || !data.course) {
+        return <DefaultErrorPage title={t("course_error.title")} body={t("course_error.text")}/>
+    }
+
+    const tableProjects: TableRowOverviewProjects[] = data.course.all_projects?.map((project) => {
+        return {
             project: {
-                name: "RSA security",
-                id: 1234
+                name: project.project_name,
+                id: project.project_id
             },
             status: null,
-            deadline: "23:59 - 27/02/2024"
-        },
-        {
-            project: {
-                name: "Symmetric encryption",
-                id: 5897
-            },
-            status: null,
-            deadline: "23:59 - 03/03/2024"
+            deadline: deadline_to_string(project.project_deadline)
         }
-    ];
+    }) ?? [];
 
-    const teachers: TableRowPeople[] = [
-        {
-            name: "Maarten Vermeiren",
-            email: "maarten.vermeiren@ugent.be"
-        },
-        {
-            name: "Anke De Groot",
-            email: "anke.degroot@ugent.be"
+    const teachers: TableRowPeople[] = data.course.teachers.map((teacher) => {
+        return{
+            name: teacher.name,
+            email: teacher.email
         }
-    ];
+    });
 
-    const students: TableRowPeople[] = [
-        {
-            name: "Bart De Jong",
-            email: "bart.dejong@ugent.be"
-        },
-        {
-            name: "Siemen Janssens",
-            email: "siemen.janssens@ugent.be"
+    const students: TableRowPeople[] = data.course.students.map((student) => {
+        return{
+            name: student.name,
+            email: student.email
         }
-    ];
+    });
 
     return (
         <>
             <div className={"main-header"}>
-                <Header page_title={"...my_course..."} home={"teacher"}/>
+                <Header page_title={data.course.course_name} home={"teacher"}/>
             </div>
             <div className={"main-content is-flex is-flex-direction-row"}>
                 <div className={"side-bar is-flex is-justify-content-center"}>

@@ -2,7 +2,8 @@ import {SUBMISSION_STATE} from "./ApiInterfaces.ts";
 
 export interface Backend_Course {
     id: number,
-    name: string
+    name: string,
+    archived: boolean,
 }
 
 export interface Backend_Project {

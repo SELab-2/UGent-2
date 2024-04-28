@@ -1,4 +1,5 @@
-import {courseLoader, CourseLoaderObject, teacherStudentRole} from "./loader_helpers/SharedFunctions.ts";
+import {courseLoader} from "./loader_helpers/SharedFunctions.ts";
+import {CourseLoaderObject, teacherStudentRole} from "../utils/ApiInterfaces.ts";
 
 export const COURSE_TEACHER = "course_teacher";
 
