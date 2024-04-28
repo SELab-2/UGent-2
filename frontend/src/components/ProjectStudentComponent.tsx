@@ -91,26 +91,25 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
                         </div>
                         <div className="field-body">
                             <ul className="field"> {/* Deze moet blijven */}
-                                {props.project.submission != null &&
-                                    <li className={"mb-3"}>
-                                        <label className={"mr-3"}>{props.project.submission}</label>
-                                        <button className="button">
-                                            <FaDownload/>
-                                        </button>
-                                    </li>
-                                }
-                                <li>
+                                <div className="submission-file-download-upload">
+                                    {props.project.submission != null &&
+                                        <div className={"submission-file-download mb-3"}>
+                                            <label className={"mr-3"}>{props.project.submission}</label>
+                                            <button className="button">
+                                                <FaDownload/>
+                                            </button>
+                                        </div>
+                                    }
                                     <div className="field is-horizontal">
                                         <label className="file-label">
                                             <input className="file-input" type="file" name="resume"/>
                                             <span className="file-cta">
-                                            <span className="file-icon"><FaUpload/></span>
-                                            <span className="file-label">{t('project.submission.choose_file')}</span>
-                                    </span>
-                                            <span className="file-name">This_is_the_file.zip</span>
+                                                <span className="file-icon"><FaUpload/></span>
+                                                <span className="file-label">{t('project.submission.choose_file')}</span>
+                                            </span>
                                         </label>
                                     </div>
-                                </li>
+                                </div>
                             </ul>
                         </div>
                     </div>

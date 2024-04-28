@@ -52,3 +52,16 @@
     background-color: var(--primary-light);
     border-bottom: thin solid;
 }
+
+.submission-file-download {
+    display: flex;
+    flex-direction: row;
+    width: min-content;
+}
+
+.submission-file-download-upload {
+    display: flex;
+    flex-direction: row;
+    width: min-content;
+    gap: 10px;
+}
