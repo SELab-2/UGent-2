@@ -44,10 +44,6 @@ export function CreateProject(): JSX.Element {
                     <Sidebar home={"teacher"}/>
                 </div>
                 <div className={"student-main my-3 is-flex is-flex-direction-column"}>
-                    {/* TODO: Should be moved to same class as the hooks*/}
-                    <div className={"mx-5"}>
-                        <RegularButton placeholder={t('create_project.save_button')} add={false} onClick={() => {}}/>
-                    </div>
                     <ProjectTeacherComponent project={emptyProjectTeacher}/>
                 </div>
             </div>
