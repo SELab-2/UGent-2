@@ -1,13 +1,19 @@
 import contextlib
-import os
+import secrets
 from datetime import UTC, datetime, timedelta
 
 import jwt
+from sqlalchemy.exc import ProgrammingError
+from sqlmodel import Session
 
-from db.models import User
+from db.extensions import engine
+from db.models import Config, User
 
-# Zeker aanpassen in production
-jwt_secret = os.getenv("JWT_SECRET", "secret")
+with Session(engine) as session:
+    jwt_secret_obj = None
+    with contextlib.suppress(ProgrammingError):
+        jwt_secret_obj = session.get(Config, "jwt_secret")
+    jwt_secret = jwt_secret_obj.value if jwt_secret_obj else secrets.token_urlsafe(64)
 
 
 def verify_token(token: str) -> int | None:
