@@ -8,6 +8,7 @@ from pydantic import BaseModel
 
 from domain.simple_submission_checks.constraints.constraint_result import ConstraintResult, ZipConstraintResult
 from domain.simple_submission_checks.constraints.directory_constraint import DirectoryConstraint
+from domain.simple_submission_checks.constraints.extension_not_present_constraint import ExtensionNotPresentConstraint
 from domain.simple_submission_checks.constraints.file_constraint import FileConstraint
 from domain.simple_submission_checks.constraints.not_present_constraint import NotPresentConstraint
 from domain.simple_submission_checks.constraints.only_present_constraint import OnlyPresentConstraint
@@ -16,7 +17,13 @@ from domain.simple_submission_checks.constraints.only_present_constraint import 
 class ZipConstraint(BaseModel):
     type: Literal["zip_constraint"] = "zip_constraint"
     name: str
-    sub_constraints: list[DirectoryConstraint | FileConstraint | NotPresentConstraint | OnlyPresentConstraint]
+    sub_constraints: list[
+        DirectoryConstraint |
+        FileConstraint |
+        NotPresentConstraint |
+        OnlyPresentConstraint |
+        ExtensionNotPresentConstraint
+        ]
 
     def validate_constraint(self, path: Path) -> ConstraintResult:
         directory = os.listdir(path)

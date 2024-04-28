@@ -9,6 +9,7 @@ from domain.simple_submission_checks.constraints.constraint_result import (
     ConstraintResult,
     DirectoryConstraintResult,
 )
+from domain.simple_submission_checks.constraints.extension_not_present_constraint import ExtensionNotPresentConstraint
 from domain.simple_submission_checks.constraints.file_constraint import FileConstraint
 from domain.simple_submission_checks.constraints.not_present_constraint import NotPresentConstraint
 
@@ -19,10 +20,16 @@ if TYPE_CHECKING:
 class DirectoryConstraint(BaseModel):
     type: Literal["directory_constraint"] = "directory_constraint"
     name: str
-    sub_constraints: list[FileConstraint | NotPresentConstraint | OnlyPresentConstraint | DirectoryConstraint]
+    sub_constraints: list[
+        FileConstraint |
+        NotPresentConstraint |
+        OnlyPresentConstraint |
+        DirectoryConstraint |
+        ExtensionNotPresentConstraint
+        ]
 
     def validate_constraint(self, path: Path) -> ConstraintResult:
-        dir_path = path/self.name
+        dir_path = path / self.name
         if not Path.is_dir(dir_path):
             return DirectoryConstraintResult(name=self.name, is_ok=False, sub_constraint_results=[])
 

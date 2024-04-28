@@ -37,6 +37,11 @@ class NotPresentConstraintResult(ConstraintResult):
     type: ConstraintType = ConstraintType.NOT_PRESENT
 
 
+class ExtensionNotPresentConstraintResult(ConstraintResult):
+    type: ConstraintType = ConstraintType.NOT_PRESENT
+    files_with_extension: list[str]
+
+
 class DirectoryConstraintResult(ConstraintResult):
     type: ConstraintType = ConstraintType.DIRECTORY
     sub_constraint_results: list[ConstraintResult]
