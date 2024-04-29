@@ -14,8 +14,8 @@ def build_image(dockerfile: str) -> str:
     return cast(str, image.id)
 
 
-def run_container(image_id: str) -> bool:
+def run_container(image_id: str) -> tuple[str, bool]:
     client = docker.from_env()
     container = client.containers.run(image_id, detach=True)
     res = container.wait()
-    return res["StatusCode"] == 0
+    return container.logs().decode("utf-8"), res["StatusCode"] == 0

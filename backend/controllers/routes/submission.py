@@ -21,11 +21,12 @@ submission_router = APIRouter(tags=[Tags.SUBMISSION])
 def run_docker_checks(submission_id: int) -> None:
     with Session(engine) as session:
         submission = get_submission(session, submission_id)
-        res = run_container(submission.group.project.image_id)
+        logs, res = run_container(submission.group.project.image_id)
         if res:
             submission.state = SubmissionState.Approved
         else:
             submission.state = SubmissionState.Rejected
+        submission.message = logs
         session.commit()
 
 
