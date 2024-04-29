@@ -24,6 +24,10 @@ export default function CreateCourse(): JSX.Element {
         }
     };
 
+    const handleButtonClick = () => {
+        void createCourse_local();
+    };
+
     return (
         <>
             <div className={"main-header"}>
@@ -46,7 +50,7 @@ export default function CreateCourse(): JSX.Element {
                     <div className={"is-flex is-justify-content-center"}>
                         {/*Waiting for the post requests to implement the on click*/}
                         <RegularButton placeholder={t('create_course.confirm')} add={false}
-                                       onClick={createCourse_local}/>
+                                       onClick={handleButtonClick}/>
                     </div>
                 </div>
             </div>
