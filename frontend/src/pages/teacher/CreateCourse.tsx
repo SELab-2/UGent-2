@@ -5,17 +5,24 @@ import {Sidebar} from "../../components/Sidebar.tsx";
 import {RegularButton} from "../../components/RegularButton.tsx";
 import {useTranslation} from 'react-i18next';
 import {createCourse} from "../../utils/api/Teacher.ts";
+import {useNavigate} from "react-router-dom";
 
 export default function CreateCourse(): JSX.Element {
     const [courseName, setCourseName] = useState<string>("");
 
     const {t} = useTranslation();
 
-    const createCourse_local = () => {
-        // todo: what after succes/failure
-        // Default: archived false
-        void createCourse(courseName)
-    }
+    const navigate = useNavigate();
+
+    const createCourse_local = async () => {
+        try {
+            const course = await createCourse(courseName);
+            navigate(`/teacher/course/${course.course_id}`);
+        } catch (error) {
+            console.error("Error creating course:", error);
+            alert("There was an error making the course, please try again.");
+        }
+    };
 
     return (
         <>
