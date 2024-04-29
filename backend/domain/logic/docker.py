@@ -16,5 +16,6 @@ def build_image(dockerfile: str) -> str:
 
 def run_container(image_id: str) -> bool:
     client = docker.from_env()
-    container = client.containers.run(image_id, detach=True, remove=True)
-    return container.wait() == 0
+    container = client.containers.run(image_id, detach=True)
+    res = container.wait()
+    return res["StatusCode"] == 0
