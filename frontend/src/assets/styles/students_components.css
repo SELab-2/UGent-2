@@ -65,3 +65,20 @@
     width: min-content;
     gap: 10px;
 }
+
+.highlight {
+    color: red;
+}
+
+.fixated {
+    position: fixed;
+    height: 60px;
+    width: 100%;
+    background-color: white;
+    padding-top: 10px;
+}
+
+.fixated-filler {
+    height: 60px;
+    background-color: white;
+}
