@@ -17,7 +17,7 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
 
     const { t } = useTranslation();
 
-    let selectedFile: File | undefined = undefined; // TODO: initialize with actual file and export on save
+    // let selectedFile: File | undefined = undefined; // TODO: initialize with actual file and export on save
     const [selectedFileName, setSelectedFileName] = useState<string | null>(props.project.submission);
     const [newSelectedFile, setNewSelectedFile] = useState<boolean>(false);
 
@@ -25,12 +25,12 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
         console.log(files);
         if (files !== null) {
             if (files.length > 0) {
-                selectedFile = files[0];
+                // selectedFile = files[0]; // uncommented for eslint error
                 setSelectedFileName(files[0].name);
                 setNewSelectedFile(true);
             }
         }
-    };
+    }
 
     return (
         <>
