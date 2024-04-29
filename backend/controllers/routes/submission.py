@@ -45,9 +45,10 @@ def make_submission(request: Request, group_id: int, file: UploadFile, tasks: Ba
     filename = f"{dirname}/{file.filename}"
     with open(filename, "wb") as f:
         f.write(file_content)
-    check_submission(session, group_id, dirname)
-
     project = get_group(session, group_id).project
+    if project.requirements != "":
+        check_submission(session, group_id, dirname)
+
     state = SubmissionState.Approved if project.image_id == "" else SubmissionState.Pending
 
     submission = create_submission(
