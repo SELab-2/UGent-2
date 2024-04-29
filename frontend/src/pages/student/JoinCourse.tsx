@@ -1,23 +1,22 @@
 import {JSX} from "react";
 import {useTranslation} from "react-i18next";
 import {Link, useRouteLoaderData} from "react-router-dom";
-import ApiFetch from "../../utils/ApiFetch.ts";
 import {JOIN_COURSE, JoinCourseObject} from "../../dataloaders/JoinCourse.ts";
+import {join_course} from "../../utils/api/Student.ts";
 
 export default function JoinCourseScreen(): JSX.Element {
 
     const {t} = useTranslation();
-    const data = useRouteLoaderData(JOIN_COURSE) as JoinCourseObject;
-    if (data.error) {
-        return joinCourseError(data.error);
+    const {course_id, course_name, error} = useRouteLoaderData(JOIN_COURSE) as JoinCourseObject;
+    if (error) {
+        return joinCourseError(error);
     }
     return (
-
         <div>
-            <h1>{`${t('join_course.message')} ${data.course_name}?`}</h1>
+            <h1>{`${t('join_course.message')} ${course_name}?`}</h1>
             <a onClick={() => {
-                joinCourse(data.course_id);
-                window.location.replace(`/student/course/${data.course_id}`)
+                join_course(course_id);
+                window.location.replace(`/student/course/${course_id}`)
             }}>{t('join_course.join')}</a>
             <Link to={"/student"}>{t('join_course.return_home')}</Link>
         </div>
@@ -31,9 +30,4 @@ function joinCourseError(error: string): JSX.Element {
             <h1>{error}</h1>
         </div>
     )
-}
-
-function joinCourse(course_id: number) {
-    // Do something
-    void ApiFetch<void>(`/student/courses/${course_id}/join`, {method: 'POST'});
 }
