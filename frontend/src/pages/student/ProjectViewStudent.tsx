@@ -50,6 +50,7 @@ export default function ProjectViewStudent(): JSX.Element {
         status: project_status,
         description: project_data.project_description,
         requiredFiles: JSON.parse(project_data.project_requirements) as object,
+        group_id: project_data.group_id,
         groupMembers: groupMembers,
         maxGroupMembers: project_data.project_max_students,
         submission: project_data.submission_file

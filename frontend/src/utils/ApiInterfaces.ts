@@ -42,6 +42,7 @@ export interface CompleteProject extends Project, Course {
 }
 
 export interface CompleteProjectStudent extends CompleteProject {
+    group_id: number,
     submission_state: SUBMISSION_STATE,
     submission_student_id: number | undefined,
     group_members: User[],

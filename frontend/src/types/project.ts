@@ -31,6 +31,7 @@ export type ProjectStudent = {
     status: ProjectStatus,
     description: string,
     requiredFiles: object,
+    group_id: number,
     groupMembers: {
         name: string,
         email: string,

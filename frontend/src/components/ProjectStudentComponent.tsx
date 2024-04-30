@@ -7,6 +7,7 @@ import SimpleTests from "./SimpleTests/SimpleTests.tsx";
 import {TeacherOrStudent} from "./SimpleTests/TeacherOrStudentEnum.tsx";
 import {useTranslation} from 'react-i18next';
 import {make_submission} from "../utils/api/Submission.ts";
+import {Submission} from "../utils/ApiInterfaces.ts";
 
 
 export default function ProjectStudentComponent(props: { project: ProjectStudent }): JSX.Element {
@@ -15,11 +16,23 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
 
     const {t} = useTranslation();
     const [file, setFile] = useState<File | undefined>(undefined)
+    const [error, setError] = useState<string>('')
+    const [success, setSuccess] = useState<string>('')
 
-    function submitFile() {
-        if (file !== undefined){
-            console.log(file.name, file.size)
-            make_submission(1, file)
+
+    async function submitFile() {
+        if (file !== undefined) {
+            const submission: string | Submission = await make_submission(props.project.group_id, file)
+            props.project.status = ProjectStatus.PENDING
+            if (typeof submission === 'string'){
+                setError(submission) // TODO translation
+                setSuccess('')
+                props.project.status = ProjectStatus.FAILED
+            }else{
+                props.project.status = ProjectStatus.SUCCESS
+                setSuccess("The submission has been successful") // TODO translation
+                setError('')
+            }
         }
     }
 
@@ -29,6 +42,17 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
         }
     }
 
+    async function downloadLatestSubmission() {
+        const response = await fetch(`groups/${props.project.group_id}/submission/file`)
+        const blob = await response.blob();
+        const a = document.createElement('a');
+        a.href = window.URL.createObjectURL(blob);
+        a.download = props.project.submission ?? "submission.zip";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    }
+
     return (
         <>
             {!is_in_group &&
@@ -36,6 +60,7 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
                     {t('project.not_in_group')}
                 </div>
             }
+
             <FieldWithLabel fieldLabel={t('project.name')} fieldBody={props.project.projectName} arrow={true}/>
             <FieldWithLabel fieldLabel={t('project.course')} fieldBody={props.project.courseName} arrow={true}/>
             <FieldWithLabel fieldLabel={t('project.deadline')} fieldBody={props.project.deadline} arrow={true}/>
@@ -108,7 +133,10 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
                                 {props.project.submission != null &&
                                     <li className={"mb-3"}>
                                         <label className={"mr-3"}>{props.project.submission}</label>
-                                        <button className="button">
+                                        <button
+                                            className="button"
+                                            onClick={downloadLatestSubmission}
+                                        >
                                             <FaDownload/>
                                         </button>
                                     </li>
@@ -130,10 +158,12 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
                             </ul>
                         </div>
                     </div>
+                    {success && <div className={"notification is-success"} style={{width: "75%"}}>{success}</div>}
+                    {error && <div className={"notification is-danger"} style={{width: "75%"}}>{error}</div>}
                     <div className="columns is-mobile is-centered column is-half">
                         <button className="button is-medium is-center"
                                 style={{backgroundColor: "#9c9afd"}}
-                                onClick={submitFile}
+                                onClick={() => void submitFile()}
                         >{t('project.confirm')}</button>
                     </div>
                 </div>
