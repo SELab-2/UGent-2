@@ -43,6 +43,7 @@ export default function ProjectViewStudent(): JSX.Element {
     });
     
     const project: ProjectStudent = {
+        projectId: project_data.project_id,
         projectName: project_data.project_name,
         courseName: project_data.course_name,
         deadline: deadline_to_string(project_data.project_deadline),

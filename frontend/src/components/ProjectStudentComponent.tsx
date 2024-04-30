@@ -6,6 +6,7 @@ import {ProjectStatus, ProjectStudent} from "../types/project.ts";
 import SimpleTests from "./SimpleTests/SimpleTests.tsx";
 import {TeacherOrStudent} from "./SimpleTests/TeacherOrStudentEnum.tsx";
 import {useTranslation} from 'react-i18next';
+import {make_submission} from "../utils/api/Submission.ts";
 
 
 export default function ProjectStudentComponent(props: { project: ProjectStudent }): JSX.Element {
@@ -15,10 +16,10 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
     const {t} = useTranslation();
     const [file, setFile] = useState<File | undefined>(undefined)
 
-
     function submitFile() {
         if (file !== undefined){
             console.log(file.name, file.size)
+            make_submission(1, file)
         }
     }
 

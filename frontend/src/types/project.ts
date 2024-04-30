@@ -24,6 +24,7 @@ export enum ProjectStatus {
 }
 
 export type ProjectStudent = {
+    projectId: number,
     projectName: string,
     courseName: string,
     deadline: string,
