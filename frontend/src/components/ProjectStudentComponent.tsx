@@ -135,7 +135,7 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
                                         <label className={"mr-3"}>{props.project.submission}</label>
                                         <button
                                             className="button"
-                                            onClick={downloadLatestSubmission}
+                                            onClick={() => void downloadLatestSubmission()}
                                         >
                                             <FaDownload/>
                                         </button>
