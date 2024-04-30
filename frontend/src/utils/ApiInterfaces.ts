@@ -65,9 +65,9 @@ export interface SmallProjectInfo {
 export interface properCourse extends Course {
     active_projects: number,
     first_deadline: Date | null | string,
-    all_projects: SmallProjectInfo[] | null,
-    teachers: SmallUserInfo[],
-    students: SmallUserInfo[]
+    all_projects: (SmallProjectInfo | undefined)[] | null,
+    teachers: (SmallUserInfo | undefined)[],
+    students: (SmallUserInfo|undefined)[]
 }
 
 export interface SmallUserInfo {
