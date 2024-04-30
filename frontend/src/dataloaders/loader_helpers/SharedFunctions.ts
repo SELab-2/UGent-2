@@ -73,8 +73,8 @@ export async function coursesLoader(role: teacherStudentRole, course_id?: number
         const active_projects = all_projects_info.filter(project => !project.project_archived && project.project_visible).length
 
         return {
-            teachers: teachers.filter(teacher => teacher && teacher.course_id === course.course_id),
-            students: students.filter(student => student && student.course_id === course.course_id),
+            teachers: teachers.filter(teacher => teacher && teacher.course_id === course.course_id) as SmallUserInfo[],
+            students: students.filter(student => student && student.course_id === course.course_id) as SmallUserInfo[],
             active_projects: active_projects,
             first_deadline: firstDeadline,
             all_projects: all_projects_info,
