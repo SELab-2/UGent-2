@@ -1,4 +1,4 @@
-import {JSX} from "react";
+import {ChangeEvent, JSX, useState} from "react";
 import FieldWithLabel from "./FieldWithLabel.tsx";
 import {FaCheck, FaUpload} from "react-icons/fa";
 import {FaDownload} from "react-icons/fa6";
@@ -9,12 +9,24 @@ import {useTranslation} from 'react-i18next';
 
 
 export default function ProjectStudentComponent(props: { project: ProjectStudent }): JSX.Element {
-
-
     // true als er een groep is, anders false.
     const is_in_group = props.project.groupMembers && props.project.groupMembers.length > 0;
 
-    const { t } = useTranslation();
+    const {t} = useTranslation();
+    const [file, setFile] = useState<File | undefined>(undefined)
+
+
+    function submitFile() {
+        if (file !== undefined){
+            console.log(file.name, file.size)
+        }
+    }
+
+    function selectFile(event: ChangeEvent<HTMLInputElement>) {
+        if (event.target?.files) {
+            setFile(event?.target?.files[0])
+        }
+    }
 
     return (
         <>
@@ -39,7 +51,8 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
                     </div>
                 </div>
             }
-            <FieldWithLabel fieldLabel={"> " + t('project.description')} fieldBody={props.project.description} arrow={false}/>
+            <FieldWithLabel fieldLabel={"> " + t('project.description')} fieldBody={props.project.description}
+                            arrow={false}/>
             {is_in_group && props.project.groupMembers &&
                 <div>
                     <div className="field is-horizontal">
@@ -102,12 +115,14 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
                                 <li>
                                     <div className="field is-horizontal">
                                         <label className="file-label">
-                                            <input className="file-input" type="file" name="resume"/>
+                                            <input className="file-input" type="file" name="resume"
+                                                   onChange={event => selectFile(event)}/>
                                             <span className="file-cta">
                                             <span className="file-icon"><FaUpload/></span>
                                             <span className="file-label">{t('project.submission.choose_file')}</span>
                                     </span>
-                                            <span className="file-name">This_is_the_file.zip</span>
+                                            <span
+                                                className="file-name">{file ? file.name : "This_is_the_file.zip"}</span>
                                         </label>
                                     </div>
                                 </li>
@@ -116,7 +131,9 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
                     </div>
                     <div className="columns is-mobile is-centered column is-half">
                         <button className="button is-medium is-center"
-                                style={{backgroundColor: "#9c9afd"}}>{t('project.confirm')}</button>
+                                style={{backgroundColor: "#9c9afd"}}
+                                onClick={submitFile}
+                        >{t('project.confirm')}</button>
                     </div>
                 </div>
             }
