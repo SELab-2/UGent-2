@@ -5,14 +5,14 @@ import {useTranslation} from "react-i18next";
 export default function AddWarning(): JSX.Element {
     const [modalActive, setModalActive] = useState(false);
 
-    const { t } = useTranslation();
+    const {t} = useTranslation();
 
     const changeModal = () => {
         setModalActive(!modalActive);
     };
 
     return (
-        <>
+        <td>
             <button className="js-modal-trigger button is-rounded is-small" onClick={changeModal}>
                 +
             </button>
@@ -29,12 +29,14 @@ export default function AddWarning(): JSX.Element {
                         </p>
                     </section>
                     <footer className="modal-card-foot is-flex is-justify-content-center">
-                        <RegularButton placeholder={`${t('popups.yes')}`} add={false} styling={"is-danger"} onClick={() => {
-                        }}/>
-                        <RegularButton placeholder={`${t('popups.no')}`} add={false} styling={"is-info"} onClick={changeModal}/>
+                        <RegularButton placeholder={`${t('popups.yes')}`} add={false} styling={"is-danger"}
+                                       onClick={() => {
+                                       }}/>
+                        <RegularButton placeholder={`${t('popups.no')}`} add={false} styling={"is-info"}
+                                       onClick={changeModal}/>
                     </footer>
                 </div>
             </div>
-        </>
+        </td>
     )
 }
