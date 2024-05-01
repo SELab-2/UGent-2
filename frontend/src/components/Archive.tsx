@@ -1,9 +1,12 @@
 import {JSX, useState} from "react";
 import {RegularButton} from "./RegularButton.tsx";
 import {FaArchive} from "react-icons/fa";
+import {useTranslation} from "react-i18next";
 
 export default function Archive(): JSX.Element {
     const [modalActive, setModalActive] = useState(false);
+
+    const { t } = useTranslation();
 
     const changeModal = () => {
         setModalActive(!modalActive);
@@ -18,20 +21,17 @@ export default function Archive(): JSX.Element {
                 <div className="modal-background" onClick={changeModal}></div>
                 <div className="modal-card">
                     <header className="modal-card-head">
-                        <p className="modal-card-title">Archiveer vak</p>
+                        <p className="modal-card-title">{t('popups.archive')}</p>
                         <button className="delete" aria-label="close" onClick={changeModal}></button>
                     </header>
                     <section className="modal-card-body py-6">
                         <p>
-                            Voor iedere student en lesgever van dit vak, zal dit vak ook gearchiveerd worden.
-                            Er zullen geen projecten meer aangemaakt kunnen worden en actieve projecten zullen
-                            afgesloten.
-                            Bent u zeker dat u dit vak wil archiveren?
+                            {t('popups.archive_warning')}
                         </p>
                     </section>
                     <footer className="modal-card-foot is-flex is-justify-content-center">
-                        <RegularButton placeholder={"Ja"} add={false} styling={"is-danger"} onClick={() => {}}/>
-                        <RegularButton placeholder={"Nee"} add={false} styling={"is-info"} onClick={changeModal}/>
+                        <RegularButton placeholder={`${t('popups.yes')}`} add={false} styling={"is-danger"} onClick={() => {}}/>
+                        <RegularButton placeholder={`${t('popups.no')}`} add={false} styling={"is-info"} onClick={changeModal}/>
                     </footer>
                 </div>
             </div>

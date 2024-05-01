@@ -1,9 +1,12 @@
 import {JSX, useState} from "react";
 import {CiLink} from "react-icons/ci";
 import {RegularButton} from "./RegularButton.tsx";
+import {useTranslation} from "react-i18next";
 
 export default function CopyLink(): JSX.Element {
     const [modalActive, setModalActive] = useState(false);
+
+    const { t } = useTranslation();
 
     const changeModal = () => {
         setModalActive(!modalActive);
@@ -18,17 +21,16 @@ export default function CopyLink(): JSX.Element {
                 <div className="modal-background" onClick={changeModal}></div>
                 <div className="modal-card">
                     <header className="modal-card-head">
-                        <p className="modal-card-title">Voeg studenten toe</p>
+                        <p className="modal-card-title">{t('popups.share')}</p>
                         <button className="delete" aria-label="close" onClick={changeModal}></button>
                     </header>
                     <section className="modal-card-body py-6">
                         <p>
-                            Iedereen die deze link volgt en ingelogd is op dit systeem, zal als student toegevoegd worden aan het vak.
-                            Deel deze link enkel met de personen die u wil toevoegen.
+                            {t('popups.share_warning')}
                         </p>
                     </section>
                     <footer className="modal-card-foot is-flex is-justify-content-center">
-                        <RegularButton placeholder={"genereer link"} add={false} styling={"is-success"} onClick={() => {}}/>
+                        <RegularButton placeholder={`${t('popups.share_link')}`} add={false} styling={"is-success"} onClick={() => {}}/>
                     </footer>
                 </div>
             </div>
