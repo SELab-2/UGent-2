@@ -153,8 +153,9 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
 
 
     // true als er een groep is, anders false.
-    // TODO REMOVE THIS NEGATION
-    const is_in_group = !(props.project.groupMembers && props.project.groupMembers.length > 0);
+    // zet onderstaande lijn aan (en volgen lijn uit) om te zien hoe het eruit ziet als je nog niet in een groep zit (even nog zo tot er echte data is)
+    // const is_in_group = !(props.project.groupMembers && props.project.groupMembers.length > 0);
+    const is_in_group = props.project.groupMembers && props.project.groupMembers.length > 0;
 
     const {t} = useTranslation();
 
