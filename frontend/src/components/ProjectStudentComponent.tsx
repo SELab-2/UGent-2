@@ -77,7 +77,7 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
                         <RegularButton
                             placeholder={t('project.save')}
                             add={false}
-                            onClick={submitFile}
+                            onClick={() => void submitFile()}
                             styling="is-primary"
                         />
                     </div>
@@ -177,7 +177,7 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
                                                     ? <label className={"mr-3 highlight"}>{file?.name}</label>
                                                     : <label className={"mr-3"}>{file?.name}</label>
                                                 }
-                                                <button className="button" onClick={downloadLatestSubmission}>
+                                                <button className="button" onClick={() => void downloadLatestSubmission()}>
                                                     <FaDownload/>
                                                 </button>
                                             </div>
