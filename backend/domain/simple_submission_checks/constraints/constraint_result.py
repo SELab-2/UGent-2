@@ -12,6 +12,8 @@ class ConstraintType(Enum):
     ONLY_PRESENT = "ONLY_PRESENT"
     ZIP = "ZIP"
     SUBMISSION = "SUBMISSION"
+    EXTENSION_NOT_PRESENT = "EXTENSION_NOT_PRESENT"
+    GLOBAL = "GLOBAL"
 
 
 class ConstraintResult(BaseModel):
@@ -42,6 +44,11 @@ class ExtensionNotPresentConstraintResult(ConstraintResult):
     files_with_extension: list[str]
 
 
+class GlobalConstraintResult(ConstraintResult):
+    type: ConstraintType = ConstraintType.GLOBAL
+    sub_constraint_results: list[ConstraintResult]
+
+
 class DirectoryConstraintResult(ConstraintResult):
     type: ConstraintType = ConstraintType.DIRECTORY
     sub_constraint_results: list[ConstraintResult]
@@ -61,4 +68,5 @@ class ZipConstraintResult(ConstraintResult):
 
 class SubmissionConstraintResult(ConstraintResult):
     type: ConstraintType = ConstraintType.SUBMISSION
-    sub_constraint_results: list[ConstraintResult]
+    sub_constraint_result: ConstraintResult
+    global_constraint_results: list[ConstraintResult]
