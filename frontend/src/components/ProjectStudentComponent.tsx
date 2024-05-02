@@ -8,6 +8,7 @@ import {TeacherOrStudent} from "./SimpleTests/TeacherOrStudentEnum.tsx";
 import {useTranslation} from 'react-i18next';
 import {make_submission} from "../utils/api/Submission.ts";
 import {Submission} from "../utils/ApiInterfaces.ts";
+import {DEBUG} from "../pages/root.tsx";
 
 
 export default function ProjectStudentComponent(props: { project: ProjectStudent }): JSX.Element {
@@ -43,7 +44,12 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
     }
 
     async function downloadLatestSubmission() {
-        const response = await fetch(`groups/${props.project.group_id}/submission/file`)
+        let url = ''
+        if (DEBUG){url='http://localhost:8000'}
+        const response = await fetch(
+            `${url}/api/groups/${props.project.group_id}/submission/file`,
+            {headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')}}
+        )
         const blob = await response.blob();
         const a = document.createElement('a');
         a.href = window.URL.createObjectURL(blob);
