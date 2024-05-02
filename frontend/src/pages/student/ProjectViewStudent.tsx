@@ -65,7 +65,7 @@ export default function ProjectViewStudent(): JSX.Element {
                 <div className={"side-bar is-flex is-justify-content-center"}>
                     <Sidebar home={"student"}/>
                 </div>
-                <div className={"student-main pt-6 px-6"}>
+                <div className={"student-main px-6"}>
                     <ViewProjectStudent project={project}/>
                 </div>
             </div>
