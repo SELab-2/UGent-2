@@ -12,7 +12,6 @@ from domain.simple_submission_checks.constraints.constraint_result import (
 
 class ExtensionNotPresentConstraint(BaseModel):
     type: Literal["extension_not_present_constraint"] = "extension_not_present_constraint"
-    sub_constraints: list = []
     extension: str
 
     def validate_constraint(self, path: Path) -> ConstraintResult:

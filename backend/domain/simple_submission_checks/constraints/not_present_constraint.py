@@ -9,7 +9,6 @@ from domain.simple_submission_checks.constraints.constraint_result import Constr
 
 class NotPresentConstraint(BaseModel):
     type: Literal["not_present_constraint"] = "not_present_constraint"
-    sub_constraints: list = []
     file_or_directory_name: str
 
     def validate_constraint(self, path: Path) -> ConstraintResult:
