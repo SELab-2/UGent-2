@@ -12,17 +12,17 @@ from domain.simple_submission_checks.constraints.not_present_constraint import N
 
 class GlobalConstraint(BaseModel):
     type: Literal["global_constraint"] = "global_constraint"
-    sub_constraints: list[ExtensionNotPresentConstraint | NotPresentConstraint]
+    constraints: list[ExtensionNotPresentConstraint | NotPresentConstraint]
 
     def validate_constraint(self, path: Path) -> GlobalConstraintResult:
         sub_results = []
-        sub_folders = [subfile for subfile in path.rglob("*") if subfile.is_dir()]
+        sub_folders = [sub_file for sub_file in path.rglob("*") if sub_file.is_dir()]
         for folder in sub_folders:
-            for constraint in self.sub_constraints:
+            for constraint in self.constraints:
                 constraint_result = constraint.validate_constraint(folder)
                 sub_results.append(constraint_result)
 
         return GlobalConstraintResult(
             is_ok=all(result.is_ok for result in sub_results),
-            sub_constraint_results=sub_results,
+            global_constraint_results=sub_results,
         )

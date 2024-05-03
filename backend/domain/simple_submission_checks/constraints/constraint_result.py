@@ -32,7 +32,7 @@ class SubmissionConstraintResult(ConstraintResult):
 class GlobalConstraintResult(ConstraintResult):
     type: ConstraintType = ConstraintType.GLOBAL
 
-    sub_constraint_results: list[ConstraintResult]
+    global_constraint_results: list[ConstraintResult]
 
 
 class FileConstraintResult(ConstraintResult):

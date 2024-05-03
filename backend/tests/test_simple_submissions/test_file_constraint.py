@@ -25,7 +25,7 @@ class FileConstraintTest(unittest.TestCase):
                 FileConstraint(file_name="file2.txt"),
             ],
         ),
-        global_constraint=GlobalConstraint(sub_constraints=[]),
+        global_constraint=GlobalConstraint(constraints=[]),
     )
 
     temp_dir = tempfile.TemporaryDirectory()

@@ -15,7 +15,7 @@ class WrongNameZipTest(unittest.TestCase):
             zip_name="it_must_be_this_name.zip",
             sub_constraints=[],
         ),
-        global_constraint=GlobalConstraint(sub_constraints=[]),
+        global_constraint=GlobalConstraint(constraints=[]),
     )
 
     temp_dir = tempfile.TemporaryDirectory()

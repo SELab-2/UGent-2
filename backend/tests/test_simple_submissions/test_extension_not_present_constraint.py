@@ -49,7 +49,7 @@ class ExtensionNotPresentConstraintValidationTest(unittest.TestCase):
                 ),
             ],
         ),
-        global_constraint=GlobalConstraint(sub_constraints=[]),
+        global_constraint=GlobalConstraint(constraints=[]),
     )
 
     temp_dir = tempfile.TemporaryDirectory()
