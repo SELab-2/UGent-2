@@ -1,11 +1,15 @@
-import shutil
 import tempfile
+import typing
 import unittest
 from pathlib import Path
 
+from domain.simple_submission_checks.constraints import DirectoryConstraint
+from domain.simple_submission_checks.constraints.constraint_result import ConstraintResult
 from domain.simple_submission_checks.constraints.extension_not_present_constraint import ExtensionNotPresentConstraint
+from domain.simple_submission_checks.constraints.global_constraint import GlobalConstraint
 from domain.simple_submission_checks.constraints.submission_constraint import SubmissionConstraint
 from domain.simple_submission_checks.constraints.zip_constraint import ZipConstraint
+from tests.test_simple_submissions import create_directory_and_zip
 
 
 class ExtensionNotPresentConstraintValidationTest(unittest.TestCase):
@@ -16,62 +20,64 @@ class ExtensionNotPresentConstraintValidationTest(unittest.TestCase):
     ├── file2.py
     ├── file3.md
     ├── file4.java
-    └── file5.c
+    ├── file5.c
+    ├── no_txt_in_this_folder
+        └── file6.txt
     """
+
+    structure: typing.ClassVar = {
+        "file1.txt": None,
+        "file2.py": None,
+        "file3.md": None,
+        "file4.java": None,
+        "file5.c": None,
+        "no_txt_in_this_folder": {
+            "file6.txt": None,
+        },
+    }
 
     submission_constraint = SubmissionConstraint(
         root_constraint=ZipConstraint(
-            name="submission.zip",
+            zip_name="submission.zip",
             sub_constraints=[
-                ExtensionNotPresentConstraint(name=".java"),  # This extension is present in the zip file
-                ExtensionNotPresentConstraint(name=".txt"),  # This extension is present in the zip file
-                ExtensionNotPresentConstraint(name=".c"),    # This extension is present in the zip file
-                ExtensionNotPresentConstraint(name=".cpp"),  # This extension is not present in the zip file
+                ExtensionNotPresentConstraint(extension=".java"),  # .java is present, should fail
+                ExtensionNotPresentConstraint(extension=".c"),     # .c is present, should fail
+                ExtensionNotPresentConstraint(extension=".cpp"),   # .cpp is not present, should pass
+                DirectoryConstraint(  # Directory is present, should pass
+                    directory_name="no_txt_in_this_folder",
+                    sub_constraints=[ExtensionNotPresentConstraint(extension=".txt")],  # .txt is present, should fail
+                ),
             ],
         ),
+        global_constraint=GlobalConstraint(sub_constraints=[]),
     )
 
-    def setUp(self) -> None:
-        self.temp_dir = tempfile.TemporaryDirectory()
-        self.temp_dir_path = Path(self.temp_dir.name)
+    temp_dir = tempfile.TemporaryDirectory()
+    temp_dir_path = Path(temp_dir.name)
 
-        # structure of directory
-        (self.temp_dir_path / "file1.txt").touch()
-        (self.temp_dir_path / "file2.py").touch()
-        (self.temp_dir_path / "file3.md").touch()
-        (self.temp_dir_path / "file4.java").touch()
-        (self.temp_dir_path / "file5.c").touch()
-        (self.temp_dir_path / "file6.c").touch()
+    @classmethod
+    def setUpClass(cls) -> None:
+        create_directory_and_zip(cls.structure, cls.temp_dir_path, "submission")
+        res: ConstraintResult = cls.submission_constraint.validate_constraint(cls.temp_dir_path)
+        cls.root_sub_results = res.root_constraint_result.sub_constraint_results
 
-        # create a zip file
-        zip_path = self.temp_dir_path / "submission"
-        shutil.make_archive(str(zip_path), "zip", self.temp_dir_path)
+    @classmethod
+    def tearDownClass(cls) -> None:
+        cls.temp_dir.cleanup()
 
-    def tearDown(self) -> None:
-        self.temp_dir.cleanup()
+    def test_java_extension(self) -> None:
+        self.assertFalse(self.root_sub_results[0].is_ok)
 
-    def test_java_extension_constraint(self) -> None:
-        res = self.submission_constraint.validate_constraint(self.temp_dir_path)
-        res1 = res.sub_constraint_results[0]
-        self.assertFalse(res1.is_ok)  # The constraint should not be satisfied because .java is present
-        self.assertEqual(res1.files_with_extension, ["file4.java"])
+    def test_c_extension(self) -> None:
+        self.assertFalse(self.root_sub_results[1].is_ok)
 
-    def test_txt_extension_constraint(self) -> None:
-        res = self.submission_constraint.validate_constraint(self.temp_dir_path)
-        res2 = res.sub_constraint_results[1]
-        self.assertFalse(res2.is_ok)  # The constraint should not be satisfied because .txt is present
-        self.assertEqual(res2.files_with_extension, ["file1.txt"])
+    def test_cpp_extension(self) -> None:
+        self.assertTrue(self.root_sub_results[2].is_ok)
 
-    def test_c_extension_constraint(self) -> None:
-        res = self.submission_constraint.validate_constraint(self.temp_dir_path)
-        res3 = res.sub_constraint_results[2]
-        self.assertFalse(res3.is_ok)  # The constraint should not be satisfied because .c is present
-        self.assertEqual(res3.files_with_extension, ["file5.c", "file6.c"])
-
-    def test_cpp_extension_constraint(self) -> None:
-        res = self.submission_constraint.validate_constraint(self.temp_dir_path)
-        res4 = res.sub_constraint_results[3]
-        self.assertTrue(res4.is_ok)  # The constraint should be satisfied because .cpp is not present
+    def test_dir(self) -> None:
+        dir_result = self.root_sub_results[3]
+        self.assertTrue(dir_result.is_ok)
+        self.assertFalse(dir_result.sub_constraint_results[0].is_ok)
 
 
 if __name__ == "__main__":

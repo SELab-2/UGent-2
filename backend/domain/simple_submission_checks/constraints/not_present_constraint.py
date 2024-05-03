@@ -10,12 +10,12 @@ from domain.simple_submission_checks.constraints.constraint_result import Constr
 class NotPresentConstraint(BaseModel):
     type: Literal["not_present_constraint"] = "not_present_constraint"
     sub_constraints: list = []
-    name: str
+    file_or_directory_name: str
 
     def validate_constraint(self, path: Path) -> ConstraintResult:
         directory = os.listdir(path)
 
-        if self.name in directory:
-            return NotPresentConstraintResult(name=self.name, is_ok=False, sub_constraint_results=[])
+        if self.file_or_directory_name in directory:
+            return NotPresentConstraintResult(file_or_directory_name=self.file_or_directory_name, is_ok=False)
 
-        return NotPresentConstraintResult(name=self.name, is_ok=True, sub_constraint_results=[])
+        return NotPresentConstraintResult(file_or_directory_name=self.file_or_directory_name, is_ok=True)

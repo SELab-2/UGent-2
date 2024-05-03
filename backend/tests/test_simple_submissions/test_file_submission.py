@@ -3,6 +3,7 @@ import unittest
 from pathlib import Path
 
 from domain.simple_submission_checks.constraints.file_constraint import FileConstraint
+from domain.simple_submission_checks.constraints.global_constraint import GlobalConstraint
 from domain.simple_submission_checks.constraints.submission_constraint import SubmissionConstraint
 
 
@@ -14,8 +15,9 @@ class FileSubmissionConstraintValidationTest(unittest.TestCase):
 
     submission_constraint = SubmissionConstraint(
         root_constraint=FileConstraint(
-            name="submission.txt",
+            file_name="submission.txt",
         ),
+        global_constraint=GlobalConstraint(sub_constraints=[]),
     )
 
     def setUp(self) -> None:
@@ -33,6 +35,3 @@ class FileSubmissionConstraintValidationTest(unittest.TestCase):
         res = self.submission_constraint.validate_constraint(self.temp_dir_path)
         self.assertTrue(res.is_ok)  # The constraint should be satisfied because submission.txt is present
 
-
-if __name__ == "__main__":
-    unittest.main()

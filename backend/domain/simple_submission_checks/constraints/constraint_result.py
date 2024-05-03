@@ -18,55 +18,46 @@ class ConstraintType(Enum):
 
 class ConstraintResult(BaseModel):
     type: ConstraintType
-    name: str
     is_ok: bool
-    sub_constraint_results: list = []
-
-    def __str__(self, level: int = 0):
-        status = "\u2714 [OK] " if self.is_ok else "\u2718 [FAIL]"
-        ret = f"{'\t' * level}{status} {self.type.name}: {self.name}"
-        if self.sub_constraint_results:
-            sub_results_str = "\n".join(sub_result.__str__(level + 1) for sub_result in self.sub_constraint_results)
-            ret += "\n" + sub_results_str
-        return ret
+    sub_constraint_results: list[ConstraintResult] = []
 
 
-class FileConstraintResult(ConstraintResult):
-    type: ConstraintType = ConstraintType.FILE
+class SubmissionConstraintResult(ConstraintResult):
+    type: ConstraintType = ConstraintType.SUBMISSION
 
-
-class NotPresentConstraintResult(ConstraintResult):
-    type: ConstraintType = ConstraintType.NOT_PRESENT
-
-
-class ExtensionNotPresentConstraintResult(ConstraintResult):
-    type: ConstraintType = ConstraintType.NOT_PRESENT
-    files_with_extension: list[str]
+    root_constraint_result: ZipConstraintResult | FileConstraintResult
+    global_constraint_result: GlobalConstraintResult
 
 
 class GlobalConstraintResult(ConstraintResult):
     type: ConstraintType = ConstraintType.GLOBAL
+
+    sub_constraint_results: list[ConstraintResult]
+
+
+class FileConstraintResult(ConstraintResult):
+    type: ConstraintType = ConstraintType.FILE
+    file_name: str
+
+
+class ZipConstraintResult(ConstraintResult):
+    type: ConstraintType = ConstraintType.ZIP
+    zip_name: str
     sub_constraint_results: list[ConstraintResult]
 
 
 class DirectoryConstraintResult(ConstraintResult):
     type: ConstraintType = ConstraintType.DIRECTORY
+    directory_name: str
     sub_constraint_results: list[ConstraintResult]
 
 
-class OnlyPresentConstraintResult(ConstraintResult):
-    type: ConstraintType = ConstraintType.ONLY_PRESENT
-    sub_constraint_results: list[ConstraintResult]
-    should_be_in_but_are_not: list[str]
-    should_not_be_in_but_are: list[str]
+class NotPresentConstraintResult(ConstraintResult):
+    file_or_directory_name: str
+    type: ConstraintType = ConstraintType.NOT_PRESENT
 
 
-class ZipConstraintResult(ConstraintResult):
-    type: ConstraintType = ConstraintType.ZIP
-    sub_constraint_results: list[ConstraintResult]
-
-
-class SubmissionConstraintResult(ConstraintResult):
-    type: ConstraintType = ConstraintType.SUBMISSION
-    sub_constraint_result: ConstraintResult
-    global_constraint_results: list[ConstraintResult]
+class ExtensionNotPresentConstraintResult(ConstraintResult):
+    type: ConstraintType = ConstraintType.EXTENSION_NOT_PRESENT
+    extension: str
+    files_with_extension: list[str]
