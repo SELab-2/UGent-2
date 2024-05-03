@@ -3,7 +3,6 @@ import unittest
 from pathlib import Path
 
 from domain.simple_submission_checks.constraints.file_constraint import FileConstraint
-from domain.simple_submission_checks.constraints.global_constraint import GlobalConstraint
 from domain.simple_submission_checks.constraints.submission_constraint import SubmissionConstraint
 
 
@@ -17,7 +16,7 @@ class FileSubmissionConstraintValidationTest(unittest.TestCase):
         root_constraint=FileConstraint(
             file_name="submission.txt",
         ),
-        global_constraint=GlobalConstraint(constraints=[]),
+        global_constraints=[],
     )
 
     def setUp(self) -> None:

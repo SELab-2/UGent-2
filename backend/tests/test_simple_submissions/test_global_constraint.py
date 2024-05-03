@@ -5,7 +5,6 @@ from pathlib import Path
 
 from domain.simple_submission_checks.constraints.constraint_result import ConstraintResult
 from domain.simple_submission_checks.constraints.extension_not_present_constraint import ExtensionNotPresentConstraint
-from domain.simple_submission_checks.constraints.global_constraint import GlobalConstraint
 from domain.simple_submission_checks.constraints.not_present_constraint import NotPresentConstraint
 from domain.simple_submission_checks.constraints.submission_constraint import SubmissionConstraint
 from domain.simple_submission_checks.constraints.zip_constraint import ZipConstraint
@@ -33,14 +32,12 @@ class GlobalConstraintValidationTest(unittest.TestCase):
 
     submission_constraint = SubmissionConstraint(
         root_constraint=ZipConstraint(zip_name="submission.zip", sub_constraints=[]),
-        global_constraint=GlobalConstraint(
-            constraints=[
-                ExtensionNotPresentConstraint(extension=".java"),  # .java is present, should fail
-                ExtensionNotPresentConstraint(extension=".c"),  # .c is present, should fail
-                ExtensionNotPresentConstraint(extension=".cpp"),  # .cpp is not present, should pass
-                NotPresentConstraint(file_or_directory_name="dir4"),  # dir4 is not present, should pass
-            ],
-        ),
+        global_constraints=[
+            ExtensionNotPresentConstraint(extension=".java"),  # .java is present, should fail
+            ExtensionNotPresentConstraint(extension=".c"),  # .c is present, should fail
+            ExtensionNotPresentConstraint(extension=".cpp"),  # .cpp is not present, should pass
+            NotPresentConstraint(file_or_directory_name="dir4"),  # dir4 is not present, should pass
+        ],
     )
 
     temp_dir1 = tempfile.TemporaryDirectory()

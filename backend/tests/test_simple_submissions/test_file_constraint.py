@@ -5,7 +5,6 @@ from pathlib import Path
 
 from domain.simple_submission_checks.constraints.constraint_result import ConstraintResult
 from domain.simple_submission_checks.constraints.file_constraint import FileConstraint
-from domain.simple_submission_checks.constraints.global_constraint import GlobalConstraint
 from domain.simple_submission_checks.constraints.submission_constraint import SubmissionConstraint
 from domain.simple_submission_checks.constraints.zip_constraint import ZipConstraint
 from tests.test_simple_submissions import create_directory_and_zip
@@ -25,7 +24,7 @@ class FileConstraintTest(unittest.TestCase):
                 FileConstraint(file_name="file2.txt"),
             ],
         ),
-        global_constraint=GlobalConstraint(constraints=[]),
+        global_constraints=[],
     )
 
     temp_dir = tempfile.TemporaryDirectory()

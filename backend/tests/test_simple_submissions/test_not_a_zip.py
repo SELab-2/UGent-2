@@ -2,7 +2,6 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from domain.simple_submission_checks.constraints.global_constraint import GlobalConstraint
 from domain.simple_submission_checks.constraints.submission_constraint import SubmissionConstraint
 from domain.simple_submission_checks.constraints.zip_constraint import ZipConstraint
 
@@ -14,7 +13,7 @@ class NotAZipTest(unittest.TestCase):
             zip_name="it_must_be_this_name.zip",
             sub_constraints=[],
         ),
-        global_constraint=GlobalConstraint(constraints=[]),
+        global_constraints=[],
     )
 
     temp_dir = tempfile.TemporaryDirectory()

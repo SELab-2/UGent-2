@@ -5,7 +5,6 @@ from pathlib import Path
 
 from domain.simple_submission_checks.constraints.constraint_result import ConstraintResult
 from domain.simple_submission_checks.constraints.directory_constraint import DirectoryConstraint
-from domain.simple_submission_checks.constraints.global_constraint import GlobalConstraint
 from domain.simple_submission_checks.constraints.not_present_constraint import NotPresentConstraint
 from domain.simple_submission_checks.constraints.submission_constraint import SubmissionConstraint
 from domain.simple_submission_checks.constraints.zip_constraint import ZipConstraint
@@ -42,7 +41,7 @@ class NotPresentConstraintValidationTest(unittest.TestCase):
                 ),
             ],
         ),
-        global_constraint=GlobalConstraint(constraints=[]),
+        global_constraints=[],
     )
 
     temp_dir = tempfile.TemporaryDirectory()
