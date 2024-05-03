@@ -1,6 +1,6 @@
 .student-main {
     width: calc(100vw - var(--sidebar-width));
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 .student-left {
