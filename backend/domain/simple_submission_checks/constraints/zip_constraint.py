@@ -2,11 +2,10 @@ import os
 import tempfile
 import zipfile
 from pathlib import Path
-from typing import Literal
 
 from pydantic import BaseModel
 
-from domain.simple_submission_checks.constraints.constraint_result import ZipConstraintResult
+from domain.simple_submission_checks.constraints.constraint_result import ConstraintType, ZipConstraintResult
 from domain.simple_submission_checks.constraints.directory_constraint import DirectoryConstraint
 from domain.simple_submission_checks.constraints.extension_not_present_constraint import ExtensionNotPresentConstraint
 from domain.simple_submission_checks.constraints.file_constraint import FileConstraint
@@ -14,7 +13,7 @@ from domain.simple_submission_checks.constraints.not_present_constraint import N
 
 
 class ZipConstraint(BaseModel):
-    type: Literal["zip_constraint"] = "zip_constraint"
+    type: ConstraintType = ConstraintType.ZIP
     zip_name: str
     sub_constraints: list[
         DirectoryConstraint |

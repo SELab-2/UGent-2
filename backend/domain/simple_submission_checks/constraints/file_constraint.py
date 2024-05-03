@@ -1,14 +1,13 @@
 import os
 from pathlib import Path
-from typing import Literal
 
 from pydantic import BaseModel
 
-from domain.simple_submission_checks.constraints.constraint_result import FileConstraintResult
+from domain.simple_submission_checks.constraints.constraint_result import ConstraintType, FileConstraintResult
 
 
 class FileConstraint(BaseModel):
-    type: Literal["file_constraint"] = "file_constraint"
+    type: ConstraintType = ConstraintType.FILE
     file_name: str
 
     def validate_constraint(self, path: Path) -> FileConstraintResult:

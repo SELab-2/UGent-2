@@ -1,9 +1,8 @@
 from pathlib import Path
-from typing import Literal
 
 from pydantic import BaseModel
 
-from domain.simple_submission_checks.constraints.constraint_result import SubmissionConstraintResult
+from domain.simple_submission_checks.constraints.constraint_result import ConstraintType, SubmissionConstraintResult
 from domain.simple_submission_checks.constraints.extension_not_present_constraint import ExtensionNotPresentConstraint
 from domain.simple_submission_checks.constraints.file_constraint import FileConstraint
 from domain.simple_submission_checks.constraints.global_constraint import GlobalConstraint
@@ -12,7 +11,7 @@ from domain.simple_submission_checks.constraints.zip_constraint import ZipConstr
 
 
 class SubmissionConstraint(BaseModel):
-    type: Literal["submission_constraint"] = "submission_constraint"
+    type: ConstraintType = ConstraintType.SUBMISSION
     root_constraint: ZipConstraint | FileConstraint  # Submission can be a file or a zip.
     global_constraints: list[NotPresentConstraint | ExtensionNotPresentConstraint]
 

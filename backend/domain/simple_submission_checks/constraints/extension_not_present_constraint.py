@@ -1,17 +1,17 @@
 import os
 from pathlib import Path
-from typing import Literal
 
 from pydantic import BaseModel
 
 from domain.simple_submission_checks.constraints.constraint_result import (
     ConstraintResult,
+    ConstraintType,
     ExtensionNotPresentConstraintResult,
 )
 
 
 class ExtensionNotPresentConstraint(BaseModel):
-    type: Literal["extension_not_present_constraint"] = "extension_not_present_constraint"
+    type: ConstraintType = ConstraintType.EXTENSION_NOT_PRESENT
     extension: str
 
     def validate_constraint(self, path: Path) -> ConstraintResult:

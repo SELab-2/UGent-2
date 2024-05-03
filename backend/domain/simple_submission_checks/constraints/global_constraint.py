@@ -1,17 +1,16 @@
 # Voor de global constraint kan enkel de extension not present en de not present constraint gebruikt worden.
 
 from pathlib import Path
-from typing import Literal
 
 from pydantic import BaseModel
 
-from domain.simple_submission_checks.constraints.constraint_result import GlobalConstraintResult
+from domain.simple_submission_checks.constraints.constraint_result import ConstraintType, GlobalConstraintResult
 from domain.simple_submission_checks.constraints.extension_not_present_constraint import ExtensionNotPresentConstraint
 from domain.simple_submission_checks.constraints.not_present_constraint import NotPresentConstraint
 
 
 class GlobalConstraint(BaseModel):
-    type: Literal["global_constraint"] = "global_constraint"
+    type: ConstraintType = ConstraintType.GLOBAL
     constraints: list[ExtensionNotPresentConstraint | NotPresentConstraint]
 
     def validate_constraint(self, path: Path) -> GlobalConstraintResult:

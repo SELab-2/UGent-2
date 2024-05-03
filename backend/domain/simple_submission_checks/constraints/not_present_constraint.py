@@ -1,14 +1,17 @@
 import os
 from pathlib import Path
-from typing import Literal
 
 from pydantic import BaseModel
 
-from domain.simple_submission_checks.constraints.constraint_result import ConstraintResult, NotPresentConstraintResult
+from domain.simple_submission_checks.constraints.constraint_result import (
+    ConstraintResult,
+    ConstraintType,
+    NotPresentConstraintResult,
+)
 
 
 class NotPresentConstraint(BaseModel):
-    type: Literal["not_present_constraint"] = "not_present_constraint"
+    type: ConstraintType = ConstraintType.GLOBAL
     file_or_directory_name: str
 
     def validate_constraint(self, path: Path) -> ConstraintResult:

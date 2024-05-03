@@ -1,12 +1,12 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Literal
 
 from pydantic import BaseModel
 
 from domain.simple_submission_checks.constraints.constraint_result import (
     ConstraintResult,
+    ConstraintType,
     DirectoryConstraintResult,
 )
 from domain.simple_submission_checks.constraints.extension_not_present_constraint import ExtensionNotPresentConstraint
@@ -15,7 +15,7 @@ from domain.simple_submission_checks.constraints.not_present_constraint import N
 
 
 class DirectoryConstraint(BaseModel):
-    type: Literal["directory_constraint"] = "directory_constraint"
+    type: ConstraintType = ConstraintType.DIRECTORY
     directory_name: str
     sub_constraints: list[
         FileConstraint |
