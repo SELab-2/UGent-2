@@ -22,7 +22,6 @@ class FileSubmissionConstraintValidationTest(unittest.TestCase):
     def setUp(self) -> None:
         self.temp_dir = tempfile.TemporaryDirectory()
         self.temp_dir_path = Path(self.temp_dir.name)
-
         # create a file
         file_path = self.temp_dir_path / "submission.txt"
         file_path.touch()
