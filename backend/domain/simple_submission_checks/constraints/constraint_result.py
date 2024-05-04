@@ -42,13 +42,11 @@ class FileConstraintResult(ConstraintResult):
 class ZipConstraintResult(ConstraintResult):
     type: ConstraintType = ConstraintType.ZIP
     zip_name: str
-    sub_constraint_results: list[SubConstraintResult]
 
 
 class DirectoryConstraintResult(ConstraintResult):
     type: ConstraintType = ConstraintType.DIRECTORY
     directory_name: str
-    sub_constraint_results: list[SubConstraintResult]
 
 
 class NotPresentConstraintResult(ConstraintResult):
