@@ -20,11 +20,15 @@ class FaultyProjectConstraintValidationTest(unittest.TestCase):
     ├── src
     │   ├── main.py
     │   └── utils
-    │       └── helper.py
+    │       ├── helper.py
+    │       ├── extra_file.txt
+    │       └── malware.exe
     ├── tests
     │   └── test_main.py
     ├── README.md
-    └── .gitignore
+    ├── .gitignore
+    ├── dist
+    └── extra.log
     """
 
     structure: typing.ClassVar = {
