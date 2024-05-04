@@ -4,7 +4,6 @@ from pathlib import Path
 from pydantic import BaseModel
 
 from domain.simple_submission_checks.constraints.constraint_result import (
-    ConstraintResult,
     ConstraintType,
     ExtensionNotPresentConstraintResult,
 )
@@ -14,7 +13,7 @@ class ExtensionNotPresentConstraint(BaseModel):
     type: ConstraintType = ConstraintType.EXTENSION_NOT_PRESENT
     extension: str
 
-    def validate_constraint(self, path: Path) -> ConstraintResult:
+    def validate_constraint(self, path: Path) -> ExtensionNotPresentConstraintResult:
         directory = os.listdir(path)
 
         files_with_extension = [file for file in directory if file.endswith(self.extension)]

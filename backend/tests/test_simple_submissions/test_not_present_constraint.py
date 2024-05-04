@@ -3,7 +3,9 @@ import typing
 import unittest
 from pathlib import Path
 
-from domain.simple_submission_checks.constraints.constraint_result import ConstraintResult
+from domain.simple_submission_checks.constraints.constraint_result import (
+    ConstraintResult,
+)
 from domain.simple_submission_checks.constraints.directory_constraint import DirectoryConstraint
 from domain.simple_submission_checks.constraints.not_present_constraint import NotPresentConstraint
 from domain.simple_submission_checks.constraints.submission_constraint import SubmissionConstraint
@@ -71,7 +73,6 @@ class NotPresentConstraintValidationTest(unittest.TestCase):
         """file1.txt should not be present in dir1."""
         dir1_result = self.root_sub_results[2]
         self.assertTrue(dir1_result.is_ok)
-
         file1_not_present_result = dir1_result.sub_constraint_results[0]
         self.assertFalse(file1_not_present_result.is_ok)
 

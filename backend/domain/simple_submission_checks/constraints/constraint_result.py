@@ -19,7 +19,7 @@ class ConstraintType(Enum):
 class ConstraintResult(BaseModel):
     type: ConstraintType
     is_ok: bool
-    sub_constraint_results: list[ConstraintResult] = []
+    sub_constraint_results: list[SubConstraintResult] = []
 
 
 class SubmissionConstraintResult(ConstraintResult):
@@ -31,8 +31,7 @@ class SubmissionConstraintResult(ConstraintResult):
 
 class GlobalConstraintResult(ConstraintResult):
     type: ConstraintType = ConstraintType.GLOBAL
-
-    global_constraint_results: list[ConstraintResult]
+    global_constraint_results: dict[str, list[NotPresentConstraintResult | ExtensionNotPresentConstraintResult]]
 
 
 class FileConstraintResult(ConstraintResult):
@@ -43,13 +42,13 @@ class FileConstraintResult(ConstraintResult):
 class ZipConstraintResult(ConstraintResult):
     type: ConstraintType = ConstraintType.ZIP
     zip_name: str
-    sub_constraint_results: list[ConstraintResult]
+    sub_constraint_results: list[SubConstraintResult]
 
 
 class DirectoryConstraintResult(ConstraintResult):
     type: ConstraintType = ConstraintType.DIRECTORY
     directory_name: str
-    sub_constraint_results: list[ConstraintResult]
+    sub_constraint_results: list[SubConstraintResult]
 
 
 class NotPresentConstraintResult(ConstraintResult):
@@ -61,3 +60,7 @@ class ExtensionNotPresentConstraintResult(ConstraintResult):
     type: ConstraintType = ConstraintType.EXTENSION_NOT_PRESENT
     extension: str
     files_with_extension: list[str]
+
+
+SubConstraintResult = (DirectoryConstraintResult | FileConstraintResult
+                       | NotPresentConstraintResult | ExtensionNotPresentConstraintResult)

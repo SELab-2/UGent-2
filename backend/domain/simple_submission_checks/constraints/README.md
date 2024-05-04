@@ -17,7 +17,7 @@ Een `SubmissionConstraint` in json-formaat zal er zo uit zien:
 
 ```json
 {
-  "type": "submission_constraint",
+  "type": "SUBMISSION",
   "root_constraint": <ZipConstraint | FileConstraint>,
   "global_constraints": [<NotPresentConstraint | ExtensionNotPresentConstraint>]
 }
@@ -39,7 +39,7 @@ Een `ZipConstraint` in json-formaat zal er zo uit zien:
 
 ```json
 {
-  "type": "zip_constraint",
+  "type": "ZIP",
   "zip_name": "<naam>.zip",
   "sub_constraints": [<DirectoryConstraint | FileConstraint | NotPresentConstraint | ExtensionNotPresentConstraint>]
 }
@@ -54,7 +54,7 @@ Een `DirectoryConstraint` in json-formaat zal er zo uit zien:
 
 ```json
 {
-  "type": "directory_constraint",
+  "type": "DIRECTORY",
   "directory_name": "<naam>",
   "sub_constraints": [<DirectoryConstraint | FileConstraint | NotPresentConstraint | ExtensionNotPresentConstraint>]
 }
@@ -69,7 +69,7 @@ Een `FileConstraint` in json-formaat zal er zo uit zien:
 
 ```json
 {
-  "type": "file_constraint",
+  "type": "FILE",
   "file_name": "<naam>"
 }
 ```
@@ -83,7 +83,7 @@ Een `NotPresentConstraint` in json-formaat zal er zo uit zien:
 
 ```json
 {
-  "type": "not_present_constraint",
+  "type": "NOT_PRESENT",
   "file_or_directory_name": "<naam>"
 }
 ```
@@ -97,9 +97,136 @@ Een `ExtensionNotPresentConstraint` in json-formaat zal er zo uit zien:
 
 ```json
 {
-  "type": "extension_not_present_constraint",
+  "type": "EXTENSION_NOT_PRESENT",
   "extension": "<extensie>"
 }
 ```
+
+## [ConstraintResult](./constraint_result.py)
+
+Om te weten of een indiening voldoet aan de constraints heeft elke constraint overeenkomstige ConstraintResult.
+Deze hebben allemaal een type en een boolean `is_ok` die aangeeft of de constraint voldaan is. Verder kunnen deze
+nog velden hebben die aangeven wat er juist is misgelopen.
+
+### SubmissionConstraintResult
+
+Bij een `SubmissionConstraintResult` staat het `is_ok` veld op waar wanneer alle onderliggende constraints voldaan zijn.
+Het heeft ook nog twee extra velden: `root_constraint_result` en `global_constraint_result`. Deze  
+Een `SubmissionConstraintResult` in json-formaat zal er zo uit zien:
+
+```json
+{
+  "type": "SUBMISSION",
+  "is_ok": true,
+  "root_constraint_result": <ZipConstraintResult | FileConstraintResult>,
+  "global_constraint_result": GlobalConstraintResult
+}
+```
+
+### ZipConstraintResult
+
+Bij een `ZipConstraintResult` staat het `is_ok` veld op waar wanneer De zip de juiste naam heeft.
+Deze heeft naast het type en `is_ok` veld nog het `sub_constraint_results` veld, wat een lijst is van de resultaten 
+van alle sub_constraints gedefinieerd in de `ZipConstraint`.
+
+Een `ZipConstraintResult` in json-formaat zal er zo uit zien:
+
+```json
+{
+  "type": "ZIP",
+  "is_ok": true,
+  "sub_constraint_results": [<DirectoryConstraintResult | FileConstraintResult | NotPresentConstraintResult | ExtensionNotPresentConstraintResult>]
+}
+```
+
+
+### DirectoryConstraintResult
+
+Bij een `DirectoryConstraintResult` staat het `is_ok` veld op waar wanneer er een map de juiste naam bestaat.
+Deze heeft als extra veld `directory_name` (str) dat de naam van de map bevat en net zoals de `ZipConstraintResult`
+een `sub_constraint_results` veld.
+
+Een `DirectoryConstraintResult` in json-formaat zal er zo uit zien:
+
+```json
+{
+    "type": "DIRECTORY",
+    "is_ok": true,
+    "sub_constraint_results": [<DirectoryConstraintResult | FileConstraintResult | NotPresentConstraintResult | ExtensionNotPresentConstraintResult>],
+    "directory_name": "<name>>"
+}
+```
+
+### FileConstraintResult
+
+Bij een `FileConstraintResult` staat het `is_ok` veld op waar wanneer er een bestand met de juiste naam bestaat.
+Deze heeft als extra veld `file_name` (str) dat de naam van het bestand bevat.
+
+Een `FileConstraintResult` in json-formaat zal er zo uit zien:
+
+```json
+{
+    "type": "FILE",
+    "is_ok": true,
+    "file_name": "<name>"
+}
+```
+
+### NotPresentConstraintResult
+
+Bij een `NotPresentConstraintResult` staat het `is_ok` veld op waar wanneer er geen bestand of map met de gegeven naam bestaat.
+Het heeft één extra veld `file_or_directory_name` (str) dat de naam van het bestand of map bevat.
+
+Een `NotPresentConstraintResult` in json-formaat zal er zo uit zien:
+
+```json
+{
+    "type": "NOT_PRESENT",
+    "is_ok": true,
+    "file_or_directory_name": "<naam>"
+}
+```
+
+### ExtensionNotPresentConstraintResult
+
+Bij een `ExtensionNotPresentConstraintResult` staat het `is_ok` veld op waar wanneer er geen bestand met de gegeven extensie bestaat.
+Het heeft twee extra velden: `extension` (str), dat de extensie van het bestand bevat en `files_with_extension`, 
+wat een lijst is met alle gevonden bestanden in die map met de gegeven extensie.
+
+Een `ExtensionNotPresentConstraintResult` in json-formaat zal er zo uit zien:
+
+```json
+{
+    "type": "EXTENSION_NOT_PRESENT",
+    "is_ok": true,
+    "extension": "<extensie>",
+    "files_with_extension": [
+      "<naam>",
+      ...
+    ]
+}
+```
+
+### GlobalConstraintResult
+
+Een `GlobalConstraintResult` zet het `is_ok` veld op waar wanneer alle globale constraints voldaan zijn.
+Als extra attribuut heeft het een lijst `global_constraint_results`. Dit is een lijst van key-value paren, 
+met als key de map waarin één of meerdere constraints fout gingen, en als value een lijst van de gefaalde resultaten.
+
+Een `GlobalConstraintResult` in json-formaat zal er zo uit zien:
+
+```json
+{
+  "type": "GLOBAL",
+  "is_ok": false,
+  "global_constraint_results": {
+    "<map>": [<NotPresentConstraintResult | ExtensionNotPresentConstraintResult>],
+    ...
+  }
+}
+```
+
+## Voorbeeld
+
 
 

@@ -22,6 +22,7 @@ class GlobalConstraintValidationTest(unittest.TestCase):
     }
 
     structure2: typing.ClassVar = {
+        "file1.java": None,
         "dir3": {
             "file5.cython": None,
             "subdir3": {
@@ -33,10 +34,10 @@ class GlobalConstraintValidationTest(unittest.TestCase):
     submission_constraint = SubmissionConstraint(
         root_constraint=ZipConstraint(zip_name="submission.zip", sub_constraints=[]),
         global_constraints=[
-            ExtensionNotPresentConstraint(extension=".java"),  # .java is present, should fail
-            ExtensionNotPresentConstraint(extension=".c"),  # .c is present, should fail
-            ExtensionNotPresentConstraint(extension=".cpp"),  # .cpp is not present, should pass
-            NotPresentConstraint(file_or_directory_name="dir4"),  # dir4 is not present, should pass
+            ExtensionNotPresentConstraint(extension=".java"),
+            ExtensionNotPresentConstraint(extension=".c"),
+            ExtensionNotPresentConstraint(extension=".cpp"),
+            NotPresentConstraint(file_or_directory_name="dir4"),
         ],
     )
 
