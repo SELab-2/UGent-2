@@ -233,5 +233,199 @@ Een `GlobalConstraintResult` in json-formaat zal er zo uit zien:
 
 ## Voorbeeld
 
+Stel dat de indiening volgende structuur heeft:
+
+```
+project.zip
+├── src
+│   ├── main.py
+│   └── utils
+│       ├── helper.py
+│       ├── extra_file.txt
+│       └── malware.exe
+├── tests
+│   └── test_main.py
+├── README.md
+├── .gitignore
+├── dist
+└── extra.log
+```
+
+Dit kan een constraint zijn:
+
+```json
+{
+  "type": "SUBMISSION",
+  "root_constraint": {
+    "type": "ZIP",
+    "zip_name": "project.zip",
+    "sub_constraints": [
+      {
+        "type": "DIRECTORY",
+        "directory_name": "src",
+        "sub_constraints": [
+          {
+            "type": "FILE",
+            "file_name": "main.py"
+          },
+          {
+            "type": "DIRECTORY",
+            "directory_name": "utils",
+            "sub_constraints": [
+              {
+                "type": "FILE",
+                "file_name": "helper.py"
+              },
+              {
+                "type": "GLOBAL",
+                "file_or_directory_name": "extra_file.txt"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "DIRECTORY",
+        "directory_name": "tests",
+        "sub_constraints": [
+          {
+            "type": "FILE",
+            "file_name": "test_main.py"
+          }
+        ]
+      },
+      {
+        "type": "FILE",
+        "file_name": "README.md"
+      },
+      {
+        "type": "FILE",
+        "file_name": ".gitignore"
+      },
+      {
+        "type": "GLOBAL",
+        "file_or_directory_name": "dist"
+      },
+      {
+        "type": "EXTENSION_NOT_PRESENT",
+        "extension": ".log"
+      }
+    ]
+  },
+  "global_constraints": [
+    {
+      "type": "EXTENSION_NOT_PRESENT",
+      "extension": ".exe"
+    }
+  ]
+}
+```
+
+En dit is de overeenkomstige constraint result op de constraint.
+
+```json
+{
+  "type": "SUBMISSION",
+  "is_ok": false,
+  "sub_constraint_results": [],
+  "root_constraint_result": {
+    "type": "ZIP",
+    "is_ok": true,
+    "sub_constraint_results": [
+      {
+        "type": "DIRECTORY",
+        "is_ok": true,
+        "sub_constraint_results": [
+          {
+            "type": "FILE",
+            "is_ok": true,
+            "sub_constraint_results": [],
+            "file_name": "main.py"
+          },
+          {
+            "type": "DIRECTORY",
+            "is_ok": true,
+            "sub_constraint_results": [
+              {
+                "type": "FILE",
+                "is_ok": true,
+                "sub_constraint_results": [],
+                "file_name": "helper.py"
+              },
+              {
+                "type": "NOT_PRESENT",
+                "is_ok": false,
+                "sub_constraint_results": [],
+                "file_or_directory_name": "extra_file.txt"
+              }
+            ],
+            "directory_name": "utils"
+          }
+        ],
+        "directory_name": "src"
+      },
+      {
+        "type": "DIRECTORY",
+        "is_ok": true,
+        "sub_constraint_results": [
+          {
+            "type": "FILE",
+            "is_ok": true,
+            "sub_constraint_results": [],
+            "file_name": "test_main.py"
+          }
+        ],
+        "directory_name": "tests"
+      },
+      {
+        "type": "FILE",
+        "is_ok": true,
+        "sub_constraint_results": [],
+        "file_name": "README.md"
+      },
+      {
+        "type": "FILE",
+        "is_ok": true,
+        "sub_constraint_results": [],
+        "file_name": ".gitignore"
+      },
+      {
+        "type": "NOT_PRESENT",
+        "is_ok": false,
+        "sub_constraint_results": [],
+        "file_or_directory_name": "dist"
+      },
+      {
+        "type": "EXTENSION_NOT_PRESENT",
+        "is_ok": false,
+        "sub_constraint_results": [],
+        "extension": ".log",
+        "files_with_extension": [
+          "extra.log"
+        ]
+      }
+    ],
+    "zip_name": "project.zip"
+  },
+  "global_constraint_result": {
+    "type": "GLOBAL",
+    "is_ok": false,
+    "sub_constraint_results": [],
+    "global_constraint_results": {
+      "src/utils": [
+        {
+          "type": "EXTENSION_NOT_PRESENT",
+          "is_ok": false,
+          "sub_constraint_results": [],
+          "extension": ".exe",
+          "files_with_extension": [
+            "malware.exe"
+          ]
+        }
+      ]
+    }
+  }
+}
+```
 
 
