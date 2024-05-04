@@ -19,7 +19,7 @@ Een `SubmissionConstraint` in json-formaat zal er zo uit zien:
 {
   "type": "SUBMISSION",
   "root_constraint": <ZipConstraint | FileConstraint>,
-  "global_constraints": [<NotPresentConstraint | ExtensionNotPresentConstraint>]
+  "global_constraints": [<NotPresentConstraint | ExtensionNotPresentConstraint>],
 }
 ```
 ### [ZipConstraint](./zip_constraint.py)
@@ -119,7 +119,8 @@ Een `SubmissionConstraintResult` in json-formaat zal er zo uit zien:
   "type": "SUBMISSION",
   "is_ok": true,
   "root_constraint_result": <ZipConstraintResult | FileConstraintResult>,
-  "global_constraint_result": GlobalConstraintResult
+  "global_constraint_result": GlobalConstraintResult,
+  "sub_constraint_results": [*altijd leeg*]
 }
 ```
 
@@ -168,7 +169,8 @@ Een `FileConstraintResult` in json-formaat zal er zo uit zien:
 {
     "type": "FILE",
     "is_ok": true,
-    "file_name": "<name>"
+    "file_name": "<name>",
+    "sub_constraint_results": [*altijd leeg*]
 }
 ```
 
@@ -183,7 +185,8 @@ Een `NotPresentConstraintResult` in json-formaat zal er zo uit zien:
 {
     "type": "NOT_PRESENT",
     "is_ok": true,
-    "file_or_directory_name": "<naam>"
+    "file_or_directory_name": "<naam>",
+    "sub_constraint_results": [*altijd leeg*]
 }
 ```
 
@@ -203,7 +206,8 @@ Een `ExtensionNotPresentConstraintResult` in json-formaat zal er zo uit zien:
     "files_with_extension": [
       "<naam>",
       ...
-    ]
+    ],
+    "sub_constraint_results": [*altijd leeg*]
 }
 ```
 
@@ -222,7 +226,8 @@ Een `GlobalConstraintResult` in json-formaat zal er zo uit zien:
   "global_constraint_results": {
     "<map>": [<NotPresentConstraintResult | ExtensionNotPresentConstraintResult>],
     ...
-  }
+  },
+  "sub_constraint_results": [*altijd leeg*]
 }
 ```
 
