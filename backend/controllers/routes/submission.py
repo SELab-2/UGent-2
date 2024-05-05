@@ -21,7 +21,9 @@ submission_router = APIRouter(tags=[Tags.SUBMISSION])
 def run_docker_checks(submission_id: int) -> None:
     with Session(engine) as session:
         submission = get_submission(session, submission_id)
-        logs, res = run_container(submission.group.project.image_id)
+        with open(submission.filename, "rb") as file:
+            submission_file = file.read()
+        logs, res = run_container(submission.group.project.image_id, submission_file)
         if res:
             submission.state = SubmissionState.Approved
         else:

@@ -14,10 +14,13 @@ def build_image(dockerfile: str) -> str:
     return cast(str, image.id)
 
 
-def run_container(image_id: str) -> tuple[str, bool]:
+def run_container(image_id: str, submission: bytes) -> tuple[str, bool]:
     client = docker.from_env()
-    container = client.containers.run(image_id, detach=True)
-    res = container.wait()
-    logs = container.logs().decode("utf-8")
-    container.remove()
+    with tempfile.NamedTemporaryFile() as tmpfile:
+        tmpfile.write(submission)
+        tmpfile.flush()
+        container = client.containers.run(image_id, detach=True, volumes=[f"{tmpfile.name}:/submission:ro"])
+        res = container.wait()
+        logs = container.logs().decode("utf-8")
+        container.remove()
     return logs, res["StatusCode"] == 0
