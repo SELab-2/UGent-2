@@ -1,3 +1,4 @@
+import os
 import tempfile
 from typing import Any, cast
 
@@ -16,7 +17,10 @@ def build_image(dockerfile: str) -> str:
 
 def run_container(image_id: str, submission: bytes) -> tuple[str, bool]:
     client = docker.from_env()
-    with tempfile.NamedTemporaryFile() as tmpfile:
+    tmpdir = None
+    if os.path.isdir("/var/lib/delphi-submissions"):
+        tmpdir = "/var/lib/delphi-submissions"
+    with tempfile.NamedTemporaryFile(dir=tmpdir) as tmpfile:
         tmpfile.write(submission)
         tmpfile.flush()
         container = client.containers.run(image_id, detach=True, volumes=[f"{tmpfile.name}:/submission:ro"])
