@@ -18,4 +18,6 @@ def run_container(image_id: str) -> tuple[str, bool]:
     client = docker.from_env()
     container = client.containers.run(image_id, detach=True)
     res = container.wait()
-    return container.logs().decode("utf-8"), res["StatusCode"] == 0
+    logs = container.logs().decode("utf-8")
+    container.remove()
+    return logs, res["StatusCode"] == 0
