@@ -215,7 +215,7 @@
     },
     "join_course": {
         "message": "Do you want to join the course:",
-        "join": "Join course",
-        "return_home": "Return to the homepage"
+        "join": "join course",
+        "return_home": "return to the homepage"
     }
 }

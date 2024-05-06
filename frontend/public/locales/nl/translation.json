@@ -215,7 +215,7 @@
     },
     "join_course": {
         "message": "Wil je het volgende vak volgen:",
-        "join": "Inschrijven",
-        "return_home": "Terug naar de startpagina"
+        "join": "inschrijven",
+        "return_home": "terug naar de startpagina"
     }
 }
