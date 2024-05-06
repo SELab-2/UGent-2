@@ -34,6 +34,7 @@ class TestStress(unittest.TestCase):
                 "Test Requirements",
                 True,
                 2,
+                "",
             )
             grp = group.create_group(self.session, proj.id)
             subm = submission.create_submission(

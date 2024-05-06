@@ -42,6 +42,7 @@ class TestSubmission(unittest.TestCase):
             "Test Requirements",
             True,
             2,
+            "",
         )
         group = create_group(self.session, project.id)
         submission = create_submission(
@@ -70,6 +71,7 @@ class TestSubmission(unittest.TestCase):
             "Test Requirements",
             True,
             2,
+            "",
         )
         group = create_group(self.session, project.id)
         create_submission(
@@ -105,6 +107,7 @@ class TestSubmission(unittest.TestCase):
             "Test Requirements",
             True,
             2,
+            "",
         )
         group = create_group(self.session, project.id)
         create_submission(
@@ -142,6 +145,7 @@ class TestSubmission(unittest.TestCase):
             "Test Requirements",
             True,
             2,
+            "",
         )
         group = create_group(self.session, project.id)
         create_submission(

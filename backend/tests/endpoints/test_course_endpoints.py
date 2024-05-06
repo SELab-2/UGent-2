@@ -52,6 +52,7 @@ class TestCourseEndpoints(unittest.TestCase):
             "requirements": '{"type": "file_constraint", "name": "sort.py"}',
             "visible": True,
             "max_students": 5,
+            "dockerfile": "",
         }
         response = make_authenticated_request(self.client, 9, "post", CREATE_PROJECT_IN_COURSE_URL, json=project_data)
         assert_status_code(response, status.HTTP_200_OK)
