@@ -5,67 +5,56 @@ Deze hoort later ingeladen te worden via een data loader.
 
 */
 
-export const dummy_data = {
-    "type": "zip_constraint",
-    "name": "root.zip",
-    "sub_constraints": [
+export const dummy_data = `{
+    "type": "SUBMISSION",
+    "root_constraint": {
+        "type": "ZIP",
+        "zip_name": "project.zip",
+        "sub_constraints": [
+            {
+                "type": "DIRECTORY",
+                "directory_name": "src",
+                "sub_constraints": [
+                    {
+                        "type": "FILE",
+                        "file_name": "main.py"
+                    },
+                    {
+                        "type": "DIRECTORY",
+                        "directory_name": "utils",
+                        "sub_constraints": [
+                            {
+                                "type": "FILE",
+                                "file_name": "helper.py"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "type": "DIRECTORY",
+                "directory_name": "tests",
+                "sub_constraints": [
+                    {
+                        "type": "FILE",
+                        "file_name": "test_main.py"
+                    }
+                ]
+            },
+            {
+                "type": "FILE",
+                "file_name": "README.md"
+            },
+            {
+                "type": "FILE",
+                "file_name": ".gitignore"
+            }
+        ]
+    },
+    "global_constraints": [
         {
-            "type": "directory_constraint",
-            "name": "Documents",
-            "sub_constraints": [
-                {
-                    "type": "file_constraint",
-                    "name": "Resume.pdf"
-                },
-                {
-                    "type": "directory_constraint",
-                    "name": "Other",
-                    "sub_constraints": [
-                        {
-                            "type": "file_constraint",
-                            "name": "ResumeNL.pdf"
-                        },
-                        {
-                            "type": "file_constraint",
-                            "name": "ResumeEN.pdf"
-                        }
-                    ]
-                },
-                {
-                    "type": "only_present_directory_constraint",
-                    "name": "Other2",
-                    "sub_constraints": [
-                        {
-                            "type": "file_constraint",
-                            "name": "Transcript.pdf"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "type": "directory_constraint",
-            "name": "Images",
-            "sub_constraints": [
-                {
-                    "type": "file_constraint",
-                    "name": "Vacation.jpg"
-                },
-                {
-                    "type": "file_constraint",
-                    "name": "ProfilePicture.jpg"
-                }
-            ]
-        },
-        {
-            "type": "directory_constraint",
-            "name": "Videos",
-            "sub_constraints": [
-                {
-                    "type": "file_constraint",
-                    "name": "Graduation.mp4"
-                }
-            ]
+        "type": "EXTENSION_NOT_PRESENT",
+        "extension": ".exe"
         }
     ]
-}
+}`

@@ -82,7 +82,6 @@
         "error_text": "You don't have any courses yet, please create a course first in order to create a project"
     },
     "submission_files": {
-        "changes_text": "",
         "root_switch": {
             "single_file": "single file",
             "zip_file": "zip-file"
@@ -106,6 +105,10 @@
             "type_switch": "All current file-specifications will be removed. Are you sure you want to change the type of the root?",
             "remove": "Are you sure?"
         }
+    },
+    "information": {
+        "title": "Information",
+        "constraints": "You can edit the name of a contraint by clicking on it. By hovering over a constraint, more operations will appear."
     },
     "warneable": {
         "title": "Warning!",

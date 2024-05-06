@@ -82,7 +82,6 @@
         "error_text": "Je hebt nog geen vakken, maak eerst een vak aan om een project te kunnen maken."
     },
     "submission_files": {
-        "changes_text": "",
         "root_switch": {
             "single_file": "enkel bestand",
             "zip_file": "zip-bestand"
@@ -106,6 +105,10 @@
             "type_switch": "Alle huidige file-specificaties zullen verwijderd worden. Ben je zeker dat je het root-type wil aanpassen?",
             "remove": "Ben je zeker?"
         }
+    },
+    "information": {
+        "title": "Informatie",
+        "constraints": "Je kan de naam van een file/folder veranderen door er op te klikken. Als je met je muis zweeft over een file/folder, dan krijg je meer mogelijke operaties te zien."
     },
     "warneable": {
         "title": "Waarschuwing!",

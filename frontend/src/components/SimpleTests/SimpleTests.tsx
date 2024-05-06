@@ -1,496 +1,511 @@
-import {JSX} from "react";
-import '../../assets/styles/SimpleTests/simple_checks.css'
-import { useState } from 'react';
+import {JSX, useEffect} from "react";
+import { useState, useMemo, useRef } from 'react';
 import { IoMdMore } from "react-icons/io";
-import { MdOutlineExpandLess } from "react-icons/md";
+import { MdExpandLess, MdExpandMore, MdOutlineExpandLess } from "react-icons/md";
 import { MdOutlineExpandMore } from "react-icons/md";
-import getID from "./IDProvider";
 import { VscNewFile } from "react-icons/vsc";
 import { VscNewFolder } from "react-icons/vsc";
-import Popup from 'reactjs-popup';
-import 'reactjs-popup/dist/index.css';
-import Warneable from "./Warneable";
 import { stringify } from 'flatted';
-import 'bulma-switch/dist/css/bulma-switch.min.css'
 import { TeacherOrStudent } from "./TeacherOrStudentEnum";
 import { useTranslation } from 'react-i18next';
+import Switch from "react-switch";
+import Information from "./Information";
+import Popup from 'reactjs-popup';
+import Warneable from "./Warneable";
+import getID from "./IDProvider";
+import 'reactjs-popup/dist/index.css';
+import 'bulma-switch/dist/css/bulma-switch.min.css';
+import '../../assets/styles/SimpleTests/simple_checks.css';
+import { dummy_data } from "./DummyData";
 
-
-/* === DOCUMENTATION ============================================================================================================================
-
-Roep 'SimpleTests' als component om deze in te laden.
-    PROPS: 
-        - teacherOrStudent
-            TYPE:       TeacherOrStudent
-            COMMENT:    "Als TEACHER, dan teacher-view. Als STUDENT, dan student-view."
-        - initialData
-            TYPE:       object
-            COMMENT:    "De initiele indiening-structuur."
-        - setHasChanged:        
-            TYPE:       React.Dispatch<React.SetStateAction<boolean>> | undefined
-            COMMENT:    "Dit is de setter van een react-hook. Deze zal gezet worden naar true/false 
-                         afhankelijk van of de indiening-structuur al dan niet aangepast werd."
-                        -> undefined als STUDENT
-        - setData:
-            TYPE:       React.Dispatch<React.SetStateAction<object>>  
-            COMMENT:    "De SimpleTests-component zal deze setter telkens oproepen als de indiening-structuur veranderd.
-                         Het kan zijn dat de data veranderd wordt naar iets dat het reeds was; 
-                         gebruik setHasChanged om een échte verandering te detecteren."
-                        -> undefined als STUDENT
-
-!!! WARNING: een not_present_constraint wordt (nog) niet ondersteund. !!!
-
-================================================================================================================================================ */
-
-/* Definieer constraint-types. */
-const ZIP = "zip_constraint"
-const FILE = "file_constraint"
-const DIR = "directory_constraint"
-const LOCKED_DIR = "only_present_directory_constraint"
-function isFolder(type: string) {
-    return type === DIR || type === LOCKED_DIR || type === ZIP
-}
-function isZip(type: string) {
-    return type === ZIP
-}
-
-type BEConstraint = {
-    "type": string, 
-    "name": string, 
-    "sub_constraints"?: BEConstraint[]
-}
-
-type FEConstraint = {
-    "type": string, 
-    "name": string, 
-    "sub_constraints"?: FEConstraint[],
-    id: number,
-    parent_id: number | undefined,
-    expanded?: boolean,
-}
-
-function BE_2_FE(BE_cons: BEConstraint): FEConstraint {
-
-    function BE_2_FE_sub(BE_cons: BEConstraint, parent_id: number | undefined): FEConstraint {
-        
-        const this_id = getID()
-        
-        return {
-            "type": BE_cons.type, 
-            "name": BE_cons.name, 
-            "sub_constraints": BE_cons.sub_constraints?.map(e => BE_2_FE_sub(e, this_id)), 
-            id: this_id,
-            parent_id: parent_id,
-            expanded: (BE_cons.type === FILE) ? undefined : false,
-        }
-    }
-    return BE_2_FE_sub(BE_cons, undefined)
-}
-
-function FE_2_BE(FE_cons: FEConstraint): BEConstraint {
-
-    if (isFolder(FE_cons.type)) {
-        return {
-            "type": FE_cons.type,
-            "name": FE_cons.name,
-            "sub_constraints": FE_cons.sub_constraints?.map(sub => FE_2_BE(sub))
-        }
-    } else {
-        return {
-            "type": FE_cons.type,
-            "name": FE_cons.name
-        }
+class Submission {
+    global_constraints: Constraint[];
+    local_constraints: Constraint[];
+    
+    constructor(
+        global_constraints: Constraint[],
+        local_constraints: Constraint[]
+    ) {
+        this.global_constraints = global_constraints;
+        this.local_constraints = local_constraints;
     }
 }
 
-/* Input fields will always lose focus on a recursive defined component.
-The easiest way to solve this is to flatten the structure and use the .map() function. */
-type FlattedConstraint = {
-    item: FEConstraint,
-    spacing: number,
-    show: boolean,
+class Constraint {
+    type: string;
+    value: string;
+    id: number;
+    parent_id: number | undefined;
+    depth: number;
+    constructor(
+        type: string,
+        value: string,
+        id: number,
+        parent_id: number | undefined = undefined,
+        depth: number = 0,
+    ) {
+        this.type = type;
+        this.value = value;
+        this.id = id;
+        this.parent_id = parent_id;
+        this.depth = depth;
+    }
 }
 
-function flatten(constraint: FEConstraint): FlattedConstraint[] {
+function json_string_to_submission(json_string: string): Submission {
+    let json = JSON.parse(json_string);
 
-    
-    return [{item: constraint, spacing: 0, show: true}].concat(
-        flatten_sub(constraint, 0, constraint.expanded).slice(1,)
-    )
-    
+    let local_constraints: Constraint[] = [];
+    let json_root_constraint = json['root_constraint'];
 
-    function flatten_sub(
-        constraint: FEConstraint, 
-        spacing: number, 
-        expanded: boolean | undefined
-    ): FlattedConstraint[] {
-        
-        const show = (expanded === undefined) ? false : expanded
-        
-        if (!isFolder(constraint.type)) {
-            return [{
-                item: constraint, 
-                spacing: spacing, 
-                show: show
-            }]
-        } else {
-            let list = [{
-                item: constraint, 
-                spacing: spacing, 
-                show: show
-            }]
-            if (constraint.sub_constraints !== undefined) {
-                for (const sub of constraint.sub_constraints) {
-                    list = list.concat(flatten_sub(
-                        sub, 
-                        spacing+1, 
-                        constraint.
-                        expanded, 
-                    ))
+    let global_constraints: Constraint[] = [];
+    let json_global_constraints = json['global_constraints'];
+
+    /* Local Constraints */
+
+    function dfs(
+        json: any, 
+        parent_id: number | undefined = undefined, 
+        depth: number = 0
+    ): Constraint[] {
+
+        let id = getID();
+
+        let constraint!: Constraint;
+        switch(json['type']) { 
+            case 'FILE': { 
+                constraint = new Constraint('FILE', json['file_name'], id, parent_id, depth);
+                break; 
+            } 
+            case 'DIRECTORY': { 
+                constraint = new Constraint('DIRECTORY', json['directory_name'], id, parent_id, depth);
+                break; 
+            } 
+            case 'ZIP': { 
+                constraint = new Constraint('ZIP', json['zip_name'], id, parent_id, depth);
+                break; 
+            }
+            case 'EXTENSION_NOT_PRESENT': { 
+                constraint = new Constraint('EXTENSION_NOT_PRESENT', json['extension'], id, parent_id, depth);
+                break; 
+            } 
+        } 
+
+        let sub_constraints: Constraint[] = [];
+        if (json.hasOwnProperty('sub_constraints')) {
+            for (let sub_obj of json['sub_constraints']) {
+                for (let constraint of dfs(sub_obj, id, depth+1)) {
+                    sub_constraints.push(constraint);
                 }
             }
-            return list
         }
+
+        return [constraint].concat(sub_constraints);
     }
+
+    local_constraints = dfs(json_root_constraint, undefined, 0);
+
+    /* Local Constraints */
+
+    function iterate(json_list: any): Constraint[] {
+
+       let constraints: Constraint[] = [];
+
+       for (let json of json_list) {
+            let id = getID();
+
+            let constraint!: Constraint;
+            switch(json['type']) { 
+                case 'FILE': { 
+                    constraint = new Constraint('FILE', json['file_name'], id);
+                    break; 
+                } 
+                case 'DIRECTORY': { 
+                    constraint = new Constraint('DIRECTORY', json['directory_name'], id);
+                    break; 
+                } 
+                case 'ZIP': { 
+                    constraint = new Constraint('ZIP', json['zip_name'], id);
+                    break; 
+                }
+                case 'EXTENSION_NOT_PRESENT': { 
+                    constraint = new Constraint('EXTENSION_NOT_PRESENT', json['extension'], id);
+                    break; 
+                } 
+            } 
+
+            constraints.push(constraint);
+       }
+
+       return constraints;
+    }
+
+    global_constraints = iterate(json_global_constraints);
+
+    return new Submission(global_constraints, local_constraints);
 }
 
-export default function SimpleTests(
-    props: {
-        teacherOrStudent: TeacherOrStudent, 
-        initialData: object,
-        setHasChanged: React.Dispatch<React.SetStateAction<boolean>> | undefined,
-        setData: React.Dispatch<React.SetStateAction<object>> | undefined
-    }
-): JSX.Element {
+function get_all_ids(submission: Submission) {
+    let global_ids = submission.global_constraints.map(constraint => constraint.id);
+    let local_ids = submission.local_constraints.map(constraint => constraint.id);
+    return global_ids.concat(local_ids);
+}
+
+export default function SimpleTests(): JSX.Element {
 
     const { t } = useTranslation();
 
-    const original: BEConstraint = structuredClone(props.initialData) as BEConstraint
+    const [submission, setSubmission] = useState<Submission>(useMemo(() => json_string_to_submission(dummy_data), []));
+    const [isZip, setIsZip] = useState<boolean>(submission.local_constraints[0]['type'] === 'ZIP');
+    const [isExpanded, setIsExpanded] = useState<Map<number, boolean>>(new Map( get_all_ids(submission).map(id => [id, false])));
+    const [isHovering, setIsHovering] = useState<Map<number, boolean>>(new Map( get_all_ids(submission).map(id => [id, false])));
+    const [isShown, setIsShown] = useState<Map<number, boolean>>(new Map( get_all_ids(submission).map(id => [id, false])));
+    // TODO: remove keys from maps when necessary
 
-    const [data, setData] = useState<FEConstraint>(BE_2_FE(props.initialData as BEConstraint))
+    useEffect(() => {
+        setIsShown(structuredClone(isShown.set(submission.local_constraints[0].id, true)));
+        setIsHovering(structuredClone(isHovering.set(submission.local_constraints[0].id, true)));
+    }, []);
 
-    /* Gebruik altijd deze functie om feData aan te passen! */
-    function updateData(newData: FEConstraint) {
+    useEffect(() => {
+        console.log('submission changed');
+    }, [submission]);
 
-        if (props.setHasChanged !== undefined && props.setData !== undefined) {
-            const newDataBE = FE_2_BE(newData)
+    /* Functions */
 
-            if (stringify(original) !== stringify(newDataBE)) {
-                props.setHasChanged(true)
+    function doChangeRootType(oldSubmission: Submission): Submission {
+        let root_constraint = oldSubmission.local_constraints[0];
+        if (root_constraint['type'] === 'ZIP') {
+            root_constraint['type'] = 'FILE';
+            setIsZip(false);
+        } else if (root_constraint['type'] === 'FILE') {
+            root_constraint['type'] = 'ZIP';
+            setIsZip(true);
+        }
+        return new Submission([], [root_constraint]);
+    }
+
+    function doDeleteConstraint(oldSubmission: Submission, id: number): Submission {
+        let newGlobalConstraints = oldSubmission.global_constraints.filter(constraint => constraint.id !== id);
+        let newLocalConstraints = [];
+        let to_remove: number[] = [];
+        for (let constraint of oldSubmission.local_constraints) {
+            if (constraint.id === id || to_remove.includes(constraint.parent_id as number)) {
+                to_remove.push(constraint.id);
             } else {
-                props.setHasChanged(false)
-            }
-
-            props.setData(newDataBE)
-        }
-
-        setData(newData)
-    }
-
-    /* true -> ZIP */
-    const [fileOrZip, setFileOrZip] = useState<boolean>(data.type === ZIP);
-
-    const [isHoveringMore, setIsHoveringMore] = useState<Map<number, boolean>>(new Map(
-        getAllIds(data).map(id => [id, false])
-    ));
-
-    function getAllIds(constraint: FEConstraint): number[] {
-        const list = [constraint.id]
-        if (constraint.sub_constraints !== undefined) {
-            for (const sub of constraint.sub_constraints) {
-                list.concat(getAllIds(sub))
+                newLocalConstraints.push(constraint);
             }
         }
-        return list
+        return new Submission(newGlobalConstraints, newLocalConstraints);
     }
 
-    /* expand one layer */
-    function expand(id: number) {
-
-        function expand_sub(constraint: FEConstraint): FEConstraint {
-            if (constraint.id === id) {
-                constraint.expanded = true
-            }
-
-            constraint.sub_constraints = constraint.sub_constraints?.map(e => expand_sub(e))
-
-            return constraint
+    function doChangeConstraintType(oldSubmission: Submission, id: number, type: string): Submission {
+        let g = oldSubmission.global_constraints.find(constraint => constraint.id === id);
+        if (g !== undefined) {
+            let newConstraint = new Constraint(type, g.value, g.id, g.parent_id, g.depth);
+            let index = oldSubmission.global_constraints.findIndex(constraint => constraint.id === newConstraint.id);
+            let newGlobalConstraints = [...submission.global_constraints.slice(0, index + 1), newConstraint, ...oldSubmission.global_constraints.slice(index + 1)];
+            return new Submission(newGlobalConstraints, oldSubmission.local_constraints);
         }
-
-        updateData(expand_sub(structuredClone(data)))
-    }
-
-    /* collaps all children layers recursively */
-    function collaps(id: number) {
-
-        const ids = [id]
-
-        function collaps_sub(constraint: FEConstraint): FEConstraint {
-            if (ids.includes(constraint.id)) {
-                constraint.expanded = false
-            }
-            if (constraint.parent_id !== undefined && ids.includes(constraint.parent_id)) {
-                constraint.expanded = false
-                ids.push(constraint.id)
-            }
-
-            constraint.sub_constraints = constraint.sub_constraints?.map(e => collaps_sub(e))
-
-            return constraint
+        let l = oldSubmission.local_constraints.find(constraint => constraint.id === id);
+        let newConstraint = new Constraint(type, l!.value, l!.id, l!.parent_id, l!.depth);
+        let index = oldSubmission.local_constraints.findIndex(constraint => constraint.id === newConstraint.id);
+        let newLocalConstraints = [...submission.local_constraints.slice(0, index), newConstraint, ...oldSubmission.local_constraints.slice(index + 1)];
+        let newSubmission = new Submission(oldSubmission.global_constraints, newLocalConstraints);
+        let to_remove = oldSubmission.local_constraints.filter(constraint => constraint.parent_id === id);
+        for (let x of to_remove) {
+            newSubmission = doDeleteConstraint(newSubmission, x.id);
         }
-
-        updateData(collaps_sub(structuredClone(data)))
+        return newSubmission;
     }
 
-    /* modify the name of a file/folder */
-    function modifyName(id: number, value: string) {
-
-        function modify_sub(constraint: FEConstraint): FEConstraint {
-            if (constraint.id === id) {
-                constraint.name = value
-            }
-
-            constraint.sub_constraints = constraint.sub_constraints?.map(e => modify_sub(e))
-
-            return constraint
+    function doNewConstraint(oldSubmission: Submission, id: number | undefined, type: string, newId: number) {
+        if (id === undefined) {
+            let newGlobalConstraints = oldSubmission.global_constraints.concat([new Constraint(type, "CHANGE_ME", newId, id)]);
+            return new Submission(newGlobalConstraints, oldSubmission.local_constraints);
         }
-
-        updateData(modify_sub(structuredClone(data)))
-        
-    }
-
-    /* add a new constraint */
-    function handleAdd(folder_id: number, type: string) {
-        function add(constraint: FEConstraint) {
-            if (constraint.id === folder_id) {
-                // add new file
-                constraint.sub_constraints?.push({
-                    "type": type, 
-                    "name": "CHANGE_ME",
-                    "sub_constraints": (!isFolder(type)) ? undefined : [],
-                    id: getID(),
-                    parent_id: folder_id,
-                    expanded: undefined,
-                })
-                // expand if not yet expanded
-                constraint.expanded = true
-            }
-            if (constraint.sub_constraints) {
-                for (const sub of constraint.sub_constraints) {
-                    add(sub)
-                }
-            }
-        }
-
-        add(data)
-
-        // update display
-        updateData(structuredClone(data))
-    }
-
-    /* remove a constraint and all its subconstraints recursively */
-    function handleRemove(parent_id: number | undefined, id: number) {
-
-        function remove(constraint: FEConstraint) {
-
-            if (constraint.id === parent_id) { 
-                if (constraint.sub_constraints !== undefined) {
-                    constraint.sub_constraints = constraint.sub_constraints.filter(
-                        sub => sub.id !== id
-                    )
-                }
-            }
-
-            if (constraint.sub_constraints) {
-                for (const sub of constraint.sub_constraints) {
-                    remove(sub)
-                }
-            }
-
-        }
-
-        remove(data)
-
-        // update display
-        updateData(structuredClone(data))
-
-    }
-
-    /* LOCKED_DIR -> DIR | DIR -> LOCKED_DIR */
-    function handleSwitchDirType(id: number) {
-        function switchDIR(constraint: FEConstraint) {
-            if (constraint.id === id) {
-                if (constraint.type === DIR) {
-                    constraint.type = LOCKED_DIR
-                } else if (constraint.type === LOCKED_DIR) {
-                    constraint.type = DIR
-                }
-            }
-            if (constraint.sub_constraints) {
-                for (const sub of constraint.sub_constraints) {
-                    switchDIR(sub)
-                }
-            }
-        }
-
-        switchDIR(data)
-
-        // update display
-        updateData(structuredClone(data))
-    }
-
-    /* Logic for changeing the root type */
-    function handleChangeRoot() {
-
-        if (fileOrZip) {
-            // previously zip
-            updateData({
-                "type": FILE, 
-                "name": "CHANGE_ME", 
-                "sub_constraints": undefined,
-                id: getID(),
-                parent_id: undefined,
-                expanded: undefined,
-            })
+        let oldConstraint = oldSubmission.local_constraints.find(constraint => constraint.id === id);
+        let newConstraint = new Constraint(type, "CHANGE_ME", newId, id, oldConstraint!.depth+1);
+        let sub_items = oldSubmission.local_constraints.filter(constraint => constraint.parent_id === id);
+        let index!: number;
+        if (sub_items.length === 0) {
+            // No sub-items yet. Put directly after item.
+            index = oldSubmission.local_constraints.findIndex(constraint => constraint.id === id);
         } else {
-            // previously file
-            updateData({
-                "type": ZIP, 
-                "name": "CHANGE_ME.zip", 
-                "sub_constraints": [],
-                id: getID(),
-                parent_id: undefined,
-                expanded: false,
-            })
+            // Sub-items present. Put after last sub-item.
+            index = oldSubmission.local_constraints.findIndex(constraint => constraint.id === sub_items[sub_items.length-1].id);
         }
+        let new_local_constraints = [...oldSubmission.local_constraints.slice(0, index + 1), newConstraint, ...oldSubmission.local_constraints.slice(index + 1)];
+        return new Submission(oldSubmission.global_constraints, new_local_constraints);
+    }
 
-        setFileOrZip(!fileOrZip)
+    /* Handlers */
+
+    function handleChangeRootType() {
+        setSubmission(doChangeRootType(submission));
+    }
+
+    function handleDeleteConstraint(id: number) {
+        setSubmission(doDeleteConstraint(submission, id));
+    }
+
+    function handleChangeConstraintType(id: number, type: string) {
+        setSubmission(doChangeConstraintType(submission, id, type));
+    }
+
+    function handleNewConstraint(id: number | undefined, type: string,) {
+        let new_id = getID();
+        setSubmission(doNewConstraint(submission, id, type, new_id));
+        setIsShown(structuredClone(isShown.set(new_id, true)));
+        setIsExpanded(structuredClone(isShown.set(new_id, true)));
+    }
+
+    function handleHoverOver(id: number) {
+        setIsHovering(structuredClone(isHovering.set(id, true)));
+    }
+
+    function handleHoverOut(id: number) {
+        setIsHovering(structuredClone(isHovering.set(id, false)));
+    }
+
+    function handleClickExpand(id: number) {
+        let newIsExpanded = !isExpanded.get(id);
+        setIsExpanded(structuredClone(isExpanded.set(id, newIsExpanded)));
+
+        if (newIsExpanded) {
+            // open single layer
+            for (let constraint of submission.local_constraints) {
+                if (constraint.parent_id === id) {
+                    setIsShown(structuredClone(isShown.set(constraint.id, true)));
+                }
+            }
+        } else {
+            // close recursively all layers
+            let ids = [id];
+            while(ids.length > 0) {
+                let rec_id = ids.pop();
+                for (let constraint of submission.local_constraints) {
+                    if (constraint.parent_id === rec_id) {
+                        setIsExpanded(structuredClone(isExpanded.set(constraint.id, false)));
+                        setIsShown(structuredClone(isShown.set(constraint.id, false)));
+                        ids.push(constraint.id);
+                    }
+                }
+            }
+        }
     }
 
     return (
         <div className="content-checks">
 
-            {props.teacherOrStudent == TeacherOrStudent.TEACHER
-                ? 
-                    <>
-                        {/* ...warning-text... */}
-                        <div className="warning-text">{t('submission_files.changes_text')}</div>
+            {/* ...submission type... */}
+            <div className="type">
+                        
+                {isZip
+                    ?  <div className="thin">{t('submission_files.root_switch.single_file')}</div>
+                    :  <div className="thick">{t('submission_files.root_switch.single_file')}</div>
+                }
 
-                        {/* ...type-switch... */}
-                        <div className="type">
-                            <div className="field">
-                                <Warneable 
-                                    text={t('submission_files.warning.type_switch')}
-                                    trigger={ onClick =>
-                                        <input 
-                                            id="switchOutlinedDefault" 
-                                            type="checkbox" 
-                                            name="switchOutlinedDefault" 
-                                            className="switch is-outlined"
-                                            checked={fileOrZip}
-                                            onClick={onClick}
-                                        /> 
-                                    }
-                                    proceed={handleChangeRoot}
-                                />
-                                    
-                                {fileOrZip
-                                ?   <>
-                                        <label htmlFor="switchOutlinedDefault">
-                                            <div className="thin">{t('submission_files.root_switch.single_file')}</div>
-                                            <div className="divider">/</div>
-                                            <div className="thick">{t('submission_files.root_switch.zip_file')}</div>
-                                        </label>
-                                    </>
-                                :   <>
-                                        <label htmlFor="switchOutlinedDefault">
-                                            <div className="thick">{t('submission_files.root_switch.single_file')}</div>
-                                            <div className="divider">/</div>
-                                            <div className="thin">{t('submission_files.root_switch.zip_file')}</div>
-                                        </label>
-                                    </>
-                            }
-                            </div>
-                        </div>
-                    </>
-                :   <></>
-            }
+                <Warneable 
+                    text={t('submission_files.warning.type_switch')}
+                    trigger={ onClick =>
+                        <Switch 
+                            className="switch" 
+                            onChange={onClick} 
+                            checked={isZip}
+                            handleDiameter={20}
+                            checkedIcon={false}
+                            uncheckedIcon={false}
+                            onColor="#006edc" 
+                            offColor="#006edc" 
+                            
+                        />
+                    }
+                    proceed={handleChangeRootType}
+                />
 
-            
+                {isZip
+                    ? <div className="thick">{t('submission_files.root_switch.zip_file')}</div>
+                    : <div className="thin">{t('submission_files.root_switch.zip_file')}</div>
+                }
 
-            {/* ...color-codes... */}
-            <div>{t('submission_files.color_codes.tag')}</div>
-            <ul>
-                <li className="zip-color">{t('submission_files.color_codes.zip')}</li>
-                <li className="locked-dir-color">{t('submission_files.color_codes.folder_refuse_others')}</li>
-                <li className="dir-color">{t('submission_files.color_codes.folder_allow_others')}</li>
-                <li>{t('submission_files.color_codes.file')}</li>
-            </ul>
-
-            {/* ...specify-text... */}
-            <div className="specify-text">{props.teacherOrStudent == TeacherOrStudent.TEACHER 
-                ? t('submission_files.specify_files.teacher')
-                : t('submission_files.specify_files.student')}
             </div>
+
             
-            {/* ...constraints... */}
-            <div className="constraints">
-                {flatten(data).map((v) => 
-                    <div key={"item"+v.item.id}>
-                        {v.show &&
-                            <div className="constraint_object row"
-                                onMouseOver={() => setIsHoveringMore(structuredClone(isHoveringMore.set(v.item.id, true)))}
-                                onMouseOut={() => setIsHoveringMore(structuredClone(isHoveringMore.set(v.item.id, false)))}
+            <div className="type-content">
+
+                {/* ...information... */}
+                <div className="information-wrapper">
+                    <Information 
+                        content={
+                            <div>
+                                <div>
+                                    You can edit the name of a contraint by clicking on it.
+                                    By hovering over a constraint, more operations will appear.
+                                </div>
+
+                                <br/>
+                                
+                                <div>{t('submission_files.color_codes.tag')}</div>
+                                <div className="color-codes">
+                                    <li className="zip-color">{t('submission_files.color_codes.zip')}</li>
+                                    <li className="locked-dir-color">{t('submission_files.color_codes.folder_refuse_others')}</li>
+                                    <li className="dir-color">{t('submission_files.color_codes.folder_allow_others')}</li>
+                                    <li>{t('submission_files.color_codes.file')}</li>
+                                </div>
+                            </div>
+                        } 
+                        trigger={onClick =>
+                            <button onClick={onClick} className="information-button">i</button>
+                        }
+                    />
+                </div>
+
+                {/*...global constraints...*/}
+                <div>Global constraints:</div>
+                <div className="global-constraints">
+                    <div className="constraints-table global-table">
+                        {submission.local_constraints.map(constraint =>
+                            isShown.get(constraint.id) &&
+                            <div className="constraint-row" key={''+constraint.id}
+                                onMouseOver={() => handleHoverOver(constraint.id)}
+                                onMouseOut={() => handleHoverOut(constraint.id)}
                             >
 
-                                {/* ... spacing ... */}
-                                {"\u00A0".repeat(6 * v.spacing)}
+                                {"\u00A0".repeat(5 * constraint.depth)}
+                                
+                                <div className={"row-value " + constraint['type']}>{constraint.value}</div>
 
-                                {/* ... three dots ... */}
-                                { ((props.teacherOrStudent == TeacherOrStudent.TEACHER) && (!isZip(v.item.type) && isHoveringMore.get(v.item.id)) )
-                                    ?   <Popup trigger={
+                                {(constraint['type'] === 'ZIP' || constraint['type'] === 'DIRECTORY') &&
+                                <VscNewFile 
+                                    className="row-add-file row-icon" 
+                                    style={{visibility: isHovering.get(constraint.id) ? 'visible' : 'hidden' }}
+                                    onClick={() => handleNewConstraint(constraint.id, 'FILE')}
+                                />}
 
-                                            <div className="more row">
-                                                <IoMdMore className="hover-shadow" />
-                                            </div>
+                                {(constraint['type'] === 'ZIP' || constraint['type'] === 'DIRECTORY') &&
+                                <VscNewFolder 
+                                    className="row-add-folder row-icon" 
+                                    style={{visibility: isHovering.get(constraint.id) ? 'visible' : 'hidden' }}
+                                    onClick={() => handleNewConstraint(constraint.id, 'DIRECTORY')}
+                                />}
+                                
+                                <Popup trigger={
+                                    <div className="more-wrapper">
+                                        <IoMdMore 
+                                            className="row-more row-icon" 
+                                            style={{visibility: isHovering.get(constraint.id) ? 'visible' : 'hidden' }}
+                                        />
+                                    </div>
+                                } position="right center" arrow={true} on="click" nested contentStyle={{width: '300px'}}>
+                                    <div className="menu">
+                                        {constraint['type'] === 'FILE' &&
+                                            <button onClick={() => handleChangeConstraintType(constraint.id, 'DIRECTORY')}>make directory</button>
+                                        }
+                                        {constraint['type'] === 'DIRECTORY' &&
+                                            <button onClick={() => handleChangeConstraintType(constraint.id, 'FILE')}>make file</button>
+                                        }
+                                        <button onClick={() => handleDeleteConstraint(constraint.id)}>remove</button>
+                                    </div>
+                                </Popup>    
 
-                                        } position="left center" arrow={true} on="click" nested>
+                                {(constraint['type'] === 'ZIP' || constraint['type'] === 'DIRECTORY') && (
+                                    isExpanded.get(constraint.id)
+                                        ? <MdExpandLess
+                                            className="row-expand row-icon" 
+                                            style={{visibility: isHovering.get(constraint.id) ? 'visible' : 'hidden' }}
+                                            onClick={() => handleClickExpand(constraint.id)}
+                                          />
+                                        : <MdExpandMore
+                                            className="row-expand row-icon" 
+                                            style={{visibility: isHovering.get(constraint.id) ? 'visible' : 'hidden' }}
+                                            onClick={() => handleClickExpand(constraint.id)}
+                                          />
+                                )}
+                                
+                            </div>
+                        )}
+                    </div>
+                    <div className="add-global-constraint">
 
-                                            <div className="menu">
+                    </div>
+                </div>
+                
+                
+                
+                {/*
+                <div className="constraints">
+                    {flatten(data).map((v) => 
+                        <div key={"item"+v.item.id}>
+                            {v.show &&
+                                <div className="constraint_object row"
+                                    onMouseOver={() => setIsHoveringMore(structuredClone(isHoveringMore.set(v.item.id, true)))}
+                                    onMouseOut={() => setIsHoveringMore(structuredClone(isHoveringMore.set(v.item.id, false)))}
+                                >
 
-                                                {/* ... menu-remove ... */}
-                                                <div className="menu-item" id={"x"+v.item.id} key={"y"+v.item.id} >
-                                                    <Warneable 
-                                                        text={t('submission_files.warning.remove')}
-                                                        trigger={onClick => 
-                                                            <button onClick={onClick}>{t('submission_files.menu.remove')}</button>
-                                                        }
-                                                        proceed={() => handleRemove(v.item.parent_id, v.item.id)}
-                                                    />
+                                   
+                                    {"\u00A0".repeat(6 * v.spacing)}
+
+                                 
+                                    { ((props.teacherOrStudent == TeacherOrStudent.TEACHER) && (!isZip(v.item.type) && isHoveringMore.get(v.item.id)) )
+                                        ?   <Popup trigger={
+
+                                                <div className="more row">
+                                                    <IoMdMore className="hover-shadow" />
                                                 </div>
 
-                                                {/* ... menu-allow-others ... */}
-                                                {(v.item.type === LOCKED_DIR || v.item.type === DIR) &&
-                                                    <div className="menu-item">
-                                                        <label className="checkbox">
-                                                            {v.item.type === LOCKED_DIR
-                                                                ? <input type="checkbox" onChange={() => handleSwitchDirType(v.item.id)} id={"others"+v.item.id}/>
-                                                                : <input type="checkbox" onChange={() => handleSwitchDirType(v.item.id)} id={"others"+v.item.id} checked/>
+                                            } position="left center" arrow={true} on="click" nested>
+
+                                                <div className="menu">
+
+                                                   
+                                                    <div className="menu-item" id={"x"+v.item.id} key={"y"+v.item.id} >
+                                                        <Warneable 
+                                                            text={t('submission_files.warning.remove')}
+                                                            trigger={onClick => 
+                                                                <button onClick={onClick}>{t('submission_files.menu.remove')}</button>
                                                             }
-                                                            {t('submission_files.menu.allow_others')}
-                                                        </label>
+                                                            proceed={() => handleRemove(v.item.parent_id, v.item.id)}
+                                                        />
                                                     </div>
-                                                }
 
-                                            </div>
+                                              
+                                                    {(v.item.type === LOCKED_DIR || v.item.type === DIR) &&
+                                                        <div className="menu-item">
+                                                            <label className="checkbox">
+                                                                {v.item.type === LOCKED_DIR
+                                                                    ? <input type="checkbox" onChange={() => handleSwitchDirType(v.item.id)} id={"others"+v.item.id}/>
+                                                                    : <input type="checkbox" onChange={() => handleSwitchDirType(v.item.id)} id={"others"+v.item.id} checked/>
+                                                                }
+                                                                {t('submission_files.menu.allow_others')}
+                                                            </label>
+                                                        </div>
+                                                    }
 
-                                        </Popup>
-                                    : <IoMdMore className="hidden"/> /* for correct spacing */
-                                }
+                                                </div>
 
-                                {/* ... name ... */}
-                                {props.teacherOrStudent == TeacherOrStudent.TEACHER
-                                    ? <input 
+                                            </Popup>
+                                        : <IoMdMore className="hidden"/> 
+                                    }
+
+                                
+                                    {props.teacherOrStudent == TeacherOrStudent.TEACHER
+                                        ? <input 
+                                                className= {"name input is-static " + (
+                                                    (isFolder(v.item.type)) 
+                                                    ? isZip(v.item.type)
+                                                        ? "zip-color"
+                                                        : v.item.type === LOCKED_DIR
+                                                            ? "locked-dir-color"
+                                                            : "dir-color"
+                                                    : ""
+                                                )}
+                                                id={"name"+v.item.id}
+                                                type="text" 
+                                                value={v.item.name} 
+                                                onChange={e => modifyName(v.item.id, e.target.value)} 
+                                        />
+                                        : <div 
                                             className= {"name input is-static " + (
                                                 (isFolder(v.item.type)) 
                                                 ? isZip(v.item.type)
@@ -500,47 +515,35 @@ export default function SimpleTests(
                                                         : "dir-color"
                                                 : ""
                                             )}
-                                            id={"name"+v.item.id}
-                                            type="text" 
-                                            value={v.item.name} 
-                                            onChange={e => modifyName(v.item.id, e.target.value)} 
-                                      />
-                                    : <div 
-                                        className= {"name input is-static " + (
-                                            (isFolder(v.item.type)) 
-                                            ? isZip(v.item.type)
-                                                ? "zip-color"
-                                                : v.item.type === LOCKED_DIR
-                                                    ? "locked-dir-color"
-                                                    : "dir-color"
-                                            : ""
-                                        )}
-                                        id={"name"+v.item.id} 
-                                      > {v.item.name} </div>
-                                }
-                                
-                                
-                                {/* ... expand ... */}
-                                {isFolder(v.item.type)
-                                    ? <div>
-                                        {v.item.expanded 
-                                            ? <MdOutlineExpandLess className="expand hover-encircle" onClick={() => collaps(v.item.id)} />
-                                            : <MdOutlineExpandMore className="expand hover-encircle" onClick={() => expand(v.item.id)} />
-                                        }
-                                        {props.teacherOrStudent == TeacherOrStudent.TEACHER && isHoveringMore.get(v.item.id) && 
-                                            <>
-                                                <VscNewFile className="add hover-shadow" onClick={() => handleAdd(v.item.id, FILE)}/>
-                                                <VscNewFolder className="add hover-shadow" onClick={() => handleAdd(v.item.id, LOCKED_DIR)}/>
-                                            </>
-                                        }
-                                    </div>
-                                    : <div/>
-                                }
+                                            id={"name"+v.item.id} 
+                                        > {v.item.name} </div>
+                                    }
+                                    
+                                    
+                                 
+                                    {isFolder(v.item.type)
+                                        ? <div>
+                                            {v.item.expanded 
+                                                ? <MdOutlineExpandLess className="expand hover-encircle" onClick={() => collaps(v.item.id)} />
+                                                : <MdOutlineExpandMore className="expand hover-encircle" onClick={() => expand(v.item.id)} />
+                                            }
+                                            {props.teacherOrStudent == TeacherOrStudent.TEACHER && isHoveringMore.get(v.item.id) && 
+                                                <>
+                                                    <VscNewFile className="add hover-shadow" onClick={() => handleAdd(v.item.id, FILE)}/>
+                                                    <VscNewFolder className="add hover-shadow" onClick={() => handleAdd(v.item.id, LOCKED_DIR)}/>
+                                                </>
+                                            }
+                                        </div>
+                                        : <div/>
+                                    }
 
-                            </div>
-                        }
-                    </div>
-                )}
+                                </div>
+                            }
+                        </div>
+                    )}
+                    
+                </div>
+                */}
             </div>
         </div>
     )
