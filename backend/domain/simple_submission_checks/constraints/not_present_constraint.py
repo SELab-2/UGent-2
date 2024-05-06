@@ -10,7 +10,7 @@ from domain.simple_submission_checks.constraints.constraint_result import (
 
 
 class NotPresentConstraint(BaseModel):
-    type: ConstraintType = ConstraintType.GLOBAL
+    type: ConstraintType = ConstraintType.NOT_PRESENT
     file_or_directory_name: str
 
     def validate_constraint(self, path: Path) -> NotPresentConstraintResult:

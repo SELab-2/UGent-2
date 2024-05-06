@@ -256,68 +256,105 @@ Dit kan een constraint zijn:
 ```json
 {
   "type": "SUBMISSION",
-  "root_constraint": {
+  "is_ok": false,
+  "sub_constraint_results": [],
+  "root_constraint_result": {
     "type": "ZIP",
-    "zip_name": "project.zip",
-    "sub_constraints": [
+    "is_ok": true,
+    "sub_constraint_results": [
       {
         "type": "DIRECTORY",
-        "directory_name": "src",
-        "sub_constraints": [
+        "is_ok": true,
+        "sub_constraint_results": [
           {
             "type": "FILE",
+            "is_ok": true,
+            "sub_constraint_results": [],
             "file_name": "main.py"
           },
           {
             "type": "DIRECTORY",
-            "directory_name": "utils",
-            "sub_constraints": [
+            "is_ok": true,
+            "sub_constraint_results": [
               {
                 "type": "FILE",
+                "is_ok": true,
+                "sub_constraint_results": [],
                 "file_name": "helper.py"
               },
               {
-                "type": "GLOBAL",
+                "type": "NOT_PRESENT",
+                "is_ok": false,
+                "sub_constraint_results": [],
                 "file_or_directory_name": "extra_file.txt"
               }
-            ]
+            ],
+            "directory_name": "utils"
           }
-        ]
+        ],
+        "directory_name": "src"
       },
       {
         "type": "DIRECTORY",
-        "directory_name": "tests",
-        "sub_constraints": [
+        "is_ok": true,
+        "sub_constraint_results": [
           {
             "type": "FILE",
+            "is_ok": true,
+            "sub_constraint_results": [],
             "file_name": "test_main.py"
           }
-        ]
+        ],
+        "directory_name": "tests"
       },
       {
         "type": "FILE",
+        "is_ok": true,
+        "sub_constraint_results": [],
         "file_name": "README.md"
       },
       {
         "type": "FILE",
+        "is_ok": true,
+        "sub_constraint_results": [],
         "file_name": ".gitignore"
       },
       {
-        "type": "GLOBAL",
+        "type": "NOT_PRESENT",
+        "is_ok": false,
+        "sub_constraint_results": [],
         "file_or_directory_name": "dist"
       },
       {
         "type": "EXTENSION_NOT_PRESENT",
-        "extension": ".log"
+        "is_ok": false,
+        "sub_constraint_results": [],
+        "extension": ".log",
+        "files_with_extension": [
+          "extra.log"
+        ]
       }
-    ]
+    ],
+    "zip_name": "project.zip"
   },
-  "global_constraints": [
-    {
-      "type": "EXTENSION_NOT_PRESENT",
-      "extension": ".exe"
+  "global_constraint_result": {
+    "type": "GLOBAL",
+    "is_ok": false,
+    "sub_constraint_results": [],
+    "global_constraint_results": {
+      "src/utils": [
+        {
+          "type": "EXTENSION_NOT_PRESENT",
+          "is_ok": false,
+          "sub_constraint_results": [],
+          "extension": ".exe",
+          "files_with_extension": [
+            "malware.exe"
+          ]
+        }
+      ]
     }
-  ]
+  }
 }
 ```
 
