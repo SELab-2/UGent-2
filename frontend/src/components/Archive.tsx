@@ -30,8 +30,8 @@ export default function Archive(): JSX.Element {
                         </p>
                     </section>
                     <footer className="modal-card-foot is-flex is-justify-content-center">
-                        <RegularButton placeholder={`${t('popups.yes')}`} add={false} styling={"is-danger"} onClick={() => {}}/>
-                        <RegularButton placeholder={`${t('popups.no')}`} add={false} styling={"is-info"} onClick={changeModal}/>
+                        <RegularButton placeholder={t('popups.yes')} add={false} styling={"is-danger"} onClick={() => {}}/>
+                        <RegularButton placeholder={t('popups.no')} add={false} styling={"is-info"} onClick={changeModal}/>
                     </footer>
                 </div>
             </div>

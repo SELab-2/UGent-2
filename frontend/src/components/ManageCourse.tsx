@@ -39,7 +39,7 @@ export default function ManageCourse(props: { teachers: TableRowPeople[] }): JSX
                         <button className="delete" aria-label="close" onClick={changeModal}></button>
                     </header>
                     <section className="modal-card-body pb-6">
-                        <SearchBar placeholder={`${t('searchbar.find_teacher')}`}/>
+                        <SearchBar placeholder={t('searchbar.find_teacher')}/>
                         <table className={"table is-fullwidth"}>
                             <thead>
                             <tr>
