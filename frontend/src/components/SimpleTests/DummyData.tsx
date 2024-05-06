@@ -5,7 +5,7 @@ Deze hoort later ingeladen te worden via een data loader.
 
 */
 
-export const dummy_data = `{
+export const dummy_data = {
     "type": "SUBMISSION",
     "root_constraint": {
         "type": "ZIP",
@@ -57,4 +57,4 @@ export const dummy_data = `{
         "extension": ".exe"
         }
     ]
-}`
+}

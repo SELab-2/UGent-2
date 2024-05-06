@@ -1,4 +1,4 @@
-import {JSX, useEffect} from "react";
+import {Dispatch, JSX, SetStateAction, useEffect} from "react";
 import { useState, useMemo, useRef } from 'react';
 import { IoMdMore } from "react-icons/io";
 import { MdExpandLess, MdExpandMore, MdOutlineExpandLess } from "react-icons/md";
@@ -8,6 +8,8 @@ import { VscNewFolder } from "react-icons/vsc";
 import { stringify } from 'flatted';
 import { TeacherOrStudent } from "./TeacherOrStudentEnum";
 import { useTranslation } from 'react-i18next';
+import { dummy_data } from "./DummyData";
+import { IoIosWarning } from "react-icons/io";
 import Switch from "react-switch";
 import Information from "./Information";
 import Popup from 'reactjs-popup';
@@ -16,7 +18,7 @@ import getID from "./IDProvider";
 import 'reactjs-popup/dist/index.css';
 import 'bulma-switch/dist/css/bulma-switch.min.css';
 import '../../assets/styles/SimpleTests/simple_checks.css';
-import { dummy_data } from "./DummyData";
+import _ from 'lodash';
 
 class Submission {
     global_constraints: Constraint[];
@@ -52,8 +54,7 @@ class Constraint {
     }
 }
 
-function json_string_to_submission(json_string: string): Submission {
-    let json = JSON.parse(json_string);
+function json_to_submission(json: object): Submission {
 
     let local_constraints: Constraint[] = [];
     let json_root_constraint = json['root_constraint'];
@@ -145,33 +146,79 @@ function json_string_to_submission(json_string: string): Submission {
     return new Submission(global_constraints, local_constraints);
 }
 
+function submission_to_json(submission: Submission): object {
+
+    function constraint_to_object(constraint: Constraint): object {
+        let obj: {[key: string]: any} = {
+            "type": constraint.type,
+        }
+
+        switch (constraint['type']) {
+            case 'ZIP':
+                obj.zip_name = constraint.value;
+                break;
+            case 'FILE':
+                obj.file_name = constraint.value;
+                break;
+            case 'DIRECTORY':
+                obj.directory_name = constraint.value;
+                break;
+        }
+
+        if (constraint['type'] === 'ZIP' || constraint['type'] === 'DIRECTORY') {
+            let sub_constraints = submission.local_constraints.filter(x => x.parent_id === constraint.id);
+            obj.sub_constraints = sub_constraints.map(x => local_constraint_to_object(x));
+        }
+        
+        return obj;
+    }
+
+    let obj = {
+        "type": "SUBMISSION",
+        "root_constraint": local_constraint()
+    };
+
+    // TODO: wait for more info on the constraints
+}
+
 function get_all_ids(submission: Submission) {
     let global_ids = submission.global_constraints.map(constraint => constraint.id);
     let local_ids = submission.local_constraints.map(constraint => constraint.id);
     return global_ids.concat(local_ids);
 }
 
-export default function SimpleTests(): JSX.Element {
+export default function SimpleTests(props: { 
+    teacherOrStudent: TeacherOrStudent,
+    initialData: object,
+    setData: Dispatch<SetStateAction<string>> | undefined,
+    setHasChanged: Dispatch<SetStateAction<boolean>> | undefined
+}): JSX.Element {
 
     const { t } = useTranslation();
 
-    const [submission, setSubmission] = useState<Submission>(useMemo(() => json_string_to_submission(dummy_data), []));
+    const [submission, setSubmission] = useState<Submission>(json_to_submission(props.initialData));
     const [isZip, setIsZip] = useState<boolean>(submission.local_constraints[0]['type'] === 'ZIP');
+    const [isHovering, setIsHovering] = useState<number | undefined>(undefined);
     const [isExpanded, setIsExpanded] = useState<Map<number, boolean>>(new Map( get_all_ids(submission).map(id => [id, false])));
-    const [isHovering, setIsHovering] = useState<Map<number, boolean>>(new Map( get_all_ids(submission).map(id => [id, false])));
     const [isShown, setIsShown] = useState<Map<number, boolean>>(new Map( get_all_ids(submission).map(id => [id, false])));
-    // TODO: remove keys from maps when necessary
+    const [isMenuOpen, setIsMenuOpen] = useState<Map<number, boolean>>(new Map( get_all_ids(submission).map(id => [id, false])));
 
     useEffect(() => {
         setIsShown(structuredClone(isShown.set(submission.local_constraints[0].id, true)));
-        setIsHovering(structuredClone(isHovering.set(submission.local_constraints[0].id, true)));
+        setIsHovering(submission.local_constraints[0].id);
     }, []);
 
     useEffect(() => {
-        console.log('submission changed');
+        let new_data = submission_to_json_string(submission);
+        if (props.setData !== undefined) {
+            props.setData(new_data);
+        }
+        if (props.setHasChanged !== undefined) {
+            props.setHasChanged(_.isEqual(new_data, props.initialData));
+        }
     }, [submission]);
 
-    /* Functions */
+    /* Functions that change the submission */
 
     function doChangeRootType(oldSubmission: Submission): Submission {
         let root_constraint = oldSubmission.local_constraints[0];
@@ -239,6 +286,21 @@ export default function SimpleTests(): JSX.Element {
         return new Submission(oldSubmission.global_constraints, new_local_constraints);
     }
 
+    function doModifyValue(oldSubmission: Submission, id: number, new_value: string) {
+        let g = oldSubmission.global_constraints.find(constraint => constraint.id === id);
+        if (g !== undefined) {
+            let newConstraint = new Constraint(g.type, new_value, g.id, g.parent_id, g.depth);
+            let index = oldSubmission.global_constraints.findIndex(constraint => constraint.id === newConstraint.id);
+            let newGlobalConstraints = [...submission.global_constraints.slice(0, index + 1), newConstraint, ...oldSubmission.global_constraints.slice(index + 1)];
+            return new Submission(newGlobalConstraints, oldSubmission.local_constraints);
+        }
+        let l = oldSubmission.local_constraints.find(constraint => constraint.id === id);
+        let newConstraint = new Constraint(l!.type, new_value, l!.id, l!.parent_id, l!.depth);
+        let index = oldSubmission.local_constraints.findIndex(constraint => constraint.id === newConstraint.id);
+        let newLocalConstraints = [...submission.local_constraints.slice(0, index), newConstraint, ...oldSubmission.local_constraints.slice(index + 1)];
+        return new Submission(oldSubmission.global_constraints, newLocalConstraints);
+    }
+
     /* Handlers */
 
     function handleChangeRootType() {
@@ -247,10 +309,17 @@ export default function SimpleTests(): JSX.Element {
 
     function handleDeleteConstraint(id: number) {
         setSubmission(doDeleteConstraint(submission, id));
+        isExpanded.delete(id);
+        isMenuOpen.delete(id);
+        isShown.delete(id);
+        setIsExpanded(isExpanded);
+        setIsMenuOpen(isMenuOpen);
+        setIsShown(isShown);
     }
 
     function handleChangeConstraintType(id: number, type: string) {
         setSubmission(doChangeConstraintType(submission, id, type));
+        setIsMenuOpen(structuredClone(isMenuOpen.set(id, false)));
     }
 
     function handleNewConstraint(id: number | undefined, type: string,) {
@@ -258,14 +327,19 @@ export default function SimpleTests(): JSX.Element {
         setSubmission(doNewConstraint(submission, id, type, new_id));
         setIsShown(structuredClone(isShown.set(new_id, true)));
         setIsExpanded(structuredClone(isShown.set(new_id, true)));
+        setIsMenuOpen(structuredClone(isMenuOpen.set(new_id, false)));
+    }
+
+    function handleModifyValue(id: number, new_value: string) {
+        setSubmission(doModifyValue(submission, id, new_value));
     }
 
     function handleHoverOver(id: number) {
-        setIsHovering(structuredClone(isHovering.set(id, true)));
+        setIsHovering(id);
     }
 
-    function handleHoverOut(id: number) {
-        setIsHovering(structuredClone(isHovering.set(id, false)));
+    function handleHoverOut() {
+        setIsHovering(undefined);
     }
 
     function handleClickExpand(id: number) {
@@ -295,10 +369,14 @@ export default function SimpleTests(): JSX.Element {
         }
     }
 
+    function handleOpenMenu(id: number) {
+        setIsMenuOpen(structuredClone(isMenuOpen.set(id, true)));
+    }
+
     return (
         <div className="content-checks">
 
-            {/* ...submission type... */}
+            {/* SUBMISSION TYPE */}
             <div className="type">
                         
                 {isZip
@@ -331,10 +409,10 @@ export default function SimpleTests(): JSX.Element {
 
             </div>
 
-            
+            {/* ZIP FILE */}
             <div className="type-content">
 
-                {/* ...information... */}
+                {/* ...local constraints tag... */}
                 <div className="information-wrapper">
                     <Information 
                         content={
@@ -361,64 +439,84 @@ export default function SimpleTests(): JSX.Element {
                     />
                 </div>
 
-                {/*...global constraints...*/}
-                <div>Global constraints:</div>
+                {/*...local constraints...*/}
+                <div>Local constraints:</div>
                 <div className="global-constraints">
                     <div className="constraints-table global-table">
                         {submission.local_constraints.map(constraint =>
                             isShown.get(constraint.id) &&
                             <div className="constraint-row" key={''+constraint.id}
                                 onMouseOver={() => handleHoverOver(constraint.id)}
-                                onMouseOut={() => handleHoverOut(constraint.id)}
+                                onMouseOut={handleHoverOut}
                             >
 
+                                {/* spacing */}
                                 {"\u00A0".repeat(5 * constraint.depth)}
-                                
-                                <div className={"row-value " + constraint['type']}>{constraint.value}</div>
+                        
+                                {/* value field */}
+                                <input 
+                                    className={"row-value " + constraint['type']} 
+                                    value={constraint.value}
+                                    onChange={e => handleModifyValue(constraint.id, e.target.value)} 
+                                />
 
+                                {/* add file */}
                                 {(constraint['type'] === 'ZIP' || constraint['type'] === 'DIRECTORY') &&
                                 <VscNewFile 
-                                    className="row-add-file row-icon" 
-                                    style={{visibility: isHovering.get(constraint.id) ? 'visible' : 'hidden' }}
+                                    className="row-icon" 
+                                    style={{visibility: isHovering === constraint.id ? 'visible' : 'hidden' }}
                                     onClick={() => handleNewConstraint(constraint.id, 'FILE')}
                                 />}
 
+                                {/* add folder */}
                                 {(constraint['type'] === 'ZIP' || constraint['type'] === 'DIRECTORY') &&
                                 <VscNewFolder 
-                                    className="row-add-folder row-icon" 
-                                    style={{visibility: isHovering.get(constraint.id) ? 'visible' : 'hidden' }}
+                                    className="row-icon" 
+                                    style={{visibility: isHovering === constraint.id ? 'visible' : 'hidden' }}
                                     onClick={() => handleNewConstraint(constraint.id, 'DIRECTORY')}
                                 />}
                                 
+                                {/* more button */}
+                                {constraint['type'] !== 'ZIP' &&
                                 <Popup trigger={
                                     <div className="more-wrapper">
                                         <IoMdMore 
-                                            className="row-more row-icon" 
-                                            style={{visibility: isHovering.get(constraint.id) ? 'visible' : 'hidden' }}
+                                            className="row-icon" 
+                                            style={{visibility: isHovering === constraint.id ? 'visible' : 'hidden' }}
                                         />
                                     </div>
-                                } position="right center" arrow={true} on="click" nested contentStyle={{width: '300px'}}>
-                                    <div className="menu">
+                                }   position="right center" 
+                                    arrow={true} 
+                                    onOpen={() => handleOpenMenu(constraint.id)}
+                                    open={isMenuOpen.get(constraint.id)} 
+                                    on="click" 
+                                    nested 
+                                    contentStyle={{width: 'auto'}}
+                                >
+                                    {/* ~ more menu ~ */}
+                                    <div>
                                         {constraint['type'] === 'FILE' &&
-                                            <button onClick={() => handleChangeConstraintType(constraint.id, 'DIRECTORY')}>make directory</button>
+                                            <button className="menu-not-last-item" onClick={() => handleChangeConstraintType(constraint.id, 'DIRECTORY')}>make directory</button>
                                         }
                                         {constraint['type'] === 'DIRECTORY' &&
-                                            <button onClick={() => handleChangeConstraintType(constraint.id, 'FILE')}>make file</button>
+                                            <button className="menu-not-last-item" onClick={() => handleChangeConstraintType(constraint.id, 'FILE')}>make file</button>
                                         }
                                         <button onClick={() => handleDeleteConstraint(constraint.id)}>remove</button>
                                     </div>
-                                </Popup>    
+                                </Popup>
+                                }
 
+                                {/* expand/collaps */}
                                 {(constraint['type'] === 'ZIP' || constraint['type'] === 'DIRECTORY') && (
                                     isExpanded.get(constraint.id)
                                         ? <MdExpandLess
-                                            className="row-expand row-icon" 
-                                            style={{visibility: isHovering.get(constraint.id) ? 'visible' : 'hidden' }}
+                                            className="row-icon" 
+                                            style={{visibility: isHovering === constraint.id ? 'visible' : 'hidden' }}
                                             onClick={() => handleClickExpand(constraint.id)}
                                           />
                                         : <MdExpandMore
-                                            className="row-expand row-icon" 
-                                            style={{visibility: isHovering.get(constraint.id) ? 'visible' : 'hidden' }}
+                                            className="row-icon" 
+                                            style={{visibility: isHovering === constraint.id ? 'visible' : 'hidden' }}
                                             onClick={() => handleClickExpand(constraint.id)}
                                           />
                                 )}

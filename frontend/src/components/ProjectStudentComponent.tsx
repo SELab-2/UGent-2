@@ -7,7 +7,11 @@ import SimpleTests from "./SimpleTests/SimpleTests.tsx";
 import {TeacherOrStudent} from "./SimpleTests/TeacherOrStudentEnum.tsx";
 import {useTranslation} from 'react-i18next';
 import { RegularButton } from "./RegularButton.tsx";
+import { dummy_data } from "./SimpleTests/DummyData.tsx";
 
+
+// SimpleTests
+const calledData = dummy_data;
 
 export default function ProjectStudentComponent(props: { project: ProjectStudent }): JSX.Element {
 
@@ -81,7 +85,7 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
                                 <div className="field"> {/*Deze moet blijven, anders gaan de elementen in elkaar*/}
                                     <SimpleTests
                                         teacherOrStudent={TeacherOrStudent.STUDENT}
-                                        initialData={props.project.requiredFiles}
+                                        initialData={calledData}
                                         setData={undefined}
                                         setHasChanged={undefined}
                                     />

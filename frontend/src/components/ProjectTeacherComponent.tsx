@@ -12,8 +12,7 @@ import Calendar from "react-calendar";
 import {useTranslation} from 'react-i18next';
 
 // SimpleTests
-const CHECK_SIMPLE_TESTS = false
-const calledData = dummy_data
+const calledData = dummy_data;
 
 export function ProjectTeacherComponent(props: { project: ProjectTeacher }): JSX.Element {
 
@@ -51,7 +50,7 @@ export function ProjectTeacherComponent(props: { project: ProjectTeacher }): JSX
     const minutes_array = Array.from({length: 60}, (_, index) => index.toString().padStart(2, '0'));
 
     // SimpleTests
-    const [data, setData] = useState<object>(calledData);
+    const [data, setData] = useState<string>(calledData);
     const [hasChanged, setHasChanged] = useState(false);
 
     return (
@@ -139,10 +138,6 @@ export function ProjectTeacherComponent(props: { project: ProjectTeacher }): JSX
                 </div>
                 <div className="field-body field">
                     <div className="field"> {/* Deze moet er blijven, anders doet css raar*/}
-                        {CHECK_SIMPLE_TESTS && <>
-                            <button onClick={() => console.log(hasChanged)}>hasChanged</button>
-                            <button onClick={() => console.log(data)}>data</button>
-                        </>}
                         <SimpleTests
                             teacherOrStudent={TeacherOrStudent.TEACHER}
                             initialData={calledData}
