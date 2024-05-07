@@ -41,7 +41,7 @@ Een `ZipConstraint` in json-formaat zal er zo uit zien:
 {
   "type": "ZIP",
   "zip_name": "<naam>.zip",
-  "sub_constraints": [<DirectoryConstraint | FileConstraint | NotPresentConstraint | ExtensionNotPresentConstraint>]
+  "sub_constraints": [<DirectoryConstraint | FileConstraint | NotPresentConstraint | ExtensionNotPresentConstraint | ExtensionOnlyPresentConstraint>]
 }
 ```
 
@@ -56,7 +56,7 @@ Een `DirectoryConstraint` in json-formaat zal er zo uit zien:
 {
   "type": "DIRECTORY",
   "directory_name": "<naam>",
-  "sub_constraints": [<DirectoryConstraint | FileConstraint | NotPresentConstraint | ExtensionNotPresentConstraint>]
+  "sub_constraints": [<DirectoryConstraint | FileConstraint | NotPresentConstraint | ExtensionNotPresentConstraint | ExtensionOnlyPresentConstraint>]
 }
 ```
 
@@ -136,7 +136,7 @@ Een `ZipConstraintResult` in json-formaat zal er zo uit zien:
 {
   "type": "ZIP",
   "is_ok": true,
-  "sub_constraint_results": [<DirectoryConstraintResult | FileConstraintResult | NotPresentConstraintResult | ExtensionNotPresentConstraintResult>]
+  "sub_constraint_results": [<DirectoryConstraintResult | FileConstraintResult | NotPresentConstraintResult | ExtensionNotPresentConstraintResult | ExtensionOnlyPresentConstraintResult>]
 }
 ```
 
@@ -153,7 +153,7 @@ Een `DirectoryConstraintResult` in json-formaat zal er zo uit zien:
 {
     "type": "DIRECTORY",
     "is_ok": true,
-    "sub_constraint_results": [<DirectoryConstraintResult | FileConstraintResult | NotPresentConstraintResult | ExtensionNotPresentConstraintResult>],
+    "sub_constraint_results": [<DirectoryConstraintResult | FileConstraintResult | NotPresentConstraintResult | ExtensionNotPresentConstraintResult | ExtensionOnlyPresentConstraintResult>],
     "directory_name": "<name>>"
 }
 ```

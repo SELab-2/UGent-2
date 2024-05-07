@@ -13,6 +13,7 @@ class ConstraintType(Enum):
     ZIP = "ZIP"
     SUBMISSION = "SUBMISSION"
     EXTENSION_NOT_PRESENT = "EXTENSION_NOT_PRESENT"
+    EXTENSION_ONLY_PRESENT = "EXTENSION_ONLY_PRESENT"
     GLOBAL = "GLOBAL"
 
 
@@ -31,7 +32,9 @@ class SubmissionConstraintResult(ConstraintResult):
 
 class GlobalConstraintResult(ConstraintResult):
     type: ConstraintType = ConstraintType.GLOBAL
-    global_constraint_results: dict[str, list[NotPresentConstraintResult | ExtensionNotPresentConstraintResult]]
+    global_constraint_results: dict[str, list[NotPresentConstraintResult |
+                                              ExtensionNotPresentConstraintResult |
+                                              ExtensionOnlyPresentConstraintResult]]
 
 
 class FileConstraintResult(ConstraintResult):
@@ -60,5 +63,16 @@ class ExtensionNotPresentConstraintResult(ConstraintResult):
     files_with_extension: list[str]
 
 
-SubConstraintResult = (DirectoryConstraintResult | FileConstraintResult
-                       | NotPresentConstraintResult | ExtensionNotPresentConstraintResult)
+class ExtensionOnlyPresentConstraintResult(ConstraintResult):
+    type: ConstraintType = ConstraintType.EXTENSION_ONLY_PRESENT
+    extension: str
+    files_without_extension: list[str]
+
+
+SubConstraintResult = (
+        DirectoryConstraintResult
+        | FileConstraintResult
+        | NotPresentConstraintResult
+        | ExtensionNotPresentConstraintResult
+        | ExtensionOnlyPresentConstraintResult
+)

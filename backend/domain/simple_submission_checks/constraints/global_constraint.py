@@ -6,12 +6,13 @@ from pydantic import BaseModel
 
 from domain.simple_submission_checks.constraints.constraint_result import ConstraintType, GlobalConstraintResult
 from domain.simple_submission_checks.constraints.extension_not_present_constraint import ExtensionNotPresentConstraint
+from domain.simple_submission_checks.constraints.extension_only_present_constraint import ExtensionOnlyPresentConstraint
 from domain.simple_submission_checks.constraints.not_present_constraint import NotPresentConstraint
 
 
 class GlobalConstraint(BaseModel):
     type: ConstraintType = ConstraintType.GLOBAL
-    constraints: list[ExtensionNotPresentConstraint | NotPresentConstraint]
+    constraints: list[ExtensionNotPresentConstraint | NotPresentConstraint | ExtensionOnlyPresentConstraint]
 
     # Een lijst van folders en hun constraint results.
     # Voor elke folder de constraints uitvoeren en het resultaat daarvan opslaan.

@@ -8,6 +8,7 @@ from pydantic import BaseModel
 from domain.simple_submission_checks.constraints.constraint_result import ConstraintType, ZipConstraintResult
 from domain.simple_submission_checks.constraints.directory_constraint import DirectoryConstraint
 from domain.simple_submission_checks.constraints.extension_not_present_constraint import ExtensionNotPresentConstraint
+from domain.simple_submission_checks.constraints.extension_only_present_constraint import ExtensionOnlyPresentConstraint
 from domain.simple_submission_checks.constraints.file_constraint import FileConstraint
 from domain.simple_submission_checks.constraints.not_present_constraint import NotPresentConstraint
 
@@ -19,7 +20,8 @@ class ZipConstraint(BaseModel):
         DirectoryConstraint |
         FileConstraint |
         NotPresentConstraint |
-        ExtensionNotPresentConstraint
+        ExtensionNotPresentConstraint |
+        ExtensionOnlyPresentConstraint
         ]
 
     def validate_constraint(self, path: Path) -> ZipConstraintResult:
@@ -44,6 +46,7 @@ class ZipConstraint(BaseModel):
 
         # Extract file into a Temp directory and validate sub constraints.
         with tempfile.TemporaryDirectory() as tmp_dir, zipfile.ZipFile(zip_path, "r") as zip_ref:
+
             zip_ref.extractall(tmp_dir)
             sub_constraints = [constraint.validate_constraint(Path(tmp_dir)) for constraint in self.sub_constraints]
             return ZipConstraintResult(zip_name=self.zip_name, is_ok=True, sub_constraint_results=sub_constraints)
