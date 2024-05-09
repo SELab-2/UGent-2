@@ -4,36 +4,36 @@
 
 ### [SubmissionConstraint](./submission_constraint.py)
 
-Een `SubmissionConstraint` legt de structuur van een indiening vast. 
-Een `SubmissionConstraint` heeft een `root_constraint` en lijst `global_constraints`.
-
-- De `root_constraint` kan ofwel een `ZipConstraint` of een `FileConstraint` zijn, aangezien een indiening een 
+Een `SubmissionConstraint` legt de structuur van een indiening vast en heeft een `root_constraint` als attribuut.
+Dit `root_constraint` kan ofwel een `ZipConstraint` of een `FileConstraint` zijn, aangezien een indiening een 
 zip-bestand of een normaal bestand kan zijn. 
-
-- De lijst van `global_constraints` bevat een lijst met constraints 
-van het type `NotPresentConstraint` of `ExtensionNotPresentConstraint`.
 
 Een `SubmissionConstraint` in json-formaat zal er zo uit zien:
 
 ```json
 {
   "type": "SUBMISSION",
-  "root_constraint": <ZipConstraint | FileConstraint>,
-  "global_constraints": [<NotPresentConstraint | ExtensionNotPresentConstraint>],
+  "root_constraint": <ZipConstraint | FileConstraint>
 }
 ```
 ### [ZipConstraint](./zip_constraint.py)
 
 Een `ZipConstraint` kan enkel gebruikt worden als `root_constraint` van een `SubmissionConstraint`.
 Deze constraint checkt of de indiening een zip bestand is en legt nog verdere constraints op de rest van het zip-bestand.
-Een `ZipConstraint` heeft een `zip_name` (str) en een lijst `sub_constraints`. 
+Een `ZipConstraint` heeft een `zip_name` (str), een lijst `sub_constraints` en een lijst `global_constraints`. 
 
-De `zip_name` legt de naam van de lijst vast en de `sub_constraints` bevat een lijst van constraints van volgende types:
+De `zip_name` legt de naam van de zip vast en de `sub_constraints` bevat een lijst van constraints van volgende types:
 
 - `DirectoryConstraint`
 - `FileConstraint`
 - `NotPresentConstraint`
 - `ExtensionNotPresentConstraint`
+
+De `global_constraints` zijn constraints die gelden voor de volledige zip indiening. Een element in de lijst van global constraints kan één van volgende types zijn:
+
+- `NotPresentConstraint`
+- `ExtensionNotPresentConstraint`
+- `ExtensionOnlyPresentConstraint`
 
 Een `ZipConstraint` in json-formaat zal er zo uit zien:
 
@@ -41,7 +41,8 @@ Een `ZipConstraint` in json-formaat zal er zo uit zien:
 {
   "type": "ZIP",
   "zip_name": "<naam>.zip",
-  "sub_constraints": [<DirectoryConstraint | FileConstraint | NotPresentConstraint | ExtensionNotPresentConstraint | ExtensionOnlyPresentConstraint>]
+  "sub_constraints": [<DirectoryConstraint | FileConstraint | NotPresentConstraint | ExtensionNotPresentConstraint | ExtensionOnlyPresentConstraint>],
+  "global_constraints": [<NotPresentConstraint | ExtensionNotPresentConstraint | ExtensionOnlyPresentConstraint>]
 }
 ```
 
@@ -111,24 +112,24 @@ nog velden hebben die aangeven wat er juist is misgelopen.
 ### SubmissionConstraintResult
 
 Bij een `SubmissionConstraintResult` staat het `is_ok` veld op waar wanneer alle onderliggende constraints voldaan zijn.
-Het heeft ook nog twee extra velden: `root_constraint_result` en `global_constraint_result`. Deze  
-Een `SubmissionConstraintResult` in json-formaat zal er zo uit zien:
+Het heeft ook nog één extra veld: `root_constraint_result`, wat het resultaat is van de root Zip- of FileConstraint. Een 
+`SubmissionConstraintResult` in json-formaat zal er zo uit zien:
 
 ```json
 {
   "type": "SUBMISSION",
   "is_ok": true,
-  "root_constraint_result": <ZipConstraintResult | FileConstraintResult>,
-  "global_constraint_result": GlobalConstraintResult,
-  "sub_constraint_results": [*altijd leeg*]
+  "root_constraint_result": <ZipConstraintResult | FileConstraintResult>
 }
 ```
 
 ### ZipConstraintResult
 
 Bij een `ZipConstraintResult` staat het `is_ok` veld op waar wanneer De zip de juiste naam heeft.
-Deze heeft naast het type en `is_ok` veld nog het `sub_constraint_results` veld, wat een lijst is van de resultaten 
-van alle sub_constraints gedefinieerd in de `ZipConstraint`.
+Deze heeft naast het type en `is_ok` veld nog drie attributen: h
+- `zip_name` (str) dat de naam van de zip bevat
+- `sub_constraint_results` (list) dat een lijst is van de resultaten van de subconstraints
+- `global_constraint_result` dat het resultaat is van de globale constraints.
 
 Een `ZipConstraintResult` in json-formaat zal er zo uit zien:
 
@@ -136,7 +137,9 @@ Een `ZipConstraintResult` in json-formaat zal er zo uit zien:
 {
   "type": "ZIP",
   "is_ok": true,
+  "zip_name": "<naam>",
   "sub_constraint_results": [<DirectoryConstraintResult | FileConstraintResult | NotPresentConstraintResult | ExtensionNotPresentConstraintResult | ExtensionOnlyPresentConstraintResult>]
+  "global_constraint_result": <GlobalConstraintResult>
 }
 ```
 
@@ -154,7 +157,7 @@ Een `DirectoryConstraintResult` in json-formaat zal er zo uit zien:
     "type": "DIRECTORY",
     "is_ok": true,
     "sub_constraint_results": [<DirectoryConstraintResult | FileConstraintResult | NotPresentConstraintResult | ExtensionNotPresentConstraintResult | ExtensionOnlyPresentConstraintResult>],
-    "directory_name": "<name>>"
+    "directory_name": "<name>"
 }
 ```
 
@@ -169,8 +172,7 @@ Een `FileConstraintResult` in json-formaat zal er zo uit zien:
 {
     "type": "FILE",
     "is_ok": true,
-    "file_name": "<name>",
-    "sub_constraint_results": [*altijd leeg*]
+    "file_name": "<name>"
 }
 ```
 
@@ -186,7 +188,6 @@ Een `NotPresentConstraintResult` in json-formaat zal er zo uit zien:
     "type": "NOT_PRESENT",
     "is_ok": true,
     "file_or_directory_name": "<naam>",
-    "sub_constraint_results": [*altijd leeg*]
 }
 ```
 
@@ -207,7 +208,6 @@ Een `ExtensionNotPresentConstraintResult` in json-formaat zal er zo uit zien:
       "<naam>",
       ...
     ],
-    "sub_constraint_results": [*altijd leeg*]
 }
 ```
 
@@ -226,8 +226,7 @@ Een `GlobalConstraintResult` in json-formaat zal er zo uit zien:
   "global_constraint_results": {
     "<map>": [<NotPresentConstraintResult | ExtensionNotPresentConstraintResult>],
     ...
-  },
-  "sub_constraint_results": [*altijd leeg*]
+  }
 }
 ```
 
@@ -256,104 +255,67 @@ Dit kan een constraint zijn:
 ```json
 {
   "type": "SUBMISSION",
-  "is_ok": false,
-  "sub_constraint_results": [],
-  "root_constraint_result": {
+  "root_constraint": {
     "type": "ZIP",
-    "is_ok": true,
-    "sub_constraint_results": [
+    "zip_name": "project.zip",
+    "global_constraints": [
+      {
+        "type": "EXTENSION_NOT_PRESENT",
+        "extension": ".exe"
+      }
+    ],
+    "sub_constraints": [
       {
         "type": "DIRECTORY",
-        "is_ok": true,
-        "sub_constraint_results": [
+        "directory_name": "src",
+        "sub_constraints": [
           {
             "type": "FILE",
-            "is_ok": true,
-            "sub_constraint_results": [],
             "file_name": "main.py"
           },
           {
             "type": "DIRECTORY",
-            "is_ok": true,
-            "sub_constraint_results": [
+            "directory_name": "utils",
+            "sub_constraints": [
               {
                 "type": "FILE",
-                "is_ok": true,
-                "sub_constraint_results": [],
                 "file_name": "helper.py"
               },
               {
                 "type": "NOT_PRESENT",
-                "is_ok": false,
-                "sub_constraint_results": [],
                 "file_or_directory_name": "extra_file.txt"
               }
-            ],
-            "directory_name": "utils"
+            ]
           }
-        ],
-        "directory_name": "src"
+        ]
       },
       {
         "type": "DIRECTORY",
-        "is_ok": true,
-        "sub_constraint_results": [
+        "directory_name": "tests",
+        "sub_constraints": [
           {
             "type": "FILE",
-            "is_ok": true,
-            "sub_constraint_results": [],
             "file_name": "test_main.py"
           }
-        ],
-        "directory_name": "tests"
+        ]
       },
       {
         "type": "FILE",
-        "is_ok": true,
-        "sub_constraint_results": [],
         "file_name": "README.md"
       },
       {
         "type": "FILE",
-        "is_ok": true,
-        "sub_constraint_results": [],
         "file_name": ".gitignore"
       },
       {
         "type": "NOT_PRESENT",
-        "is_ok": false,
-        "sub_constraint_results": [],
         "file_or_directory_name": "dist"
       },
       {
         "type": "EXTENSION_NOT_PRESENT",
-        "is_ok": false,
-        "sub_constraint_results": [],
-        "extension": ".log",
-        "files_with_extension": [
-          "extra.log"
-        ]
+        "extension": ".log"
       }
-    ],
-    "zip_name": "project.zip"
-  },
-  "global_constraint_result": {
-    "type": "GLOBAL",
-    "is_ok": false,
-    "sub_constraint_results": [],
-    "global_constraint_results": {
-      "src/utils": [
-        {
-          "type": "EXTENSION_NOT_PRESENT",
-          "is_ok": false,
-          "sub_constraint_results": [],
-          "extension": ".exe",
-          "files_with_extension": [
-            "malware.exe"
-          ]
-        }
-      ]
-    }
+    ]
   }
 }
 ```
@@ -364,103 +326,92 @@ En dit is de overeenkomstige constraint result op de constraint.
 {
   "type": "SUBMISSION",
   "is_ok": false,
-  "sub_constraint_results": [],
   "root_constraint_result": {
     "type": "ZIP",
     "is_ok": true,
+    "zip_name": "project.zip",
+    "global_constraint_result": {
+      "type": "GLOBAL",
+      "is_ok": false,
+      "global_constraint_results": {
+        "src/utils": [
+          {
+            "type": "EXTENSION_NOT_PRESENT",
+            "is_ok": false,
+            "extension": ".exe",
+            "files_with_extension": [
+              "malware.exe"
+            ]
+          }
+        ]
+      }
+    },
     "sub_constraint_results": [
       {
         "type": "DIRECTORY",
         "is_ok": true,
+        "directory_name": "src",
         "sub_constraint_results": [
           {
             "type": "FILE",
             "is_ok": true,
-            "sub_constraint_results": [],
             "file_name": "main.py"
           },
           {
             "type": "DIRECTORY",
             "is_ok": true,
+            "directory_name": "utils",
             "sub_constraint_results": [
               {
                 "type": "FILE",
                 "is_ok": true,
-                "sub_constraint_results": [],
                 "file_name": "helper.py"
               },
               {
                 "type": "NOT_PRESENT",
                 "is_ok": false,
-                "sub_constraint_results": [],
                 "file_or_directory_name": "extra_file.txt"
               }
-            ],
-            "directory_name": "utils"
+            ]
           }
-        ],
-        "directory_name": "src"
+        ]
       },
       {
         "type": "DIRECTORY",
         "is_ok": true,
+        "directory_name": "tests",
         "sub_constraint_results": [
           {
             "type": "FILE",
             "is_ok": true,
-            "sub_constraint_results": [],
             "file_name": "test_main.py"
           }
-        ],
-        "directory_name": "tests"
+        ]
       },
       {
         "type": "FILE",
         "is_ok": true,
-        "sub_constraint_results": [],
         "file_name": "README.md"
       },
       {
         "type": "FILE",
         "is_ok": true,
-        "sub_constraint_results": [],
         "file_name": ".gitignore"
       },
       {
         "type": "NOT_PRESENT",
         "is_ok": false,
-        "sub_constraint_results": [],
         "file_or_directory_name": "dist"
       },
       {
         "type": "EXTENSION_NOT_PRESENT",
         "is_ok": false,
-        "sub_constraint_results": [],
         "extension": ".log",
         "files_with_extension": [
           "extra.log"
         ]
       }
-    ],
-    "zip_name": "project.zip"
-  },
-  "global_constraint_result": {
-    "type": "GLOBAL",
-    "is_ok": false,
-    "sub_constraint_results": [],
-    "global_constraint_results": {
-      "src/utils": [
-        {
-          "type": "EXTENSION_NOT_PRESENT",
-          "is_ok": false,
-          "sub_constraint_results": [],
-          "extension": ".exe",
-          "files_with_extension": [
-            "malware.exe"
-          ]
-        }
-      ]
-    }
+    ]
   }
 }
 ```

@@ -3,7 +3,6 @@ from pathlib import Path
 from pydantic import BaseModel
 
 from domain.simple_submission_checks.constraints.constraint_result import (
-    ConstraintResult,
     ConstraintType,
     SubmissionConstraintResult,
 )
@@ -19,14 +18,9 @@ class SubmissionConstraint(BaseModel):
         root_constraint_result = self.root_constraint.validate_constraint(path)
 
         return SubmissionConstraintResult(
-            is_ok=all_constraints_ok(root_constraint_result),
+            is_ok=root_constraint_result.recursive_is_ok(),
             root_constraint_result=root_constraint_result,
         )
-
-
-def all_constraints_ok(constraint_result: ConstraintResult) -> bool:
-    sub_constraints_results = constraint_result.sub_constraint_results
-    return constraint_result.is_ok and all(all_constraints_ok(sub) for sub in sub_constraints_results)
 
 
 def create_constraint_from_json(json: str) -> SubmissionConstraint:

@@ -5,6 +5,8 @@ from pathlib import Path
 
 from domain.simple_submission_checks.constraints.constraint_result import (
     ConstraintResult,
+    DirectoryConstraintResult,
+    ZipConstraintResult,
 )
 from domain.simple_submission_checks.constraints.directory_constraint import DirectoryConstraint
 from domain.simple_submission_checks.constraints.not_present_constraint import NotPresentConstraint
@@ -53,6 +55,7 @@ class NotPresentConstraintValidationTest(unittest.TestCase):
     def setUpClass(cls) -> None:
         create_directory_and_zip(cls.structure, cls.temp_dir_path, "submission")
         res: ConstraintResult = cls.submission_constraint.validate_constraint(cls.temp_dir_path)
+        assert isinstance(res.root_constraint_result, ZipConstraintResult)
         cls.root_sub_results = res.root_constraint_result.sub_constraint_results
 
     @classmethod
@@ -72,6 +75,7 @@ class NotPresentConstraintValidationTest(unittest.TestCase):
     def test_not_present_dir1_file(self) -> None:
         """file1.txt should not be present in dir1."""
         dir1_result = self.root_sub_results[2]
+        assert isinstance(dir1_result, DirectoryConstraintResult)
         self.assertTrue(dir1_result.is_ok)
         file1_not_present_result = dir1_result.sub_constraint_results[0]
         self.assertFalse(file1_not_present_result.is_ok)

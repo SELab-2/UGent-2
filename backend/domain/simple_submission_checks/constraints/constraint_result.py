@@ -20,7 +20,9 @@ class ConstraintType(Enum):
 class ConstraintResult(BaseModel):
     type: ConstraintType
     is_ok: bool
-    sub_constraint_results: list[SubConstraintResult] = []
+
+    def recursive_is_ok(self) -> bool:
+        return self.is_ok
 
 
 class SubmissionConstraintResult(ConstraintResult):
@@ -44,11 +46,19 @@ class ZipConstraintResult(ConstraintResult):
     type: ConstraintType = ConstraintType.ZIP
     zip_name: str
     global_constraint_result: GlobalConstraintResult | None
+    sub_constraint_results: list[SubConstraintResult] = []
+
+    def recursive_is_ok(self) -> bool:
+        return self.is_ok and all(sub_constraint.recursive_is_ok() for sub_constraint in self.sub_constraint_results)
 
 
 class DirectoryConstraintResult(ConstraintResult):
     type: ConstraintType = ConstraintType.DIRECTORY
     directory_name: str
+    sub_constraint_results: list[SubConstraintResult] = []
+
+    def recursive_is_ok(self) -> bool:
+        return self.is_ok and all(sub_constraint.recursive_is_ok() for sub_constraint in self.sub_constraint_results)
 
 
 class NotPresentConstraintResult(ConstraintResult):
