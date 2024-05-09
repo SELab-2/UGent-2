@@ -25,9 +25,7 @@ class ConstraintResult(BaseModel):
 
 class SubmissionConstraintResult(ConstraintResult):
     type: ConstraintType = ConstraintType.SUBMISSION
-
     root_constraint_result: ZipConstraintResult | FileConstraintResult
-    global_constraint_result: GlobalConstraintResult
 
 
 class GlobalConstraintResult(ConstraintResult):
@@ -45,6 +43,7 @@ class FileConstraintResult(ConstraintResult):
 class ZipConstraintResult(ConstraintResult):
     type: ConstraintType = ConstraintType.ZIP
     zip_name: str
+    global_constraint_result: GlobalConstraintResult | None
 
 
 class DirectoryConstraintResult(ConstraintResult):

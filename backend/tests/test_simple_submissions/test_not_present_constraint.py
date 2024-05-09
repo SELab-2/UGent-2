@@ -34,6 +34,7 @@ class NotPresentConstraintValidationTest(unittest.TestCase):
     submission_constraint = SubmissionConstraint(
         root_constraint=ZipConstraint(
             zip_name="submission.zip",
+            global_constraints=[],
             sub_constraints=[
                 NotPresentConstraint(file_or_directory_name="dir3"),  # dir3 is not present, should pass
                 NotPresentConstraint(file_or_directory_name="bible.txt"),  # present, should fail
@@ -43,7 +44,6 @@ class NotPresentConstraintValidationTest(unittest.TestCase):
                 ),
             ],
         ),
-        global_constraints=[],
     )
 
     temp_dir = tempfile.TemporaryDirectory()

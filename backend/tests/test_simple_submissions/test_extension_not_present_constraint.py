@@ -38,6 +38,7 @@ class ExtensionNotPresentConstraintValidationTest(unittest.TestCase):
     submission_constraint = SubmissionConstraint(
         root_constraint=ZipConstraint(
             zip_name="submission.zip",
+            global_constraints=[],
             sub_constraints=[
                 ExtensionNotPresentConstraint(extension=".java"),  # .java is present, should fail
                 ExtensionNotPresentConstraint(extension=".c"),     # .c is present, should fail
@@ -48,7 +49,6 @@ class ExtensionNotPresentConstraintValidationTest(unittest.TestCase):
                 ),
             ],
         ),
-        global_constraints=[],
     )
 
     temp_dir = tempfile.TemporaryDirectory()

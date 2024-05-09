@@ -19,12 +19,12 @@ class FileConstraintTest(unittest.TestCase):
     submission_constraint = SubmissionConstraint(
         root_constraint=ZipConstraint(
             zip_name="submission.zip",
+            global_constraints=[],
             sub_constraints=[
                 FileConstraint(file_name="file1.txt"),
                 FileConstraint(file_name="file2.txt"),
             ],
         ),
-        global_constraints=[],
     )
 
     temp_dir = tempfile.TemporaryDirectory()

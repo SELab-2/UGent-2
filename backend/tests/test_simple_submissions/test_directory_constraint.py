@@ -30,6 +30,7 @@ class NestedDirectoryConstraintValidationTest(unittest.TestCase):
     submission_constraint = SubmissionConstraint(
         root_constraint=ZipConstraint(
             zip_name="submission.zip",
+            global_constraints=[],
             sub_constraints=[
                 DirectoryConstraint(
                     directory_name="dir1",
@@ -45,7 +46,6 @@ class NestedDirectoryConstraintValidationTest(unittest.TestCase):
                 ),
             ],
         ),
-        global_constraints=[],
     )
 
     temp_dir = tempfile.TemporaryDirectory()

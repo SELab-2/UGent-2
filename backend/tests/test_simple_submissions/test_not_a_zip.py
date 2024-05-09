@@ -11,9 +11,9 @@ class NotAZipTest(unittest.TestCase):
     submission_constraint = SubmissionConstraint(
         root_constraint=ZipConstraint(
             zip_name="it_must_be_this_name.zip",
+            global_constraints=[],
             sub_constraints=[],
         ),
-        global_constraints=[],
     )
 
     temp_dir = tempfile.TemporaryDirectory()
