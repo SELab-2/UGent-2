@@ -56,7 +56,7 @@ def fill_database_mock() -> None:
             "Een wedstrijdklok kan worden gebruikt bij dammen, go, schaken en andere bordspellen."
             "Men kan dus ook van schaakklok, damklok, goklok of iets anders spreken, maar het gaat om"
             "hetzelfde apparaat en wedstrijdklok is de gebruikelijke benaming.",
-            requirements='{"type": "file_constraint", "name": "klok.java"}',
+            requirements='{"type": "zip_constraint", "name": "submission.zip", "sub_constraints": []}',
             max_students=999,
             deadline=datetime(2024, 2, 29, 00, tzinfo=tz.LOCAL),
         )
@@ -68,7 +68,7 @@ def fill_database_mock() -> None:
             archived=False,
             visible=True,
             description="Implementeer verschillende sorteeralgoritmen",
-            requirements='{"type": "file_constraint", "name": "sort.py"}',
+            requirements='{"type": "zip_constraint", "name": "submission.zip", "sub_constraints": []}',
             max_students=1,
             deadline=datetime(2024, 11, 15, 23, 59, 59, tzinfo=tz.LOCAL),
         )

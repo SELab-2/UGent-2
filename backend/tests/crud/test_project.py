@@ -37,7 +37,7 @@ class TestProject(unittest.TestCase):
             datetime.now(),
             False,
             "Test Description",
-            "Test Requirements",
+            '{"type": "zip_constraint", "name": "submission.zip", "sub_constraints": []}',
             True,
             2,
         )
@@ -54,7 +54,7 @@ class TestProject(unittest.TestCase):
             datetime.now(),
             False,
             "Test Description",
-            "Test Requirements",
+            '{"type": "zip_constraint", "name": "submission.zip", "sub_constraints": []}',
             True,
             2,
         )
@@ -65,7 +65,7 @@ class TestProject(unittest.TestCase):
             datetime.now(),
             False,
             "Test Description",
-            "Test Requirements",
+            '{"type": "zip_constraint", "name": "submission.zip", "sub_constraints": []}',
             True,
             2,
         )
@@ -80,7 +80,7 @@ class TestProject(unittest.TestCase):
             datetime.now(),
             False,
             "Test Description",
-            "Test Requirements",
+            '{"type": "zip_constraint", "name": "submission.zip", "sub_constraints": []}',
             True,
             2,
         )
@@ -91,7 +91,7 @@ class TestProject(unittest.TestCase):
             datetime.now(),
             False,
             "Test Description",
-            "Test Requirements",
+            '{"type": "zip_constraint", "name": "submission.zip", "sub_constraints": []}',
             True,
             2,
         )
@@ -111,7 +111,7 @@ class TestProject(unittest.TestCase):
             datetime.now(),
             False,
             "Test Description",
-            "Test Requirements",
+            '{"type": "zip_constraint", "name": "submission.zip", "sub_constraints": []}',
             True,
             2,
         )
@@ -122,7 +122,7 @@ class TestProject(unittest.TestCase):
             datetime.now(),
             False,
             "Test Description",
-            "Test Requirements",
+            '{"type": "zip_constraint", "name": "submission.zip", "sub_constraints": []}',
             True,
             2,
         )
@@ -142,7 +142,7 @@ class TestProject(unittest.TestCase):
             datetime.now(),
             False,
             "Test Description",
-            "Test Requirements",
+            '{"type": "zip_constraint", "name": "submission.zip", "sub_constraints": []}',
             True,
             2,
         )
@@ -153,7 +153,7 @@ class TestProject(unittest.TestCase):
             datetime.now(),
             False,
             "Test Description",
-            "Test Requirements",
+            '{"type": "zip_constraint", "name": "submission.zip", "sub_constraints": []}',
             True,
             2,
         )
