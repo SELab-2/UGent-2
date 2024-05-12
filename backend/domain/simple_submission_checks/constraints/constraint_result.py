@@ -57,6 +57,7 @@ class DirectoryConstraintResult(ConstraintResult):
     directory_name: str
     sub_constraint_results: list[SubConstraintResult] = []
 
+
     def recursive_is_ok(self) -> bool:
         return self.is_ok and all(sub_constraint.recursive_is_ok() for sub_constraint in self.sub_constraint_results)
 
@@ -70,7 +71,6 @@ class ExtensionNotPresentConstraintResult(ConstraintResult):
     type: ConstraintType = ConstraintType.EXTENSION_NOT_PRESENT
     extension: str
     files_with_extension: list[str]
-
 
 class ExtensionOnlyPresentConstraintResult(ConstraintResult):
     type: ConstraintType = ConstraintType.EXTENSION_ONLY_PRESENT

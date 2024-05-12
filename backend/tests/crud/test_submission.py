@@ -43,6 +43,7 @@ class TestSubmission(unittest.TestCase):
             '"global_constraints": [], "sub_constraints": []}}',
             True,
             2,
+            "",
         )
         group = create_group(self.session, project.id)
         submission = create_submission(
@@ -72,6 +73,7 @@ class TestSubmission(unittest.TestCase):
             '"global_constraints": [], "sub_constraints": []}}',
             True,
             2,
+            "",
         )
         group = create_group(self.session, project.id)
         create_submission(
@@ -108,6 +110,7 @@ class TestSubmission(unittest.TestCase):
             '"global_constraints": [], "sub_constraints": []}}',
             True,
             2,
+            "",
         )
         group = create_group(self.session, project.id)
         create_submission(
@@ -146,6 +149,7 @@ class TestSubmission(unittest.TestCase):
             '"global_constraints": [], "sub_constraints": []}}',
             True,
             2,
+            "",
         )
         group = create_group(self.session, project.id)
         create_submission(

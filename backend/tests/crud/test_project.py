@@ -41,6 +41,7 @@ class TestProject(unittest.TestCase):
             '"global_constraints": [], "sub_constraints": []}}',
             True,
             2,
+            "",
         )
         retrieved_project = get_project(self.session, project.id)
         self.assertEqual(project.id, retrieved_project.id)
@@ -59,6 +60,7 @@ class TestProject(unittest.TestCase):
             '"global_constraints": [], "sub_constraints": []}}',
             True,
             2,
+            "",
         )
         create_project(
             self.session,
@@ -71,6 +73,7 @@ class TestProject(unittest.TestCase):
             '"global_constraints": [], "sub_constraints": []}}',
             True,
             2,
+            "",
         )
         self.assertEqual(len(get_all_projects(self.session)), 2)
 
@@ -87,6 +90,7 @@ class TestProject(unittest.TestCase):
             '"global_constraints": [], "sub_constraints": []}}',
             True,
             2,
+            "",
         )
         create_project(
             self.session,
@@ -99,6 +103,7 @@ class TestProject(unittest.TestCase):
             '"global_constraints": [], "sub_constraints": []}}',
             True,
             2,
+            "",
         )
         projects_of_course = get_projects_of_course(self.session, course.id)
         self.assertEqual(len(projects_of_course), 2)
@@ -120,6 +125,7 @@ class TestProject(unittest.TestCase):
             '"global_constraints": [], "sub_constraints": []}}',
             True,
             2,
+            "",
         )
         create_project(
             self.session,
@@ -132,6 +138,7 @@ class TestProject(unittest.TestCase):
             '"global_constraints": [], "sub_constraints": []}}',
             True,
             2,
+            "",
         )
         projects_of_student = get_projects_of_student(self.session, student.id)
         self.assertEqual(len(projects_of_student), 2)
@@ -153,6 +160,7 @@ class TestProject(unittest.TestCase):
             '"global_constraints": [], "sub_constraints": []}}',
             True,
             2,
+            "",
         )
         create_project(
             self.session,
@@ -165,6 +173,7 @@ class TestProject(unittest.TestCase):
             '"global_constraints": [], "sub_constraints": []}}',
             True,
             2,
+            "",
         )
         projects_of_teacher = get_projects_of_teacher(self.session, teacher.id)
         self.assertEqual(len(projects_of_teacher), 2)

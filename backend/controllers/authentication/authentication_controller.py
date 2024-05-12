@@ -8,7 +8,6 @@ from sqlmodel import Session
 
 from db.models import User
 from domain.logic.student import create_student
-from domain.logic.teacher import create_teacher
 from domain.logic.user import get_user_with_email
 
 if TYPE_CHECKING:
@@ -37,10 +36,7 @@ def authenticate_user(session: Session, ticket: str) -> User | None:
 
     user: User | None = get_user_with_email(session, user_dict["email"])
     if user is None:
-        if user_dict["role"] == "student":
-            user = create_student(session, user_dict["name"], user_dict["email"]).user
-        elif user_dict["role"] == "teacher":
-            user = create_teacher(session, user_dict["name"], user_dict["email"]).user
+        user = create_student(session, user_dict["name"], user_dict["email"]).user
     return user
 
 
