@@ -43,7 +43,8 @@ class TestProjectAsTeacher(unittest.TestCase):
             "deadline": "2024-12-31T23:59:59",
             "archived": False,
             "description": "Updated description",
-            "requirements": '{"type": "file_constraint", "name": "sort.py"}',
+            "requirements": '{"type":"SUBMISSION","root_constraint":{"type":"FILE","file_name":"submission.txt"},'
+                            '"global_constraints":[]}',
             "visible": True,
             "max_students": 5,
             "dockerfile": "",

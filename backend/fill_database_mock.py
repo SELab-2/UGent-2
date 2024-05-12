@@ -35,7 +35,8 @@ def fill_database_mock() -> None:
             archived=False,
             visible=True,
             description="Maak iets in JavaFX",
-            requirements='{"type": "zip_constraint", "name": "submission.zip", "sub_constraints": []}',
+            requirements='{"type": "SUBMISSION", "root_constraint": { "type": "ZIP", "zip_name": "submission.zip", '
+                         '"global_constraints": [], "sub_constraints": []}}',
             max_students=3,
             deadline=datetime(2024, 12, 31, 23, 59, 59, tzinfo=tz.LOCAL),
             dockerfile="",
@@ -57,7 +58,8 @@ def fill_database_mock() -> None:
             "Een wedstrijdklok kan worden gebruikt bij dammen, go, schaken en andere bordspellen."
             "Men kan dus ook van schaakklok, damklok, goklok of iets anders spreken, maar het gaat om"
             "hetzelfde apparaat en wedstrijdklok is de gebruikelijke benaming.",
-            requirements='{"type": "file_constraint", "name": "klok.java"}',
+            requirements='{"type": "SUBMISSION", "root_constraint": { "type": "ZIP", "zip_name": "submission.zip", '
+                         '"global_constraints": [], "sub_constraints": []}}',
             max_students=999,
             deadline=datetime(2024, 2, 29, 00, tzinfo=tz.LOCAL),
             dockerfile="",
@@ -70,7 +72,8 @@ def fill_database_mock() -> None:
             archived=False,
             visible=True,
             description="Implementeer verschillende sorteeralgoritmen",
-            requirements='{"type": "file_constraint", "name": "sort.py"}',
+            requirements='{"type": "SUBMISSION", "root_constraint": { "type": "ZIP", "zip_name": "submission.zip", '
+                         '"global_constraints": [], "sub_constraints": []}}',
             max_students=1,
             deadline=datetime(2024, 11, 15, 23, 59, 59, tzinfo=tz.LOCAL),
             dockerfile="",
@@ -83,7 +86,8 @@ def fill_database_mock() -> None:
             archived=False,
             visible=True,
             description="Bouw een eenvoudige webshop",
-            requirements='{"type": "zip_constraint", "name": "submission.zip", "sub_constraints": []}',
+            requirements='{"type": "SUBMISSION", "root_constraint": { "type": "ZIP", "zip_name": "submission.zip", '
+                         '"global_constraints": [], "sub_constraints": []}}',
             max_students=4,
             deadline=datetime(2024, 10, 30, 23, 59, 59, tzinfo=tz.LOCAL),
             dockerfile="",
@@ -96,7 +100,8 @@ def fill_database_mock() -> None:
             archived=False,
             visible=True,
             description="Maak een RPG game in Haskell!",
-            requirements='{"type": "zip_constraint", "name": "submission.zip", "sub_constraints": []}',
+            requirements='{"type": "SUBMISSION", "root_constraint": { "type": "ZIP", "zip_name": "submission.zip", '
+                         '"global_constraints": [], "sub_constraints": []}}',
             max_students=1,
             deadline=datetime(2023, 7, 17, 22, 33, 44, tzinfo=tz.LOCAL),
             dockerfile="",

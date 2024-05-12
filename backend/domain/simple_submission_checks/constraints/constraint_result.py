@@ -12,48 +12,76 @@ class ConstraintType(Enum):
     ONLY_PRESENT = "ONLY_PRESENT"
     ZIP = "ZIP"
     SUBMISSION = "SUBMISSION"
+    EXTENSION_NOT_PRESENT = "EXTENSION_NOT_PRESENT"
+    EXTENSION_ONLY_PRESENT = "EXTENSION_ONLY_PRESENT"
+    GLOBAL = "GLOBAL"
 
 
 class ConstraintResult(BaseModel):
     type: ConstraintType
-    name: str
     is_ok: bool
-    sub_constraint_results: list = []
 
-    def __str__(self, level: int = 0):
-        status = "\u2714 [OK] " if self.is_ok else "\u2718 [FAIL]"
-        ret = f"{'\t' * level}{status} {self.type.name}: {self.name}"
-        if self.sub_constraint_results:
-            sub_results_str = "\n".join(sub_result.__str__(level + 1) for sub_result in self.sub_constraint_results)
-            ret += "\n" + sub_results_str
-        return ret
-
-
-class FileConstraintResult(ConstraintResult):
-    type: ConstraintType = ConstraintType.FILE
-
-
-class NotPresentConstraintResult(ConstraintResult):
-    type: ConstraintType = ConstraintType.NOT_PRESENT
-
-
-class DirectoryConstraintResult(ConstraintResult):
-    type: ConstraintType = ConstraintType.DIRECTORY
-    sub_constraint_results: list[ConstraintResult] = []
-
-
-class OnlyPresentConstraintResult(ConstraintResult):
-    type: ConstraintType = ConstraintType.ONLY_PRESENT
-    sub_constraint_results: list[ConstraintResult] = []
-    should_be_in_but_are_not: list[str]
-    should_not_be_in_but_are: list[str]
-
-
-class ZipConstraintResult(ConstraintResult):
-    type: ConstraintType = ConstraintType.ZIP
-    sub_constraint_results: list[ConstraintResult] = []
+    def recursive_is_ok(self) -> bool:
+        return self.is_ok
 
 
 class SubmissionConstraintResult(ConstraintResult):
     type: ConstraintType = ConstraintType.SUBMISSION
-    sub_constraint_results: list[ConstraintResult] = []
+    root_constraint_result: ZipConstraintResult | FileConstraintResult
+
+
+class GlobalConstraintResult(ConstraintResult):
+    type: ConstraintType = ConstraintType.GLOBAL
+    global_constraint_results: dict[str, list[NotPresentConstraintResult |
+                                              ExtensionNotPresentConstraintResult |
+                                              ExtensionOnlyPresentConstraintResult]]
+
+
+class FileConstraintResult(ConstraintResult):
+    type: ConstraintType = ConstraintType.FILE
+    file_name: str
+
+
+class ZipConstraintResult(ConstraintResult):
+    type: ConstraintType = ConstraintType.ZIP
+    zip_name: str
+    global_constraint_result: GlobalConstraintResult | None
+    sub_constraint_results: list[SubConstraintResult] = []
+
+    def recursive_is_ok(self) -> bool:
+        return self.is_ok and all(sub_constraint.recursive_is_ok() for sub_constraint in self.sub_constraint_results)
+
+
+class DirectoryConstraintResult(ConstraintResult):
+    type: ConstraintType = ConstraintType.DIRECTORY
+    directory_name: str
+    sub_constraint_results: list[SubConstraintResult] = []
+
+
+    def recursive_is_ok(self) -> bool:
+        return self.is_ok and all(sub_constraint.recursive_is_ok() for sub_constraint in self.sub_constraint_results)
+
+
+class NotPresentConstraintResult(ConstraintResult):
+    file_or_directory_name: str
+    type: ConstraintType = ConstraintType.NOT_PRESENT
+
+
+class ExtensionNotPresentConstraintResult(ConstraintResult):
+    type: ConstraintType = ConstraintType.EXTENSION_NOT_PRESENT
+    extension: str
+    files_with_extension: list[str]
+
+class ExtensionOnlyPresentConstraintResult(ConstraintResult):
+    type: ConstraintType = ConstraintType.EXTENSION_ONLY_PRESENT
+    extension: str
+    files_without_extension: list[str]
+
+
+SubConstraintResult = (
+        DirectoryConstraintResult
+        | FileConstraintResult
+        | NotPresentConstraintResult
+        | ExtensionNotPresentConstraintResult
+        | ExtensionOnlyPresentConstraintResult
+)
