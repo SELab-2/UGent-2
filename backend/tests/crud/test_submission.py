@@ -39,7 +39,8 @@ class TestSubmission(unittest.TestCase):
             datetime.now(),
             False,
             "Test Description",
-            '{"type": "zip_constraint", "name": "submission.zip", "sub_constraints": []}',
+            '{"type": "SUBMISSION", "root_constraint": { "type": "ZIP", "zip_name": "submission.zip", '
+            '"global_constraints": [], "sub_constraints": []}}',
             True,
             2,
         )
@@ -67,7 +68,8 @@ class TestSubmission(unittest.TestCase):
             datetime.now(),
             False,
             "Test Description",
-            '{"type": "zip_constraint", "name": "submission.zip", "sub_constraints": []}',
+            '{"type": "SUBMISSION", "root_constraint": { "type": "ZIP", "zip_name": "submission.zip", '
+            '"global_constraints": [], "sub_constraints": []}}',
             True,
             2,
         )
@@ -102,7 +104,8 @@ class TestSubmission(unittest.TestCase):
             datetime.now(),
             False,
             "Test Description",
-            '{"type": "zip_constraint", "name": "submission.zip", "sub_constraints": []}',
+            '{"type": "SUBMISSION", "root_constraint": { "type": "ZIP", "zip_name": "submission.zip", '
+            '"global_constraints": [], "sub_constraints": []}}',
             True,
             2,
         )
@@ -139,7 +142,8 @@ class TestSubmission(unittest.TestCase):
             datetime.now(),
             False,
             "Test Description",
-            '{"type": "zip_constraint", "name": "submission.zip", "sub_constraints": []}',
+            '{"type": "SUBMISSION", "root_constraint": { "type": "ZIP", "zip_name": "submission.zip", '
+            '"global_constraints": [], "sub_constraints": []}}',
             True,
             2,
         )
