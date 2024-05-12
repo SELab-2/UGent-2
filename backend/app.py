@@ -7,6 +7,7 @@ from starlette import status
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 
+from config import DEBUG
 from controllers.authentication.errors import (
     InvalidAuthenticationError,
     InvalidRoleCredentialsError,
@@ -28,7 +29,6 @@ from db.database_errors import (
     ItemNotFoundError,
     NoSuchRelationError,
 )
-from debug import DEBUG
 from domain.logic.errors import (
     ArchivedError,
     InvalidConstraintsError,

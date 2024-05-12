@@ -1,4 +1,3 @@
-import os
 import tempfile
 from typing import Any, cast
 
@@ -27,16 +26,10 @@ def add_image_id(project_id: int) -> None:
         session.commit()
 
 
-def run_container(image_id: str, submission: bytes) -> tuple[str, bool]:
+def run_container(image_id: str, submission_file: str) -> tuple[str, bool]:
     client = docker.from_env()
-    tmpdir = None
-    if os.path.isdir("/var/lib/delphi-submissions"):
-        tmpdir = "/var/lib/delphi-submissions"
-    with tempfile.NamedTemporaryFile(dir=tmpdir) as tmpfile:
-        tmpfile.write(submission)
-        tmpfile.flush()
-        container = client.containers.run(image_id, detach=True, volumes=[f"{tmpfile.name}:/submission:ro"])
-        res = container.wait()
-        logs = container.logs().decode("utf-8")
-        container.remove()
+    container = client.containers.run(image_id, detach=True, volumes=[f"{submission_file}:/submission:ro"])
+    res = container.wait()
+    logs = container.logs().decode("utf-8")
+    container.remove()
     return logs, res["StatusCode"] == 0
