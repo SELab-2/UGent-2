@@ -3,6 +3,7 @@ import {useTranslation} from "react-i18next";
 import {Link, useRouteLoaderData} from "react-router-dom";
 import {join_course} from "../../utils/api/Student.ts";
 import {JOIN_COURSE, JoinCourseObject} from "../../dataloaders/JoinCourse.ts";
+import {BiError} from "react-icons/bi";
 
 export default function JoinCourseScreen(): JSX.Element {
     const {t} = useTranslation();
@@ -28,10 +29,23 @@ export default function JoinCourseScreen(): JSX.Element {
 }
 
 function joinCourseError(error: string): JSX.Element {
-    // TODO: Implement this: redirect?
     return (
-        <div>
-            <h1>{error}</h1>
+        <div id="error-page" className={"container is-max-desktop mt-6"}>
+            <article className="message">
+                <div className="message-header has-background-danger-dark">
+                    <span className="icon-text">
+                      <span className="icon">
+                        <i><BiError/></i>
+                      </span>
+                      <span>Couldn't join the course, an error occurred.</span>
+                    </span>
+                </div>
+                <div className="message-body">
+                    {error}
+                    <br/>
+                    <a href={"/"}>Go back to the homepage</a>
+                </div>
+            </article>
         </div>
     )
 }
