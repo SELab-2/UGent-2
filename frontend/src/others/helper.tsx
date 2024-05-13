@@ -10,7 +10,7 @@ export default function RenderProjectCards(props: { projects: Project[] | Comple
                 if ('course_id' in project && props.courses) {
                     return <ProjectCardTeacher key={project.project_id} project={project} course={props.courses.filter(e => e.course_id == project.course_id)[0]}/>
                 } else if ("submission_state" in project) {
-                    return <ProjectCardStudent key={project.project_id} project={project} />;
+                    return <ProjectCardStudent key={project.project_id} project={project} />
                 }
             })}
         </>

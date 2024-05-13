@@ -133,7 +133,9 @@
         "name": "name",
         "email": "email",
         "no_data_yet": "No data yet.",
-        "number_of_projects": "number of projects"
+        "number_of_projects": "number of projects",
+        "remove": "remove",
+        "add": "add"
     },
     "project": {
         "name": "Name",
@@ -217,5 +219,24 @@
         "message": "Do you want to join the course:",
         "join": "join course",
         "return_home": "return to the homepage"
+    },
+    "searchbar": {
+        "find_teacher": "search teacher"
+    },
+    "popups": {
+        "teachers": "teachers",
+        "confirmation": "confirmation",
+        "confirm_add": "Are you sure this person should become a teacher of this course?",
+        "confirm_delete": "Are you sure you want to delete the rights of teacher for this person?",
+        "yes": "yes",
+        "no": "no",
+        "share": "share link to the course",
+        "share_warning": "Everyone who follows this link that is logged into the system will be added to the course. Share this link only with people who you want to add to this course.",
+        "share_link": "share link",
+        "archive": "archive course",
+        "archive_warning": "For every student and teacher of this course, it will be archived. Creating new projects will no longer be possible, and active projects will be closed. Are you sure you want to archive this course?",
+        "leave_course": "leave course",
+        "leave_last_teacher": "You are the last teacher, so the course will be archived for all students.",
+        "leave_question": "Are you sure that you want to leave this course?"
     }
 }

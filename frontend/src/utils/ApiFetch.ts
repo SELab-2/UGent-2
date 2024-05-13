@@ -24,6 +24,11 @@ export async function ApiFetch<Type> (url: string, options?: RequestInit) {
         url = "http://127.0.0.1:8000" + url;
     }
     const response = await fetch(url, options)
+
+    if (response.status === 401){
+        localStorage.removeItem('token')
+    }
+
     return {
         ok: response.ok,
         status_code: response.status,

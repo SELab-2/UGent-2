@@ -1,6 +1,6 @@
 .student-main {
     width: calc(100vw - var(--sidebar-width));
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 .student-left {
@@ -59,4 +59,34 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.submission-file-download {
+    display: flex;
+    flex-direction: row;
+    width: min-content;
+}
+
+.submission-file-download-upload {
+    display: flex;
+    flex-direction: row;
+    width: min-content;
+    gap: 10px;
+}
+
+.highlight {
+    color: red;
+}
+
+.fixated {
+    position: fixed;
+    height: 60px;
+    width: 100%;
+    background-color: white;
+    padding-top: 10px;
+}
+
+.fixated-filler {
+    height: 60px;
+    background-color: white;
 }
