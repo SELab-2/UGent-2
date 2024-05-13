@@ -25,6 +25,8 @@ export default function CoursesViewStudent(): JSX.Element {
         let deadline = null
         if (deadline_date !== null) {
             deadline = deadline_to_string(deadline_date)
+        } else {
+            deadline = "-"
         }
 
         return {
