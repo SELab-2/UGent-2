@@ -37,7 +37,7 @@ function joinCourseError(error: string): JSX.Element {
                       <span className="icon">
                         <i><BiError/></i>
                       </span>
-                      <span>Couldn't join the course, an error occurred.</span>
+                      <span>Could not join the course, an error occurred.</span>
                     </span>
                 </div>
                 <div className="message-body">
