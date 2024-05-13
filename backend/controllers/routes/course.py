@@ -1,5 +1,4 @@
 from fastapi import APIRouter, BackgroundTasks
-from sqlmodel import Session
 from starlette.requests import Request
 
 from controllers.authentication.role_dependencies import (
@@ -8,11 +7,10 @@ from controllers.authentication.role_dependencies import (
     get_authenticated_user,
 )
 from controllers.swagger_tags import Tags
-from db.extensions import engine
 from db.models import Course, CourseInput, Project, ProjectInput, Student, Teacher
 from domain.logic.course import get_course, get_students_of_course, get_teachers_of_course, update_course
-from domain.logic.docker import build_image
-from domain.logic.project import create_project, get_project, get_projects_of_course, validate_constraints
+from domain.logic.docker import add_image_id
+from domain.logic.project import create_project, get_projects_of_course, validate_constraints
 
 course_router = APIRouter(tags=[Tags.COURSE])
 
@@ -45,14 +43,6 @@ def get_course_students(request: Request, course_id: int) -> list[Student]:
     return get_students_of_course(session, course_id)
 
 
-def add_image_id(project_id: int) -> None:
-    with Session(engine) as session:
-        project = get_project(session, project_id)
-        image_id = build_image(project.dockerfile)
-        project.image_id = image_id
-        session.commit()
-
-
 @course_router.post("/courses/{course_id}/projects", summary="Create project in a course.")
 def new_project(request: Request, course_id: int, project: ProjectInput, tasks: BackgroundTasks) -> Project:
     session = request.state.session
@@ -71,7 +61,7 @@ def new_project(request: Request, course_id: int, project: ProjectInput, tasks: 
         max_students=project.max_students,
         dockerfile=project.dockerfile,
     )
-    if project.dockerfile != "":
+    if project_db.dockerfile != "":
         tasks.add_task(add_image_id, project_db.id)
     return project_db
 
