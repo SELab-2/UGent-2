@@ -19,7 +19,6 @@ export default function JoinCourseScreen(): JSX.Element {
                 <div className={"is-flex is-justify-content-space-evenly p-6"}>
                     <a className={"button"} onClick={() => {
                         join_course(course_id);
-                        window.location.replace(`/student/course/${course_id}`)
                     }}>{t('join_course.join')}</a>
                     <Link className={"button"} to={"/student"}>{t('join_course.return_home')}</Link>
                 </div>
