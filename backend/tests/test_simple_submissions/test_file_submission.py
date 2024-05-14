@@ -14,14 +14,13 @@ class FileSubmissionConstraintValidationTest(unittest.TestCase):
 
     submission_constraint = SubmissionConstraint(
         root_constraint=FileConstraint(
-            name="submission.txt",
+            file_name="submission.txt",
         ),
     )
 
     def setUp(self) -> None:
         self.temp_dir = tempfile.TemporaryDirectory()
         self.temp_dir_path = Path(self.temp_dir.name)
-
         # create a file
         file_path = self.temp_dir_path / "submission.txt"
         file_path.touch()
@@ -33,6 +32,3 @@ class FileSubmissionConstraintValidationTest(unittest.TestCase):
         res = self.submission_constraint.validate_constraint(self.temp_dir_path)
         self.assertTrue(res.is_ok)  # The constraint should be satisfied because submission.txt is present
 
-
-if __name__ == "__main__":
-    unittest.main()

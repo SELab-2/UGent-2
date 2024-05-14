@@ -24,12 +24,14 @@ export enum ProjectStatus {
 }
 
 export type ProjectStudent = {
+    projectId: number,
     projectName: string,
     courseName: string,
     deadline: string,
     status: ProjectStatus,
     description: string,
     requiredFiles: object,
+    group_id: number,
     groupMembers: {
         name: string,
         email: string,

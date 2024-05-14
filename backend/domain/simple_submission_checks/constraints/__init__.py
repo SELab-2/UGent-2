@@ -1,5 +1,3 @@
 from domain.simple_submission_checks.constraints.directory_constraint import DirectoryConstraint
-from domain.simple_submission_checks.constraints.only_present_constraint import OnlyPresentConstraint
 
 DirectoryConstraint.update_forward_refs()
-OnlyPresentConstraint.update_forward_refs()
