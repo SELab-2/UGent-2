@@ -124,3 +124,11 @@ class Submission(SQLModel, table=True):
 class Config(SQLModel, table=True):
     key: str = Field(primary_key=True)
     value: str
+
+
+class ProjectStatistics(SQLModel):
+    submissions: int = Field(description="Total number of groups with a submission")
+    approved: int = Field(description="Number of groups with the latest submission approved")
+    rejected: int = Field(description="Number of groups with the latest submission rejected")
+    pending: int = Field(description="Number of groups with the latest submission pending")
+    no_submission: int = Field(description="Number of groups with no submission")
