@@ -109,6 +109,7 @@ class Project(ProjectInput, table=True):  # Inherits from ProjectInput
 
 class Group(SQLModel, table=True):
     id: int = Field(default=None, primary_key=True)
+    visible_id: int
     project_id: int = Field(default=None, foreign_key="project.id")
     project: Project = Relationship(back_populates="groups")
     students: list[Student] = Relationship(link_model=StudentGroup, back_populates="groups")
