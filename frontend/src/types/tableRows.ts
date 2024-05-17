@@ -31,7 +31,7 @@ export interface TableRowCourses extends TableRow {
         id: number
     }
     numberOfProjects: number | null;            // not for archived projects for teachers
-    firstUpcomingDeadline: string | null;            // only if not archived
+    firstUpcomingDeadline: Date | string | null;            // only null if archived
 }
 
 export interface TableRowPeople extends TableRow {

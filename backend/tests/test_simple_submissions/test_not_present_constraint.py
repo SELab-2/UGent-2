@@ -1,108 +1,84 @@
-import shutil
 import tempfile
+import typing
 import unittest
 from pathlib import Path
 
+from domain.simple_submission_checks.constraints.constraint_result import (
+    ConstraintResult,
+    DirectoryConstraintResult,
+    ZipConstraintResult,
+)
 from domain.simple_submission_checks.constraints.directory_constraint import DirectoryConstraint
-from domain.simple_submission_checks.constraints.file_constraint import FileConstraint
 from domain.simple_submission_checks.constraints.not_present_constraint import NotPresentConstraint
-from domain.simple_submission_checks.constraints.only_present_constraint import OnlyPresentConstraint
 from domain.simple_submission_checks.constraints.submission_constraint import SubmissionConstraint
 from domain.simple_submission_checks.constraints.zip_constraint import ZipConstraint
+from tests.test_simple_submissions import create_directory_and_zip
 
 
-class ComprehensiveConstraintValidationTest(unittest.TestCase):
+class NotPresentConstraintValidationTest(unittest.TestCase):
     """
-    This test case will test the validation of a deeply nested directory structure:
+    This test case will test the validation of a directory structure:
     submission.zip
     ├── dir1
-    │   ├── file1.txt
-    │   └── dir2
-    │       └── file2.txt
-    ├── dir3
-    │   └── file3.txt
-    └── dir4
-        └── file4.txt
+    │   └── file1.txt
+    ├── bible.txt
+    └── dir2
+        └── file2.txt
+
     """
+
+    structure: typing.ClassVar = {
+        "dir1": {"file1.txt": None},
+        "bible.txt": None,
+        "dir2": {"file2.txt": None},
+    }
 
     submission_constraint = SubmissionConstraint(
         root_constraint=ZipConstraint(
-            name="submission.zip",
+            zip_name="submission.zip",
+            global_constraints=[],
             sub_constraints=[
+                NotPresentConstraint(file_or_directory_name="dir3"),  # dir3 is not present, should pass
+                NotPresentConstraint(file_or_directory_name="bible.txt"),  # present, should fail
                 DirectoryConstraint(
-                    name="dir1",
-                    sub_constraints=[
-                        FileConstraint(name="file1.txt"),
-                        DirectoryConstraint(
-                            name="dir2",
-                            sub_constraints=[
-                                FileConstraint(name="file2.txt"),
-                                NotPresentConstraint(name="file3.txt"),
-                            ],
-                        ),
-                        NotPresentConstraint(name="dir3"),
-                    ],
+                    directory_name="dir1",
+                    sub_constraints=[NotPresentConstraint(file_or_directory_name="file1.txt")],
                 ),
-                OnlyPresentConstraint(
-                    name="dir3",
-                    sub_constraints=[
-                        FileConstraint(name="file3.txt"),
-                    ],
-                ),
-                NotPresentConstraint(name="dir5"),
             ],
         ),
     )
 
-    def setUp(self) -> None:
-        self.temp_dir = tempfile.TemporaryDirectory()
-        self.temp_dir_path = Path(self.temp_dir.name)
+    temp_dir = tempfile.TemporaryDirectory()
+    temp_dir_path = Path(temp_dir.name)
 
-        # structure of directory
-        dir1_path = self.temp_dir_path / "dir1"
-        dir2_path = dir1_path / "dir2"
-        dir3_path = self.temp_dir_path / "dir3"
-        file1 = dir1_path / "file1.txt"
-        file2 = dir2_path / "file2.txt"
-        file3 = dir3_path / "file3.txt"
+    @classmethod
+    def setUpClass(cls) -> None:
+        create_directory_and_zip(cls.structure, cls.temp_dir_path, "submission")
+        res: ConstraintResult = cls.submission_constraint.validate_constraint(cls.temp_dir_path)
+        assert isinstance(res.root_constraint_result, ZipConstraintResult)
+        cls.root_sub_results = res.root_constraint_result.sub_constraint_results
 
-        dir1_path.mkdir()
-        dir2_path.mkdir()
-        dir3_path.mkdir()
-        file1.touch()
-        file2.touch()
-        file3.touch()
+    @classmethod
+    def tearDownClass(cls) -> None:
+        cls.temp_dir.cleanup()
 
-        # create a zip file
-        zip_path = self.temp_dir_path / "submission"
-        shutil.make_archive(str(zip_path), "zip", self.temp_dir_path)
+    def test_not_present_dir(self) -> None:
+        """dir3 should not be present."""
+        dir_3_sub_result = self.root_sub_results[0]
+        self.assertTrue(dir_3_sub_result.is_ok)
 
-    def tearDown(self) -> None:
-        self.temp_dir.cleanup()
+    def test_not_present_file(self) -> None:
+        """bible.txt should not be present."""
+        bible_sub_result = self.root_sub_results[1]
+        self.assertFalse(bible_sub_result.is_ok)
 
-    def test_comprehensive_constraint(self) -> None:
-        res = self.submission_constraint.validate_constraint(self.temp_dir_path)
-        self.assertTrue(res.is_ok)  # The constraint should be satisfied because all constraints are met
-
-    def test_file_constraint(self) -> None:
-        file_constraint = FileConstraint(name="file1.txt")
-        res = file_constraint.validate_constraint(self.temp_dir_path / "dir1")
-        self.assertTrue(res.is_ok)  # The constraint should be satisfied because file1.txt is present
-
-    def test_not_present_constraint(self) -> None:
-        not_present_constraint = NotPresentConstraint(name="dir5")
-        res = not_present_constraint.validate_constraint(self.temp_dir_path)
-        self.assertTrue(res.is_ok)  # The constraint should be satisfied because dir5 is not present
-
-    def test_directory_constraint(self) -> None:
-        directory_constraint = DirectoryConstraint(name="dir1", sub_constraints=[])
-        res = directory_constraint.validate_constraint(self.temp_dir_path)
-        self.assertTrue(res.is_ok)  # The constraint should be satisfied because dir1 is present
-
-    def test_only_present_constraint(self) -> None:
-        only_present_constraint = OnlyPresentConstraint(name="dir3", sub_constraints=[FileConstraint(name="file3.txt")])
-        res = only_present_constraint.validate_constraint(self.temp_dir_path)
-        self.assertTrue(res.is_ok)  # The constraint should be satisfied because only file3.txt is present in dir3
+    def test_not_present_dir1_file(self) -> None:
+        """file1.txt should not be present in dir1."""
+        dir1_result = self.root_sub_results[2]
+        assert isinstance(dir1_result, DirectoryConstraintResult)
+        self.assertTrue(dir1_result.is_ok)
+        file1_not_present_result = dir1_result.sub_constraint_results[0]
+        self.assertFalse(file1_not_present_result.is_ok)
 
 
 if __name__ == "__main__":

@@ -1,21 +1,22 @@
 import os
 from pathlib import Path
-from typing import Literal
 
 from pydantic import BaseModel
 
-from domain.simple_submission_checks.constraints.constraint_result import ConstraintResult, NotPresentConstraintResult
+from domain.simple_submission_checks.constraints.constraint_result import (
+    ConstraintType,
+    NotPresentConstraintResult,
+)
 
 
 class NotPresentConstraint(BaseModel):
-    type: Literal["not_present_constraint"] = "not_present_constraint"
-    sub_constraints: list = []
-    name: str
+    type: ConstraintType = ConstraintType.NOT_PRESENT
+    file_or_directory_name: str
 
-    def validate_constraint(self, path: Path) -> ConstraintResult:
+    def validate_constraint(self, path: Path) -> NotPresentConstraintResult:
         directory = os.listdir(path)
 
-        if self.name in directory:
-            return NotPresentConstraintResult(name=self.name, is_ok=False, sub_constraint_results=[])
+        if self.file_or_directory_name in directory:
+            return NotPresentConstraintResult(file_or_directory_name=self.file_or_directory_name, is_ok=False)
 
-        return NotPresentConstraintResult(name=self.name, is_ok=True, sub_constraint_results=[])
+        return NotPresentConstraintResult(file_or_directory_name=self.file_or_directory_name, is_ok=True)
