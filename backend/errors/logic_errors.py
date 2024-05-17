@@ -5,28 +5,28 @@ from errors.base_error import ExceptionBase
 
 
 class InvalidConstraintsError(ExceptionBase):
-    ERROR_MESSAGE = "The constraints are invalid"
-    STATUS_CODE = status.HTTP_400_BAD_REQUEST
+    detail = "The constraints are invalid"
+    status_code = status.HTTP_400_BAD_REQUEST
 
 
 class InvalidSubmissionError(ExceptionBase):
-    ERROR_MESSAGE = "Invalid submission content"
-    STATUS_CODE = status.HTTP_400_BAD_REQUEST
+    detail = "Invalid submission content"
+    status_code = status.HTTP_400_BAD_REQUEST
 
     def __init__(self, constraint_result: ConstraintResult) -> None:
-        self.ERROR_MESSAGE = constraint_result.json()
+        self.detail = constraint_result.json()
 
 
 class UserNotEnrolledError(ExceptionBase):
-    ERROR_MESSAGE = "User is not enrolled for this course"
-    STATUS_CODE = status.HTTP_400_BAD_REQUEST
+    detail = "User is not enrolled for this course"
+    status_code = status.HTTP_400_BAD_REQUEST
 
 
 class ArchivedError(ExceptionBase):
-    ERROR_MESSAGE = "Can't modify archived data"
-    STATUS_CODE = status.HTTP_400_BAD_REQUEST
+    detail = "Can't modify archived data"
+    status_code = status.HTTP_400_BAD_REQUEST
 
 
 class NotATeacherError(ExceptionBase):
-    ERROR_MESSAGE = "User isn't a teacher"
-    STATUS_CODE = status.HTTP_400_BAD_REQUEST
+    detail = "User isn't a teacher"
+    status_code = status.HTTP_400_BAD_REQUEST
