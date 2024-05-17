@@ -132,7 +132,7 @@
         "first_upcoming_deadline": "eerstvolgende deadline",
         "name": "naam",
         "email": "email",
-        "no_data_yet": "Nog geen data beschikbaar.",
+        "no_data_yet": "Geen data beschikbaar.",
         "number_of_projects": "aantal projecten",
         "remove": "verwijder",
         "add": "voeg toe"
@@ -233,10 +233,15 @@
         "share": "deel link van het vak",
         "share_warning": "Iedereen die deze link volgt en ingelogd is op dit systeem, zal als student toegevoegd worden aan het vak. Deel deze link enkel met de personen die u wil toevoegen.",
         "share_link": "deel link",
+        "copied": "gekopieerd",
         "archive": "archiveer vak",
         "archive_warning": "Voor iedere student en lesgever van dit vak, zal dit vak ook gearchiveerd worden. Er zullen geen projecten meer aangemaakt kunnen worden en actieve projecten zullen afgesloten worden. Bent u zeker dat u dit vak wil archiveren?",
         "leave_course": "vak verlaten",
         "leave_last_teacher": "U bent de laatste lesgever, dus zal het vak gearchiveerd worden voor alle studenten.",
         "leave_question": "Bent u zeker dat u dit vak wil verlaten?"
+    },
+    "empty-home": {
+        "empty-cards": "Geen actieve projecten op dit moment.",
+        "empty-deadline": "Geen nieuwe deadlines op dit moment."
     }
 }

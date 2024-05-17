@@ -12,7 +12,6 @@ from controllers.swagger_tags import Tags
 from db.extensions import engine
 from db.models import Submission, SubmissionState
 from domain.logic.docker import run_container
-from domain.logic.errors import InvalidSubmissionError
 from domain.logic.group import get_group
 from domain.logic.submission import check_submission, create_submission, get_last_submission, get_submission
 
@@ -35,11 +34,6 @@ def run_docker_checks(submission_id: int) -> None:
 def make_submission(request: Request, group_id: int, file: UploadFile, tasks: BackgroundTasks) -> Submission:
     session = request.state.session
     student = ensure_student_in_group(request, group_id)
-    if file.filename is None or ".." in file.filename or file.filename == ".":
-        raise InvalidSubmissionError
-    for i in file.filename:
-        if not i.isalnum() and i != "." and i != "_" and i != "-":
-            raise InvalidSubmissionError
     file_content = file.file.read()
     sha256 = hashlib.sha256(file_content).hexdigest()
     dirname = f"{SUBMISSIONS_PATH}/{sha256}-{file.filename}"

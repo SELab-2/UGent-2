@@ -1,13 +1,16 @@
+import shutil
+import tempfile
 from datetime import datetime
 from pathlib import Path
 
 from sqlmodel import Session
 
-from db.database_errors import ItemNotFoundError
 from db.models import Group, Student, Submission, SubmissionState
 from domain.logic.basic_operations import get, get_all
-from domain.logic.errors import ArchivedError, InvalidSubmissionError
+from domain.logic.project import get_project
 from domain.simple_submission_checks.constraints.submission_constraint import create_constraint_from_json
+from errors.database_errors import ItemNotFoundError
+from errors.logic_errors import ArchivedError, InvalidSubmissionError
 
 
 def create_submission(
@@ -74,3 +77,20 @@ def check_submission(session: Session, group_id: int, path: str) -> None:
     validation = constraints.validate_constraint(Path(path))
     if not validation.is_ok:
         raise InvalidSubmissionError(validation)
+
+
+def zip_all_submissions(session: Session, project_id: int) -> bytes:
+    project = get_project(session, project_id)
+    with tempfile.TemporaryDirectory() as tmpdir:
+        for group in project.groups:
+            if len(group.submissions) == 0:
+                continue
+            submission = get_last_submission(session, group.id)
+            if not Path.exists(Path(submission.filename)):
+                continue
+            submission_path = Path(tmpdir) / f"{group.id}-{submission.filename.split("/")[-1]}"
+            shutil.copy(submission.filename, submission_path)
+        with tempfile.TemporaryDirectory() as zipdir:
+            shutil.make_archive(f"{zipdir}/submissions", "zip", tmpdir)
+            with open(f"{zipdir}/submissions.zip", "rb") as file:
+                return file.read()

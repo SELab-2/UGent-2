@@ -59,7 +59,7 @@ export async function coursesLoader(role: teacherStudentRole, course_id?: number
                 all_projects: [],
                 teachers: teachers.filter(teacher => teacher?.course_id === course.course_id) as SmallUserInfo[],
                 students: students.filter(student => student?.course_id === course.course_id) as SmallUserInfo[],
-                course_archived: false,
+                course_archived: course.course_archived,
                 course_id: course.course_id,
                 course_name: course.course_name
             };
