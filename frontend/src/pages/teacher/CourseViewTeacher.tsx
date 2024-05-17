@@ -60,15 +60,21 @@ export default function CourseViewTeacher(): JSX.Element {
                 </div>
                 <div className={"student-main is-flex is-justify-content-center"}>
                     <div className={"table-page is-flex is-flex-direction-column"}>
-                        <div className={"is-flex is-align-items-center is-justify-content-space-between"}>
-                            <div className={"my-5 is-flex"}>
-                                <RegularATag link={"teacher/projects/create"} text={t('course.new_project')} add={true}/>
-                                <div className={"ml-4 mr-2"}><CopyLink link={`${window.location.protocol}//${window.location.host}/student/course/${3}/join`}/></div>
-                                <div className={"mx-2"}><ManageCourse teachers={teachers}/></div>
-                                <div className={"mx-2"}><Archive/></div>
+                        {!data.course.course_archived &&
+                            <div className={"is-flex is-align-items-center is-justify-content-space-between"}>
+                                <div className={"my-5 is-flex"}>
+                                    <RegularATag link={"teacher/projects/create"} text={t('course.new_project')}
+                                                 add={true}/>
+                                    <div className={"ml-4 mr-2"}><CopyLink
+                                        link={`${window.location.protocol}//${window.location.host}/student/course/${data.course.course_id}/join`}/>
+                                    </div>
+                                    <div className={"mx-2"}><ManageCourse teachers={teachers}/></div>
+                                    <div className={"mx-2"}><Archive course_id={data.course.course_id}
+                                                                     course_name={data.course.course_name}/></div>
+                                </div>
+                                <LeaveCourseTeacher amountOfTeachers={teachers.length}/>
                             </div>
-                            <LeaveCourseTeacher amountOfTeachers={teachers.length}/>
-                        </div>
+                        }
                         <div className={"my-5"}/>
                         <Table title={t('course.projects')} data={tableProjects} ignoreKeys={["status"]}
                                home={"teacher"}/>

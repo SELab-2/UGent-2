@@ -14,7 +14,8 @@ class InvalidSubmissionError(ExceptionBase):
     status_code = status.HTTP_400_BAD_REQUEST
 
     def __init__(self, constraint_result: ConstraintResult) -> None:
-        self.detail = constraint_result.json()
+        self.status_code = status.HTTP_400_BAD_REQUEST
+        self.detail = constraint_result.model_dump_json()
 
 
 class UserNotEnrolledError(ExceptionBase):
