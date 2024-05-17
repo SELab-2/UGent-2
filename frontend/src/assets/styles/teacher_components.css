@@ -6,9 +6,9 @@
 
 .teacher-main {
     width: calc(100vw - var(--sidebar-width));
+    overflow-y: auto;
 }
 
 .teacher-left {
     flex-wrap: wrap;
-    overflow-y: scroll;
 }

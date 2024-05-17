@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, BackgroundTasks
 from starlette.requests import Request
 
 from controllers.authentication.role_dependencies import (
@@ -9,6 +9,7 @@ from controllers.authentication.role_dependencies import (
 from controllers.swagger_tags import Tags
 from db.models import Course, CourseInput, Project, ProjectInput, Student, Teacher
 from domain.logic.course import get_course, get_students_of_course, get_teachers_of_course, update_course
+from domain.logic.docker import add_image_id
 from domain.logic.project import create_project, get_projects_of_course, validate_constraints
 
 course_router = APIRouter(tags=[Tags.COURSE])
@@ -43,12 +44,12 @@ def get_course_students(request: Request, course_id: int) -> list[Student]:
 
 
 @course_router.post("/courses/{course_id}/projects", summary="Create project in a course.")
-def new_project(request: Request, course_id: int, project: ProjectInput) -> Project:
+def new_project(request: Request, course_id: int, project: ProjectInput, tasks: BackgroundTasks) -> Project:
     session = request.state.session
     ensure_teacher_authorized_for_course(request, course_id)
     if project.requirements:
         validate_constraints(project.requirements)
-    return create_project(
+    project_db = create_project(
         session,
         course_id=course_id,
         name=project.name,
@@ -58,7 +59,11 @@ def new_project(request: Request, course_id: int, project: ProjectInput) -> Proj
         requirements=project.requirements,
         visible=project.visible,
         max_students=project.max_students,
+        dockerfile=project.dockerfile,
     )
+    if project_db.dockerfile != "":
+        tasks.add_task(add_image_id, project_db.id)
+    return project_db
 
 
 @course_router.put("/courses/{course_id}", summary="Update a course")

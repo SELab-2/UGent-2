@@ -1,8 +1,11 @@
+import os
 from typing import Any
 
 from httpx import Response
 from starlette import status
 from starlette.testclient import TestClient
+
+os.environ["DELPHI_DEBUG"] = "1"
 
 
 def assert_status_code(response: Response, expected_status_code: int) -> None:
