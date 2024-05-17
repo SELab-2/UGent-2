@@ -14,7 +14,6 @@ export default async function joinCourse(id?: string): Promise<JoinCourseObject>
         return {course_id: 0, course_name: "", error: "Invalid course id"};
     }
     const course_id= parseInt(id);
-    console.log(course_id)
     const course = await ApiFetch<Backend_Course>(`/courses/${course_id}`);
     if (!course.ok) {
         return {course_id, course_name: "", error: course.status_code.toString()};
