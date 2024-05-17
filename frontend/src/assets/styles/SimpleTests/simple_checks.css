@@ -52,7 +52,7 @@
     }
 
     .global-table {
-        height: 300px;
+        height: 100px;
     }
     .local-table {
         height: 200px;
@@ -66,44 +66,65 @@
         flex-direction: column;
         
         overflow: auto;
-
-        .constraint-row {
-            display: flex;
-            flex-direction: row;
-            gap: 5px;
-            align-items: center;
-
-            .row-value {
-                padding-right: 10px;;
-            }
-
-            .row-icon {
-                height: 26px;
-                width: 26px;
-                padding: 4px;
-            }
-            .row-icon:hover {
-                background-color: rgb(230, 230, 230);
-                border-radius: 50%;
-                border: solid;
-                border-width: 1px;
-            }
-
-            .DIRECTORY {
-                text-shadow: 2px 2px 4px rgba(78, 255, 24, 0.7);
-            }
-            .ZIP {
-                text-shadow: 2px 2px 4px rgba(255, 251, 24, 0.7);
-            }
-
-            .more-wrapper {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-            }
-
-        }
     }
+
+    .file-root-container {
+        margin: 20px;
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+        align-items: center;
+    }
+}
+
+.constraint-row {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    align-items: center;
+
+    .row-value {
+        padding-right: 10px;;
+    }
+
+    .row-icon {
+        height: 26px;
+        width: 26px;
+        padding: 4px;
+    }
+    .row-icon:hover {
+        background-color: rgb(230, 230, 230);
+        border-radius: 50%;
+        border: solid;
+        border-width: 1px;
+    }
+
+    .more-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+}
+
+.FILE {
+        
+}
+.DIRECTORY {
+    font-weight: bold;
+}
+.ZIP {
+    font-weight: bold;
+    font-style: italic;
+}
+.NOT_PRESENT {
+    text-shadow: 2px 2px 4px rgba(0, 4, 255, 0.7);
+}
+.EXTENSION_NOT_PRESENT {
+    text-shadow: 2px 2px 4px rgba(0, 255, 55, 0.7);
+}
+.EXTENSION_ONLY_PRESENT {
+    text-shadow: 2px 2px 4px rgba(255, 4, 0, 0.7);
 }
 
 /* =============================================== */

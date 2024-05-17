@@ -25,7 +25,7 @@ export default function Information(props: {
                 <button className="information-close" onClick={closeModal}>
                     &times;
                 </button>
-                <div className="information-header">{t('information.title')}</div>
+                <div className="information-header">{t('submission_files.information.title')}</div>
                 <div className="information-content">
                    {props.content}
                 </div>

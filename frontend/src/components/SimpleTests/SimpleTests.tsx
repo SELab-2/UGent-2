@@ -1,15 +1,12 @@
 import {Dispatch, JSX, SetStateAction, useEffect} from "react";
-import { useState, useMemo, useRef } from 'react';
+import { useState } from 'react';
 import { IoMdMore } from "react-icons/io";
-import { MdExpandLess, MdExpandMore, MdOutlineExpandLess } from "react-icons/md";
-import { MdOutlineExpandMore } from "react-icons/md";
+import { MdExpandLess, MdExpandMore } from "react-icons/md";
 import { VscNewFile } from "react-icons/vsc";
 import { VscNewFolder } from "react-icons/vsc";
-import { stringify } from 'flatted';
 import { TeacherOrStudent } from "./TeacherOrStudentEnum";
 import { useTranslation } from 'react-i18next';
-import { dummy_data } from "./DummyData";
-import { IoIosWarning } from "react-icons/io";
+import { RiAddBoxLine } from "react-icons/ri";
 import Switch from "react-switch";
 import Information from "./Information";
 import Popup from 'reactjs-popup';
@@ -124,8 +121,10 @@ function json_to_submission(json: any): Submission {
         return [constraint].concat(sub_constraints);
     }
 
+    let root_id = getID();
+
     let json_local_constraints: any[] = json_root_constraint['sub_constraints'];
-    let local_constraints = json_local_constraints.map(c => dfs(c, undefined, 1)).reduce((flat, next) => flat.concat(next), []);
+    let local_constraints = json_local_constraints.map(c => dfs(c, root_id, 1)).reduce((flat, next) => flat.concat(next), []);
 
     /* Global Constraints */
 
@@ -164,46 +163,66 @@ function json_to_submission(json: any): Submission {
     let x = new Submission("ZIP", new Zip(
         global_constraints,
         local_constraints,
-        new Constraint("ZIP", json_root_constraint['zip_name'], getID(), undefined, 0)
+        new Constraint("ZIP", json_root_constraint['zip_name'], root_id, undefined, 0)
     ));
-    console.log(x)
+
     return x
 }
 
-//function submission_to_json(submission: Submission): string {
-//
-//    function constraint_to_object(constraint: Constraint): object {
-//        let obj: any = {
-//            "type": constraint.type,
-//        }
-//
-//        switch (constraint.type) {
-//            case 'ZIP':
-//                obj['zip_name'] = constraint.value;
-//                break;
-//            case 'FILE':
-//                obj['file_name'] = constraint.value;
-//                break;
-//            case 'DIRECTORY':
-//                obj['directory_name'] = constraint.value;
-//                break;
-//        }
-//
-//        if (constraint['type'] === 'ZIP' || constraint['type'] === 'DIRECTORY') {
-//            let sub_constraints = submission.local_constraints.filter(x => x.parent_id === constraint.id);
-//            obj.sub_constraints = sub_constraints.map(x => constraint_to_object(x));
-//        }
-//        
-//        return obj;
-//    }
-//
-//    let obj = {
-//        "type": "SUBMISSION",
-//        "root_constraint": local_constraint()
-//    };
-//
-//    // TODO: wait for more info on the constraints
-//}
+function submission_to_json(submission: Submission): string {
+
+    function constraint_to_object(constraint: Constraint, local_constraint_list: Constraint[]): string {
+        let constraint_object: any = {};
+        switch (constraint.type) {
+            case 'FILE':
+                constraint_object['file_name'] = constraint.value;
+                break;
+            case 'DIRECTORY':
+                constraint_object['directory_name'] = constraint.value;
+                constraint_object['sub_constraints'] = 
+                    local_constraint_list
+                        .filter(c => c.parent_id === constraint.id)
+                        .map(c => constraint_to_object(c, local_constraint_list));
+                break;
+            // case 'ZIP': # can't happen
+            case 'NOT_PRESENT':
+                constraint_object['file_or_directory_name'] = constraint.value;
+                break;
+            case 'EXTENSION_NOT_PRESENT':
+                constraint_object['extension'] = constraint.value;
+                break;
+            case 'EXTENSION_ONLY_PRESENT':
+                constraint_object['extension'] = constraint.value;
+                break;
+        }
+        constraint_object['type'] = constraint.type;
+        return constraint_object;
+    }
+
+    let submission_object: any = {};
+    submission_object['type'] = "SUBMISSION";
+
+    if (submission.type === 'FILE') {
+        submission_object['root_constraint'] = constraint_to_object(submission.submission as Constraint, []);
+    }
+
+    if (submission.type === 'ZIP') {
+        let zip_object: any = {};
+        let zip = submission.submission as Zip;
+        zip_object['type'] = "ZIP";
+        zip_object['zip_name'] = zip.self_constraint.value;
+
+        // global
+        zip_object['global_constraints'] = zip.global_constraints.map(c => constraint_to_object(c, zip.local_constraints));
+
+        // local
+        zip_object['sub_constraints'] = zip.local_constraints.filter(c => c.parent_id === zip.self_constraint.id).map(c => constraint_to_object(c, zip.local_constraints));
+
+        submission_object['root_constraint'] = zip_object;
+    }
+
+    return submission_object;
+}
 
 function get_all_ids(submission: Submission) {
 
@@ -216,6 +235,8 @@ function get_all_ids(submission: Submission) {
     return global_ids.concat(local_ids).concat([(submission.submission as Zip).self_constraint.id]);
 }
 
+let init_submission: Submission | undefined = undefined;
+
 export default function SimpleTests(props: { 
     teacherOrStudent: TeacherOrStudent,
     initialData: string,
@@ -225,12 +246,17 @@ export default function SimpleTests(props: {
 
     const { t } = useTranslation();
 
-    const [submission, setSubmission]   = useState<Submission>(json_to_submission(JSON.parse(props.initialData)));
-    const [isZip,      setIsZip     ]   = useState<boolean>(submission.type === 'ZIP');
-    const [isHovering, setIsHovering]   = useState<number | undefined>(undefined);
-    const [isExpanded, setIsExpanded]   = useState<Map<number, boolean>>(new Map( get_all_ids(submission).map(id => [id, false])));
-    const [isShown,    setIsShown   ]   = useState<Map<number, boolean>>(new Map( get_all_ids(submission).map(id => [id, false])));
-    const [isMenuOpen, setIsMenuOpen]   = useState<Map<number, boolean>>(new Map( get_all_ids(submission).map(id => [id, false])));
+    if (init_submission === undefined) {
+        init_submission = JSON.parse(props.initialData);
+    }
+
+    const [submission,      setSubmission     ] = useState<Submission>(json_to_submission(init_submission));
+    const [isZip,           setIsZip          ] = useState<boolean>(submission.type === 'ZIP');
+    const [isHovering,      setIsHovering     ] = useState<number | undefined>(undefined);
+    const [isExpanded,      setIsExpanded     ] = useState<Map<number, boolean>>(new Map( get_all_ids(submission).map(id => [id, false])));
+    const [isShown,         setIsShown        ] = useState<Map<number, boolean>>(new Map( get_all_ids(submission).map(id => [id, false])));
+    const [isMenuOpen,      setIsMenuOpen     ] = useState<Map<number, boolean>>(new Map( get_all_ids(submission).map(id => [id, false])));
+    const [isGlobalAddOpen, setIsGlobalAddOpen] = useState<boolean>(false);
 
     useEffect(() => {
         if (submission.type === 'ZIP') {
@@ -241,24 +267,26 @@ export default function SimpleTests(props: {
     }, []);
 
     useEffect(() => {
-        //let new_data = submission_to_json(submission);
-        //if (props.setData !== undefined) {
-        //    props.setData(new_data);
-        //}
-        //if (props.setHasChanged !== undefined) {
-        //    props.setHasChanged(_.isEqual(new_data, props.initialData));
-        //}
+        if (submission !== undefined) {
+            let new_data = submission_to_json(submission);
+            if (props.setData !== undefined) {
+                props.setData(JSON.stringify(new_data));
+            }
+            if (props.setHasChanged !== undefined) {
+                props.setHasChanged(!_.isEqual(init_submission, new_data));
+            }
+        }
     }, [submission]);
 
     /* Functions that change the submission */
 
-    function doChangeRootType(oldSubmission: Submission): Submission {
+    function doChangeRootType(oldSubmission: Submission, new_root_id: number): Submission {
         if (oldSubmission.type === 'ZIP') {
             setIsZip(false);
             return new Submission('FILE', new Constraint(
                 'FILE', 
                 "CHANGE_ME",
-                getID(),
+                new_root_id,
                 undefined,
                 0
             ))
@@ -267,7 +295,7 @@ export default function SimpleTests(props: {
         return new Submission('ZIP', new Zip(
             [],
             [],
-            new Constraint("ZIP", "CHANGE_ME.zip", getID(), undefined, 0)
+            new Constraint("ZIP", "CHANGE_ME.zip", new_root_id, undefined, 0)
         ))
     }
 
@@ -290,8 +318,9 @@ export default function SimpleTests(props: {
                 newLocalConstraints.push(constraint);
             }
         }
-
-        return new Submission(oldSubmission.type, new Zip(newGlobalConstraints, newLocalConstraints, zip.self_constraint));
+        
+        let x = new Submission(oldSubmission.type, new Zip(newGlobalConstraints, newLocalConstraints, zip.self_constraint));
+        return x
     }
 
     function doChangeConstraintType(oldSubmission: Submission, id: number, type: string): Submission {
@@ -350,18 +379,23 @@ export default function SimpleTests(props: {
             index = zip.local_constraints.findIndex(constraint => constraint.id === sub_items[sub_items.length-1].id);
         }
         let new_local_constraints = [...zip.local_constraints.slice(0, index + 1), newConstraint, ...zip.local_constraints.slice(index + 1)];
-        return new Submission("zip", new Zip(zip.global_constraints, new_local_constraints, zip.self_constraint));
+        return new Submission("ZIP", new Zip(zip.global_constraints, new_local_constraints, zip.self_constraint));
     }
 
     function doModifyValue(oldSubmission: Submission, id: number, new_value: string) {
-        /* assume ZIP */
+        
+        if (submission.type === 'FILE') {
+            let file = submission.submission as Constraint;
+            return new Submission("FILE", new Constraint('FILE', new_value, file.id, file.parent_id, file.depth));
+        }
+
         let zip = oldSubmission.submission as Zip;
 
         // modify value for root
         if (zip.self_constraint.id === id) {
             let s = zip.self_constraint;
             let newConstraint = new Constraint(s.type, new_value, s.id, s.parent_id, s.depth);
-            return new Submission("zip", new Zip(zip.global_constraints, zip.local_constraints, newConstraint));
+            return new Submission("ZIP", new Zip(zip.global_constraints, zip.local_constraints, newConstraint));
         }
 
         // global constraints
@@ -369,8 +403,8 @@ export default function SimpleTests(props: {
         if (g !== undefined) {
             let newConstraint = new Constraint(g.type, new_value, g.id, g.parent_id, g.depth);
             let index = zip.global_constraints.findIndex(constraint => constraint.id === newConstraint.id);
-            let newGlobalConstraints = [...zip.global_constraints.slice(0, index + 1), newConstraint, ...zip.global_constraints.slice(index + 1)];
-            return new Submission("zip", new Zip(newGlobalConstraints, zip.local_constraints, zip.self_constraint));
+            let newGlobalConstraints = [...zip.global_constraints.slice(0, index), newConstraint, ...zip.global_constraints.slice(index + 1)];
+            return new Submission("ZIP", new Zip(newGlobalConstraints, zip.local_constraints, zip.self_constraint));
         }
 
         // local constraints
@@ -384,7 +418,12 @@ export default function SimpleTests(props: {
     /* Handlers */
 
     function handleChangeRootType() {
-        setSubmission(doChangeRootType(submission));
+        let new_root_id = getID();
+        let oldSubmission = submission;
+        setSubmission(doChangeRootType(submission, new_root_id));
+        if (oldSubmission.type === 'FILE') { // we change to ZIP
+            setIsShown(structuredClone(isShown.set(new_root_id, true)));
+        }
     }
 
     function handleDeleteConstraint(id: number) {
@@ -406,8 +445,17 @@ export default function SimpleTests(props: {
         let new_id = getID();
         setSubmission(doNewConstraint(submission, id, type, new_id));
         setIsShown(structuredClone(isShown.set(new_id, true)));
-        setIsExpanded(structuredClone(isShown.set(new_id, true)));
+        if (submission.type === 'ZIP') {
+            let children_ids = (submission.submission as Zip).local_constraints.filter(c => c.parent_id === id).map(c => c.id);
+            for (let child_id of children_ids) {
+                setIsShown(structuredClone(isShown.set(child_id, true)));
+            }
+        }
+        if (id !== undefined) {
+            setIsExpanded(structuredClone(isExpanded.set(id, true)));
+        }
         setIsMenuOpen(structuredClone(isMenuOpen.set(new_id, false)));
+        setIsGlobalAddOpen(false);
     }
 
     function handleModifyValue(id: number, new_value: string) {
@@ -467,7 +515,7 @@ export default function SimpleTests(props: {
                 }
 
                 <Warneable 
-                    text={t('submission_files.warning.type_switch')}
+                    text={t('submission_files.warning_change_root.type_switch')}
                     trigger={ onClick =>
                         <Switch 
                             className="switch" 
@@ -495,29 +543,46 @@ export default function SimpleTests(props: {
                 !isZip
                 ? <div>
                     {/* FILE ROOT */}
-
+                    <div className="file-root-container">
+                        <div className="pb-1">{t('submission_files.single_file.name')}</div>
+                        <div className="constraint-row">
+                            {/* value field */}
+                            <input 
+                                className={"row-value FILE"} 
+                                value={(submission.submission as Constraint).value}
+                                onChange={e => handleModifyValue((submission.submission as Constraint).id, e.target.value)} 
+                            />       
+                        </div>
+                    </div>
                 </div>
                 : <div className="type-content">
                     {/* ZIP ROOT */}
 
-                    {/* ...local constraints tag... */}
+                    {/* ...information popup... */}
                     <div className="information-wrapper">
                         <Information 
                             content={
                                 <div>
                                     <div>
-                                        You can edit the name of a contraint by clicking on it.
-                                        By hovering over a constraint, more operations will appear.
+                                        {t('submission_files.information.constraints')}
+                                    </div>
+
+                                    <br/>
+
+                                    <div>
+                                        {t('submission_files.information.extensions')}
                                     </div>
 
                                     <br/>
                                     
-                                    <div>{t('submission_files.color_codes.tag')}</div>
+                                    <div>{t('submission_files.information.color_codes.title')}</div>
                                     <div className="color-codes">
-                                        <li className="zip-color">{t('submission_files.color_codes.zip')}</li>
-                                        <li className="locked-dir-color">{t('submission_files.color_codes.folder_refuse_others')}</li>
-                                        <li className="dir-color">{t('submission_files.color_codes.folder_allow_others')}</li>
-                                        <li>{t('submission_files.color_codes.file')}</li>
+                                        <li className="FILE">{t('submission_files.information.color_codes.file')}</li>
+                                        <li className="DIRECTORY">{t('submission_files.information.color_codes.directory')}</li>
+                                        <li className="ZIP">{t('submission_files.information.color_codes.zip')}</li>
+                                        <li className="NOT_PRESENT">{t('submission_files.information.color_codes.not_present')}</li>
+                                        <li className="EXTENSION_NOT_PRESENT">{t('submission_files.information.color_codes.extension_not_present')}</li>
+                                        <li className="EXTENSION_ONLY_PRESENT">{t('submission_files.information.color_codes.extension_only_present')}</li>
                                     </div>
                                 </div>
                             } 
@@ -527,10 +592,92 @@ export default function SimpleTests(props: {
                         />
                     </div>
 
-                    {/*...local constraints...*/}
-                    <div>Local constraints:</div>
+                    {/*...global constraints...*/}
+                    <div className="constraint-row">
+                        <div>{t('submission_files.constraints.global')}</div>
+                        <Popup trigger={
+                            <div className="more-wrapper">
+                                <RiAddBoxLine 
+                                    className="row-icon" 
+                                />
+                            </div>
+                        }   position="right center" 
+                            arrow={true} 
+                            onOpen={() => {setIsGlobalAddOpen(true)}}
+                            open={isGlobalAddOpen} 
+                            on="click" 
+                            nested 
+                            contentStyle={{width: 'auto'}}
+                        >
+                            <div>
+                                <button className="menu-not-last-item" onClick={() => handleNewConstraint(undefined, 'NOT_PRESENT')}>{t('submission_files.menu.not_present')}</button>
+                                <button className="menu-not-last-item" onClick={() => handleNewConstraint(undefined, 'EXTENSION_NOT_PRESENT')}>{t('submission_files.menu.extension_not_present')}</button>
+                                <button onClick={() => handleNewConstraint(undefined, 'EXTENSION_ONLY_PRESENT')}>{t('submission_files.menu.extension_only_present')}</button>
+                            </div>
+                        </Popup>
+                    </div>
                     <div className="global-constraints">
                         <div className="constraints-table global-table">
+                            {(submission.submission as Zip).global_constraints.map(constraint =>
+                                <div className="constraint-row" key={''+constraint.id}
+                                    onMouseOver={() => handleHoverOver(constraint.id)}
+                                    onMouseOut={handleHoverOut}
+                                >
+                            
+                                    {/* value field */}
+                                    <input 
+                                        className={"row-value " + constraint['type']} 
+                                        value={constraint.value}
+                                        onChange={e => handleModifyValue(constraint.id, e.target.value)} 
+                                    />
+
+                                    {/* add file */}
+                                    {(constraint['type'] === 'ZIP' || constraint['type'] === 'DIRECTORY') &&
+                                    <VscNewFile 
+                                        className="row-icon" 
+                                        style={{visibility: isHovering === constraint.id ? 'visible' : 'hidden' }}
+                                        onClick={() => handleNewConstraint(constraint.id, 'FILE')}
+                                    />}
+
+                                    {/* add folder */}
+                                    {(constraint['type'] === 'ZIP' || constraint['type'] === 'DIRECTORY') &&
+                                    <VscNewFolder 
+                                        className="row-icon" 
+                                        style={{visibility: isHovering === constraint.id ? 'visible' : 'hidden' }}
+                                        onClick={() => handleNewConstraint(constraint.id, 'DIRECTORY')}
+                                    />}
+                                    
+                                    {/* more button */}
+                                    {constraint['type'] !== 'ZIP' &&
+                                    <Popup trigger={
+                                        <div className="more-wrapper">
+                                            <IoMdMore 
+                                                className="row-icon" 
+                                                style={{visibility: isHovering === constraint.id ? 'visible' : 'hidden' }}
+                                            />
+                                        </div>
+                                    }   position="right center" 
+                                        arrow={true} 
+                                        onOpen={() => handleOpenMenu(constraint.id)}
+                                        open={isMenuOpen.get(constraint.id)} 
+                                        on="click" 
+                                        nested 
+                                        contentStyle={{width: 'auto'}}
+                                    >
+                                        {/* ~ more menu ~ */}
+                                        <button onClick={() => handleDeleteConstraint(constraint.id)}>{t('submission_files.menu.remove')}</button>
+                                    </Popup>
+                                    }
+                                    
+                                </div>
+                            )}
+                        </div>
+                    </div>
+
+                    {/*...local constraints...*/}
+                    <div>{t('submission_files.constraints.local')}</div>
+                    <div className="local-constraints">
+                        <div className="constraints-table local-table">
                             {[(submission.submission as Zip).self_constraint].concat((submission.submission as Zip).local_constraints).map(constraint =>
                                 isShown.get(constraint.id) &&
                                 <div className="constraint-row" key={''+constraint.id}
@@ -583,19 +730,41 @@ export default function SimpleTests(props: {
                                     >
                                         {/* ~ more menu ~ */}
                                         <div>
-                                            {constraint['type'] === 'FILE' &&
-                                                <button className="menu-not-last-item" onClick={() => handleChangeConstraintType(constraint.id, 'DIRECTORY')}>make directory</button>
-                                            }
-                                            {constraint['type'] === 'DIRECTORY' &&
-                                                <button className="menu-not-last-item" onClick={() => handleChangeConstraintType(constraint.id, 'FILE')}>make file</button>
-                                            }
-                                            <button onClick={() => handleDeleteConstraint(constraint.id)}>remove</button>
+                                            {(() => {
+                                                switch(constraint['type']) {
+                                                    case 'FILE':
+                                                        return <div>
+                                                            <button className="menu-not-last-item" onClick={() => handleChangeConstraintType(constraint.id, 'DIRECTORY')}>{t('submission_files.menu.directory')}</button>
+                                                            <button className="menu-not-last-item" onClick={() => handleChangeConstraintType(constraint.id, 'NOT_PRESENT')}>{t('submission_files.menu.not_present')}</button>
+                                                            <button className="menu-not-last-item" onClick={() => handleChangeConstraintType(constraint.id, 'EXTENSION_NOT_PRESENT')}>{t('submission_files.menu.extension_not_present')}</button>
+                                                        </div>
+                                                    case 'DIRECTORY':
+                                                        return <div>
+                                                            <button className="menu-not-last-item" onClick={() => handleChangeConstraintType(constraint.id, 'FILE')}>{t('submission_files.menu.file')}</button>
+                                                            <button className="menu-not-last-item" onClick={() => handleChangeConstraintType(constraint.id, 'NOT_PRESENT')}>{t('submission_files.menu.not_present')}</button>
+                                                            <button className="menu-not-last-item" onClick={() => handleChangeConstraintType(constraint.id, 'EXTENSION_NOT_PRESENT')}>{t('submission_files.menu.extension_not_present')}</button>
+                                                        </div>
+                                                    case 'NOT_PRESENT':
+                                                        return <div>
+                                                            <button className="menu-not-last-item" onClick={() => handleChangeConstraintType(constraint.id, 'FILE')}>{t('submission_files.menu.file')}</button>
+                                                            <button className="menu-not-last-item" onClick={() => handleChangeConstraintType(constraint.id, 'DIRECTORY')}>{t('submission_files.menu.directory')}</button>
+                                                            <button className="menu-not-last-item" onClick={() => handleChangeConstraintType(constraint.id, 'EXTENSION_NOT_PRESENT')}>{t('submission_files.menu.extension_not_present')}</button>
+                                                        </div>
+                                                    case 'EXTENSION_NOT_PRESENT':
+                                                        return <div>
+                                                            <button className="menu-not-last-item" onClick={() => handleChangeConstraintType(constraint.id, 'FILE')}>{t('submission_files.menu.file')}</button>
+                                                            <button className="menu-not-last-item" onClick={() => handleChangeConstraintType(constraint.id, 'DIRECTORY')}>{t('submission_files.menu.directory')}</button>
+                                                            <button className="menu-not-last-item" onClick={() => handleChangeConstraintType(constraint.id, 'NOT_PRESENT')}>{t('submission_files.menu.not_present')}</button>
+                                                        </div>
+                                                } })()}
+                                            <button onClick={() => handleDeleteConstraint(constraint.id)}>{t('submission_files.menu.remove')}</button>
                                         </div>
                                     </Popup>
                                     }
 
                                     {/* expand/collaps */}
-                                    {(constraint['type'] === 'ZIP' || constraint['type'] === 'DIRECTORY') && (
+                                    {(submission.submission as Zip).local_constraints.map(c => c.parent_id).includes(constraint.id) && 
+                                     (constraint['type'] === 'ZIP' || constraint['type'] === 'DIRECTORY') && (
                                         isExpanded.get(constraint.id)
                                             ? <MdExpandLess
                                                 className="row-icon" 
