@@ -132,7 +132,7 @@
         "first_upcoming_deadline": "eerstvolgende deadline",
         "name": "naam",
         "email": "email",
-        "no_data_yet": "Nog geen data beschikbaar.",
+        "no_data_yet": "Geen data beschikbaar.",
         "number_of_projects": "aantal projecten",
         "remove": "verwijder",
         "add": "voeg toe"
@@ -239,5 +239,9 @@
         "leave_course": "vak verlaten",
         "leave_last_teacher": "U bent de laatste lesgever, dus zal het vak gearchiveerd worden voor alle studenten.",
         "leave_question": "Bent u zeker dat u dit vak wil verlaten?"
+    },
+    "empty-home": {
+        "empty-cards": "Geen actieve projecten op dit moment.",
+        "empty-deadline": "Geen nieuwe deadlines op dit moment."
     }
 }

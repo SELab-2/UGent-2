@@ -1,0 +1,13 @@
+[Service]
+Restart=always
+[Container]
+Image=localhost/delphi-backend
+RunInit=true
+Environment=DB_USERNAME=delphi
+Environment=CAS_URL=https://sel2-2.ugent.be/login
+Volume=/run/podman/podman.sock:/run/docker.sock
+Volume=/var/lib/delphi-submissions:/var/lib/delphi-submissions
+Secret=DB_PASSWORD,type=env
+Network=host
+[Install]
+WantedBy=multi-user.target

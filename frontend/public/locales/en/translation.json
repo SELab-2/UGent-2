@@ -132,7 +132,7 @@
         "first_upcoming_deadline": "next deadline",
         "name": "name",
         "email": "email",
-        "no_data_yet": "No data yet.",
+        "no_data_yet": "No data.",
         "number_of_projects": "number of projects",
         "remove": "remove",
         "add": "add"
@@ -239,5 +239,9 @@
         "leave_course": "leave course",
         "leave_last_teacher": "You are the last teacher, so the course will be archived for all students.",
         "leave_question": "Are you sure that you want to leave this course?"
+    },
+    "empty-home": {
+        "empty-cards": "No active projects at this moment.",
+        "empty-deadline": "No deadlines at the moment."
     }
 }

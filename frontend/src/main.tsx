@@ -38,6 +38,7 @@ import projectStudentLoader, {PROJECT_STUDENT} from "./dataloaders/ProjectStuden
 import projectTeacherLoader, {PROJECT_TEACHER} from "./dataloaders/ProjectTeacher.ts";
 import courseTeacherLoader, {COURSE_TEACHER} from "./dataloaders/CourseTeacherLoader.ts";
 import courseStudentLoader, {COURSE_STUDENT} from "./dataloaders/CourseStudentLoader.ts";
+import {DEBUG} from "./pages/root.tsx";
 
 // import i18n (needs to be bundled ;))
 import './i18n';
@@ -106,9 +107,20 @@ const router = createBrowserRouter(
 )
 
 createRoot(document.getElementById('root')!).render(
+
+    DEBUG ? (
     <React.StrictMode>
+        <CreateRootHelper/>
+    </React.StrictMode>
+    ) : (
+        <CreateRootHelper/>
+    )
+)
+
+export function CreateRootHelper(): JSX.Element {
+    return (
         <AuthProvider>
             <RouterProvider router={router}/>
         </AuthProvider>
-    </React.StrictMode>,
-)
+    )
+}

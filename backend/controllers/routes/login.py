@@ -4,11 +4,11 @@ from starlette.requests import Request
 
 from config import DEBUG
 from controllers.authentication.authentication_controller import authenticate_user
-from controllers.authentication.errors import InvalidAuthenticationError
 from controllers.authentication.token_controller import create_token, verify_token
 from controllers.swagger_tags import Tags
 from db.models import User
 from domain.logic.user import get_user
+from errors.authentication_errors import InvalidAuthenticationError
 
 # test url: https://login.ugent.be/login?service=https://localhost:8080/api/login
 login_router = APIRouter(tags=[Tags.LOGIN])
