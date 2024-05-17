@@ -5,8 +5,8 @@ from sqlmodel import Session
 
 from db.models import Course, Project, ProjectInput, Student, Teacher
 from domain.logic.basic_operations import get, get_all
-from errors.logic_errors import InvalidConstraintsError
 from domain.simple_submission_checks.constraints.submission_constraint import create_constraint_from_json
+from errors.logic_errors import InvalidConstraintsError
 
 
 def create_project(

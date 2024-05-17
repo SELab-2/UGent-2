@@ -5,9 +5,9 @@ from sqlmodel import Session
 
 from db.models import Group, Student, Submission, SubmissionState
 from domain.logic.basic_operations import get, get_all
+from domain.simple_submission_checks.constraints.submission_constraint import create_constraint_from_json
 from errors.database_errors import ItemNotFoundError
 from errors.logic_errors import ArchivedError, InvalidSubmissionError
-from domain.simple_submission_checks.constraints.submission_constraint import create_constraint_from_json
 
 
 def create_submission(

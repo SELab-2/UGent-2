@@ -1,12 +1,5 @@
 from starlette.requests import Request
 
-from errors.authentication_errors import (
-    InvalidAdminCredentialsError,
-    InvalidAuthenticationError,
-    InvalidStudentCredentialsError,
-    InvalidTeacherCredentialsError,
-    NoAccessToDataError,
-)
 from controllers.authentication.token_controller import verify_token
 from db.models import Admin, Student, Teacher
 from domain.logic.admin import get_admin, is_user_admin
@@ -15,6 +8,13 @@ from domain.logic.group import get_group, get_students_of_group
 from domain.logic.project import get_project, get_projects_of_teacher
 from domain.logic.student import get_student, is_user_student
 from domain.logic.teacher import get_teacher, is_user_teacher
+from errors.authentication_errors import (
+    InvalidAdminCredentialsError,
+    InvalidAuthenticationError,
+    InvalidStudentCredentialsError,
+    InvalidTeacherCredentialsError,
+    NoAccessToDataError,
+)
 
 
 def get_authenticated_user(request: Request) -> int:

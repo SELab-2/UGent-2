@@ -9,5 +9,5 @@ class ExceptionBase(HTTPException):
     def __init__(self) -> None:
         super().__init__(
             status_code=self.STATUS_CODE,
-            detail=self.ERROR_MESSAGE
+            detail=self.ERROR_MESSAGE,
         )

@@ -3,15 +3,7 @@ import pathlib
 import uvicorn
 from fastapi import Depends, FastAPI
 from fastapi.security import HTTPBearer
-from starlette import status
-from starlette.requests import Request
-from starlette.responses import JSONResponse
 
-from errors.authentication_errors import (
-    InvalidAuthenticationError,
-    InvalidRoleCredentialsError,
-    NoAccessToDataError,
-)
 from controllers.middleware import DatabaseSessionMiddleware
 from controllers.routes.course import course_router
 from controllers.routes.group import group_router
@@ -22,20 +14,7 @@ from controllers.routes.submission import submission_router
 from controllers.routes.teacher import teacher_router
 from controllers.routes.user import users_router
 from controllers.swagger_tags import tags_metadata
-from errors.database_errors import (
-    ActionAlreadyPerformedError,
-    ConflictingRelationError,
-    ItemNotFoundError,
-    NoSuchRelationError,
-)
 from debug import DEBUG
-from errors.logic_errors import (
-    ArchivedError,
-    InvalidConstraintsError,
-    InvalidSubmissionError,
-    NotATeacherError,
-    UserNotEnrolledError,
-)
 
 pathlib.Path.mkdir(pathlib.Path("submissions"), exist_ok=True)
 app = FastAPI(
