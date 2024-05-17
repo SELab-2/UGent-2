@@ -236,6 +236,6 @@
     },
     "empty-home": {
         "empty-cards": "No active projects at this moment.",
-        "empty-deadline": "No deadlines soon."
+        "empty-deadline": "No deadlines at the moment."
     }
 }
