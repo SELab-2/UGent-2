@@ -1,4 +1,4 @@
-import {ChangeEvent, JSX, useState} from "react";
+import {ChangeEvent, JSX, useEffect, useState} from "react";
 import FieldWithLabel from "./FieldWithLabel.tsx";
 import {FaCheck, FaUpload} from "react-icons/fa";
 import {FaDownload} from "react-icons/fa6";
@@ -12,6 +12,10 @@ import {MdOutlinePersonAddAlt1} from "react-icons/md";
 import {Submission} from "../utils/ApiInterfaces.ts";
 import {DEBUG} from "../pages/root.tsx";
 import {make_submission} from "../utils/api/Submission.ts";
+import {joinGroup, leaveGroup} from "../utils/api/Groups.ts";
+import {useNavigate} from "react-router-dom";
+import apiFetch from "../utils/ApiFetch.ts";
+import {Backend_submission, Backend_user} from "../utils/BackendInterfaces.ts";
 
 function ProjectInfo(props: { project: ProjectStudent }): JSX.Element {
     const {t} = useTranslation();
@@ -55,124 +59,197 @@ function ProjectInfo(props: { project: ProjectStudent }): JSX.Element {
     )
 }
 
-function TableJoinedGroup(props: { project: ProjectStudent }): JSX.Element {
+async function loadGroupMembers(project_id: number) {
+    const groupIdData = await apiFetch<{ id: number }>(`/projects/${project_id}/group`)
+    if (!groupIdData.ok) {
+        return undefined;
+    }
+    const groupId: number = groupIdData.content.id;
+
+    const submissionData = await apiFetch<Backend_submission>(`/groups/${groupId}/submission`)
+    if (!submissionData.ok) {
+        return undefined;
+    }
+
+    const lastSubmissionId = submissionData.content.student_id;
+
+    const groupMembersIdData = await apiFetch<[{ id: number }]>(`/groups/${groupId}/members`);
+    if (!groupMembersIdData.ok) {
+        return undefined
+    }
+    const groupMembersId = groupMembersIdData.content
+    const groupMembers = await Promise.all(groupMembersId.map(async (id_object) => {
+        const user = await apiFetch<Backend_user>(`/users/${id_object.id}`);
+
+        return {
+            name: user.content.name,
+            email: user.content.email,
+            lastSubmission: user.content.id == lastSubmissionId
+        }
+    }))
+    return {members: groupMembers, id: groupId, submission: submissionData.content.filename.split('/').reverse()[0]}
+}
+
+async function getGroupInfo(project_id: number) {
+    const groups = await apiFetch<[{ id: number }]>(`/projects/${project_id}/groups`)
+    if (!groups.ok) {
+        return undefined
+    }
+    const groupsInfo = Promise.all(groups.content.map(async id_obj => {
+        const groupData = await apiFetch<[{ id: number }]>(`/groups/${id_obj.id}/members`)
+        return {
+            nr: id_obj.id,
+            amountOfMembers: groupData.content.length
+        }
+    }))
+    return groupsInfo
+}
+
+export default function ProjectStudentComponent(props: { project: ProjectStudent }): JSX.Element {
     const {t} = useTranslation();
 
-    return (
-        <div className={"pt-5"}>
+    const [newSelectedFile, setNewSelectedFile] = useState<boolean>(false);
+    const [file, setFile] = useState<File | undefined>(undefined)
+    const [error, setError] = useState<string>('')
+    const [success, setSuccess] = useState<string>('')
+
+    const [hasGroup, setHasGroup] = useState<boolean>((props.project.groupMembers || false) && props.project.groupMembers.length > 0)
+    const [groupId, setGroupId] = useState(props.project.group_id);
+    const [groupMembers, setGroupMembers] = useState<{
+        name: string;
+        email: string;
+        lastSubmission: boolean;
+    }[] | undefined>(props.project.groupMembers);
+    const [submission, setSubmission] = useState(props.project.submission)
+    const [groupInfo, setGroupInfo] = useState(undefined)
+
+    const navigate = useNavigate()
+
+    function TableJoinedGroup(props: {
+        groupMembers: {
+            name: string,
+            email: string,
+            lastSubmission: boolean
+        }[],
+        maxGroupMembers: number
+    }): JSX.Element {
+        const {t} = useTranslation();
+        const navigate = useNavigate()
+        return (
+            <div className={"pt-5"}>
+                <div className="field is-horizontal">
+                    <div className="field-label">
+                        <label
+                            className="label">{"> " + t('project.groupmembers.tag')
+
+                            + " (" + props.groupMembers.length + "/" + props.maxGroupMembers + "):"}
+                        </label>
+                    </div>
+                    <div className="field-body field">
+                        <table className={"table is-fullwidth"}>
+                            <thead>
+                            <tr>
+                                <th>{t('project.groupmembers.name')}</th>
+                                <th>{t('project.groupmembers.email')}</th>
+                                <th>{t('project.groupmembers.latest_submission')}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {props.groupMembers.map((member, index) => {
+                                return (<tr key={index}>
+                                    <td>{member.name}</td>
+                                    <td>{member.email}</td>
+                                    <td>{member.lastSubmission ? <FaCheck/> : "-"}</td>
+                                </tr>)
+                            })}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div className={"is-flex is-justify-content-end is-align-items-center"}>
+                    <p className={"mx-3"}>leave group: </p>
+                    <button className={"button"} onClick={() => {
+                        leaveGroup(groupId)
+                        navigate(0)
+                    }}>
+                        <IoExitOutline size={25}/>
+                    </button>
+                </div>
+            </div>
+        )
+    }
+
+    function JoinGroup(): JSX.Element {
+        // const {t} = useTranslation();
+        //const groupMembers = await loadGroupMembers(props.project_id)
+        useEffect(() => {
+            if (groupInfo == undefined) {
+
+            }
+        }, []);
+        const data: { nr: number, amountOfMembers: number }[] = [
+            {
+                nr: 1,
+                amountOfMembers: 4
+            },
+            {
+                nr: 2,
+                amountOfMembers: 3
+            },
+            {
+                nr: 3,
+                amountOfMembers: 0
+            }
+        ]
+        return (
             <div className="field is-horizontal">
                 <div className="field-label">
                     <label
-                        className="label">{"> " + t('project.groupmembers.tag') + " (" + props.project.groupMembers?.length + "/" + props.project.maxGroupMembers + "):"}
+                        className="label"> Beschikbare groepen
                     </label>
                 </div>
-                <div className="field-body field">
+                <div className={"field-body field"}>
                     <table className={"table is-fullwidth"}>
                         <thead>
                         <tr>
-                            <th>{t('project.groupmembers.name')}</th>
-                            <th>{t('project.groupmembers.email')}</th>
-                            <th>{t('project.groupmembers.latest_submission')}</th>
+                            <th>nummmer</th>
+                            <th>aantal leden</th>
+                            <th>aansluiten</th>
                         </tr>
                         </thead>
                         <tbody>
-                        {props.project.groupMembers?.map((member, index) => {
+                        {data.map((member, index) => {
                             return (<tr key={index}>
-                                <td>{member.name}</td>
-                                <td>{member.email}</td>
-                                <td>{member.lastSubmission ? <FaCheck/> : "-"}</td>
+                                <td>{member.nr}</td>
+                                <td>{member.amountOfMembers}</td>
+                                <td> {props.project.maxGroupMembers > member.amountOfMembers ?
+                                    // TODO: logic of this join button
+                                    <button className={"button"}><MdOutlinePersonAddAlt1 onClick={async () => {
+                                        joinGroup(member.nr);
+                                        //void loadGroupMembers(props.project_id)
+                                        navigate(0);
+                                    }}/></button>
+                                    :
+                                    <p>—</p>
+                                }
+                                </td>
                             </tr>)
                         })}
                         </tbody>
                     </table>
                 </div>
             </div>
-            <div className={"is-flex is-justify-content-end is-align-items-center"}>
-                <p className={"mx-3"}>leave group: </p>
-                <button className={"button"}>
-                    <IoExitOutline size={25}/>
-                </button>
-            </div>
-        </div>
-    )
-}
-
-function JoinGroup(props: { project: ProjectStudent }): JSX.Element {
-    // const {t} = useTranslation();
-
-    const data: { nr: number, amountOfMembers: number }[] = [
-        {
-            nr: 1,
-            amountOfMembers: 4
-        },
-        {
-            nr: 2,
-            amountOfMembers: 3
-        },
-        {
-            nr: 3,
-            amountOfMembers: 0
-        }
-    ]
-
-    return (
-        <div className="field is-horizontal">
-            <div className="field-label">
-                <label
-                    className="label"> Beschikbare groepen
-                </label>
-            </div>
-            <div className={"field-body field"}>
-                <table className={"table is-fullwidth"}>
-                    <thead>
-                    <tr>
-                        <th>nummmer</th>
-                        <th>aantal leden</th>
-                        <th>aansluiten</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {data.map((member, index) => {
-                        return (<tr key={index}>
-                            <td>{member.nr}</td>
-                            <td>{member.amountOfMembers}</td>
-                            <td> {props.project.maxGroupMembers == member.amountOfMembers ?
-                                // TODO: logic of this join button
-                                <button className={"button"}><MdOutlinePersonAddAlt1/></button>
-                                :
-                                <p>—</p>
-                            }
-                            </td>
-                        </tr>)
-                    })}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    )
-}
-
-export default function ProjectStudentComponent(props: { project: ProjectStudent }): JSX.Element {
-    // true als er een groep is, anders false.
-    const is_in_group = props.project.groupMembers && props.project.groupMembers.length > 0;
-
-    const {t} = useTranslation();
-    const [file, setFile] = useState<File | undefined>(undefined)
-    const [error, setError] = useState<string>('')
-    const [success, setSuccess] = useState<string>('')
-
+        )
+    }
 
     async function submitFile() {
         if (file !== undefined) {
-            const submission: string | Submission = await make_submission(props.project.group_id, file)
-            props.project.status = ProjectStatus.PENDING
+            const submission: string | Submission = await make_submission(groupId, file)
             if (typeof submission === 'string') {
                 setError(submission) // TODO translation
                 setSuccess('')
-                props.project.status = ProjectStatus.FAILED
             } else {
                 setNewSelectedFile(false)
-                props.project.status = ProjectStatus.SUCCESS
                 setSuccess("The submission has been successful") // TODO translation
                 setError('')
             }
@@ -192,92 +269,86 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
             url = 'http://localhost:8000'
         }
         const response = await fetch(
-            `${url}/api/groups/${props.project.group_id}/submission/file`,
+            `${url}/api/groups/${groupId}/submission/file`,
             {headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')}}
         )
         const blob = await response.blob();
         const a = document.createElement('a');
         a.href = window.URL.createObjectURL(blob);
-        a.download = props.project.submission ?? "submission.zip";
+        a.download = submission ?? "submission.zip";
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
     }
 
-    // let selectedFile: File | undefined = undefined; // TODO: initialize with actual file and export on save
-    const [newSelectedFile, setNewSelectedFile] = useState<boolean>(false);
-
     return (
         <div>
-            {newSelectedFile &&
-                <div>
-                    <div className={"fixated is-flex is-justify-content-start"}>
-                        <RegularButton
-                            placeholder={t('project.save')}
-                            add={false}
-                            onClick={submitFile}
-                            styling="is-primary"
-                        />
-                    </div>
-                    <div className="fixated-filler"/>
-                </div>
-            }
-            {!is_in_group && props.project.maxGroupMembers > 1 &&
-                <div className={"notification is-danger is-flex is-justify-content-center mx-5 my-3"}>
-                    {t('project.not_in_group')}
-                </div>
-            }
             <ProjectInfo project={props.project}/>
-            {!is_in_group && props.project.maxGroupMembers > 1 &&
-                <JoinGroup project={props.project}/>
-            }
-            {is_in_group && props.project.groupMembers &&
-                <TableJoinedGroup project={props.project}/>
-            }
-            {error &&
-                <div className="notification is-danger" style={{width: "75%"}}>
-                    {error}
+            {error && <div className="notification is-danger" style={{width: "75%"}}>
+                {error}
+            </div>}
+            {success && <div className="notification is-success" style={{width: "75%"}}>
+                {success}
+            </div>}
+            {!hasGroup && props.project.maxGroupMembers > 1 &&
+                <div>
+                    <div className={"notification is-danger is-flex is-justify-content-center mx-5 my-3"}>
+                        {t('project.not_in_group')}
+                    </div>
+                    <JoinGroup/>
                 </div>
             }
-            {success &&
-                <div className="notification is-success" style={{width: "75%"}}>
-                    {success}
-                </div>
-            }
-            <div className="field is-horizontal">
-                <div className="field-label">
-                    <label className="label">{"> " + t('project.submission.tag') + ":"}</label>
-                </div>
-                <div className="field-body">
-                    <ul className="field">
-                        <div className="submission-file-download-upload">
-                            {props.project.submission != null &&
-                                <div className={"submission-file-download mb-3"}>
-                                    {newSelectedFile
-                                        ? <label className={"mr-3 highlight"}>{file?.name}</label>
-                                        : <label className={"mr-3"}>{file?.name}</label>
-                                    }
-                                    <button className="button" onClick={downloadLatestSubmission}>
-                                        <FaDownload/>
-                                    </button>
-                                </div>
-                            }
-                            <div id="file-js" className="field is-horizontal">
-                                <label className="file-label">
-                                    <input className="file-input" type="file" name="resume"
-                                           onChange={selectFile}/>
-                                    <span className="file-cta">
-                                                    <span className="file-icon"><FaUpload/></span>
-                                                    <span
-                                                        className="file-label">{t('project.submission.choose_file')}</span>
-                                                </span>
-                                </label>
-                            </div>
+
+            {hasGroup && groupMembers &&
+                <>
+                    <TableJoinedGroup groupMembers={groupMembers} maxGroupMembers={props.project.maxGroupMembers}/>
+                    <div className="field is-horizontal">
+                        <div className="field-label">
+                            <label className="label">{"> " + t('project.submission.tag') + ":"}</label>
                         </div>
-                    </ul>
-                </div>
-            </div>
+                        <div className="field-body">
+                            <ul className="field">
+                                <div className="submission-file-download-upload">
+                                    {submission != null &&
+                                        <div className={"submission-file-download mb-3"}>
+                                            {newSelectedFile
+                                                ? <label className={"mr-3 highlight"}>{file?.name}</label>
+                                                : <label className={"mr-3"}>{file?.name}</label>}
+                                            <button className="button" onClick={downloadLatestSubmission}>
+                                                <FaDownload/>
+                                            </button>
+                                        </div>}
+                                    <div id="file-js" className="field is-horizontal">
+                                        <label className="file-label">
+                                            <input className="file-input" type="file" name="resume"
+                                                   onChange={selectFile}/>
+                                            <span className="file-cta">
+                                                <span className="file-icon"><FaUpload/></span>
+                                                <span
+                                                    className="file-label">{t('project.submission.choose_file')}</span>
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </ul>
+                        </div>
+
+                        {newSelectedFile &&
+                            <div>
+                                <div className={"is-flex is-justify-content-start"}>
+                                    <RegularButton
+                                        placeholder={t('project.save')}
+                                        add={false}
+                                        onClick={submitFile}
+                                        styling="is-primary"/>
+                                </div>
+                                <div className="fixated-filler"/>
+                            </div>}
+                    </div>
+                </>}
+
             <div className="p-5"/>
+
         </div>
     );
 }

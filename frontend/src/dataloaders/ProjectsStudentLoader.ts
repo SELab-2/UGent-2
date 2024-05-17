@@ -121,7 +121,6 @@ export async function LoadProjectsForStudent(filter_on_current: boolean = false,
             submission_file: submission?.submission_filename.split('/').reverse()[0] ?? "",
             submission_student_id: submission?.submission_student_id,
             group_members: groupMembers.find(group => group.project_id == project.project_id)?.users ?? [],
-
         }
     })
 }
