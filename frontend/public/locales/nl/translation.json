@@ -239,5 +239,9 @@
         "leave_course": "vak verlaten",
         "leave_last_teacher": "U bent de laatste lesgever, dus zal het vak gearchiveerd worden voor alle studenten.",
         "leave_question": "Bent u zeker dat u dit vak wil verlaten?"
+    },
+    "empty-home": {
+        "empty-cards": "Geen actieve projecten op dit moment.",
+        "empty-deadline": "Geen nieuwe deadlines op dit moment."
     }
 }
