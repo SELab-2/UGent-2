@@ -1,20 +1,27 @@
 from pathlib import Path
-from typing import Literal
 
 from pydantic import BaseModel
 
-from domain.simple_submission_checks.constraints.constraint_result import ConstraintResult
+from domain.simple_submission_checks.constraints.constraint_result import (
+    ConstraintType,
+    SubmissionConstraintResult,
+)
 from domain.simple_submission_checks.constraints.file_constraint import FileConstraint
 from domain.simple_submission_checks.constraints.zip_constraint import ZipConstraint
 
 
 class SubmissionConstraint(BaseModel):
-    type: Literal["submission_constraint"] = "submission_constraint"
+    type: ConstraintType = ConstraintType.SUBMISSION
     root_constraint: ZipConstraint | FileConstraint  # Submission can be a file or a zip.
 
-    def validate_constraint(self, path: Path) -> ConstraintResult:
-        return self.root_constraint.validate_constraint(path)
+    def validate_constraint(self, path: Path) -> SubmissionConstraintResult:
+        root_constraint_result = self.root_constraint.validate_constraint(path)
+
+        return SubmissionConstraintResult(
+            is_ok=root_constraint_result.recursive_is_ok(),
+            root_constraint_result=root_constraint_result,
+        )
 
 
 def create_constraint_from_json(json: str) -> SubmissionConstraint:
-    return SubmissionConstraint.model_validate_json(f'{{"root_constraint": {json} }}')
+    return SubmissionConstraint.model_validate_json(json)

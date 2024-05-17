@@ -133,7 +133,9 @@
         "name": "naam",
         "email": "email",
         "no_data_yet": "Nog geen data beschikbaar.",
-        "number_of_projects": "aantal projecten"
+        "number_of_projects": "aantal projecten",
+        "remove": "verwijder",
+        "add": "voeg toe"
     },
     "project": {
         "name": "Naam",
@@ -212,5 +214,29 @@
         "student": "student",
         "teacher": "lesgever",
         "admin": "beheerder"
+    },
+    "join_course": {
+        "message": "Wil je het volgende vak volgen:",
+        "join": "inschrijven",
+        "return_home": "terug naar de startpagina"
+    },
+    "searchbar": {
+        "find_teacher": "zoek een leerkracht"
+    },
+    "popups": {
+        "teachers": "lesgevers",
+        "confirmation": "bevestiging",
+        "confirm_add": "Ben je zeker dat je deze persoon lesgever van dit vak wil maken?",
+        "confirm_delete": "Ben je zeker dat je deze persoon zijn lesgeverrechten wilt ontnemen voor dit vak?",
+        "yes": "ja",
+        "no": "nee",
+        "share": "deel link van het vak",
+        "share_warning": "Iedereen die deze link volgt en ingelogd is op dit systeem, zal als student toegevoegd worden aan het vak. Deel deze link enkel met de personen die u wil toevoegen.",
+        "share_link": "deel link",
+        "archive": "archiveer vak",
+        "archive_warning": "Voor iedere student en lesgever van dit vak, zal dit vak ook gearchiveerd worden. Er zullen geen projecten meer aangemaakt kunnen worden en actieve projecten zullen afgesloten worden. Bent u zeker dat u dit vak wil archiveren?",
+        "leave_course": "vak verlaten",
+        "leave_last_teacher": "U bent de laatste lesgever, dus zal het vak gearchiveerd worden voor alle studenten.",
+        "leave_question": "Bent u zeker dat u dit vak wil verlaten?"
     }
 }

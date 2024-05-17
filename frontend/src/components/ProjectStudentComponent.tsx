@@ -1,4 +1,4 @@
-import {JSX, useState} from "react";
+import {ChangeEvent, JSX, useState} from "react";
 import FieldWithLabel from "./FieldWithLabel.tsx";
 import {FaCheck, FaUpload} from "react-icons/fa";
 import {FaDownload} from "react-icons/fa6";
@@ -9,6 +9,9 @@ import {useTranslation} from 'react-i18next';
 import {RegularButton} from "./RegularButton.tsx";
 import {IoExitOutline} from "react-icons/io5";
 import {MdOutlinePersonAddAlt1} from "react-icons/md";
+import {Submission} from "../utils/ApiInterfaces.ts";
+import {DEBUG} from "../pages/root.tsx";
+import {make_submission} from "../utils/api/Submission.ts";
 
 function ProjectInfo(props: { project: ProjectStudent }): JSX.Element {
     const {t} = useTranslation();
@@ -150,31 +153,59 @@ function JoinGroup(props: { project: ProjectStudent }): JSX.Element {
 }
 
 export default function ProjectStudentComponent(props: { project: ProjectStudent }): JSX.Element {
-
-
     // true als er een groep is, anders false.
-    // zet onderstaande lijn aan (en volgen lijn uit) om te zien hoe het eruit ziet als je nog niet in een groep zit (even nog zo tot er echte data is)
-    // const is_in_group = !(props.project.groupMembers && props.project.groupMembers.length > 0);
     const is_in_group = props.project.groupMembers && props.project.groupMembers.length > 0;
 
     const {t} = useTranslation();
+    const [file, setFile] = useState<File | undefined>(undefined)
+    const [error, setError] = useState<string>('')
+    const [success, setSuccess] = useState<string>('')
 
-    // let selectedFile: File | undefined = undefined; // TODO: initialize with actual file and export on save
-    const [selectedFileName, setSelectedFileName] = useState<string | null>(props.project.submission);
-    const [newSelectedFile, setNewSelectedFile] = useState<boolean>(false);
 
-    function handleFileChange(files: FileList | null) {
-        console.log(files);
-        if (files !== null) {
-            if (files.length > 0) {
-                // selectedFile = files[0]; // uncommented for eslint error
-                setSelectedFileName(files[0].name);
-                setNewSelectedFile(true);
+    async function submitFile() {
+        if (file !== undefined) {
+            const submission: string | Submission = await make_submission(props.project.group_id, file)
+            props.project.status = ProjectStatus.PENDING
+            if (typeof submission === 'string') {
+                setError(submission) // TODO translation
+                setSuccess('')
+                props.project.status = ProjectStatus.FAILED
+            } else {
+                setNewSelectedFile(false)
+                props.project.status = ProjectStatus.SUCCESS
+                setSuccess("The submission has been successful") // TODO translation
+                setError('')
             }
         }
     }
 
-    console.log(props.project)
+    function selectFile(event: ChangeEvent<HTMLInputElement>) {
+        if (event.target?.files) {
+            setFile(event?.target?.files[0])
+            setNewSelectedFile(true);
+        }
+    }
+
+    async function downloadLatestSubmission() {
+        let url = ''
+        if (DEBUG) {
+            url = 'http://localhost:8000'
+        }
+        const response = await fetch(
+            `${url}/api/groups/${props.project.group_id}/submission/file`,
+            {headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')}}
+        )
+        const blob = await response.blob();
+        const a = document.createElement('a');
+        a.href = window.URL.createObjectURL(blob);
+        a.download = props.project.submission ?? "submission.zip";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    }
+
+    // let selectedFile: File | undefined = undefined; // TODO: initialize with actual file and export on save
+    const [newSelectedFile, setNewSelectedFile] = useState<boolean>(false);
 
     return (
         <div>
@@ -184,8 +215,7 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
                         <RegularButton
                             placeholder={t('project.save')}
                             add={false}
-                            onClick={() => {
-                            }}
+                            onClick={submitFile}
                             styling="is-primary"
                         />
                     </div>
@@ -204,6 +234,16 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
             {is_in_group && props.project.groupMembers &&
                 <TableJoinedGroup project={props.project}/>
             }
+            {error &&
+                <div className="notification is-danger" style={{width: "75%"}}>
+                    {error}
+                </div>
+            }
+            {success &&
+                <div className="notification is-success" style={{width: "75%"}}>
+                    {success}
+                </div>
+            }
             <div className="field is-horizontal">
                 <div className="field-label">
                     <label className="label">{"> " + t('project.submission.tag') + ":"}</label>
@@ -214,10 +254,10 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
                             {props.project.submission != null &&
                                 <div className={"submission-file-download mb-3"}>
                                     {newSelectedFile
-                                        ? <label className={"mr-3 highlight"}>{selectedFileName}</label>
-                                        : <label className={"mr-3"}>{selectedFileName}</label>
+                                        ? <label className={"mr-3 highlight"}>{file?.name}</label>
+                                        : <label className={"mr-3"}>{file?.name}</label>
                                     }
-                                    <button className="button">
+                                    <button className="button" onClick={downloadLatestSubmission}>
                                         <FaDownload/>
                                     </button>
                                 </div>
@@ -225,7 +265,7 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
                             <div id="file-js" className="field is-horizontal">
                                 <label className="file-label">
                                     <input className="file-input" type="file" name="resume"
-                                           onChange={e => handleFileChange(e.target.files)}/>
+                                           onChange={selectFile}/>
                                     <span className="file-cta">
                                                     <span className="file-icon"><FaUpload/></span>
                                                     <span

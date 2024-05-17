@@ -10,6 +10,7 @@ import SimpleTests from "./SimpleTests/SimpleTests.tsx";
 import {TeacherOrStudent} from "./SimpleTests/TeacherOrStudentEnum.tsx";
 import Calendar from "react-calendar";
 import {useTranslation} from 'react-i18next';
+import Switch from "react-switch";
 
 // SimpleTests
 const CHECK_SIMPLE_TESTS = false
@@ -81,9 +82,14 @@ export function ProjectTeacherComponent(props: { project: ProjectTeacher }): JSX
                 <div className="field-label">
                     <label className="label">{t('create_project.deadline.tag')}</label>
                 </div>
-                <div
-                    className="field-body is-flex is-flex-direction-column is-align-items-start is-justify-content-center">
-                    <input type="checkbox" onChange={expandDeadline} checked={showCalender}/>
+                <div className="field-body is-flex is-flex-direction-column is-align-items-start is-justify-content-center">
+                    <Switch
+                        className="pb-3"
+                        type="checkbox" 
+                        onChange={expandDeadline} 
+                        checked={showCalender}
+                        onColor="#006edc"
+                    />
                     {showCalender &&
                         <div>
                             <div>
