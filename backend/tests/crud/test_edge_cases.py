@@ -4,9 +4,9 @@ from datetime import datetime
 
 from sqlmodel import SQLModel
 
-from db.database_errors import ItemNotFoundError
 from db.models import SubmissionState
 from domain.logic import group, student, submission
+from errors.database_errors import ItemNotFoundError
 from tests.crud.test_main import get_db, test_engine
 
 
