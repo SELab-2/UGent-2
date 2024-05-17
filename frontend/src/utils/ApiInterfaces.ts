@@ -1,3 +1,5 @@
+import {GroupInfo} from "../dataloaders/ProjectsStudentLoader.ts";
+
 export interface Course {
     course_id: number,
     course_name: string,
@@ -43,6 +45,7 @@ export interface CompleteProject extends Project, Course {
 
 export interface CompleteProjectStudent extends CompleteProject {
     group_id: number,
+    groups_info: GroupInfo[] | undefined,
     submission_state: SUBMISSION_STATE,
     submission_student_id: number | undefined,
     group_members: User[],
