@@ -9,6 +9,7 @@ import {COURSE_STUDENT} from "../../dataloaders/CourseStudentLoader.ts";
 import DefaultErrorPage from "../../components/DefaultErrorPage.tsx";
 import {deadline_to_string} from "../../utils/helper.ts";
 import {CourseLoaderObject} from "../../utils/ApiInterfaces.ts";
+import LeaveCourseStudent from "../../components/LeaveCourseStudent.tsx";
 
 export default function CourseViewStudent(): JSX.Element {
 
@@ -50,9 +51,12 @@ export default function CourseViewStudent(): JSX.Element {
                 <div className={"side-bar is-flex is-justify-content-center"}>
                     <Sidebar home={"student"}/>
                 </div>
-                <div className={"student-main is-flex is-justify-content-center"}>
-                    <div className={"table-page is-flex is-flex-direction-column"}>
-                        <div className={"my-5"}/>
+                <div className={"student-main is-flex is-flex-direction-column is-align-items-center"}>
+                    <div className={"leave-course is-flex is-justify-content-end p-3"}>
+                        <LeaveCourseStudent course_id={course_data.course_id}/>
+                    </div>
+                    <div className={"table-page is-flex is-flex-direction-column is-justify-content-center"}>
+                        <div className={"my-3"}/>
                         <Table title={t('course.teachers')} data={teachers} ignoreKeys={[]} home={"student"}/>
                         {course_data.active_projects > 0 &&
                             <>
@@ -65,6 +69,5 @@ export default function CourseViewStudent(): JSX.Element {
                 </div>
             </div>
         </>
-
     )
 }

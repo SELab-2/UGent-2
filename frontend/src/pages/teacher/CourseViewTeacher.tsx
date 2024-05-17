@@ -8,7 +8,7 @@ import {useTranslation} from 'react-i18next';
 import CopyLink from "../../components/CopyLink.tsx";
 import Archive from "../../components/Archive.tsx";
 import ManageCourse from "../../components/ManageCourse.tsx";
-import LeaveCourse from "../../components/LeaveCourse.tsx";
+import LeaveCourseTeacher from "../../components/LeaveCourseTeacher.tsx";
 import {useRouteLoaderData} from "react-router-dom";
 import {COURSE_TEACHER} from "../../dataloaders/CourseTeacherLoader.ts";
 import {deadline_to_string} from "../../utils/helper.ts";
@@ -18,7 +18,7 @@ import DefaultErrorPage from "../../components/DefaultErrorPage.tsx";
 export default function CourseViewTeacher(): JSX.Element {
     const data: CourseLoaderObject = useRouteLoaderData(COURSE_TEACHER) as CourseLoaderObject;
 
-    const { t } = useTranslation();
+    const {t} = useTranslation();
 
     if (!data || !data.course) {
         return <DefaultErrorPage title={t("course_error.title")} body={t("course_error.text")}/>
@@ -36,14 +36,14 @@ export default function CourseViewTeacher(): JSX.Element {
     }) ?? [];
 
     const teachers: TableRowPeople[] = data.course.teachers.map((teacher) => {
-        return{
+        return {
             name: teacher.name,
             email: teacher.email
         }
     });
 
     const students: TableRowPeople[] = data.course.students.map((student) => {
-        return{
+        return {
             name: student.name,
             email: student.email
         }
@@ -67,10 +67,11 @@ export default function CourseViewTeacher(): JSX.Element {
                                 <div className={"mx-2"}><ManageCourse teachers={teachers}/></div>
                                 <div className={"mx-2"}><Archive/></div>
                             </div>
-                            <LeaveCourse amountOfTeachers={teachers.length}/>
+                            <LeaveCourseTeacher amountOfTeachers={teachers.length}/>
                         </div>
                         <div className={"my-5"}/>
-                        <Table title={t('course.projects')} data={tableProjects} ignoreKeys={["status"]} home={"teacher"}/>
+                        <Table title={t('course.projects')} data={tableProjects} ignoreKeys={["status"]}
+                               home={"teacher"}/>
                         <div className={"my-5"}/>
                         <Table title={t('course.teachers')} data={teachers} ignoreKeys={[]} home={"teacher"}/>
                         <div className={"my-5"}/>
