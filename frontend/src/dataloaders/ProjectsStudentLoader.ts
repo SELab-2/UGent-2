@@ -54,7 +54,6 @@ export async function LoadProjectsForStudent(filter_on_current: boolean = false,
     const apiGroups = project_ids.map(async project_id => {
         const apiGroupData = await apiFetch<Backend_group>(`/projects/${project_id}/group`);
         if (apiGroupData.ok && apiGroupData.content){
-            console.log('Group: ', apiGroupData)
             return mapGroup(apiGroupData.content)
         }
         return undefined;
@@ -107,7 +106,8 @@ export async function LoadProjectsForStudent(filter_on_current: boolean = false,
     const allGroupMembers: (groupInfo | undefined)[] = await Promise.all(groupMembersPromises);
     const groupMembers = allGroupMembers.filter(gm => gm !== undefined) as groupInfo[]
     return projects.map((project) => {
-        const group = groupMembers.find(group => group.project_id === project.project_id);
+        const group = groupMembers.find(group => group.project_id === project.project_id) as groupInfo;
+        const group_id = group ? group.group_id : -1
         const submission = submissions.find(submission => submission.submission_group_id === group?.group_id);
         const course = courses.find(course => course.course_id === project.course_id);
         if (!course) {
@@ -116,8 +116,9 @@ export async function LoadProjectsForStudent(filter_on_current: boolean = false,
         return {
             ...project,
             ...course,
+            group_id: group_id,
             submission_state: submission?.submission_state ?? SUBMISSION_STATE.Pending,
-            submission_file: submission?.submission_filename ?? "",
+            submission_file: submission?.submission_filename.split('/').reverse()[0] ?? "",
             submission_student_id: submission?.submission_student_id,
             group_members: groupMembers.find(group => group.project_id == project.project_id)?.users ?? [],
 

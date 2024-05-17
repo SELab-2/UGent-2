@@ -1,8 +1,9 @@
 from sqlmodel import Session
 
 from db.database_errors import ActionAlreadyPerformedError, NoSuchRelationError
-from db.models import Group, Project, Student
+from db.models import Group, Project, ProjectStatistics, Student, Submission, SubmissionState
 from domain.logic.basic_operations import get, get_all
+from domain.logic.submission import get_last_submission, get_submissions_of_group
 
 
 def create_group(session: Session, project_id: int) -> Group:
@@ -30,6 +31,43 @@ def get_all_groups(session: Session) -> list[Group]:
 def get_groups_of_project(session: Session, project_id: int) -> list[Group]:
     project: Project = get(session, Project, project_id)
     return project.groups
+
+
+def get_statistics_of_project(session: Session, project_id: int) -> ProjectStatistics:
+    project: Project = get(session, Project, project_id)
+
+    stats = ProjectStatistics(
+        submissions=0,
+        approved=0,
+        rejected=0,
+        pending=0,
+        no_submission=0,
+    )
+
+    for group in project.groups:
+        modify_stats(stats, session, group)
+
+    return stats
+
+
+def modify_stats(stats: ProjectStatistics, session: Session, group: Group) -> None:
+    submissions_of_group = get_submissions_of_group(session, group.id)
+
+    if len(submissions_of_group) == 0:
+        stats.no_submission += 1
+        return
+
+    stats.submissions += 1
+    latest_submission: Submission = get_last_submission(session, group.id)
+
+    if latest_submission.state == SubmissionState.Approved:
+        stats.approved += 1
+
+    elif latest_submission.state == SubmissionState.Rejected:
+        stats.rejected += 1
+
+    elif latest_submission.state == SubmissionState.Pending:
+        stats.pending += 1
 
 
 def get_groups_of_student(session: Session, student_id: int) -> list[Group]:
