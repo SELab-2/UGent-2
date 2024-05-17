@@ -3,11 +3,11 @@ from pathlib import Path
 
 from sqlmodel import Session
 
-from db.database_errors import ItemNotFoundError
 from db.models import Group, Student, Submission, SubmissionState
 from domain.logic.basic_operations import get, get_all
-from domain.logic.errors import ArchivedError, InvalidSubmissionError
 from domain.simple_submission_checks.constraints.submission_constraint import create_constraint_from_json
+from errors.database_errors import ItemNotFoundError
+from errors.logic_errors import ArchivedError, InvalidSubmissionError
 
 
 def create_submission(

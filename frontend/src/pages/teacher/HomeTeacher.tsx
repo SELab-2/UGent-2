@@ -24,7 +24,13 @@ export default function HomeTeacher(): JSX.Element {
                 </div>
                 <div className={"teacher-main is-flex"}>
                     <div className={"teacher-left px-5 py-5 mx-5 my-5 is-flex is-justify-content-space-evenly"}>
-                        <RenderProjectCards projects={data.projects} courses={data.courses}/>
+                        { data.projects.length == 0 ?
+                            <div className={"empty-page is-flex is-align-items-center"}>
+                                <p>{t('empty-home.empty-cards')}</p>
+                            </div>
+                            :
+                            <RenderProjectCards projects={data.projects} courses={data.courses}/>
+                        }
                     </div>
                 </div>
             </div>

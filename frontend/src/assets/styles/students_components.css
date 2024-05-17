@@ -1,6 +1,10 @@
 .student-main {
     width: calc(100vw - var(--sidebar-width));
     overflow-y: auto;
+
+    .leave-course {
+        width: 100%;
+    }
 }
 
 .student-left {

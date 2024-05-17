@@ -25,11 +25,17 @@ function DeadlineTable(props: {projects: CompleteProjectStudent[]}): JSX.Element
             <div className={"deadline-head is-flex is-justify-content-center py-2"}>
                 <p>{t('home_student.deadlines')}</p>
             </div>
-            <div className={"deadline-elements"}>
-                {props.projects.map((project) => {
-                    return <DeadlineElement key={project.project_id} project={project}/>
-                })}
-            </div>
+            { props.projects.length == 0 ?
+                <div className={"deadline-elements is-flex is-justify-content-center is-align-items-center"}>
+                    <p>{t('empty-home.empty-deadline')}</p>
+                </div>
+                :
+                <div className={"deadline-elements"}>
+                    {props.projects.map((project) => {
+                            return <DeadlineElement key={project.project_id} project={project}/>
+                    })}
+                </div>
+            }
         </div>
     )
 }

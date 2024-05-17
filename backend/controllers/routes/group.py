@@ -9,7 +9,6 @@ from controllers.authentication.role_dependencies import (
 )
 from controllers.swagger_tags import Tags
 from db.models import Group, Student
-from domain.logic.errors import UserNotEnrolledError
 from domain.logic.group import (
     add_student_to_group,
     get_group,
@@ -18,6 +17,7 @@ from domain.logic.group import (
     remove_student_from_group,
 )
 from domain.logic.project import get_project, get_projects_of_student
+from errors.logic_errors import UserNotEnrolledError
 
 group_router = APIRouter(tags=[Tags.GROUP])
 

@@ -8,7 +8,7 @@ import {useTranslation} from 'react-i18next';
 import CopyLink from "../../components/CopyLink.tsx";
 import Archive from "../../components/Archive.tsx";
 import ManageCourse from "../../components/ManageCourse.tsx";
-import LeaveCourse from "../../components/LeaveCourse.tsx";
+import LeaveCourseTeacher from "../../components/LeaveCourseTeacher.tsx";
 import {useRouteLoaderData} from "react-router-dom";
 import {COURSE_TEACHER} from "../../dataloaders/CourseTeacherLoader.ts";
 import {deadline_to_string} from "../../utils/helper.ts";
@@ -60,29 +60,31 @@ export default function CourseViewTeacher(): JSX.Element {
                 </div>
                 <div className={"student-main is-flex is-justify-content-center"}>
                     <div className={"table-page is-flex is-flex-direction-column"}>
-                        { !data.course.course_archived &&
+                        {!data.course.course_archived &&
                             <div className={"is-flex is-align-items-center is-justify-content-space-between"}>
                                 <div className={"my-5 is-flex"}>
                                     <RegularATag link={"teacher/projects/create"} text={t('course.new_project')}
                                                  add={true}/>
-                                    <div className={"ml-4 mr-2"}><CopyLink/></div>
+                                    <div className={"ml-4 mr-2"}><CopyLink
+                                        link={`${window.location.protocol}//${window.location.host}/student/course/${3}/join`}/>
+                                    </div>
                                     <div className={"mx-2"}><ManageCourse teachers={teachers}/></div>
                                     <div className={"mx-2"}><Archive course_id={data.course.course_id}
                                                                      course_name={data.course.course_name}/></div>
                                 </div>
-                                <LeaveCourse amountOfTeachers={teachers.length}/>
+                                <LeaveCourseTeacher amountOfTeachers={teachers.length}/>
                             </div>
                         }
                         <div className={"my-5"}/>
                         <Table title={t('course.projects')} data={tableProjects} ignoreKeys={["status"]}
-                           home={"teacher"}/>
-                    <div className={"my-5"}/>
-                    <Table title={t('course.teachers')} data={teachers} ignoreKeys={[]} home={"teacher"}/>
-                    <div className={"my-5"}/>
-                    <Table title={t('course.students')} data={students} ignoreKeys={[]} home={"teacher"}/>
+                               home={"teacher"}/>
+                        <div className={"my-5"}/>
+                        <Table title={t('course.teachers')} data={teachers} ignoreKeys={[]} home={"teacher"}/>
+                        <div className={"my-5"}/>
+                        <Table title={t('course.students')} data={students} ignoreKeys={[]} home={"teacher"}/>
+                    </div>
                 </div>
             </div>
-        </div>
-</>
-)
+        </>
+    )
 }
