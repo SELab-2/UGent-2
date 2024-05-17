@@ -233,6 +233,7 @@
         "share": "share link to the course",
         "share_warning": "Everyone who follows this link that is logged into the system will be added to the course. Share this link only with people who you want to add to this course.",
         "share_link": "share link",
+        "copied": "copied",
         "archive": "archive course",
         "archive_warning": "For every student and teacher of this course, it will be archived. Creating new projects will no longer be possible, and active projects will be closed. Are you sure you want to archive this course?",
         "leave_course": "leave course",
