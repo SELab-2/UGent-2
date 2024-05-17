@@ -7,8 +7,10 @@ from defusedxml.ElementTree import fromstring
 from sqlmodel import Session
 
 from db.models import User
+from domain.logic.admin import create_admin
+from domain.logic.role_enum import Role
 from domain.logic.student import create_student
-from domain.logic.user import get_user_with_email
+from domain.logic.user import get_all_users, get_user_with_email, modify_user_roles
 
 if TYPE_CHECKING:
     from _elementtree import Element
@@ -36,7 +38,13 @@ def authenticate_user(session: Session, ticket: str) -> User | None:
 
     user: User | None = get_user_with_email(session, user_dict["email"])
     if user is None:
-        user = create_student(session, user_dict["name"], user_dict["email"]).user
+        num_users = len(get_all_users(session))
+        if num_users == 0:
+            admin = create_admin(session, user_dict["name"], user_dict["email"])
+            modify_user_roles(session, admin.id, [Role.ADMIN, Role.STUDENT])
+            user = admin.user
+        else:
+            user = create_student(session, user_dict["name"], user_dict["email"]).user
     return user
 
 
