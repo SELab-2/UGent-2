@@ -1,4 +1,4 @@
-from fastapi import APIRouter, BackgroundTasks
+from fastapi import APIRouter, BackgroundTasks, Response
 from starlette.requests import Request
 
 from controllers.authentication.role_dependencies import (
@@ -10,6 +10,7 @@ from db.models import Group, Project, ProjectInput, ProjectStatistics
 from domain.logic.docker import add_image_id
 from domain.logic.group import create_group, get_groups_of_project, get_statistics_of_project
 from domain.logic.project import get_project, update_project, validate_constraints
+from domain.logic.submission import zip_all_submissions
 
 project_router = APIRouter(tags=[Tags.PROJECT])
 
@@ -52,3 +53,11 @@ def put_update_project(request: Request, project_id: int, project: ProjectInput,
     update_project(session, project_id, project)
     if project.dockerfile != "":
         tasks.add_task(add_image_id, project_id)
+
+
+@project_router.get("/projects/{project_id}/submissions", summary="Download all submissions")
+def download_all_submissions(request: Request, project_id: int) -> Response:
+    session = request.state.session
+    ensure_teacher_authorized_for_project(request, project_id)
+    zip_content = zip_all_submissions(session, project_id)
+    return Response(zip_content, media_type="application/zip")

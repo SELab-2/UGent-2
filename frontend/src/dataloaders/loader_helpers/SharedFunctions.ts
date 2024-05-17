@@ -50,7 +50,6 @@ export async function coursesLoader(role: teacherStudentRole, course_id?: number
 
     return courses.map((course) => {
         const courseProjects = projects.filter(project => project.course_id === course.course_id);
-
         if (courseProjects.length === 0) {
             return {
                 active_projects: 0,
@@ -60,7 +59,7 @@ export async function coursesLoader(role: teacherStudentRole, course_id?: number
                 all_projects: [],
                 teachers: teachers.filter(teacher => teacher?.course_id === course.course_id) as SmallUserInfo[],
                 students: students.filter(student => student?.course_id === course.course_id) as SmallUserInfo[],
-                course_archived: false,
+                course_archived: course.course_archived,
                 course_id: course.course_id,
                 course_name: course.course_name
             };
@@ -107,12 +106,12 @@ function getFirstUpcomingDeadline(courseProjects: Project[]): string | Date {
     return first_deadline.project_deadline;
 }
 
-async function getUsersOfCourse(role: teacherStudentRole, courses: Course[]): Promise<(SmallUserInfo|undefined)[]> {
+async function getUsersOfCourse(role: teacherStudentRole, courses: Course[]): Promise<(SmallUserInfo | undefined)[]> {
     return (await Promise.all(courses.map(async course => {
         const user_ids_data = await apiFetch<UserIdInfo[]>(`/courses/${course.course_id}/${role + "s"}`);
         let user_ids: UserIdInfo[] = []
         if (user_ids_data.ok) {
-            user_ids = []
+            user_ids = user_ids_data.content;
         }
 
         const user_promises = user_ids.map(async user_id => {
@@ -130,6 +129,7 @@ async function getUsersOfCourse(role: teacherStudentRole, courses: Course[]): Pr
                 return {
                     name: user.user_name,
                     email: user.user_email,
+                    user_id: user.user_id,
                     course_id: course.course_id
                 } as SmallUserInfo
             }
@@ -147,7 +147,7 @@ export async function getAllProjectsAndCourses(role: teacherStudentRole, filter_
     const apiCourses = (await apiFetch<Backend_Course[]>(`/${role}/courses`));
     let projects: Project[] = []
 
-    if (apiProjects.ok){
+    if (apiProjects.ok) {
         projects = mapProjectList(apiProjects.content);
     }
 

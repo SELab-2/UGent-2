@@ -13,9 +13,9 @@ from domain.logic.course import (
     get_courses_of_teacher,
     remove_teacher_from_course,
 )
-from domain.logic.errors import NotATeacherError
 from domain.logic.project import get_projects_of_teacher
 from domain.logic.teacher import is_user_teacher
+from errors.logic_errors import NotATeacherError
 
 teacher_router = APIRouter(tags=[Tags.TEACHER])
 

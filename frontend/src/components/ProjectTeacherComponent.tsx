@@ -12,7 +12,7 @@ import {useTranslation} from 'react-i18next';
 
 export function ProjectTeacherComponent(props: { project: ProjectTeacher }): JSX.Element {
 
-    const { t } = useTranslation();
+    const {t} = useTranslation();
 
     const [projectName, setProjectName] = useState<string>(props.project.projectName)
     const [courseName, setCourseName] = useState<string>(props.project.courseName)
@@ -74,13 +74,19 @@ export function ProjectTeacherComponent(props: { project: ProjectTeacher }): JSX
                 <div className="field-label">
                     <label className="label">{t('create_project.deadline.tag')}</label>
                 </div>
-                <div
-                    className="field-body is-flex is-flex-direction-column is-align-items-start is-justify-content-center">
-                    <input type="checkbox" onChange={expandDeadline} checked={showCalender}/>
+                <div className="field-body is-flex is-flex-direction-column is-align-items-start is-justify-content-center">
+                    <Switch
+                        className="pb-3"
+                        type="checkbox" 
+                        onChange={expandDeadline} 
+                        checked={showCalender}
+                        onColor="#006edc"
+                    />
                     {showCalender &&
                         <div>
                             <div>
-                                <Calendar onChange={date => setDeadline(date)} value={deadline} locale={t('create_project.deadline.locale')}/>
+                                <Calendar onChange={date => setDeadline(date)} value={deadline}
+                                          locale={t('create_project.deadline.locale')}/>
                             </div>
                             <div className="is-horizontal field is-justify-content-center mt-2">
                                 <SelectionBox options={hours_array} value={hours.toString()}
@@ -149,67 +155,30 @@ export function ProjectTeacherComponent(props: { project: ProjectTeacher }): JSX
                 <div className="field-label">
                     <label className="label">{t('create_project.teamwork.tag')}</label>
                 </div>
-                <div className="field-body">
+                <div className="field-body is-fullwidth is-align-content-center">
                     <label>
                         <input type="checkbox" onChange={e => expandGroup(e.target.checked)}
                                checked={groupProject}/>
-                        {showGroup &&
-                            <>
-                                <div className="field is-horizontal">
-                                    <div className="field-label">
-                                        <input
-                                            className={"input is-rounded"}
-                                            type="number"
-                                            value={max_students}
-                                            onChange={e => setMaxStudents(parseInt(e.target.value))}
-                                        />
-                                    </div>
-                                    <div className="field-body">
-                                        <label className="label">{t('project.groupmembers.amount_of_members')}</label>
-                                    </div>
-                                </div>
-                                <br/>
-                                <div className="field is-horizontal">
-                                    <div className="field-label">
-                                        <input type="checkbox"/>
-                                    </div>
-                                    <div className="field-body">
-                                        <label
-                                            className="label is-fullwidth">{t('create_project.teamwork.changes')}</label>
-                                    </div>
-                                </div>
-                                <br/>
-                                <div className="field-label">
-                                    <label className="label is-fullwidth">
-                                        {t('create_project.teamwork.groups.tag')}
-                                    </label>
-                                </div>
-                                <br/>
-                                <div className="field-body field is-horizontal">
-                                    <div className="field-label">
-                                        <input type="checkbox"/>
-                                    </div>
-                                    <div className="field-body">
-                                        <label className="label is-fullwidth">
-                                            {t('create_project.teamwork.groups.random')}
-                                        </label>
-                                    </div>
-                                </div>
-                                <div className="field is-horizontal">
-                                    <div className="field-label">
-                                        <input type="checkbox"/>
-                                    </div>
-                                    <div className="field-body">
-                                        <label className="label is-fullwidth">
-                                            {t('create_project.teamwork.groups.own_choice')}
-                                        </label>
-                                    </div>
-                                </div>
-                            </>
-                        }
                     </label>
+
+                    {showGroup &&
+                        <div>
+                            <div className="field is-horizontal ml-6">
+                                <label
+                                    className="label mr-3 is-align-content-center">{t('project.groupmembers.amount_of_members')}</label>
+                                <input
+                                    style={{width: "30%"}}
+                                    className={"input is-rounded"}
+                                    type="number"
+                                    value={max_students}
+                                    onChange={e => setMaxStudents(parseInt(e.target.value))}
+                                />
+                            </div>
+                        </div>
+                    }
                 </div>
             </div>
+
         </div>
     )
         ;

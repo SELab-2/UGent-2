@@ -1,12 +1,14 @@
-import {JSX, useState} from "react";
+import React, {JSX, useState} from "react";
 import {CiLink} from "react-icons/ci";
 import {RegularButton} from "./RegularButton.tsx";
 import {useTranslation} from "react-i18next";
 
-export default function CopyLink(): JSX.Element {
+export default function CopyLink(props: { link: string }): JSX.Element {
     const [modalActive, setModalActive] = useState(false);
+    const inputRef = React.createRef<HTMLInputElement>();
+    const [copied, setCopied] = useState(false);
 
-    const { t } = useTranslation();
+    const {t} = useTranslation();
 
     const changeModal = () => {
         setModalActive(!modalActive);
@@ -30,7 +32,17 @@ export default function CopyLink(): JSX.Element {
                         </p>
                     </section>
                     <footer className="modal-card-foot is-flex is-justify-content-center">
-                        <RegularButton placeholder={t('popups.share_link')} add={false} styling={"is-success"} onClick={() => {}}/>
+                        <input type="text" readOnly size={45} ref={inputRef} onClick={() => inputRef.current?.select()}
+                               value={props.link}/>
+
+                        {!copied &&
+                            <RegularButton placeholder={t('popups.share_link')} add={false} styling={"is-success ml-4"}
+                                           onClick={() => {
+                                               void navigator.clipboard.writeText(props.link);
+                                               setCopied(true)
+                                           }}/>}
+                        {copied && <RegularButton placeholder={t('popups.copied')} onClick={() => {
+                        }} add={false} styling={"is-success ml-4"}/>}
                     </footer>
                 </div>
             </div>

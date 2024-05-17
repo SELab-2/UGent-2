@@ -1,0 +1,7 @@
+[Service]
+Restart=always
+[Container]
+Image=localhost/delphi-frontend
+PublishPort=127.0.0.1:3000:80
+[Install]
+WantedBy=multi-user.target

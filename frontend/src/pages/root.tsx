@@ -2,7 +2,7 @@ import {JSX} from "react";
 import useAuth from "../hooks/useAuth.ts";
 import {Navigate} from "react-router-dom";
 
-export const DEBUG: boolean = true; // should always be false on the repo.
+export const DEBUG: boolean = import.meta.env.DEV; // eslint-disable-line
 
 export default function Root(): JSX.Element {
     const {user} = useAuth()

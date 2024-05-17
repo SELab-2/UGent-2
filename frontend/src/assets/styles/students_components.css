@@ -1,6 +1,10 @@
 .student-main {
     width: calc(100vw - var(--sidebar-width));
     overflow-y: auto;
+
+    .leave-course {
+        width: 100%;
+    }
 }
 
 .student-left {
@@ -51,6 +55,14 @@
 .deadline-card {
     background-color: var(--primary-light);
     border-bottom: thin solid;
+}
+
+.join-course {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .submission-file-download {

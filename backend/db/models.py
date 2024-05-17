@@ -1,7 +1,7 @@
 import enum
 from datetime import datetime
 
-from pydantic import computed_field
+from pydantic import computed_field, model_serializer
 from sqlmodel import Field, Relationship, SQLModel
 
 from domain.logic.role_enum import Role
@@ -49,11 +49,19 @@ class Admin(SQLModel, table=True):
     id: int = Field(default=None, foreign_key="user.id", primary_key=True)
     user: User = Relationship(back_populates="admin")
 
+    @model_serializer
+    def serialize(self) -> User:
+        return self.user
+
 
 class Teacher(SQLModel, table=True):
     id: int = Field(default=None, foreign_key="user.id", primary_key=True)
     user: User = Relationship(back_populates="teacher")
     courses: list["Course"] = Relationship(link_model=TeacherCourse, back_populates="teachers")
+
+    @model_serializer
+    def serialize(self) -> User:
+        return self.user
 
 
 class Student(SQLModel, table=True):
@@ -62,6 +70,10 @@ class Student(SQLModel, table=True):
     courses: list["Course"] = Relationship(link_model=StudentCourse, back_populates="students")
     groups: list["Group"] = Relationship(link_model=StudentGroup, back_populates="students")
     submissions: list["Submission"] = Relationship(back_populates="student")
+
+    @model_serializer
+    def serialize(self) -> User:
+        return self.user
 
 
 class CourseInput(SQLModel):
@@ -101,6 +113,11 @@ class Group(SQLModel, table=True):
     project: Project = Relationship(back_populates="groups")
     students: list[Student] = Relationship(link_model=StudentGroup, back_populates="groups")
     submissions: list["Submission"] = Relationship(back_populates="group")
+
+    @computed_field
+    @property
+    def member_count(self) -> int:
+        return len(self.students)
 
 
 class SubmissionState(enum.Enum):
