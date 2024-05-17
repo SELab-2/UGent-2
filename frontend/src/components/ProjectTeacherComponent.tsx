@@ -9,6 +9,7 @@ import SimpleTests from "./SimpleTests/SimpleTests.tsx";
 import {TeacherOrStudent} from "./SimpleTests/TeacherOrStudentEnum.tsx";
 import Calendar from "react-calendar";
 import {useTranslation} from 'react-i18next';
+import Switch from "react-switch";
 
 export function ProjectTeacherComponent(props: { project: ProjectTeacher }): JSX.Element {
 
