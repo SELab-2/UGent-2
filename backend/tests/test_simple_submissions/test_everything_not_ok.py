@@ -3,7 +3,7 @@ import typing
 import unittest
 from pathlib import Path
 
-from domain.simple_submission_checks.constraints.constraint_result import ConstraintResult
+from domain.simple_submission_checks.constraints.constraint_result import ConstraintResult, ZipConstraintResult
 from domain.simple_submission_checks.constraints.directory_constraint import DirectoryConstraint
 from domain.simple_submission_checks.constraints.extension_not_present_constraint import ExtensionNotPresentConstraint
 from domain.simple_submission_checks.constraints.file_constraint import FileConstraint
@@ -50,6 +50,7 @@ class FaultyProjectConstraintValidationTest(unittest.TestCase):
     submission_constraint = SubmissionConstraint(
         root_constraint=ZipConstraint(
             zip_name="project.zip",
+            global_constraints=[ExtensionNotPresentConstraint(extension=".exe")],
             sub_constraints=[
                 DirectoryConstraint(
                     directory_name="src",
@@ -74,7 +75,6 @@ class FaultyProjectConstraintValidationTest(unittest.TestCase):
                 ExtensionNotPresentConstraint(extension=".log"),
             ],
         ),
-        global_constraints=[ExtensionNotPresentConstraint(extension=".exe")],
     )
 
     temp_dir = tempfile.TemporaryDirectory()
@@ -84,9 +84,10 @@ class FaultyProjectConstraintValidationTest(unittest.TestCase):
     def setUpClass(cls) -> None:
         create_directory_and_zip(cls.structure, cls.temp_dir_path, "project")
         res: ConstraintResult = cls.submission_constraint.validate_constraint(cls.temp_dir_path)
+        assert isinstance(res.root_constraint_result, ZipConstraintResult)
         cls.res = res
         cls.root_sub_results = res.root_constraint_result.sub_constraint_results
-        cls.global_sub_results = res.global_constraint_result
+        cls.global_sub_results = res.root_constraint_result.global_constraint_result
 
     @classmethod
     def tearDownClass(cls) -> None:
@@ -127,6 +128,7 @@ class FaultyProjectConstraintValidationTest(unittest.TestCase):
 
     def test_no_exe_files_globally(self) -> None:
         """No .exe files should be present globally."""
+        assert self.global_sub_results is not None
         self.assertFalse(self.global_sub_results.is_ok)
         self.assertEqual(len(self.global_sub_results.global_constraint_results["src/utils"]), 1)
 

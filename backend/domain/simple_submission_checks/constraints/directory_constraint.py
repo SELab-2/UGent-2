@@ -9,6 +9,7 @@ from domain.simple_submission_checks.constraints.constraint_result import (
     DirectoryConstraintResult,
 )
 from domain.simple_submission_checks.constraints.extension_not_present_constraint import ExtensionNotPresentConstraint
+from domain.simple_submission_checks.constraints.extension_only_present_constraint import ExtensionOnlyPresentConstraint
 from domain.simple_submission_checks.constraints.file_constraint import FileConstraint
 from domain.simple_submission_checks.constraints.not_present_constraint import NotPresentConstraint
 
@@ -20,7 +21,8 @@ class DirectoryConstraint(BaseModel):
         FileConstraint |
         NotPresentConstraint |
         DirectoryConstraint |
-        ExtensionNotPresentConstraint
+        ExtensionNotPresentConstraint |
+        ExtensionOnlyPresentConstraint
         ]
 
     def validate_constraint(self, path: Path) -> DirectoryConstraintResult:

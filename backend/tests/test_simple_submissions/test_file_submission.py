@@ -16,7 +16,6 @@ class FileSubmissionConstraintValidationTest(unittest.TestCase):
         root_constraint=FileConstraint(
             file_name="submission.txt",
         ),
-        global_constraints=[],
     )
 
     def setUp(self) -> None:

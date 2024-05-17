@@ -3,7 +3,11 @@ import typing
 import unittest
 from pathlib import Path
 
-from domain.simple_submission_checks.constraints.constraint_result import ConstraintResult
+from domain.simple_submission_checks.constraints.constraint_result import (
+    DirectoryConstraintResult,
+    SubmissionConstraintResult,
+    ZipConstraintResult,
+)
 from domain.simple_submission_checks.constraints.directory_constraint import DirectoryConstraint
 from domain.simple_submission_checks.constraints.file_constraint import FileConstraint
 from domain.simple_submission_checks.constraints.submission_constraint import SubmissionConstraint
@@ -30,6 +34,7 @@ class NestedDirectoryConstraintValidationTest(unittest.TestCase):
     submission_constraint = SubmissionConstraint(
         root_constraint=ZipConstraint(
             zip_name="submission.zip",
+            global_constraints=[],
             sub_constraints=[
                 DirectoryConstraint(
                     directory_name="dir1",
@@ -45,7 +50,6 @@ class NestedDirectoryConstraintValidationTest(unittest.TestCase):
                 ),
             ],
         ),
-        global_constraints=[],
     )
 
     temp_dir = tempfile.TemporaryDirectory()
@@ -54,7 +58,8 @@ class NestedDirectoryConstraintValidationTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         create_directory_and_zip(cls.structure, cls.temp_dir_path, "submission")
-        res: ConstraintResult = cls.submission_constraint.validate_constraint(cls.temp_dir_path)
+        res: SubmissionConstraintResult = cls.submission_constraint.validate_constraint(cls.temp_dir_path)
+        assert isinstance(res.root_constraint_result, ZipConstraintResult)
         cls.root_sub_results = res.root_constraint_result.sub_constraint_results
 
     @classmethod
@@ -79,6 +84,7 @@ class NestedDirectoryConstraintValidationTest(unittest.TestCase):
     def test_file1(self) -> None:
         """file1 should be valid."""
         dir_1_sub_result = self.root_sub_results[0]
+        assert isinstance(dir_1_sub_result, DirectoryConstraintResult)
         self.assertTrue(dir_1_sub_result.is_ok)
         file_1_result = dir_1_sub_result.sub_constraint_results[0]
         self.assertTrue(file_1_result.is_ok)
@@ -86,6 +92,7 @@ class NestedDirectoryConstraintValidationTest(unittest.TestCase):
     def test_file2(self) -> None:
         """file1 should be valid."""
         dir_2_sub_result = self.root_sub_results[1]
+        assert isinstance(dir_2_sub_result, DirectoryConstraintResult)
         self.assertTrue(dir_2_sub_result.is_ok)
         file_2_result = dir_2_sub_result.sub_constraint_results[0]
         self.assertTrue(file_2_result.is_ok)

@@ -43,12 +43,14 @@ export default function ProjectViewStudent(): JSX.Element {
     });
     
     const project: ProjectStudent = {
+        projectId: project_data.project_id,
         projectName: project_data.project_name,
         courseName: project_data.course_name,
         deadline: deadline_to_string(project_data.project_deadline),
         status: project_status,
         description: project_data.project_description,
         requiredFiles: JSON.parse(project_data.project_requirements) as object,
+        group_id: project_data.group_id,
         groupMembers: groupMembers,
         maxGroupMembers: project_data.project_max_students,
         submission: project_data.submission_file
@@ -63,7 +65,7 @@ export default function ProjectViewStudent(): JSX.Element {
                 <div className={"side-bar is-flex is-justify-content-center"}>
                     <Sidebar home={"student"}/>
                 </div>
-                <div className={"student-main pt-6 px-6"}>
+                <div className={"student-main px-6"}>
                     <ViewProjectStudent project={project}/>
                 </div>
             </div>

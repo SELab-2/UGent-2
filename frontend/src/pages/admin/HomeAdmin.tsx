@@ -2,30 +2,39 @@ import {JSX} from "react";
 import {Header} from "../../components/Header.tsx";
 import {Sidebar} from "../../components/Sidebar.tsx";
 import '../../assets/styles/admin.css'
-import { SearchBar } from "../../components/SearchBar.tsx";
-import { Person } from "./Person.tsx";
-import { OperationButton } from "./OperationButton.tsx";
-import { Roles, admin_test_data, teacher_test_data } from "./test_data.tsx";
-import { OperationType } from "../../others/enums.tsx";
-import { getKey } from "../../others/key_generator.tsx";
-import { useTranslation } from 'react-i18next';
+import {SearchBar} from "../../components/SearchBar.tsx";
+import {Person} from "./Person.tsx";
+import {OperationButton} from "./OperationButton.tsx";
+import {OperationType} from "../../others/enums.tsx";
+import {getKey} from "../../others/key_generator.tsx";
+import {useTranslation} from 'react-i18next';
+import {useRouteLoaderData} from "react-router-dom";
+import {ADMIN_LOADER, AdminLoaderObject} from "../../dataloaders/AdminLoader.ts";
+import {User} from "../../utils/ApiInterfaces.ts";
+
+
+function filter_on_not_role(users: User[], role: string): User[] {
+    return users.filter((user) => !user.user_roles.includes(role));
+}
 
 export default function HomeAdmin(): JSX.Element {
 
-    const { t } = useTranslation();
+    const data: AdminLoaderObject = useRouteLoaderData(ADMIN_LOADER) as AdminLoaderObject
+    const users = data.users
+    const non_teachers = filter_on_not_role(users, "TEACHER")
 
-    function renderForTeacher(person: {
-        name: string,
-        roles: Roles[],
-        /* [key: string]: any; */
-    }) {
-        
-        if (! (person.roles.includes(Roles.TEACHER))) {
+    const {t} = useTranslation();
+
+    function renderForTeacher(person: User) {
+
+        if (!(person.user_roles.includes("TEACHER"))) {
             return (
                 <div className="person">
-                    <Person name={person.name} operations={[
-                        <OperationButton key={getKey()} type={OperationType.ADD} action={function() { return undefined; }}/>,
-                    ]} />
+                    <Person name={person.user_name} operations={[
+                        <OperationButton key={getKey()} type={OperationType.ADD} action={function () {
+                            return undefined;
+                        }}/>,
+                    ]}/>
                 </div>
             )
         }
@@ -33,28 +42,28 @@ export default function HomeAdmin(): JSX.Element {
         return (<></>)
     }
 
-    function renderForAdmin(person: {
-        name: string,
-        roles: Roles[],
-        /* [key: string]: any; */
-    }) {
-        
+    function renderForAdmin(person: User) {
+
         /* Check if admin first. */
-        if (person.roles.includes(Roles.ADMIN)) {
+        if (person.user_roles.includes("ADMIN")) {
             return (
                 <div className="person">
-                    <Person name={person.name} operations={[
-                        <OperationButton key={getKey()} type={OperationType.REMOVE} action={function() { return undefined; }}/>,
-                    ]} />
+                    <Person name={person.user_name} operations={[
+                        <OperationButton key={getKey()} type={OperationType.REMOVE} action={function () {
+                            return undefined;
+                        }}/>,
+                    ]}/>
                 </div>
             )
         }
 
         return (
             <div className="person">
-                <Person name={person.name} operations={[
-                    <OperationButton key={getKey()} type={OperationType.ADD} action={function() { return undefined; }}/>,
-                ]} />
+                <Person name={person.user_name} operations={[
+                    <OperationButton key={getKey()} type={OperationType.ADD} action={function () {
+                        return undefined;
+                    }}/>,
+                ]}/>
             </div>
         )
     }
@@ -77,7 +86,7 @@ export default function HomeAdmin(): JSX.Element {
                             </p>
                             <SearchBar placeholder={t('admin.search_placeholder')}></SearchBar>
                             <div className="person-list">
-                                {teacher_test_data.map(person => (
+                                {non_teachers.map(person => (
                                     renderForTeacher(person)
                                 ))}
                             </div>
@@ -89,7 +98,7 @@ export default function HomeAdmin(): JSX.Element {
                             </p>
                             <SearchBar placeholder={t('admin.search_placeholder')}></SearchBar>
                             <div className="person-list">
-                                {admin_test_data.map(person => (
+                                {users.map(person => (
                                     renderForAdmin(person)
                                 ))}
                             </div>

@@ -84,6 +84,7 @@ class ProjectInput(SQLModel):
     requirements: str
     visible: bool
     max_students: int
+    dockerfile: str
 
 
 class Project(ProjectInput, table=True):  # Inherits from ProjectInput
@@ -91,6 +92,7 @@ class Project(ProjectInput, table=True):  # Inherits from ProjectInput
     course_id: int = Field(default=None, foreign_key="course.id")
     course: Course = Relationship(back_populates="projects")
     groups: list["Group"] = Relationship(back_populates="project")
+    image_id: str
 
 
 class Group(SQLModel, table=True):
@@ -122,3 +124,11 @@ class Submission(SQLModel, table=True):
 class Config(SQLModel, table=True):
     key: str = Field(primary_key=True)
     value: str
+
+
+class ProjectStatistics(SQLModel):
+    submissions: int = Field(description="Total number of groups with a submission")
+    approved: int = Field(description="Number of groups with the latest submission approved")
+    rejected: int = Field(description="Number of groups with the latest submission rejected")
+    pending: int = Field(description="Number of groups with the latest submission pending")
+    no_submission: int = Field(description="Number of groups with no submission")

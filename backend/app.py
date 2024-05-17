@@ -4,6 +4,7 @@ import uvicorn
 from fastapi import Depends, FastAPI
 from fastapi.security import HTTPBearer
 
+from config import DEBUG
 from controllers.middleware import DatabaseSessionMiddleware
 from controllers.routes.course import course_router
 from controllers.routes.group import group_router
@@ -14,7 +15,6 @@ from controllers.routes.submission import submission_router
 from controllers.routes.teacher import teacher_router
 from controllers.routes.user import users_router
 from controllers.swagger_tags import tags_metadata
-from debug import DEBUG
 
 pathlib.Path.mkdir(pathlib.Path("submissions"), exist_ok=True)
 app = FastAPI(

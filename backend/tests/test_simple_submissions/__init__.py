@@ -1,4 +1,5 @@
 import shutil
+import tempfile
 from pathlib import Path
 
 
@@ -18,6 +19,10 @@ def create_directory_and_zip(structure: dict, path: Path, zip_name: str) -> None
     # Create directory structure
     create_structure(structure, path)
 
-    # Create a zip file
-    zip_path = path / zip_name
-    shutil.make_archive(str(zip_path), "zip", path)
+    # Create a temporary directory for the zip file
+    with tempfile.TemporaryDirectory() as tmp_zip_dir:
+        tmp_zip_path = Path(tmp_zip_dir) / zip_name
+        # Create a zip file in the temporary directory
+        shutil.make_archive(str(tmp_zip_path), "zip", path)
+        # Move the zip file to the desired location
+        shutil.move(str(tmp_zip_path) + ".zip", path)

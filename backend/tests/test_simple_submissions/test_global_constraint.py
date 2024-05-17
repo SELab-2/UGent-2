@@ -3,7 +3,7 @@ import typing
 import unittest
 from pathlib import Path
 
-from domain.simple_submission_checks.constraints.constraint_result import ConstraintResult
+from domain.simple_submission_checks.constraints.constraint_result import ConstraintResult, ZipConstraintResult
 from domain.simple_submission_checks.constraints.extension_not_present_constraint import ExtensionNotPresentConstraint
 from domain.simple_submission_checks.constraints.not_present_constraint import NotPresentConstraint
 from domain.simple_submission_checks.constraints.submission_constraint import SubmissionConstraint
@@ -32,13 +32,16 @@ class GlobalConstraintValidationTest(unittest.TestCase):
     }
 
     submission_constraint = SubmissionConstraint(
-        root_constraint=ZipConstraint(zip_name="submission.zip", sub_constraints=[]),
-        global_constraints=[
-            ExtensionNotPresentConstraint(extension=".java"),
-            ExtensionNotPresentConstraint(extension=".c"),
-            ExtensionNotPresentConstraint(extension=".cpp"),
-            NotPresentConstraint(file_or_directory_name="dir4"),
-        ],
+        root_constraint=ZipConstraint(
+            zip_name="submission.zip",
+            global_constraints=[
+                ExtensionNotPresentConstraint(extension=".java"),
+                ExtensionNotPresentConstraint(extension=".c"),
+                ExtensionNotPresentConstraint(extension=".cpp"),
+                NotPresentConstraint(file_or_directory_name="dir4"),
+            ],
+            sub_constraints=[],
+        ),
     )
 
     temp_dir1 = tempfile.TemporaryDirectory()
@@ -54,8 +57,11 @@ class GlobalConstraintValidationTest(unittest.TestCase):
         res1: ConstraintResult = cls.submission_constraint.validate_constraint(cls.temp_dir_path1)
         res2: ConstraintResult = cls.submission_constraint.validate_constraint(cls.temp_dir_path2)
 
-        cls.global_sub_result1 = res1.global_constraint_result
-        cls.global_sub_result2 = res2.global_constraint_result
+        assert isinstance(res1.root_constraint_result, ZipConstraintResult)
+        assert isinstance(res2.root_constraint_result, ZipConstraintResult)
+
+        cls.global_sub_result1 = res1.root_constraint_result.global_constraint_result
+        cls.global_sub_result2 = res2.root_constraint_result.global_constraint_result
 
     @classmethod
     def tearDownClass(cls) -> None:
@@ -64,10 +70,12 @@ class GlobalConstraintValidationTest(unittest.TestCase):
 
     def test_correct(self) -> None:
         """Test that .java files are correctly identified."""
+        assert self.global_sub_result1 is not None
         self.assertTrue(self.global_sub_result1.is_ok)
 
     def test_incorrect(self) -> None:
         """Test that .java files are correctly identified."""
+        assert self.global_sub_result2 is not None
         self.assertFalse(self.global_sub_result2.is_ok)
 
 

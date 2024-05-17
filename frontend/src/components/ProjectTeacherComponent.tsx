@@ -10,7 +10,7 @@ import SimpleTests from "./SimpleTests/SimpleTests.tsx";
 import {TeacherOrStudent} from "./SimpleTests/TeacherOrStudentEnum.tsx";
 import Calendar from "react-calendar";
 import {useTranslation} from 'react-i18next';
-import {RegularButton} from "./RegularButton.tsx";
+import Switch from "react-switch";
 
 // SimpleTests
 const CHECK_SIMPLE_TESTS = false
@@ -55,10 +55,6 @@ export function ProjectTeacherComponent(props: { project: ProjectTeacher }): JSX
     const [data, setData] = useState<object>(calledData);
     const [hasChanged, setHasChanged] = useState(false);
 
-    const save = () => {
-        // TODO save button
-    }
-
     return (
         <div className={"create-project"}>
             {/* PROJECT NAME FIELD */}
@@ -86,9 +82,14 @@ export function ProjectTeacherComponent(props: { project: ProjectTeacher }): JSX
                 <div className="field-label">
                     <label className="label">{t('create_project.deadline.tag')}</label>
                 </div>
-                <div
-                    className="field-body is-flex is-flex-direction-column is-align-items-start is-justify-content-center">
-                    <input type="checkbox" onChange={expandDeadline} checked={showCalender}/>
+                <div className="field-body is-flex is-flex-direction-column is-align-items-start is-justify-content-center">
+                    <Switch
+                        className="pb-3"
+                        type="checkbox" 
+                        onChange={expandDeadline} 
+                        checked={showCalender}
+                        onColor="#006edc"
+                    />
                     {showCalender &&
                         <div>
                             <div>
@@ -220,9 +221,6 @@ export function ProjectTeacherComponent(props: { project: ProjectTeacher }): JSX
                             </>
                         }
                     </label>
-                </div>
-                <div className={"mx-5"}>
-                    <RegularButton placeholder={t('create_project.save_button')} add={false} onClick={save}/>
                 </div>
             </div>
         </div>

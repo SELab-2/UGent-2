@@ -3,7 +3,7 @@ import typing
 import unittest
 from pathlib import Path
 
-from domain.simple_submission_checks.constraints.constraint_result import ConstraintResult
+from domain.simple_submission_checks.constraints.constraint_result import ConstraintResult, ZipConstraintResult
 from domain.simple_submission_checks.constraints.file_constraint import FileConstraint
 from domain.simple_submission_checks.constraints.submission_constraint import SubmissionConstraint
 from domain.simple_submission_checks.constraints.zip_constraint import ZipConstraint
@@ -19,12 +19,12 @@ class FileConstraintTest(unittest.TestCase):
     submission_constraint = SubmissionConstraint(
         root_constraint=ZipConstraint(
             zip_name="submission.zip",
+            global_constraints=[],
             sub_constraints=[
                 FileConstraint(file_name="file1.txt"),
                 FileConstraint(file_name="file2.txt"),
             ],
         ),
-        global_constraints=[],
     )
 
     temp_dir = tempfile.TemporaryDirectory()
@@ -34,6 +34,7 @@ class FileConstraintTest(unittest.TestCase):
     def setUpClass(cls) -> None:
         create_directory_and_zip(cls.structure, cls.temp_dir_path, "submission")
         res: ConstraintResult = cls.submission_constraint.validate_constraint(cls.temp_dir_path)
+        assert isinstance(res.root_constraint_result, ZipConstraintResult)
         cls.root_sub_results = res.root_constraint_result.sub_constraint_results
 
     @classmethod
