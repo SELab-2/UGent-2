@@ -105,10 +105,20 @@ const router = createBrowserRouter(
     )
 )
 
-createRoot(document.getElementById('root')!).render(
-    <React.StrictMode>
+const App = () => {
+    const app = (
         <AuthProvider>
             <RouterProvider router={router}/>
         </AuthProvider>
-    </React.StrictMode>,
+    );
+
+    if (import.meta.env.DEV) {
+        return <React.StrictMode>{app}</React.StrictMode>;
+    }
+
+    return app;
+};
+
+createRoot(document.getElementById('root')!).render(
+    <App/>
 )
