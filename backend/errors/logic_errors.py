@@ -10,11 +10,9 @@ class InvalidConstraintsError(ExceptionBase):
 
 
 class InvalidSubmissionError(ExceptionBase):
-    ERROR_MESSAGE = "Invalid submission content"
-    STATUS_CODE = status.HTTP_400_BAD_REQUEST
-
     def __init__(self, constraint_result: ConstraintResult) -> None:
-        self.ERROR_MESSAGE = constraint_result.json()
+        self.status_code = status.HTTP_400_BAD_REQUEST
+        self.detail = constraint_result.model_dump_json()
 
 
 class UserNotEnrolledError(ExceptionBase):
