@@ -1,6 +1,5 @@
 import {JSX, useState} from "react";
 import {MdManageAccounts} from "react-icons/md";
-import {SearchBar} from "./SearchBar.tsx";
 import AddWarning from "./AddWarning.tsx";
 import {useTranslation} from "react-i18next";
 import adminLoader from "../dataloaders/AdminLoader.ts";
@@ -57,7 +56,6 @@ export default function ManageCourse(props: {
                         <button className="delete" aria-label="close" onClick={changeModal}></button>
                     </header>
                     <section className="modal-card-body pb-6">
-                        <SearchBar placeholder={t('searchbar.find_teacher')}/>
                         <table className={"table is-fullwidth"}>
                             <thead>
                             <tr>
