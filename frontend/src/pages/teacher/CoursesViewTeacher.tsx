@@ -15,7 +15,6 @@ export default function CoursesViewTeacher(): JSX.Element {
     const {t} = useTranslation();
 
     const data = useRouteLoaderData(COURSES_TEACHER_ROUTER_ID) as coursesTeacherLoaderObject;
-    console.log(data.courses);
 
     const active_courses = data.courses.filter(course => !course.course_archived);
     const archived_courses = data.courses.filter(course => course.course_archived);
