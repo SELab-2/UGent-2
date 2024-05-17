@@ -132,7 +132,7 @@
         "first_upcoming_deadline": "next deadline",
         "name": "name",
         "email": "email",
-        "no_data_yet": "No data yet.",
+        "no_data_yet": "No data.",
         "number_of_projects": "number of projects",
         "remove": "remove",
         "add": "add"

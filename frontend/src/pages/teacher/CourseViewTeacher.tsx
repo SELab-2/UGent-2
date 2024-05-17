@@ -18,7 +18,7 @@ import DefaultErrorPage from "../../components/DefaultErrorPage.tsx";
 export default function CourseViewTeacher(): JSX.Element {
     const data: CourseLoaderObject = useRouteLoaderData(COURSE_TEACHER) as CourseLoaderObject;
 
-    const { t } = useTranslation();
+    const {t} = useTranslation();
 
     if (!data || !data.course) {
         return <DefaultErrorPage title={t("course_error.title")} body={t("course_error.text")}/>
@@ -36,14 +36,14 @@ export default function CourseViewTeacher(): JSX.Element {
     }) ?? [];
 
     const teachers: TableRowPeople[] = data.course.teachers.map((teacher) => {
-        return{
+        return {
             name: teacher.name,
             email: teacher.email
         }
     });
 
     const students: TableRowPeople[] = data.course.students.map((student) => {
-        return{
+        return {
             name: student.name,
             email: student.email
         }
@@ -60,24 +60,29 @@ export default function CourseViewTeacher(): JSX.Element {
                 </div>
                 <div className={"student-main is-flex is-justify-content-center"}>
                     <div className={"table-page is-flex is-flex-direction-column"}>
-                        <div className={"is-flex is-align-items-center is-justify-content-space-between"}>
-                            <div className={"my-5 is-flex"}>
-                                <RegularATag link={"teacher/projects/create"} text={t('course.new_project')} add={true}/>
-                                <div className={"ml-4 mr-2"}><CopyLink/></div>
-                                <div className={"mx-2"}><ManageCourse teachers={teachers}/></div>
-                                <div className={"mx-2"}><Archive/></div>
+                        { !data.course.course_archived &&
+                            <div className={"is-flex is-align-items-center is-justify-content-space-between"}>
+                                <div className={"my-5 is-flex"}>
+                                    <RegularATag link={"teacher/projects/create"} text={t('course.new_project')}
+                                                 add={true}/>
+                                    <div className={"ml-4 mr-2"}><CopyLink/></div>
+                                    <div className={"mx-2"}><ManageCourse teachers={teachers}/></div>
+                                    <div className={"mx-2"}><Archive course_id={data.course.course_id}
+                                                                     course_name={data.course.course_name}/></div>
+                                </div>
+                                <LeaveCourse amountOfTeachers={teachers.length}/>
                             </div>
-                            <LeaveCourse amountOfTeachers={teachers.length}/>
-                        </div>
+                        }
                         <div className={"my-5"}/>
-                        <Table title={t('course.projects')} data={tableProjects} ignoreKeys={["status"]} home={"teacher"}/>
-                        <div className={"my-5"}/>
-                        <Table title={t('course.teachers')} data={teachers} ignoreKeys={[]} home={"teacher"}/>
-                        <div className={"my-5"}/>
-                        <Table title={t('course.students')} data={students} ignoreKeys={[]} home={"teacher"}/>
-                    </div>
+                        <Table title={t('course.projects')} data={tableProjects} ignoreKeys={["status"]}
+                           home={"teacher"}/>
+                    <div className={"my-5"}/>
+                    <Table title={t('course.teachers')} data={teachers} ignoreKeys={[]} home={"teacher"}/>
+                    <div className={"my-5"}/>
+                    <Table title={t('course.students')} data={students} ignoreKeys={[]} home={"teacher"}/>
                 </div>
             </div>
-        </>
-    )
+        </div>
+</>
+)
 }
