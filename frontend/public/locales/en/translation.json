@@ -215,6 +215,11 @@
         "teacher": "teacher",
         "admin": "admin"
     },
+    "join_course": {
+        "message": "Do you want to join the course:",
+        "join": "join course",
+        "return_home": "return to the homepage"
+    },
     "searchbar": {
         "find_teacher": "search teacher"
     },

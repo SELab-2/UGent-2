@@ -215,6 +215,11 @@
         "teacher": "lesgever",
         "admin": "beheerder"
     },
+    "join_course": {
+        "message": "Wil je het volgende vak volgen:",
+        "join": "inschrijven",
+        "return_home": "terug naar de startpagina"
+    },
     "searchbar": {
         "find_teacher": "zoek een leerkracht"
     },

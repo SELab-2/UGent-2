@@ -42,6 +42,8 @@ import courseStudentLoader, {COURSE_STUDENT} from "./dataloaders/CourseStudentLo
 // import i18n (needs to be bundled ;))
 import './i18n';
 import adminLoader, {ADMIN_LOADER} from "./dataloaders/AdminLoader.ts";
+import JoinCourseScreen from "./pages/student/JoinCourse.tsx";
+import joinCourse, {JOIN_COURSE} from "./dataloaders/JoinCourse.ts";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -74,6 +76,10 @@ const router = createBrowserRouter(
                 <Route id={COURSE_STUDENT} path={"/student/course/:id"} element={<CourseViewStudent/>}
                        loader={({params}) => {
                            return courseStudentLoader(params.id);
+                       }}/>
+                <Route id={JOIN_COURSE} path={"/student/course/:id/join"} element={<JoinCourseScreen/>}
+                       loader={({params}) => {
+                           return joinCourse(params.id);
                        }}/>
             </Route>
 

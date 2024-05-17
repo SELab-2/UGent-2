@@ -53,6 +53,14 @@
     border-bottom: thin solid;
 }
 
+.join-course {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .submission-file-download {
     display: flex;
     flex-direction: row;
