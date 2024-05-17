@@ -1,6 +1,5 @@
 import {JSX, useState} from "react";
 import {MdManageAccounts} from "react-icons/md";
-import RemoveWarning from "./RemoveWarning.tsx";
 import {SearchBar} from "./SearchBar.tsx";
 import AddWarning from "./AddWarning.tsx";
 import {useTranslation} from "react-i18next";
@@ -73,25 +72,6 @@ export default function ManageCourse(props: {
                                     <td>{member.name}</td>
                                     <td>{member.email}</td>
                                     <AddWarning user_id={member.id} course_id={props.course_id}/>
-                                </tr>)
-                            })}
-                            </tbody>
-                        </table>
-                        <div className={"py-5"}/>
-                        <table className={"table is-fullwidth"}>
-                            <thead>
-                            <tr>
-                                <th>{t('table.name')}</th>
-                                <th>{t('table.email')}</th>
-                                <th>{t('table.remove')}</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {current_teacher_list.map((member, index) => {
-                                return (<tr key={index}>
-                                    <td>{member.name}</td>
-                                    <td>{member.email}</td>
-                                    <RemoveWarning/>
                                 </tr>)
                             })}
                             </tbody>
