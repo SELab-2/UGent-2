@@ -10,7 +10,7 @@ class ItemNotFoundError(ExceptionBase):
 
     def __init__(self, message: str) -> None:
         self.ERROR_MESSAGE = message
-        self.STATUS_CODE = status.HTTP_400_BAD_REQUEST
+        self.STATUS_CODE = status.HTTP_404_NOT_FOUND
         super().__init__()
 
 
