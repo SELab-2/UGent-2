@@ -13,7 +13,6 @@ import {Submission} from "../utils/ApiInterfaces.ts";
 import {DEBUG} from "../pages/root.tsx";
 import {make_submission} from "../utils/api/Submission.ts";
 import {joinGroup, leaveGroup} from "../utils/api/Groups.ts";
-import {useNavigate} from "react-router-dom";
 import apiFetch from "../utils/ApiFetch.ts";
 import {Backend_submission, Backend_user} from "../utils/BackendInterfaces.ts";
 
@@ -95,7 +94,7 @@ async function getGroupInfo(project_id: number) {
     if (!groups.ok) {
         return undefined
     }
-    const groupsInfo = Promise.all(groups.content.map(async id_obj => {
+    const groupsInfo = await Promise.all(groups.content.map(async id_obj => {
         const groupData = await apiFetch<[{ id: number }]>(`/groups/${id_obj.id}/members`)
         return {
             nr: id_obj.id,
@@ -123,7 +122,6 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
     const [submission, setSubmission] = useState(props.project.submission)
     const [groupInfo, setGroupInfo] = useState(undefined)
 
-    const navigate = useNavigate()
 
     function TableJoinedGroup(props: {
         groupMembers: {
@@ -134,7 +132,6 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
         maxGroupMembers: number
     }): JSX.Element {
         const {t} = useTranslation();
-        const navigate = useNavigate()
         return (
             <div className={"pt-5"}>
                 <div className="field is-horizontal">
@@ -169,8 +166,12 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
                 <div className={"is-flex is-justify-content-end is-align-items-center"}>
                     <p className={"mx-3"}>leave group: </p>
                     <button className={"button"} onClick={() => {
-                        leaveGroup(groupId)
-                        navigate(0)
+                        void leaveGroup(groupId)
+                        setGroupMembers([])
+                        setGroupId(-1)
+                        setSubmission('')
+                        setHasGroup(false)
+                        //navigate(0)
                     }}>
                         <IoExitOutline size={25}/>
                     </button>
@@ -224,11 +225,18 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
                                 <td>{member.amountOfMembers}</td>
                                 <td> {props.project.maxGroupMembers > member.amountOfMembers ?
                                     // TODO: logic of this join button
-                                    <button className={"button"}><MdOutlinePersonAddAlt1 onClick={async () => {
-                                        joinGroup(member.nr);
-                                        //void loadGroupMembers(props.project_id)
-                                        navigate(0);
-                                    }}/></button>
+                                    <button className={"button"} onClick={async () => {
+                                        console.log("here")
+                                        await joinGroup(member.nr);
+                                        const group = await loadGroupMembers(props.project.projectId)
+                                        console.log(group)
+                                        if (group) {
+                                            setHasGroup(group.id > -1)
+                                            setGroupMembers(group.members)
+                                            setSubmission(group.submission || "submission.zip")
+                                            setGroupId(group.id || -1)
+                                        }
+                                    }}><MdOutlinePersonAddAlt1/></button>
                                     :
                                     <p>—</p>
                                 }
