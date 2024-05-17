@@ -12,7 +12,7 @@ import {CourseLoaderObject} from "../../utils/ApiInterfaces.ts";
 
 export default function CourseViewStudent(): JSX.Element {
 
-    const { t } = useTranslation();
+    const {t} = useTranslation();
 
     const data: CourseLoaderObject = useRouteLoaderData(COURSE_STUDENT) as CourseLoaderObject
     const course_data = data.course
@@ -53,7 +53,7 @@ export default function CourseViewStudent(): JSX.Element {
                 <div className={"student-main is-flex is-justify-content-center"}>
                     <div className={"table-page is-flex is-flex-direction-column"}>
                         <div className={"my-5"}/>
-                        <Table title={t('course.teachers')} data={teachers} ignoreKeys={[]} home={"student"}/>
+                        <Table title={t('course.teachers')} data={teachers} ignoreKeys={["id"]} home={"student"}/>
                         {course_data.active_projects > 0 &&
                             <>
                                 <div className={"my-5"}/>

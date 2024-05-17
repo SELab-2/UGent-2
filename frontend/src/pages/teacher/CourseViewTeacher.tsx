@@ -78,9 +78,9 @@ export default function CourseViewTeacher(): JSX.Element {
                         <Table title={t('course.projects')} data={tableProjects} ignoreKeys={["status"]}
                                home={"teacher"}/>
                         <div className={"my-5"}/>
-                        <Table title={t('course.teachers')} data={teachers} ignoreKeys={[]} home={"teacher"}/>
+                        <Table title={t('course.teachers')} data={teachers} ignoreKeys={["id"]} home={"teacher"}/>
                         <div className={"my-5"}/>
-                        <Table title={t('course.students')} data={students} ignoreKeys={[]} home={"teacher"}/>
+                        <Table title={t('course.students')} data={students} ignoreKeys={["id"]} home={"teacher"}/>
                     </div>
                 </div>
             </div>
