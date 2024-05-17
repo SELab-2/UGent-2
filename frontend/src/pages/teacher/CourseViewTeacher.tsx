@@ -62,9 +62,8 @@ export default function CourseViewTeacher(): JSX.Element {
                     <div className={"table-page is-flex is-flex-direction-column"}>
                         <div className={"is-flex is-align-items-center is-justify-content-space-between"}>
                             <div className={"my-5 is-flex"}>
-                                <RegularATag link={"teacher/projects/create"} text={t('course.new_project')}
-                                             add={true}/>
-                                <div className={"ml-4 mr-2"}><CopyLink/></div>
+                                <RegularATag link={"teacher/projects/create"} text={t('course.new_project')} add={true}/>
+                                <div className={"ml-4 mr-2"}><CopyLink link={`${window.location.protocol}//${window.location.host}/student/course/${3}/join`}/></div>
                                 <div className={"mx-2"}><ManageCourse teachers={teachers}/></div>
                                 <div className={"mx-2"}><Archive/></div>
                             </div>
