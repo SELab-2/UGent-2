@@ -57,7 +57,7 @@ export default function CourseViewStudent(): JSX.Element {
                     </div>
                     <div className={"table-page is-flex is-flex-direction-column is-justify-content-center"}>
                         <div className={"my-3"}/>
-                        <Table title={t('course.teachers')} data={teachers} ignoreKeys={[]} home={"student"}/>
+                        <Table title={t('course.teachers')} data={teachers} ignoreKeys={["id"]} home={"student"}/>
                         {course_data.active_projects > 0 &&
                             <>
                                 <div className={"my-5"}/>
@@ -69,5 +69,6 @@ export default function CourseViewStudent(): JSX.Element {
                 </div>
             </div>
         </>
+
     )
 }

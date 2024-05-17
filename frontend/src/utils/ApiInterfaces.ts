@@ -74,6 +74,7 @@ export interface properCourse extends Course {
 export interface SmallUserInfo {
     name: string,
     email: string,
+    user_id: number,
     course_id: number,
 }
 

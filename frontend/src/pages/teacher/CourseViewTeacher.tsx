@@ -35,10 +35,11 @@ export default function CourseViewTeacher(): JSX.Element {
         }
     }) ?? [];
 
-    const teachers: TableRowPeople[] = data.course.teachers.map((teacher) => {
+    const teachers: { name: string, email: string, id: number }[] = data.course.teachers.map((teacher) => {
         return {
             name: teacher.name,
-            email: teacher.email
+            email: teacher.email,
+            id: teacher.user_id
         }
     });
 
@@ -68,7 +69,8 @@ export default function CourseViewTeacher(): JSX.Element {
                                     <div className={"ml-4 mr-2"}><CopyLink
                                         link={`${window.location.protocol}//${window.location.host}/student/course/${data.course.course_id}/join`}/>
                                     </div>
-                                    <div className={"mx-2"}><ManageCourse teachers={teachers}/></div>
+                                    <div className={"mx-2"}><ManageCourse course_id={data.course.course_id}
+                                                                          teachers={teachers}/></div>
                                     <div className={"mx-2"}><Archive course_id={data.course.course_id}
                                                                      course_name={data.course.course_name}/></div>
                                 </div>
@@ -79,9 +81,9 @@ export default function CourseViewTeacher(): JSX.Element {
                         <Table title={t('course.projects')} data={tableProjects} ignoreKeys={["status"]}
                                home={"teacher"}/>
                         <div className={"my-5"}/>
-                        <Table title={t('course.teachers')} data={teachers} ignoreKeys={[]} home={"teacher"}/>
+                        <Table title={t('course.teachers')} data={teachers} ignoreKeys={["id"]} home={"teacher"}/>
                         <div className={"my-5"}/>
-                        <Table title={t('course.students')} data={students} ignoreKeys={[]} home={"teacher"}/>
+                        <Table title={t('course.students')} data={students} ignoreKeys={["id"]} home={"teacher"}/>
                     </div>
                 </div>
             </div>
