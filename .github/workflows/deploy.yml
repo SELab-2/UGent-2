@@ -1,0 +1,16 @@
+name: Backend
+on:
+  push:
+    branches:
+      - main
+jobs:
+  deploy:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy backend
+        run: cd backend && podman --remote build . -t delphi-backend
+      - name: Deploy frontend
+        run: cd frontend && podman --remote build . -t delphi-frontend
+      - name: Restart services
+        run: podman --remote stop systemd-delphi-backend systemd-delphi-frontend

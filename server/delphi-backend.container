@@ -1,3 +1,5 @@
+[Service]
+Restart=always
 [Container]
 Image=localhost/delphi-backend
 RunInit=true
