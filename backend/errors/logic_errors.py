@@ -1,5 +1,6 @@
 from starlette import status
 
+from domain.simple_submission_checks.constraints.constraint_result import ConstraintResult
 from errors.base_error import ExceptionBase
 
 
@@ -11,6 +12,9 @@ class InvalidConstraintsError(ExceptionBase):
 class InvalidSubmissionError(ExceptionBase):
     ERROR_MESSAGE = "Invalid submission content"
     STATUS_CODE = status.HTTP_400_BAD_REQUEST
+
+    def __init__(self, constraint_result: ConstraintResult) -> None:
+        self.ERROR_MESSAGE = constraint_result.json()
 
 
 class UserNotEnrolledError(ExceptionBase):

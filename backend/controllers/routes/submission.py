@@ -18,11 +18,6 @@ submission_router = APIRouter(tags=[Tags.SUBMISSION])
 def make_submission(request: Request, group_id: int, file: UploadFile) -> Submission:
     session = request.state.session
     student = ensure_student_in_group(request, group_id)
-    if file.filename is None or ".." in file.filename or file.filename == ".":
-        raise InvalidSubmissionError
-    for i in file.filename:
-        if not i.isalnum() and i != "." and i != "_" and i != "-":
-            raise InvalidSubmissionError
     file_content = file.file.read()
     sha256 = hashlib.sha256(file_content).hexdigest()
     dirname = f"submissions/{sha256}-{file.filename}"
