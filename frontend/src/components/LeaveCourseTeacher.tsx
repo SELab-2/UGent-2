@@ -3,7 +3,7 @@ import {RegularButton} from "./RegularButton.tsx";
 import {IoExitOutline} from "react-icons/io5";
 import {useTranslation} from "react-i18next";
 
-export default function LeaveCourse(props: {amountOfTeachers: number}): JSX.Element {
+export default function LeaveCourseTeacher(props: {amountOfTeachers: number}): JSX.Element {
     const [modalActive, setModalActive] = useState(false);
 
     const { t } = useTranslation();
