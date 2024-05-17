@@ -9,7 +9,7 @@ from controllers.authentication.role_dependencies import (
 )
 from controllers.swagger_tags import Tags
 from db.models import Group, Student
-from domain.logic.errors import UserNotEnrolledError
+from errors.logic_errors import UserNotEnrolledError
 from domain.logic.group import (
     add_student_to_group,
     get_group,

@@ -1,6 +1,6 @@
 from starlette.requests import Request
 
-from controllers.authentication.errors import (
+from errors.authentication_errors import (
     InvalidAdminCredentialsError,
     InvalidAuthenticationError,
     InvalidStudentCredentialsError,

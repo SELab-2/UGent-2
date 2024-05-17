@@ -1,10 +1,10 @@
 from sqlmodel import Session
 
-from db.database_errors import ActionAlreadyPerformedError, NoSuchRelationError
 from db.models import Course, CourseInput, Student, Teacher
 from domain.logic.basic_operations import get, get_all
 from domain.logic.student import is_user_student
 from domain.logic.teacher import is_user_teacher
+from errors.database_errors import ActionAlreadyPerformedError, NoSuchRelationError
 
 
 def create_course(session: Session, name: str) -> Course:

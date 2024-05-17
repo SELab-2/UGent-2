@@ -1,8 +1,8 @@
 from sqlmodel import Session
 
-from db.database_errors import ActionAlreadyPerformedError, NoSuchRelationError
 from db.models import Group, Project, Student
 from domain.logic.basic_operations import get, get_all
+from errors.database_errors import ActionAlreadyPerformedError, NoSuchRelationError
 
 
 def create_group(session: Session, project_id: int) -> Group:

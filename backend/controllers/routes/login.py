@@ -3,7 +3,7 @@ from pydantic import BaseModel
 from starlette.requests import Request
 
 from controllers.authentication.authentication_controller import authenticate_user
-from controllers.authentication.errors import InvalidAuthenticationError
+from errors.authentication_errors import InvalidAuthenticationError
 from controllers.authentication.token_controller import create_token, verify_token
 from controllers.swagger_tags import Tags
 from db.models import User
