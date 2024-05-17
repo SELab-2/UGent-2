@@ -66,7 +66,7 @@ export default function CourseViewTeacher(): JSX.Element {
                                     <RegularATag link={"teacher/projects/create"} text={t('course.new_project')}
                                                  add={true}/>
                                     <div className={"ml-4 mr-2"}><CopyLink
-                                        link={`${window.location.protocol}//${window.location.host}/student/course/${3}/join`}/>
+                                        link={`${window.location.protocol}//${window.location.host}/student/course/${data.course.course_id}/join`}/>
                                     </div>
                                     <div className={"mx-2"}><ManageCourse teachers={teachers}/></div>
                                     <div className={"mx-2"}><Archive course_id={data.course.course_id}
