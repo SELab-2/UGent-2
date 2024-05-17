@@ -33,11 +33,11 @@ export default function CopyLink(props: { link: string }): JSX.Element {
                     </section>
                     <footer className="modal-card-foot is-flex is-justify-content-center">
                         <input type="text" readOnly size={45} ref={inputRef} onClick={() => inputRef.current?.select()}
-                               value={props.link} data-autoselect={true}/>
+                               value={props.link} />
 
-                        {!copied && <RegularButton placeholder={t('popups.share_link')} add={false} styling={"is-success"}
+                        {!copied && <RegularButton placeholder={t('popups.share_link')} add={false} styling={"is-success ml-4"}
                                        onClick={() => {void navigator.clipboard.writeText(props.link); setCopied(true)}}/>}
-                        {copied && <RegularButton placeholder={t('popups.copied')} onClick={()=>{}} add={false} styling={"is-success"}/>}
+                        {copied && <RegularButton placeholder={t('popups.copied')} onClick={()=>{}} add={false} styling={"is-success ml-4"}/>}
                     </footer>
                 </div>
             </div>
