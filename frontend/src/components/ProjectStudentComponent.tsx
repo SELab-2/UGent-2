@@ -103,7 +103,7 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
                                 <label className={"has-text-danger"}>{t('project.failed')}</label>}
                             {props.project.status == ProjectStatus.SUCCESS &&
                                 <label className={"has-text-success"}>{t('project.success')}</label>}
-                            </div>
+                        </div>
                     </div>
                 }
                 <FieldWithLabel fieldLabel={"> " + t('project.description')} fieldBody={props.project.description}
@@ -177,7 +177,8 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
                                                     ? <label className={"mr-3 highlight"}>{file?.name}</label>
                                                     : <label className={"mr-3"}>{file?.name}</label>
                                                 }
-                                                <button className="button" onClick={() => void downloadLatestSubmission()}>
+                                                <button className="button"
+                                                        onClick={() => void downloadLatestSubmission()}>
                                                     <FaDownload/>
                                                 </button>
                                             </div>
@@ -186,7 +187,7 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
                                         <div id="file-js" className="field is-horizontal">
                                             <label className="file-label">
                                                 <input className="file-input" type="file" name="resume"
-                                                       onChange={e => selectFile(e)}/>
+                                                       onChange={selectFile}/>
                                                 <span className="file-cta">
                                                     <span className="file-icon"><FaUpload/></span>
                                                     <span
