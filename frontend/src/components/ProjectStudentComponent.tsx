@@ -10,14 +10,8 @@ import {make_submission} from "../utils/api/Submission.ts";
 import {Submission} from "../utils/ApiInterfaces.ts";
 import {DEBUG} from "../pages/root.tsx";
 import {RegularButton} from "./RegularButton.tsx";
-import { dummy_data } from "./SimpleTests/DummyData.tsx";
-
-
-// SimpleTests
-const calledData = dummy_data;
 
 export default function ProjectStudentComponent(props: { project: ProjectStudent }): JSX.Element {
-
 
     // true als er een groep is, anders false.
     const is_in_group = props.project.groupMembers && props.project.groupMembers.length > 0;
@@ -120,12 +114,13 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
                             </div>
                             <div className="field-body">
                                 <div className="field"> {/*Deze moet blijven, anders gaan de elementen in elkaar*/}
-                                    <SimpleTests
+                                    { // requiredFiles moet een string geven zoals bij teacher voor dit kan werken
+                                    /*<SimpleTests
                                         teacherOrStudent={TeacherOrStudent.STUDENT}
-                                        initialData={calledData}
+                                        initialData={}
                                         setData={undefined}
                                         setHasChanged={undefined}
-                                    />
+                                    /> */}
                                 </div>
                             </div>
                         </div>

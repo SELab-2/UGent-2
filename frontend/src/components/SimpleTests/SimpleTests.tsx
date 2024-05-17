@@ -507,37 +507,39 @@ export default function SimpleTests(props: {
         <div className="content-checks">
 
             {/* SUBMISSION TYPE */}
-            <div className="type">
-                        
-                {isZip
-                    ?  <div className="thin">{t('submission_files.root_switch.single_file')}</div>
-                    :  <div className="thick">{t('submission_files.root_switch.single_file')}</div>
-                }
-
-                <Warneable 
-                    text={t('submission_files.warning_change_root.type_switch')}
-                    trigger={ onClick =>
-                        <Switch 
-                            className="switch" 
-                            onChange={onClick} 
-                            checked={isZip}
-                            handleDiameter={20}
-                            checkedIcon={false}
-                            uncheckedIcon={false}
-                            onColor="#006edc" 
-                            offColor="#006edc" 
+            {props.teacherOrStudent === TeacherOrStudent.TEACHER &&
+                <div className="type">
                             
-                        />
+                    {isZip
+                        ?  <div className="thin">{t('submission_files.root_switch.single_file')}</div>
+                        :  <div className="thick">{t('submission_files.root_switch.single_file')}</div>
                     }
-                    proceed={handleChangeRootType}
-                />
 
-                {isZip
-                    ? <div className="thick">{t('submission_files.root_switch.zip_file')}</div>
-                    : <div className="thin">{t('submission_files.root_switch.zip_file')}</div>
-                }
+                    <Warneable 
+                        text={t('submission_files.warning_change_root.type_switch')}
+                        trigger={ onClick =>
+                            <Switch 
+                                className="switch" 
+                                onChange={onClick} 
+                                checked={isZip}
+                                handleDiameter={20}
+                                checkedIcon={false}
+                                uncheckedIcon={false}
+                                onColor="#006edc" 
+                                offColor="#006edc" 
+                                
+                            />
+                        }
+                        proceed={handleChangeRootType}
+                    />
 
-            </div>
+                    {isZip
+                        ? <div className="thick">{t('submission_files.root_switch.zip_file')}</div>
+                        : <div className="thin">{t('submission_files.root_switch.zip_file')}</div>
+                    }
+
+                </div>
+            }
 
             {
                 !isZip
@@ -547,11 +549,14 @@ export default function SimpleTests(props: {
                         <div className="pb-1">{t('submission_files.single_file.name')}</div>
                         <div className="constraint-row">
                             {/* value field */}
-                            <input 
+                            {props.teacherOrStudent === TeacherOrStudent.TEACHER
+                            ? <input 
                                 className={"row-value FILE"} 
                                 value={(submission.submission as Constraint).value}
                                 onChange={e => handleModifyValue((submission.submission as Constraint).id, e.target.value)} 
-                            />       
+                            />
+                            : <div className="FILE">{(submission.submission as Constraint).value}</div>
+                            }
                         </div>
                     </div>
                 </div>
@@ -563,17 +568,21 @@ export default function SimpleTests(props: {
                         <Information 
                             content={
                                 <div>
-                                    <div>
-                                        {t('submission_files.information.constraints')}
-                                    </div>
+                                    {props.teacherOrStudent === TeacherOrStudent.TEACHER &&
+                                        <div>
+                                            <div>
+                                                {t('submission_files.information.constraints')}
+                                            </div>
 
-                                    <br/>
+                                            <br/>
 
-                                    <div>
-                                        {t('submission_files.information.extensions')}
-                                    </div>
+                                            <div>
+                                                {t('submission_files.information.extensions')}
+                                            </div>
 
-                                    <br/>
+                                            <br/>
+                                        </div>
+                                    }
                                     
                                     <div>{t('submission_files.information.color_codes.title')}</div>
                                     <div className="color-codes">
@@ -595,26 +604,28 @@ export default function SimpleTests(props: {
                     {/*...global constraints...*/}
                     <div className="constraint-row">
                         <div>{t('submission_files.constraints.global')}</div>
-                        <Popup trigger={
-                            <div className="more-wrapper">
-                                <RiAddBoxLine 
-                                    className="row-icon" 
-                                />
-                            </div>
-                        }   position="right center" 
-                            arrow={true} 
-                            onOpen={() => {setIsGlobalAddOpen(true)}}
-                            open={isGlobalAddOpen} 
-                            on="click" 
-                            nested 
-                            contentStyle={{width: 'auto'}}
-                        >
-                            <div>
-                                <button className="menu-not-last-item" onClick={() => handleNewConstraint(undefined, 'NOT_PRESENT')}>{t('submission_files.menu.not_present')}</button>
-                                <button className="menu-not-last-item" onClick={() => handleNewConstraint(undefined, 'EXTENSION_NOT_PRESENT')}>{t('submission_files.menu.extension_not_present')}</button>
-                                <button onClick={() => handleNewConstraint(undefined, 'EXTENSION_ONLY_PRESENT')}>{t('submission_files.menu.extension_only_present')}</button>
-                            </div>
-                        </Popup>
+                        {props.teacherOrStudent === TeacherOrStudent.TEACHER &&
+                            <Popup trigger={
+                                <div className="more-wrapper">
+                                    <RiAddBoxLine 
+                                        className="row-icon" 
+                                    />
+                                </div>
+                            }   position="right center" 
+                                arrow={true} 
+                                onOpen={() => {setIsGlobalAddOpen(true)}}
+                                open={isGlobalAddOpen} 
+                                on="click" 
+                                nested 
+                                contentStyle={{width: 'auto'}}
+                            >
+                                <div>
+                                    <button className="menu-not-last-item" onClick={() => handleNewConstraint(undefined, 'NOT_PRESENT')}>{t('submission_files.menu.not_present')}</button>
+                                    <button className="menu-not-last-item" onClick={() => handleNewConstraint(undefined, 'EXTENSION_NOT_PRESENT')}>{t('submission_files.menu.extension_not_present')}</button>
+                                    <button onClick={() => handleNewConstraint(undefined, 'EXTENSION_ONLY_PRESENT')}>{t('submission_files.menu.extension_only_present')}</button>
+                                </div>
+                            </Popup>
+                        }
                     </div>
                     <div className="global-constraints">
                         <div className="constraints-table global-table">
@@ -625,50 +636,36 @@ export default function SimpleTests(props: {
                                 >
                             
                                     {/* value field */}
-                                    <input 
+                                    {props.teacherOrStudent === TeacherOrStudent.TEACHER
+                                    ? <input 
                                         className={"row-value " + constraint['type']} 
                                         value={constraint.value}
                                         onChange={e => handleModifyValue(constraint.id, e.target.value)} 
                                     />
-
-                                    {/* add file */}
-                                    {(constraint['type'] === 'ZIP' || constraint['type'] === 'DIRECTORY') &&
-                                    <VscNewFile 
-                                        className="row-icon" 
-                                        style={{visibility: isHovering === constraint.id ? 'visible' : 'hidden' }}
-                                        onClick={() => handleNewConstraint(constraint.id, 'FILE')}
-                                    />}
-
-                                    {/* add folder */}
-                                    {(constraint['type'] === 'ZIP' || constraint['type'] === 'DIRECTORY') &&
-                                    <VscNewFolder 
-                                        className="row-icon" 
-                                        style={{visibility: isHovering === constraint.id ? 'visible' : 'hidden' }}
-                                        onClick={() => handleNewConstraint(constraint.id, 'DIRECTORY')}
-                                    />}
-                                    
-                                    {/* more button */}
-                                    {constraint['type'] !== 'ZIP' &&
-                                    <Popup trigger={
-                                        <div className="more-wrapper">
-                                            <IoMdMore 
-                                                className="row-icon" 
-                                                style={{visibility: isHovering === constraint.id ? 'visible' : 'hidden' }}
-                                            />
-                                        </div>
-                                    }   position="right center" 
-                                        arrow={true} 
-                                        onOpen={() => handleOpenMenu(constraint.id)}
-                                        open={isMenuOpen.get(constraint.id)} 
-                                        on="click" 
-                                        nested 
-                                        contentStyle={{width: 'auto'}}
-                                    >
-                                        {/* ~ more menu ~ */}
-                                        <button onClick={() => handleDeleteConstraint(constraint.id)}>{t('submission_files.menu.remove')}</button>
-                                    </Popup>
+                                    : <div className={"" + constraint['type']}>{constraint.value}</div>
                                     }
-                                    
+                                        
+                                    {/* more button */}
+                                    {props.teacherOrStudent === TeacherOrStudent.TEACHER && constraint['type'] !== 'ZIP' &&
+                                        <Popup trigger={
+                                            <div className="more-wrapper">
+                                                <IoMdMore 
+                                                    className="row-icon" 
+                                                    style={{visibility: isHovering === constraint.id ? 'visible' : 'hidden' }}
+                                                />
+                                            </div>
+                                        }   position="right center" 
+                                            arrow={true} 
+                                            onOpen={() => handleOpenMenu(constraint.id)}
+                                            open={isMenuOpen.get(constraint.id)} 
+                                            on="click" 
+                                            nested 
+                                            contentStyle={{width: 'auto'}}
+                                        >
+                                            {/* ~ more menu ~ */}
+                                            <button onClick={() => handleDeleteConstraint(constraint.id)}>{t('submission_files.menu.remove')}</button>
+                                        </Popup>
+                                    }
                                 </div>
                             )}
                         </div>
@@ -689,77 +686,83 @@ export default function SimpleTests(props: {
                                     {"\u00A0".repeat(5 * constraint.depth)}
                             
                                     {/* value field */}
-                                    <input 
+                                    {props.teacherOrStudent === TeacherOrStudent.TEACHER
+                                    ? <input 
                                         className={"row-value " + constraint['type']} 
                                         value={constraint.value}
                                         onChange={e => handleModifyValue(constraint.id, e.target.value)} 
                                     />
+                                    : <div className={"" + constraint['type']}>{constraint.value}</div>
+                                    }
 
+                                    
                                     {/* add file */}
-                                    {(constraint['type'] === 'ZIP' || constraint['type'] === 'DIRECTORY') &&
-                                    <VscNewFile 
-                                        className="row-icon" 
-                                        style={{visibility: isHovering === constraint.id ? 'visible' : 'hidden' }}
-                                        onClick={() => handleNewConstraint(constraint.id, 'FILE')}
-                                    />}
+                                    {props.teacherOrStudent === TeacherOrStudent.TEACHER && (constraint['type'] === 'ZIP' || constraint['type'] === 'DIRECTORY') &&
+                                        <VscNewFile 
+                                            className="row-icon" 
+                                            style={{visibility: isHovering === constraint.id ? 'visible' : 'hidden' }}
+                                            onClick={() => handleNewConstraint(constraint.id, 'FILE')}
+                                        />
+                                    }
 
                                     {/* add folder */}
-                                    {(constraint['type'] === 'ZIP' || constraint['type'] === 'DIRECTORY') &&
-                                    <VscNewFolder 
-                                        className="row-icon" 
-                                        style={{visibility: isHovering === constraint.id ? 'visible' : 'hidden' }}
-                                        onClick={() => handleNewConstraint(constraint.id, 'DIRECTORY')}
-                                    />}
-                                    
+                                    {props.teacherOrStudent === TeacherOrStudent.TEACHER && (constraint['type'] === 'ZIP' || constraint['type'] === 'DIRECTORY') &&
+                                        <VscNewFolder 
+                                            className="row-icon" 
+                                            style={{visibility: isHovering === constraint.id ? 'visible' : 'hidden' }}
+                                            onClick={() => handleNewConstraint(constraint.id, 'DIRECTORY')}
+                                        />
+                                    }
+                                        
                                     {/* more button */}
-                                    {constraint['type'] !== 'ZIP' &&
-                                    <Popup trigger={
-                                        <div className="more-wrapper">
-                                            <IoMdMore 
-                                                className="row-icon" 
-                                                style={{visibility: isHovering === constraint.id ? 'visible' : 'hidden' }}
-                                            />
-                                        </div>
-                                    }   position="right center" 
-                                        arrow={true} 
-                                        onOpen={() => handleOpenMenu(constraint.id)}
-                                        open={isMenuOpen.get(constraint.id)} 
-                                        on="click" 
-                                        nested 
-                                        contentStyle={{width: 'auto'}}
-                                    >
-                                        {/* ~ more menu ~ */}
-                                        <div>
-                                            {(() => {
-                                                switch(constraint['type']) {
-                                                    case 'FILE':
-                                                        return <div>
-                                                            <button className="menu-not-last-item" onClick={() => handleChangeConstraintType(constraint.id, 'DIRECTORY')}>{t('submission_files.menu.directory')}</button>
-                                                            <button className="menu-not-last-item" onClick={() => handleChangeConstraintType(constraint.id, 'NOT_PRESENT')}>{t('submission_files.menu.not_present')}</button>
-                                                            <button className="menu-not-last-item" onClick={() => handleChangeConstraintType(constraint.id, 'EXTENSION_NOT_PRESENT')}>{t('submission_files.menu.extension_not_present')}</button>
-                                                        </div>
-                                                    case 'DIRECTORY':
-                                                        return <div>
-                                                            <button className="menu-not-last-item" onClick={() => handleChangeConstraintType(constraint.id, 'FILE')}>{t('submission_files.menu.file')}</button>
-                                                            <button className="menu-not-last-item" onClick={() => handleChangeConstraintType(constraint.id, 'NOT_PRESENT')}>{t('submission_files.menu.not_present')}</button>
-                                                            <button className="menu-not-last-item" onClick={() => handleChangeConstraintType(constraint.id, 'EXTENSION_NOT_PRESENT')}>{t('submission_files.menu.extension_not_present')}</button>
-                                                        </div>
-                                                    case 'NOT_PRESENT':
-                                                        return <div>
-                                                            <button className="menu-not-last-item" onClick={() => handleChangeConstraintType(constraint.id, 'FILE')}>{t('submission_files.menu.file')}</button>
-                                                            <button className="menu-not-last-item" onClick={() => handleChangeConstraintType(constraint.id, 'DIRECTORY')}>{t('submission_files.menu.directory')}</button>
-                                                            <button className="menu-not-last-item" onClick={() => handleChangeConstraintType(constraint.id, 'EXTENSION_NOT_PRESENT')}>{t('submission_files.menu.extension_not_present')}</button>
-                                                        </div>
-                                                    case 'EXTENSION_NOT_PRESENT':
-                                                        return <div>
-                                                            <button className="menu-not-last-item" onClick={() => handleChangeConstraintType(constraint.id, 'FILE')}>{t('submission_files.menu.file')}</button>
-                                                            <button className="menu-not-last-item" onClick={() => handleChangeConstraintType(constraint.id, 'DIRECTORY')}>{t('submission_files.menu.directory')}</button>
-                                                            <button className="menu-not-last-item" onClick={() => handleChangeConstraintType(constraint.id, 'NOT_PRESENT')}>{t('submission_files.menu.not_present')}</button>
-                                                        </div>
-                                                } })()}
-                                            <button onClick={() => handleDeleteConstraint(constraint.id)}>{t('submission_files.menu.remove')}</button>
-                                        </div>
-                                    </Popup>
+                                    {props.teacherOrStudent === TeacherOrStudent.TEACHER && constraint['type'] !== 'ZIP' &&
+                                        <Popup trigger={
+                                            <div className="more-wrapper">
+                                                <IoMdMore 
+                                                    className="row-icon" 
+                                                    style={{visibility: isHovering === constraint.id ? 'visible' : 'hidden' }}
+                                                />
+                                            </div>
+                                        }   position="right center" 
+                                            arrow={true} 
+                                            onOpen={() => handleOpenMenu(constraint.id)}
+                                            open={isMenuOpen.get(constraint.id)} 
+                                            on="click" 
+                                            nested 
+                                            contentStyle={{width: 'auto'}}
+                                        >
+                                            {/* ~ more menu ~ */}
+                                            <div>
+                                                {(() => {
+                                                    switch(constraint['type']) {
+                                                        case 'FILE':
+                                                            return <div>
+                                                                <button className="menu-not-last-item" onClick={() => handleChangeConstraintType(constraint.id, 'DIRECTORY')}>{t('submission_files.menu.directory')}</button>
+                                                                <button className="menu-not-last-item" onClick={() => handleChangeConstraintType(constraint.id, 'NOT_PRESENT')}>{t('submission_files.menu.not_present')}</button>
+                                                                <button className="menu-not-last-item" onClick={() => handleChangeConstraintType(constraint.id, 'EXTENSION_NOT_PRESENT')}>{t('submission_files.menu.extension_not_present')}</button>
+                                                            </div>
+                                                        case 'DIRECTORY':
+                                                            return <div>
+                                                                <button className="menu-not-last-item" onClick={() => handleChangeConstraintType(constraint.id, 'FILE')}>{t('submission_files.menu.file')}</button>
+                                                                <button className="menu-not-last-item" onClick={() => handleChangeConstraintType(constraint.id, 'NOT_PRESENT')}>{t('submission_files.menu.not_present')}</button>
+                                                                <button className="menu-not-last-item" onClick={() => handleChangeConstraintType(constraint.id, 'EXTENSION_NOT_PRESENT')}>{t('submission_files.menu.extension_not_present')}</button>
+                                                            </div>
+                                                        case 'NOT_PRESENT':
+                                                            return <div>
+                                                                <button className="menu-not-last-item" onClick={() => handleChangeConstraintType(constraint.id, 'FILE')}>{t('submission_files.menu.file')}</button>
+                                                                <button className="menu-not-last-item" onClick={() => handleChangeConstraintType(constraint.id, 'DIRECTORY')}>{t('submission_files.menu.directory')}</button>
+                                                                <button className="menu-not-last-item" onClick={() => handleChangeConstraintType(constraint.id, 'EXTENSION_NOT_PRESENT')}>{t('submission_files.menu.extension_not_present')}</button>
+                                                            </div>
+                                                        case 'EXTENSION_NOT_PRESENT':
+                                                            return <div>
+                                                                <button className="menu-not-last-item" onClick={() => handleChangeConstraintType(constraint.id, 'FILE')}>{t('submission_files.menu.file')}</button>
+                                                                <button className="menu-not-last-item" onClick={() => handleChangeConstraintType(constraint.id, 'DIRECTORY')}>{t('submission_files.menu.directory')}</button>
+                                                                <button className="menu-not-last-item" onClick={() => handleChangeConstraintType(constraint.id, 'NOT_PRESENT')}>{t('submission_files.menu.not_present')}</button>
+                                                            </div>
+                                                    } })()}
+                                                <button onClick={() => handleDeleteConstraint(constraint.id)}>{t('submission_files.menu.remove')}</button>
+                                            </div>
+                                        </Popup>
                                     }
 
                                     {/* expand/collaps */}
@@ -777,7 +780,6 @@ export default function SimpleTests(props: {
                                                 onClick={() => handleClickExpand(constraint.id)}
                                             />
                                     )}
-                                    
                                 </div>
                             )}
                         </div>
