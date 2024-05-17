@@ -114,6 +114,11 @@ class Group(SQLModel, table=True):
     students: list[Student] = Relationship(link_model=StudentGroup, back_populates="groups")
     submissions: list["Submission"] = Relationship(back_populates="group")
 
+    @computed_field
+    @property
+    def member_count(self) -> int:
+        return len(self.students)
+
 
 class SubmissionState(enum.Enum):
     Pending = 1
