@@ -21,8 +21,8 @@ class ActionAlreadyPerformedError(ExceptionBase):
     """
 
     def __init__(self, message: str) -> None:
-        self.ERROR_MESSAGE = message
-        self.STATUS_CODE = status.HTTP_400_BAD_REQUEST
+        self.detail = message
+        self.status_code = status.HTTP_400_BAD_REQUEST
         super().__init__()
 
 
@@ -32,8 +32,8 @@ class NoSuchRelationError(ExceptionBase):
     """
 
     def __init__(self, message: str) -> None:
-        self.ERROR_MESSAGE = message
-        self.STATUS_CODE = status.HTTP_400_BAD_REQUEST
+        self.detail = message
+        self.status_code = status.HTTP_400_BAD_REQUEST
         super().__init__()
 
 
@@ -43,6 +43,6 @@ class ConflictingRelationError(ExceptionBase):
     """
 
     def __init__(self, message: str) -> None:
-        self.ERROR_MESSAGE = message
-        self.STATUS_CODE = status.HTTP_400_BAD_REQUEST
+        self.detail = message
+        self.status_code = status.HTTP_400_BAD_REQUEST
         super().__init__()
