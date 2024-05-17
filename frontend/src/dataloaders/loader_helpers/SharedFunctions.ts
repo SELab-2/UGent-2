@@ -129,6 +129,7 @@ async function getUsersOfCourse(role: teacherStudentRole, courses: Course[]): Pr
                 return {
                     name: user.user_name,
                     email: user.user_email,
+                    user_id: user.user_id,
                     course_id: course.course_id
                 } as SmallUserInfo
             }

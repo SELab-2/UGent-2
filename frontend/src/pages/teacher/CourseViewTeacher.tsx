@@ -18,7 +18,7 @@ import DefaultErrorPage from "../../components/DefaultErrorPage.tsx";
 export default function CourseViewTeacher(): JSX.Element {
     const data: CourseLoaderObject = useRouteLoaderData(COURSE_TEACHER) as CourseLoaderObject;
 
-    const { t } = useTranslation();
+    const {t} = useTranslation();
 
     if (!data || !data.course) {
         return <DefaultErrorPage title={t("course_error.title")} body={t("course_error.text")}/>
@@ -35,15 +35,16 @@ export default function CourseViewTeacher(): JSX.Element {
         }
     }) ?? [];
 
-    const teachers: TableRowPeople[] = data.course.teachers.map((teacher) => {
-        return{
+    const teachers: { name: string, email: string, id: number }[] = data.course.teachers.map((teacher) => {
+        return {
             name: teacher.name,
-            email: teacher.email
+            email: teacher.email,
+            id: teacher.user_id
         }
     });
 
     const students: TableRowPeople[] = data.course.students.map((student) => {
-        return{
+        return {
             name: student.name,
             email: student.email
         }
@@ -62,15 +63,20 @@ export default function CourseViewTeacher(): JSX.Element {
                     <div className={"table-page is-flex is-flex-direction-column"}>
                         <div className={"is-flex is-align-items-center is-justify-content-space-between"}>
                             <div className={"my-5 is-flex"}>
-                                <RegularATag link={"teacher/projects/create"} text={t('course.new_project')} add={true}/>
-                                <div className={"ml-4 mr-2"}><CopyLink link={`${window.location.protocol}//${window.location.host}/student/course/${3}/join`}/></div>
-                                <div className={"mx-2"}><ManageCourse teachers={teachers}/></div>
+                                <RegularATag link={"teacher/projects/create"} text={t('course.new_project')}
+                                             add={true}/>
+                                <div className={"ml-4 mr-2"}><CopyLink
+                                    link={`${window.location.protocol}//${window.location.host}/student/course/${3}/join`}/>
+                                </div>
+                                <div className={"mx-2"}><ManageCourse course_id={data.course.course_id}
+                                                                      teachers={teachers}/></div>
                                 <div className={"mx-2"}><Archive/></div>
                             </div>
                             <LeaveCourse amountOfTeachers={teachers.length}/>
                         </div>
                         <div className={"my-5"}/>
-                        <Table title={t('course.projects')} data={tableProjects} ignoreKeys={["status"]} home={"teacher"}/>
+                        <Table title={t('course.projects')} data={tableProjects} ignoreKeys={["status"]}
+                               home={"teacher"}/>
                         <div className={"my-5"}/>
                         <Table title={t('course.teachers')} data={teachers} ignoreKeys={[]} home={"teacher"}/>
                         <div className={"my-5"}/>
