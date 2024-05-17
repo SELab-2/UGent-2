@@ -11,7 +11,8 @@ def create_group(session: Session, project_id: int) -> Group:
     Create an empty group for a certain project.
     """
     project: Project = get(session, Project, project_id)
-    new_group: Group = Group(project_id=project_id)
+    next_id = 1 if len(project.groups) == 0 else max(project.groups, key=lambda group: group.visible_id).visible_id + 1
+    new_group = Group(project_id=project_id, visible_id=next_id)
     project.groups.append(new_group)
 
     session.add(new_group)

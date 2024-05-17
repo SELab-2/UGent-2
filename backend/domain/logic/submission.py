@@ -88,7 +88,7 @@ def zip_all_submissions(session: Session, project_id: int) -> bytes:
             submission = get_last_submission(session, group.id)
             if not Path.exists(Path(submission.filename)):
                 continue
-            submission_path = Path(tmpdir) / f"{group.id}-{submission.filename.split("/")[-1]}"
+            submission_path = Path(tmpdir) / f"{group.visible_id}-{submission.filename.split("/")[-1]}"
             shutil.copy(submission.filename, submission_path)
         with tempfile.TemporaryDirectory() as zipdir:
             shutil.make_archive(f"{zipdir}/submissions", "zip", tmpdir)
