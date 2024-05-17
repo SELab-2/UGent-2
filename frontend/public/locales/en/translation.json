@@ -233,5 +233,9 @@
         "leave_course": "leave course",
         "leave_last_teacher": "You are the last teacher, so the course will be archived for all students.",
         "leave_question": "Are you sure that you want to leave this course?"
+    },
+    "empty-home": {
+        "empty-cards": "No active projects at this moment.",
+        "empty-deadline": "No deadlines soon."
     }
 }
