@@ -47,7 +47,7 @@ import joinCourse, {JOIN_COURSE} from "./dataloaders/JoinCourse.ts";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
-        <Route path={"/"}>
+        <Route path={"/"} errorElement={<ErrorPage/>}>
 
             {/* Public routes */}
             <Route path={"login"} id={LOGIN_ROUTER_ID} element={<LoginScreen/>} loader={loginLoader}
