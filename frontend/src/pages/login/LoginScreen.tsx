@@ -1,10 +1,11 @@
-import React, {JSX, useEffect} from "react";
+import {JSX, useEffect} from "react";
 import {Navigate, useLocation, useRouteLoaderData} from 'react-router-dom';
 import useAuth from "../../hooks/useAuth.ts";
 import loginLoader, {LOGIN_ROUTER_ID, loginLoaderObject} from "../../dataloaders/LoginLoader.ts";
 import LoginForm from "../../components/authentication/LoginForm.tsx";
 import {Token, User} from "../../utils/ApiInterfaces.ts";
 import {post_ticket} from "../../utils/api/Login.ts";
+import setLanguage from "../../utils/SetLanguage.ts";
 
 interface location_type {
     search?: { ticket?: string },
@@ -12,7 +13,7 @@ interface location_type {
     pathname: string
 }
 
-async function ticketLogin (ticket: string, setUser: React.Dispatch<React.SetStateAction<User | undefined>>) {
+async function ticketLogin(ticket: string, setUser: (user: User) => void, delUser: () => void): Promise<void> {
     const token: Token | undefined = await post_ticket(ticket)
     if (token?.token) {
         localStorage.setItem('token', token.token)
@@ -21,7 +22,7 @@ async function ticketLogin (ticket: string, setUser: React.Dispatch<React.SetSta
             setUser(result.user)
         } else {
             localStorage.removeItem('token')
-            setUser(undefined)
+            delUser()
         }
     }
 }
@@ -39,20 +40,28 @@ export default function LoginScreen(): JSX.Element {
     }
     localStorage.setItem('to', next)
 
+    const setUser_ = (user: User) => {
+        setLanguage(user.user_language);
+        setUser(user);
+    }
+    const delUser = () => {
+        setUser(undefined);
+    }
+
     // Loading the user using the saved token
     const data: loginLoaderObject = useRouteLoaderData(LOGIN_ROUTER_ID) as loginLoaderObject
     useEffect(() => {
         // If the saved token is valid => the user will be logged in
         if (data && data.user) {
-            setUser(data.user)
+            setUser_(data.user)
         } else if (!user && ticket) {
             try {
-                void ticketLogin(ticket, setUser);
+                void ticketLogin(ticket, setUser_, delUser);
             } catch (error) {
                 console.log("Ticket wasn't accepted")
             }
         }
-    }, [data, setUser, ticket, user]);
+    });
 
     return (
         <div className={"login-screen is-flex is-justify-content-center is-align-items-center"}>
