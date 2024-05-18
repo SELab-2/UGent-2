@@ -3,8 +3,6 @@ import FieldWithLabel from "./FieldWithLabel.tsx";
 import {FaCheck, FaUpload} from "react-icons/fa";
 import {FaDownload} from "react-icons/fa6";
 import {ProjectStatus, ProjectStudent} from "../types/project.ts";
-import SimpleTests from "./SimpleTests/SimpleTests.tsx";
-import {TeacherOrStudent} from "./SimpleTests/TeacherOrStudentEnum.tsx";
 import {useTranslation} from 'react-i18next';
 import {make_submission} from "../utils/api/Submission.ts";
 import {Submission} from "../utils/ApiInterfaces.ts";

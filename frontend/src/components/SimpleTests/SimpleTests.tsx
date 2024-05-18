@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-argument, react-hooks/exhaustive-deps */
 import {Dispatch, JSX, SetStateAction, useEffect} from "react";
 import { useState } from 'react';
 import { IoMdMore } from "react-icons/io";
@@ -67,7 +68,7 @@ class Constraint {
 
 function json_to_submission(json: any): Submission {
 
-    let json_root_constraint = json['root_constraint'];
+    const json_root_constraint = json['root_constraint'];
 
     if (json_root_constraint['type'] == 'FILE') {
         return new Submission('FILE', new Constraint(
@@ -87,7 +88,7 @@ function json_to_submission(json: any): Submission {
         depth: number
     ): Constraint[] {
 
-        let id = getID();
+        const id = getID();
 
         let constraint!: Constraint;
         switch(json['type']) { 
@@ -109,10 +110,10 @@ function json_to_submission(json: any): Submission {
             } 
         } 
 
-        let sub_constraints: Constraint[] = [];
-        if (json.hasOwnProperty('sub_constraints')) {
-            for (let sub_obj of json['sub_constraints']) {
-                for (let constraint of dfs(sub_obj, id, depth+1)) {
+        const sub_constraints: Constraint[] = [];
+        if (Object.prototype.hasOwnProperty.call(json, 'sub_constraints')) {
+            for (const sub_obj of json['sub_constraints']) {
+                for (const constraint of dfs(sub_obj, id, depth+1)) {
                     sub_constraints.push(constraint);
                 }
             }
@@ -121,19 +122,19 @@ function json_to_submission(json: any): Submission {
         return [constraint].concat(sub_constraints);
     }
 
-    let root_id = getID();
+    const root_id = getID();
 
-    let json_local_constraints: any[] = json_root_constraint['sub_constraints'];
-    let local_constraints = json_local_constraints.map(c => dfs(c, root_id, 1)).reduce((flat, next) => flat.concat(next), []);
+    const json_local_constraints: any[] = json_root_constraint['sub_constraints'];
+    const local_constraints = json_local_constraints.map(c => dfs(c, root_id, 1)).reduce((flat, next) => flat.concat(next), []);
 
     /* Global Constraints */
 
     function iterate(json_list: any): Constraint[] {
 
-       let constraints: Constraint[] = [];
+       const constraints: Constraint[] = [];
 
-       for (let json of json_list) {
-            let id = getID();
+       for (const json of json_list) {
+            const id = getID();
 
             let constraint!: Constraint;
             switch(json['type']) { 
@@ -157,10 +158,10 @@ function json_to_submission(json: any): Submission {
        return constraints;
     }
 
-    let json_global_constraints = json_root_constraint['global_constraints'];
-    let global_constraints = iterate(json_global_constraints);
+    const json_global_constraints = json_root_constraint['global_constraints'];
+    const global_constraints = iterate(json_global_constraints);
 
-    let x = new Submission("ZIP", new Zip(
+    const x = new Submission("ZIP", new Zip(
         global_constraints,
         local_constraints,
         new Constraint("ZIP", json_root_constraint['zip_name'], root_id, undefined, 0)
@@ -172,7 +173,7 @@ function json_to_submission(json: any): Submission {
 function submission_to_json(submission: Submission): string {
 
     function constraint_to_object(constraint: Constraint, local_constraint_list: Constraint[]): string {
-        let constraint_object: any = {};
+        const constraint_object: any = {};
         switch (constraint.type) {
             case 'FILE':
                 constraint_object['file_name'] = constraint.value;
@@ -199,7 +200,7 @@ function submission_to_json(submission: Submission): string {
         return constraint_object;
     }
 
-    let submission_object: any = {};
+    const submission_object: any = {};
     submission_object['type'] = "SUBMISSION";
 
     if (submission.type === 'FILE') {
@@ -207,8 +208,8 @@ function submission_to_json(submission: Submission): string {
     }
 
     if (submission.type === 'ZIP') {
-        let zip_object: any = {};
-        let zip = submission.submission as Zip;
+        const zip_object: any = {};
+        const zip = submission.submission as Zip;
         zip_object['type'] = "ZIP";
         zip_object['zip_name'] = zip.self_constraint.value;
 
@@ -230,8 +231,8 @@ function get_all_ids(submission: Submission) {
         return [(submission.submission as Constraint).id];
     }
 
-    let global_ids = (submission.submission as Zip).global_constraints.map(constraint => constraint.id);
-    let local_ids = (submission.submission as Zip).local_constraints.map(constraint => constraint.id);
+    const global_ids = (submission.submission as Zip).global_constraints.map(constraint => constraint.id);
+    const local_ids = (submission.submission as Zip).local_constraints.map(constraint => constraint.id);
     return global_ids.concat(local_ids).concat([(submission.submission as Zip).self_constraint.id]);
 }
 
@@ -260,7 +261,7 @@ export default function SimpleTests(props: {
 
     useEffect(() => {
         if (submission.type === 'ZIP') {
-            let zip = submission.submission as Zip;
+            const zip = submission.submission as Zip;
             setIsShown(structuredClone(isShown.set(zip.self_constraint.id, true))); /* we laten de root constraint zien */
             setIsHovering(zip.self_constraint.id);
         }
@@ -268,7 +269,7 @@ export default function SimpleTests(props: {
 
     useEffect(() => {
         if (submission !== undefined) {
-            let new_data = submission_to_json(submission);
+            const new_data = submission_to_json(submission);
             if (props.setData !== undefined) {
                 props.setData(JSON.stringify(new_data));
             }
@@ -301,17 +302,17 @@ export default function SimpleTests(props: {
 
     function doDeleteConstraint(oldSubmission: Submission, id: number): Submission {
         /* assume ZIP */
-        let zip = oldSubmission.submission as Zip;
+        const zip = oldSubmission.submission as Zip;
 
         // can't delete root
 
         // check global
-        let newGlobalConstraints = zip.global_constraints.filter(constraint => constraint.id !== id);
+        const newGlobalConstraints = zip.global_constraints.filter(constraint => constraint.id !== id);
 
         // check local
-        let newLocalConstraints = [];
-        let to_remove: number[] = [];
-        for (let constraint of zip.local_constraints) {
+        const newLocalConstraints = [];
+        const to_remove: number[] = [];
+        for (const constraint of zip.local_constraints) {
             if (constraint.id === id || to_remove.includes(constraint.parent_id as number)) {
                 to_remove.push(constraint.id); // remove recursively
             } else {
@@ -319,33 +320,33 @@ export default function SimpleTests(props: {
             }
         }
         
-        let x = new Submission(oldSubmission.type, new Zip(newGlobalConstraints, newLocalConstraints, zip.self_constraint));
+        const x = new Submission(oldSubmission.type, new Zip(newGlobalConstraints, newLocalConstraints, zip.self_constraint));
         return x
     }
 
     function doChangeConstraintType(oldSubmission: Submission, id: number, type: string): Submission {
         /* assume ZIP */
-        let zip = oldSubmission.submission as Zip;
+        const zip = oldSubmission.submission as Zip;
 
         // can't change root type through this function (see doChangeRootType)
 
         // check global
-        let g = zip.global_constraints.find(constraint => constraint.id === id);
+        const g = zip.global_constraints.find(constraint => constraint.id === id);
         if (g !== undefined) {
-            let newConstraint = new Constraint(type, g.value, g.id, g.parent_id, g.depth);
-            let index = zip.global_constraints.findIndex(constraint => constraint.id === newConstraint.id);
-            let newGlobalConstraints = [...zip.global_constraints.slice(0, index + 1), newConstraint, ...zip.global_constraints.slice(index + 1)];
+            const newConstraint = new Constraint(type, g.value, g.id, g.parent_id, g.depth);
+            const index = zip.global_constraints.findIndex(constraint => constraint.id === newConstraint.id);
+            const newGlobalConstraints = [...zip.global_constraints.slice(0, index + 1), newConstraint, ...zip.global_constraints.slice(index + 1)];
             return new Submission(oldSubmission.type, new Zip(newGlobalConstraints, zip.local_constraints, zip.self_constraint));
         }
 
         // check local
-        let l = zip.local_constraints.find(constraint => constraint.id === id);
-        let newConstraint = new Constraint(type, l!.value, l!.id, l!.parent_id, l!.depth);
-        let index = zip.local_constraints.findIndex(constraint => constraint.id === newConstraint.id);
-        let newLocalConstraints = [...zip.local_constraints.slice(0, index), newConstraint, ...zip.local_constraints.slice(index + 1)];
+        const l = zip.local_constraints.find(constraint => constraint.id === id);
+        const newConstraint = new Constraint(type, l!.value, l!.id, l!.parent_id, l!.depth);
+        const index = zip.local_constraints.findIndex(constraint => constraint.id === newConstraint.id);
+        const newLocalConstraints = [...zip.local_constraints.slice(0, index), newConstraint, ...zip.local_constraints.slice(index + 1)];
         let newSubmission = new Submission("ZIP", new Zip(zip.global_constraints, newLocalConstraints, zip.self_constraint));
-        let to_remove = zip.local_constraints.filter(constraint => constraint.parent_id === id);
-        for (let x of to_remove) { // remove children recursively on a change
+        const to_remove = zip.local_constraints.filter(constraint => constraint.parent_id === id);
+        for (const x of to_remove) { // remove children recursively on a change
             newSubmission = doDeleteConstraint(newSubmission, x.id);
         }
         return newSubmission;
@@ -353,21 +354,21 @@ export default function SimpleTests(props: {
 
     function doNewConstraint(oldSubmission: Submission, id: number | undefined, type: string, newId: number) {
         /* assume ZIP */
-        let zip = oldSubmission.submission as Zip;
+        const zip = oldSubmission.submission as Zip;
 
         // check new constraint for root
-        let local_constraints_plus_zip = [zip.self_constraint, ...zip.local_constraints];
+        const local_constraints_plus_zip = [zip.self_constraint, ...zip.local_constraints];
 
         // check global
         if (id === undefined) { // undefined id => new global constraint
-            let newGlobalConstraints = zip.global_constraints.concat([new Constraint(type, "CHANGE_ME", newId, id, 0)]);
+            const newGlobalConstraints = zip.global_constraints.concat([new Constraint(type, "CHANGE_ME", newId, id, 0)]);
             return new Submission("ZIP", new Zip(newGlobalConstraints, zip.local_constraints, zip.self_constraint));
         }
 
         // check local
-        let oldConstraint = local_constraints_plus_zip.find(constraint => constraint.id === id);
-        let newConstraint = new Constraint(type, "CHANGE_ME", newId, id, oldConstraint!.depth+1);
-        let sub_items = zip.local_constraints.filter(constraint => constraint.parent_id === id);
+        const oldConstraint = local_constraints_plus_zip.find(constraint => constraint.id === id);
+        const newConstraint = new Constraint(type, "CHANGE_ME", newId, id, oldConstraint!.depth+1);
+        const sub_items = zip.local_constraints.filter(constraint => constraint.parent_id === id);
         let index!: number;
         if (sub_items.length === 0) {
             // No sub-items yet. Put directly after item.
@@ -378,48 +379,48 @@ export default function SimpleTests(props: {
             // Sub-items present. Put after last sub-item.
             index = zip.local_constraints.findIndex(constraint => constraint.id === sub_items[sub_items.length-1].id);
         }
-        let new_local_constraints = [...zip.local_constraints.slice(0, index + 1), newConstraint, ...zip.local_constraints.slice(index + 1)];
+        const new_local_constraints = [...zip.local_constraints.slice(0, index + 1), newConstraint, ...zip.local_constraints.slice(index + 1)];
         return new Submission("ZIP", new Zip(zip.global_constraints, new_local_constraints, zip.self_constraint));
     }
 
     function doModifyValue(oldSubmission: Submission, id: number, new_value: string) {
         
         if (submission.type === 'FILE') {
-            let file = submission.submission as Constraint;
+            const file = submission.submission as Constraint;
             return new Submission("FILE", new Constraint('FILE', new_value, file.id, file.parent_id, file.depth));
         }
 
-        let zip = oldSubmission.submission as Zip;
+        const zip = oldSubmission.submission as Zip;
 
         // modify value for root
         if (zip.self_constraint.id === id) {
-            let s = zip.self_constraint;
-            let newConstraint = new Constraint(s.type, new_value, s.id, s.parent_id, s.depth);
+            const s = zip.self_constraint;
+            const newConstraint = new Constraint(s.type, new_value, s.id, s.parent_id, s.depth);
             return new Submission("ZIP", new Zip(zip.global_constraints, zip.local_constraints, newConstraint));
         }
 
         // global constraints
-        let g = zip.global_constraints.find(constraint => constraint.id === id);
+        const g = zip.global_constraints.find(constraint => constraint.id === id);
         if (g !== undefined) {
-            let newConstraint = new Constraint(g.type, new_value, g.id, g.parent_id, g.depth);
-            let index = zip.global_constraints.findIndex(constraint => constraint.id === newConstraint.id);
-            let newGlobalConstraints = [...zip.global_constraints.slice(0, index), newConstraint, ...zip.global_constraints.slice(index + 1)];
+            const newConstraint = new Constraint(g.type, new_value, g.id, g.parent_id, g.depth);
+            const index = zip.global_constraints.findIndex(constraint => constraint.id === newConstraint.id);
+            const newGlobalConstraints = [...zip.global_constraints.slice(0, index), newConstraint, ...zip.global_constraints.slice(index + 1)];
             return new Submission("ZIP", new Zip(newGlobalConstraints, zip.local_constraints, zip.self_constraint));
         }
 
         // local constraints
-        let l = zip.local_constraints.find(constraint => constraint.id === id);
-        let newConstraint = new Constraint(l!.type, new_value, l!.id, l!.parent_id, l!.depth);
-        let index = zip.local_constraints.findIndex(constraint => constraint.id === newConstraint.id);
-        let newLocalConstraints = [...zip.local_constraints.slice(0, index), newConstraint, ...zip.local_constraints.slice(index + 1)];
+        const l = zip.local_constraints.find(constraint => constraint.id === id);
+        const newConstraint = new Constraint(l!.type, new_value, l!.id, l!.parent_id, l!.depth);
+        const index = zip.local_constraints.findIndex(constraint => constraint.id === newConstraint.id);
+        const newLocalConstraints = [...zip.local_constraints.slice(0, index), newConstraint, ...zip.local_constraints.slice(index + 1)];
         return new Submission("ZIP", new Zip(zip.global_constraints, newLocalConstraints, zip.self_constraint));
     }
 
     /* Handlers */
 
     function handleChangeRootType() {
-        let new_root_id = getID();
-        let oldSubmission = submission;
+        const new_root_id = getID();
+        const oldSubmission = submission;
         setSubmission(doChangeRootType(submission, new_root_id));
         if (oldSubmission.type === 'FILE') { // we change to ZIP
             setIsShown(structuredClone(isShown.set(new_root_id, true)));
@@ -442,12 +443,12 @@ export default function SimpleTests(props: {
     }
 
     function handleNewConstraint(id: number | undefined, type: string,) {
-        let new_id = getID();
+        const new_id = getID();
         setSubmission(doNewConstraint(submission, id, type, new_id));
         setIsShown(structuredClone(isShown.set(new_id, true)));
         if (submission.type === 'ZIP') {
-            let children_ids = (submission.submission as Zip).local_constraints.filter(c => c.parent_id === id).map(c => c.id);
-            for (let child_id of children_ids) {
+            const children_ids = (submission.submission as Zip).local_constraints.filter(c => c.parent_id === id).map(c => c.id);
+            for (const child_id of children_ids) {
                 setIsShown(structuredClone(isShown.set(child_id, true)));
             }
         }
@@ -473,22 +474,22 @@ export default function SimpleTests(props: {
     function handleClickExpand(id: number) {
         /* assume ZIP */
 
-        let newIsExpanded = !isExpanded.get(id);
+        const newIsExpanded = !isExpanded.get(id);
         setIsExpanded(structuredClone(isExpanded.set(id, newIsExpanded)));
 
         if (newIsExpanded) {
             // open single layer
-            for (let constraint of (submission.submission as Zip).local_constraints) {
+            for (const constraint of (submission.submission as Zip).local_constraints) {
                 if (constraint.parent_id === id) {
                     setIsShown(structuredClone(isShown.set(constraint.id, true)));
                 }
             }
         } else {
             // close recursively all layers
-            let ids = [id];
+            const ids = [id];
             while(ids.length > 0) {
-                let rec_id = ids.pop();
-                for (let constraint of (submission.submission as Zip).local_constraints) {
+                const rec_id = ids.pop();
+                for (const constraint of (submission.submission as Zip).local_constraints) {
                     if (constraint.parent_id === rec_id) {
                         setIsExpanded(structuredClone(isExpanded.set(constraint.id, false)));
                         setIsShown(structuredClone(isShown.set(constraint.id, false)));
