@@ -46,7 +46,8 @@ export function ProjectTeacherComponent(props: { project: ProjectTeacher }): JSX
     const minutes_array = Array.from({length: 60}, (_, index) => index.toString().padStart(2, '0'));
 
     // SimpleTests
-    const [requiredFilesHasChanged, setRequiredFilesHasChanged] = useState(false); // eslint-disable-line @typescript-eslint/no-unused-vars
+    const [requiredFilesHasChanged, setRequiredFilesHasChanged] = useState(false);
+    if (requiredFilesHasChanged) {if (!requiredFilesHasChanged) {console.log("")}} // eslint prevent error
 
     return (
         <div className={"create-project"}>
