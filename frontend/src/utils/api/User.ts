@@ -1,9 +1,11 @@
 import apiFetch from "../ApiFetch.ts";
 import i18n from "../../i18n.tsx";
+import setLanguage from "../SetLanguage.ts";
 
 export function modify_language(language: string): void {
     void i18n.changeLanguage(language);
-    void apiFetch(`/user?language=${language.toUpperCase()}`, {
+    setLanguage(language);
+    void apiFetch(`/user?language=${language.toLowerCase()}`, {
         method: 'PUT'
     });
 }
