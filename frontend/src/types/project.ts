@@ -5,6 +5,7 @@ export type ValuePiece = Date | null; // nodig voor de deadline
 export type Value = ValuePiece | [ValuePiece, ValuePiece]; // nodig voor de deadline
 
 export type ProjectTeacher = {
+    projectId: number,
     projectName: string,
     all_courses: Course[],
     courseName: string,
