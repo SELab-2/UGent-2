@@ -4,15 +4,15 @@ import {IoIosStats} from "react-icons/io";
 import {useTranslation} from 'react-i18next';
 import {SUBMISSION_STATE} from "../utils/ApiInterfaces.ts";
 
-export default function Statistics(props: { statistics: { [key: number]: number }}): JSX.Element {
+export default function Statistics(props: { statistics: { [key: number]: number } }): JSX.Element {
 
-    const { t } = useTranslation();
+    const {t} = useTranslation();
 
     const data = [
         {title: t('statistics.success'), value: props.statistics[SUBMISSION_STATE.Approved], color: '#50C878'},
         {title: t('statistics.failed'), value: props.statistics[SUBMISSION_STATE.Rejected], color: '#C13C37'},
         {title: t('statistics.nothing_yet'), value: props.statistics[SUBMISSION_STATE.Pending], color: '#D3D3D3'}
-    ]
+    ].filter((entry) => entry.value !== 0);
 
     const [modalActive, setModalActive] = useState(false);
 
