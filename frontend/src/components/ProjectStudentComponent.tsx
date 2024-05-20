@@ -94,6 +94,10 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
             setGroupId(-1)
             setSubmission('')
             setHasGroup(false)
+            setSuccess('')
+            setError('')
+            setFile(undefined)
+            setNewSelectedFile(false)
         }
 
         return (
@@ -128,7 +132,7 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
                     </div>
                 </div>
                 <div className={"is-flex is-justify-content-end is-align-items-center"}>
-                    {props.maxGroupMembers > 1 && <div>
+                    {props.maxGroupMembers > 1 && <div className={"columns"}>
 
                         <p className={"mx-3"}>leave group: </p>
                         <button className={"button"} onClick={ () => {
@@ -186,11 +190,11 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
                         <tbody>
                         {groupInfo && groupInfo.map((member, index) => {
                             return (<tr key={index}>
-                                <td>{member.nr}</td>
-                                <td>{member.amountOfMembers}</td>
-                                <td> {props.project.maxGroupMembers > member.amountOfMembers ?
+                                <td>{member.visible_id}</td>
+                                <td>{member.member_count}</td>
+                                <td> {props.project.maxGroupMembers > member.member_count ?
                                     <button className={"button"} onClick={() => {
-                                        void onJoinClick(member.nr)
+                                        void onJoinClick(member.id)
                                     }}><MdOutlinePersonAddAlt1/></button>
                                     :
                                     <p>—</p>
@@ -246,11 +250,22 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
 
     return (
         <div>
+            {newSelectedFile && hasGroup &&
+                <div>
+                    <div className={"fixated is-flex is-justify-content-start"}>
+                        <RegularButton
+                            placeholder={t('project.save')}
+                            add={false}
+                            onClick={() => void submitFile()}
+                            styling="is-primary"/>
+                    </div>
+                    <div className="fixated-filler"/>
+                </div>}
             <ProjectInfo project={props.project}/>
-            {error && <div className="notification is-danger" style={{width: "75%"}}>
+            {error && <div className="notification is-danger is-flex is-justify-content-center mx-5 my-3">
                 {error}
             </div>}
-            {success && <div className="notification is-success" style={{width: "75%"}}>
+            {success && <div className="notification is-success is-flex is-justify-content-center mx-5 my-3">
                 {success}
             </div>}
             {!hasGroup && props.project.maxGroupMembers > 1 &&
@@ -296,18 +311,6 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
                                 </div>
                             </ul>
                         </div>
-
-                        {newSelectedFile &&
-                            <div>
-                                <div className={"is-flex is-justify-content-start"}>
-                                    <RegularButton
-                                        placeholder={t('project.save')}
-                                        add={false}
-                                        onClick={() => void submitFile()}
-                                        styling="is-primary"/>
-                                </div>
-                                <div className="fixated-filler"/>
-                            </div>}
                     </div>
                 </>}
 

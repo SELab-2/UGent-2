@@ -29,23 +29,17 @@ export interface memberInfo {
 }
 
 export interface GroupInfo {
-    nr: number,
-    amountOfMembers: number
+    id: number,
+    member_count: number,
+    visible_id: number
 }
 
 export async function getGroupInfo(project_id: number): Promise<GroupInfo[] | undefined> {
-    const groups = await apiFetch<[{ id: number }]>(`/projects/${project_id}/groups`)
+    const groups = await apiFetch<GroupInfo[]>(`/projects/${project_id}/groups`)
     if (!groups.ok) {
         return undefined
     }
-    const groups_info: GroupInfo[] = await Promise.all(groups.content.map(async id_obj => {
-        const groupData = await apiFetch<[{ id: number }]>(`/groups/${id_obj.id}/members`)
-        return {
-            nr: id_obj.id,
-            amountOfMembers: groupData.content.length
-        } as GroupInfo
-    }))
-    return groups_info
+    return groups.content
 }
 
 export async function loadGroupMembers(project_id: number) {
