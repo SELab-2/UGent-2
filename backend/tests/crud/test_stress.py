@@ -4,7 +4,6 @@ from datetime import datetime
 
 from sqlmodel import SQLModel
 
-from db.models import SubmissionState
 from domain.logic import admin, course, group, project, student, submission, teacher
 from tests.crud.test_main import get_db, test_engine
 
@@ -42,10 +41,10 @@ class TestStress(unittest.TestCase):
                 self.session,
                 stud.id,
                 grp.id,
-                "Test Message",
-                SubmissionState.Pending,
                 datetime.now(),
-                filename="test",
+                b"",
+                "test",
+                skip_validation=True,
             )
             teach = teacher.create_teacher(self.session, f"Test Teacher {i}", f"testteacher{i}@gmail.com")
             adm = admin.create_admin(self.session, f"Test Admin {i}", f"testadmin{i}@gmail.com")

@@ -4,7 +4,6 @@ from datetime import datetime
 
 from sqlmodel import SQLModel
 
-from db.models import SubmissionState
 from domain.logic.course import create_course
 from domain.logic.group import create_group
 from domain.logic.project import create_project
@@ -50,10 +49,10 @@ class TestSubmission(unittest.TestCase):
             self.session,
             student.id,
             group.id,
-            "Test Message",
-            SubmissionState.Pending,
             datetime.now(),
-            filename="test",
+            b"",
+            "test",
+            skip_validation=True,
         )
         retrieved_submission = get_submission(self.session, submission.id)
         self.assertEqual(submission.id, retrieved_submission.id)
@@ -76,24 +75,8 @@ class TestSubmission(unittest.TestCase):
             "",
         )
         group = create_group(self.session, project.id)
-        create_submission(
-            self.session,
-            student1.id,
-            group.id,
-            "Test Message 1",
-            SubmissionState.Pending,
-            datetime.now(),
-            filename="test",
-        )
-        create_submission(
-            self.session,
-            student2.id,
-            group.id,
-            "Test Message 2",
-            SubmissionState.Pending,
-            datetime.now(),
-            filename="test",
-        )
+        create_submission(self.session, student1.id, group.id, datetime.now(), b"", "test", skip_validation=True)
+        create_submission(self.session, student2.id, group.id, datetime.now(), b"", "test", skip_validation=True)
         self.assertEqual(len(get_all_submissions(self.session)), 2)
 
     def test_get_submissions_of_student(self) -> None:
@@ -113,24 +96,8 @@ class TestSubmission(unittest.TestCase):
             "",
         )
         group = create_group(self.session, project.id)
-        create_submission(
-            self.session,
-            student.id,
-            group.id,
-            "Test Message 1",
-            SubmissionState.Pending,
-            datetime.now(),
-            filename="test",
-        )
-        create_submission(
-            self.session,
-            student.id,
-            group.id,
-            "Test Message 2",
-            SubmissionState.Pending,
-            datetime.now(),
-            filename="test",
-        )
+        create_submission(self.session, student.id, group.id, datetime.now(), b"", "test", skip_validation=True)
+        create_submission(self.session, student.id, group.id, datetime.now(), b"", "test", skip_validation=True)
         submissions_of_student = get_submissions_of_student(self.session, student.id)
         self.assertEqual(len(submissions_of_student), 2)
 
@@ -152,24 +119,8 @@ class TestSubmission(unittest.TestCase):
             "",
         )
         group = create_group(self.session, project.id)
-        create_submission(
-            self.session,
-            student1.id,
-            group.id,
-            "Test Message 1",
-            SubmissionState.Pending,
-            datetime.now(),
-            filename="test",
-        )
-        create_submission(
-            self.session,
-            student2.id,
-            group.id,
-            "Test Message 2",
-            SubmissionState.Pending,
-            datetime.now(),
-            filename="test",
-        )
+        create_submission(self.session, student1.id, group.id, datetime.now(), b"", "test", skip_validation=True)
+        create_submission(self.session, student2.id, group.id, datetime.now(), b"", "test", skip_validation=True)
         submissions_of_group = get_submissions_of_group(self.session, group.id)
         self.assertEqual(len(submissions_of_group), 2)
 

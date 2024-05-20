@@ -35,7 +35,6 @@ def make_submission(request: Request, group_id: int, file: UploadFile, tasks: Ba
         session=session,
         student_id=student.id,
         group_id=group_id,
-        message="",
         date_time=datetime.datetime.now(),
         original_filename=str(file.filename),
         file_content=file_content,

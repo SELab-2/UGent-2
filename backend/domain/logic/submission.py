@@ -10,7 +10,6 @@ from sqlmodel import Session
 from config import SUBMISSIONS_PATH
 from db.models import Group, Student, Submission, SubmissionState
 from domain.logic.basic_operations import get, get_all
-from domain.logic.group import get_group
 from domain.logic.project import get_project
 from domain.simple_submission_checks.constraints.submission_constraint import create_constraint_from_json
 from errors.database_errors import ItemNotFoundError
@@ -21,10 +20,10 @@ def create_submission(
     session: Session,
     student_id: int,
     group_id: int,
-    message: str,
     date_time: datetime,
     file_content: bytes,
     original_filename: str,
+    skip_validation: bool = False,
 ) -> Submission:
     """
     Create a submission for a certain project by a certain group.
@@ -41,8 +40,8 @@ def create_submission(
     filename = f"{dirname}/{original_filename}"
     with open(filename, "wb") as f:
         f.write(file_content)
-    project = get_group(session, group_id).project
-    if project.requirements != "":
+    project = get(session, Group, group_id).project
+    if not skip_validation and project.requirements != "":
         check_submission(session, group_id, dirname)
 
     state = SubmissionState.Approved if project.image_id == "" else SubmissionState.Pending
@@ -50,7 +49,7 @@ def create_submission(
     new_submission: Submission = Submission(
         student_id=student.id,
         group_id=group.id,
-        message=message,
+        message="",
         state=state,
         date_time=date_time,
         filename=filename,
