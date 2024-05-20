@@ -25,10 +25,6 @@ export default function LeaveCourseStudent(props: {course_id: number}): JSX.Elem
         }
     };
 
-    const handle_leave = () => {
-        void course_leave();
-    };
-
     const changeModal = () => {
         setModalActive(!modalActive);
     };
@@ -52,7 +48,9 @@ export default function LeaveCourseStudent(props: {course_id: number}): JSX.Elem
                     </section>
                     <footer className="modal-card-foot is-flex is-justify-content-center">
                         <RegularButton placeholder={t('popups.yes')} add={false} styling={"is-danger"}
-                                       onClick={handle_leave}/>
+                                       onClick={() => {
+                                           void course_leave()
+                                       }}/>
                         <RegularButton placeholder={t('popups.no')} add={false} styling={"is-info"}
                                        onClick={changeModal}/>
                     </footer>
