@@ -42,12 +42,13 @@ function ProjectInfo(props: { project: ProjectStudent }): JSX.Element {
                 </div>
                 <div className="field-body">
                     <div className="field">
-                        <SimpleTests
-                            teacherOrStudent={TeacherOrStudent.STUDENT}
-                            initialData={props.project.requiredFiles}
-                            setData={undefined}
-                            setHasChanged={undefined}
-                        />
+                        { // TODO requiredFiles moet een string geven zoals bij teacher voor dit kan werken
+                            /*<SimpleTests
+                                teacherOrStudent={TeacherOrStudent.STUDENT}
+                                initialData={}
+                                setData={undefined}
+                                setHasChanged={undefined}
+                            /> */}
                     </div>
                 </div>
             </div>
@@ -83,7 +84,8 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
         project_id: number
     }): JSX.Element {
         const {t} = useTranslation();
-        async function onLeaveClick(){
+
+        async function onLeaveClick() {
             void leaveGroup(groupId)
             const group_info = await getGroupInfo(props.project_id)
             setGroupInfo(group_info)
@@ -132,7 +134,7 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
                     {props.maxGroupMembers > 1 && <div className={"columns"}>
 
                         <p className={"mx-3"}>leave group: </p>
-                        <button className={"button"} onClick={ () => {
+                        <button className={"button"} onClick={() => {
                             void onLeaveClick()
                         }}>
                             <IoExitOutline size={25}/>
