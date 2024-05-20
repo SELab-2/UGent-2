@@ -5,16 +5,11 @@ import 'react-calendar/dist/Calendar.css';
 import {FaUpload} from "react-icons/fa";
 import {ProjectTeacher, Value} from "../types/project.ts";
 import "../assets/styles/teacher_components.css"
-import {dummy_data} from "./SimpleTests/DummyData.tsx";
 import SimpleTests from "./SimpleTests/SimpleTests.tsx";
 import {TeacherOrStudent} from "./SimpleTests/TeacherOrStudentEnum.tsx";
 import Calendar from "react-calendar";
 import {useTranslation} from 'react-i18next';
 import Switch from "react-switch";
-
-// SimpleTests
-const CHECK_SIMPLE_TESTS = false
-const calledData = dummy_data
 
 export function ProjectTeacherComponent(props: { project: ProjectTeacher }): JSX.Element {
 
@@ -27,8 +22,7 @@ export function ProjectTeacherComponent(props: { project: ProjectTeacher }): JSX
     const [deadline, setDeadline] = useState<Value>(props.project.deadline);
     const [description, setDescription] = useState(props.project.description);
     const [max_students, setMaxStudents] = useState(props.project.maxGroupMembers);
-    // Dit zou een json-object moeten zijn (of toch stringified versie ervan).
-    // const [requiredFiles, setRequiredFiles] = useState(props.project.requiredFiles);
+    const [requiredFiles, setRequiredFiles] = useState(props.project.requiredFiles);
     // Deze wordt niet gebruikt. Dit zit verwerkt in het json-object als OnlyPresentConstraint.
     // const [otherFilesAllow, setOtherFilesAllow] = useState(props.project.otherFilesAllow);
     const [groupProject, setGroupProject] = useState(props.project.groupProject);
@@ -52,8 +46,8 @@ export function ProjectTeacherComponent(props: { project: ProjectTeacher }): JSX
     const minutes_array = Array.from({length: 60}, (_, index) => index.toString().padStart(2, '0'));
 
     // SimpleTests
-    const [data, setData] = useState<object>(calledData);
-    const [hasChanged, setHasChanged] = useState(false);
+    const [requiredFilesHasChanged, setRequiredFilesHasChanged] = useState(false);
+    if (requiredFilesHasChanged) {if (!requiredFilesHasChanged) {console.log("")}} // eslint prevent error
 
     return (
         <div className={"create-project"}>
@@ -107,6 +101,7 @@ export function ProjectTeacherComponent(props: { project: ProjectTeacher }): JSX
                     }
                 </div>
             </div>
+            {/* DESCRIPTION FIELD */}
             <div className="field is-horizontal">
                 <div className="field-label">
                     <label className="label">{t('create_project.description.tag')}</label>
@@ -119,6 +114,7 @@ export function ProjectTeacherComponent(props: { project: ProjectTeacher }): JSX
                     </div>
                 </div>
             </div>
+            {/* DOCKER FIELD */}
             <div className="field is-horizontal">
                 <div className="field-label">
                     <label className="label">{t('create_project.docker_file.tag')}</label>
@@ -140,25 +136,23 @@ export function ProjectTeacherComponent(props: { project: ProjectTeacher }): JSX
                     </label>
                 </div>
             </div>
+            {/* SUBMISSION FIELD */}
             <div className="field is-horizontal">
                 <div className="field-label">
                     <label className="label">{t('create_project.submission_files.tag')}</label>
                 </div>
                 <div className="field-body field">
                     <div className="field"> {/* Deze moet er blijven, anders doet css raar*/}
-                        {CHECK_SIMPLE_TESTS && <>
-                            <button onClick={() => console.log(hasChanged)}>hasChanged</button>
-                            <button onClick={() => console.log(data)}>data</button>
-                        </>}
                         <SimpleTests
                             teacherOrStudent={TeacherOrStudent.TEACHER}
-                            initialData={calledData}
-                            setData={setData}
-                            setHasChanged={setHasChanged}
+                            initialData={requiredFiles}
+                            setData={setRequiredFiles}
+                            setHasChanged={setRequiredFilesHasChanged}
                         />
                     </div>
                 </div>
             </div>
+            {/* TEAMWORK FIELD */}
             <div className="field is-horizontal">
                 <div className="field-label">
                     <label className="label">{t('create_project.teamwork.tag')}</label>

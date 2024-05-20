@@ -24,6 +24,7 @@
     "i18next-browser-languagedetector": "^7.2.1",
     "i18next-http-backend": "^2.5.0",
     "localstorage": "^1.0.1",
+    "lodash": "^4.17.21",
     "react": "^18.2.0",
     "react-calendar": "^4.8.0",
     "react-dom": "^18.2.0",
@@ -51,7 +52,7 @@
     "eslint-plugin-vitest": "^0.4.2-beta.3",
     "jsdom": "^24.0.0",
     "typescript": "^5.2.2",
-    "vite": "^5.1.7",
+    "vite": "^4.4.0",
     "vitest": "^1.4.0"
   }
 }

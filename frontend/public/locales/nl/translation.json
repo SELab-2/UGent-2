@@ -82,29 +82,42 @@
         "error_text": "Je hebt nog geen vakken, maak eerst een vak aan om een project te kunnen maken."
     },
     "submission_files": {
-        "changes_text": "",
         "root_switch": {
             "single_file": "enkel bestand",
-            "zip_file": "zip-bestand"
+            "zip_file": "zip bestand"
         },
-        "color_codes": {
-            "tag": "Kleurencodes:",
-            "zip": "zip",
-            "folder_refuse_others": "folder (enkel gespecifieerde bestanden)",
-            "folder_allow_others": "folder (ook andere bestanden toegestaan)",
-            "file": "bestand"
+        "constraints": {
+            "global": "Globale voorwaarden:",
+            "local": "Locale voorwaarden:"
         },
-        "specify_files": {
-            "teacher": "Specifieer de structuur van de indieningsbestanden:",
-            "student": "Structuur van de bestanden:"
+        "single_file": {
+            "name": "naam:"
         },
         "menu": {
             "remove": "verwijderen",
-            "allow_others": "andere toestaan"
+            "file": "BESTAND",
+            "directory": "FOLDER",
+            "zip": "ZIP",
+            "not_present": "NIET_AANWEZIG",
+            "extension_not_present": "EXTENSIE_NIET_AANWEZIG",
+            "extension_only_present": "EXTENSIE_ENKEL_AANWEZIG"
         },
-        "warning": {
-            "type_switch": "Alle huidige file-specificaties zullen verwijderd worden. Ben je zeker dat je het root-type wil aanpassen?",
-            "remove": "Ben je zeker?"
+        "warning_change_root": {
+            "type_switch": "Alle huidige bestand-specificaties zullen verwijderd worden. Ben je zeker dat je het type van de root wil veranderen"
+        },
+        "information": {
+            "title": "Informatie",
+            "constraints": "Je kan de waarde van een voorwaarde veranderen door er op te klikken. Beweeg je cursor over een voorwaarde om meer opties te krijgen.",
+            "extensions": "Begin extensie-namen telkens met een punt.",
+            "color_codes": {
+                "title": "kleurencodes:",
+                "file": "bestand",
+                "directory": "folder",
+                "zip": "zip",
+                "not_present": "niet aanwezig",
+                "extension_not_present": "extensie niet aanwezig",
+                "extension_only_present": "extensie enkel aanwezig"
+            }
         }
     },
     "warneable": {
@@ -166,7 +179,7 @@
         "text": "Het project dat je probeert te bekijken bestaat niet of je hebt geen toegang tot dit project."
     },
     "statistics": {
-        "tag": "StatiStatistiekenstics",
+        "tag": "Statistieken",
         "submissions": "Indieningen",
         "nothing_yet": "Nog niets",
         "failed": "Mislukt",
