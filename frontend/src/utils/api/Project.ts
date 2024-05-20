@@ -14,7 +14,6 @@ export async function project_create_group(project_id: number): Promise<Group> {
     if (groupData.ok) {
         return mapGroup(groupData.content);
     }
-    // TODO: error handling
     throw groupData.status_code
 }
 

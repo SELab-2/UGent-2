@@ -16,7 +16,6 @@ export async function createCourse(name: string): Promise<Course> {
     if (courseData.ok){
         return mapCourse(courseData.content);
     }else{
-        // TODO: error handling
         throw courseData.status_code
     }
 }

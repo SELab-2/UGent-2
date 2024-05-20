@@ -15,7 +15,6 @@ export async function course_create_project(courseId: number, projectInput: Proj
     if (projectData.ok) {
         return mapProject(projectData.content);
     }else{
-        // TODO: error handling
         throw projectData.status_code
     }
 }
