@@ -1,19 +1,15 @@
 import datetime
-import hashlib
-import pathlib
 
 from fastapi import APIRouter, BackgroundTasks, Response, UploadFile
 from sqlmodel import Session
 from starlette.requests import Request
 
-from config import SUBMISSIONS_PATH
 from controllers.authentication.role_dependencies import ensure_student_in_group, ensure_user_authorized_for_submission
 from controllers.swagger_tags import Tags
 from db.extensions import engine
 from db.models import Submission, SubmissionState
 from domain.logic.docker import run_container
-from domain.logic.group import get_group
-from domain.logic.submission import check_submission, create_submission, get_last_submission, get_submission
+from domain.logic.submission import create_submission, get_last_submission, get_submission
 
 submission_router = APIRouter(tags=[Tags.SUBMISSION])
 
@@ -35,28 +31,16 @@ def make_submission(request: Request, group_id: int, file: UploadFile, tasks: Ba
     session = request.state.session
     student = ensure_student_in_group(request, group_id)
     file_content = file.file.read()
-    sha256 = hashlib.sha256(file_content).hexdigest()
-    dirname = f"{SUBMISSIONS_PATH}/{sha256}-{file.filename}"
-    pathlib.Path.mkdir(pathlib.Path(dirname), exist_ok=True)
-    filename = f"{dirname}/{file.filename}"
-    with open(filename, "wb") as f:
-        f.write(file_content)
-    project = get_group(session, group_id).project
-    if project.requirements != "":
-        check_submission(session, group_id, dirname)
-
-    state = SubmissionState.Approved if project.image_id == "" else SubmissionState.Pending
-
     submission = create_submission(
         session=session,
         student_id=student.id,
         group_id=group_id,
         message="",
-        state=state,
         date_time=datetime.datetime.now(),
-        filename=filename,
+        original_filename=str(file.filename),
+        file_content=file_content,
     )
-    if state == SubmissionState.Pending:
+    if submission.state == SubmissionState.Pending:
         tasks.add_task(run_docker_checks, submission.id)
     return submission
 

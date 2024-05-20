@@ -1,3 +1,5 @@
+import hashlib
+import pathlib
 import shutil
 import tempfile
 from datetime import datetime
@@ -5,8 +7,10 @@ from pathlib import Path
 
 from sqlmodel import Session
 
+from config import SUBMISSIONS_PATH
 from db.models import Group, Student, Submission, SubmissionState
 from domain.logic.basic_operations import get, get_all
+from domain.logic.group import get_group
 from domain.logic.project import get_project
 from domain.simple_submission_checks.constraints.submission_constraint import create_constraint_from_json
 from errors.database_errors import ItemNotFoundError
@@ -18,9 +22,9 @@ def create_submission(
     student_id: int,
     group_id: int,
     message: str,
-    state: SubmissionState,
     date_time: datetime,
-    filename: str,
+    file_content: bytes,
+    original_filename: str,
 ) -> Submission:
     """
     Create a submission for a certain project by a certain group.
@@ -30,6 +34,18 @@ def create_submission(
 
     if group.project.archived:
         raise ArchivedError
+
+    sha256 = hashlib.sha256(file_content).hexdigest()
+    dirname = f"{SUBMISSIONS_PATH}/{sha256}-{original_filename}"
+    pathlib.Path.mkdir(pathlib.Path(dirname), exist_ok=True)
+    filename = f"{dirname}/{original_filename}"
+    with open(filename, "wb") as f:
+        f.write(file_content)
+    project = get_group(session, group_id).project
+    if project.requirements != "":
+        check_submission(session, group_id, dirname)
+
+    state = SubmissionState.Approved if project.image_id == "" else SubmissionState.Pending
 
     new_submission: Submission = Submission(
         student_id=student.id,
