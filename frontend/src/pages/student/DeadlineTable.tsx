@@ -17,10 +17,13 @@ function DeadlineElement(props: { project: CompleteProjectStudent }): JSX.Elemen
 }
 
 function DeadlineTable(props: { projects: CompleteProjectStudent[] }): JSX.Element {
-    
+
     const today = new Date();
+
     const filteredAndSortedProjects = props.projects
         .filter(project => new Date(project.project_deadline) >= today)
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-expect-error
         .sort((a, b) => new Date(a.project_deadline) - new Date(b.project_deadline));
 
     const {t} = useTranslation();
