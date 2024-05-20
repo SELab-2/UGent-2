@@ -4,7 +4,7 @@ import {CompleteProjectStudent} from "../../utils/ApiInterfaces.ts";
 import {useTranslation} from 'react-i18next';
 import {deadline_to_string} from "../../utils/helper.ts";
 
-function DeadlineElement(props: {project: CompleteProjectStudent}): JSX.Element {
+function DeadlineElement(props: { project: CompleteProjectStudent }): JSX.Element {
     return (
         <div className={"deadline-card is-flex is-flex-direction-column is-align-items-center py-2"}>
             <p>{deadline_to_string(props.project.project_deadline)}</p>
@@ -16,23 +16,28 @@ function DeadlineElement(props: {project: CompleteProjectStudent}): JSX.Element 
     )
 }
 
-function DeadlineTable(props: {projects: CompleteProjectStudent[]}): JSX.Element {
+function DeadlineTable(props: { projects: CompleteProjectStudent[] }): JSX.Element {
 
-    const { t } = useTranslation();
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
+    const projects = props.projects.sort((a, b) => new Date(a.project_deadline) - new Date(b.project_deadline));
+
+    const {t} = useTranslation();
 
     return (
         <div className={"deadline"}>
             <div className={"deadline-head is-flex is-justify-content-center py-2"}>
                 <p>{t('home_student.deadlines')}</p>
             </div>
-            { props.projects.length == 0 ?
+            {props.projects.length == 0 ?
                 <div className={"deadline-elements is-flex is-justify-content-center is-align-items-center"}>
                     <p>{t('empty-home.empty-deadline')}</p>
                 </div>
                 :
                 <div className={"deadline-elements"}>
-                    {props.projects.map((project) => {
-                            return <DeadlineElement key={project.project_id} project={project}/>
+                    {projects.map((project) => {
+                        return <DeadlineElement key={project.project_id} project={project}/>
                     })}
                 </div>
             }
