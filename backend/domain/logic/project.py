@@ -6,7 +6,7 @@ from sqlmodel import Session
 from db.models import Course, Project, ProjectInput, Student, Teacher
 from domain.logic.basic_operations import get, get_all
 from domain.simple_submission_checks.constraints.submission_constraint import create_constraint_from_json
-from errors.logic_errors import InvalidConstraintsError
+from errors.logic_errors import ArchivedError, InvalidConstraintsError
 
 
 def create_project(
@@ -25,6 +25,8 @@ def create_project(
     Create a project for a certain course.
     """
     course: Course = get(session, Course, course_id)
+    if course.archived:
+        raise ArchivedError
 
     new_project: Project = Project(
         name=name,
@@ -77,6 +79,8 @@ def get_projects_of_teacher(session: Session, user_id: int) -> list[Project]:
 
 def update_project(session: Session, project_id: int, project: ProjectInput) -> None:
     project_db = get(session, Project, project_id)
+    if project_db.course.archived:
+        raise ArchivedError
     project_db.archived = project.archived
     project_db.deadline = project.deadline
     project_db.description = project.description
