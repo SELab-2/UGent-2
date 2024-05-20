@@ -86,8 +86,75 @@ def fill_database_mock() -> None:
             archived=False,
             visible=True,
             description="Bouw een eenvoudige webshop",
-            requirements='{"type": "SUBMISSION", "root_constraint": { "type": "ZIP", "zip_name": "submission.zip", '
-                         '"global_constraints": [], "sub_constraints": []}}',
+            requirements="""{
+                "type": "SUBMISSION",
+                "root_constraint": {
+                    "type": "ZIP",
+                    "zip_name": "project.zip",
+                    "global_constraints": [
+                        {
+                            "type": "EXTENSION_NOT_PRESENT",
+                            "extension": ".exe"
+                        },
+                        {
+                            "type": "NOT_PRESENT",
+                            "file_or_directory_name": "test.class"
+                        }
+                    ],
+                    "sub_constraints": [
+                    {
+                        "type": "DIRECTORY",
+                        "directory_name": "src",
+                        "sub_constraints": [
+                        {
+                            "type": "FILE",
+                            "file_name": "main.py"
+                        },
+                        {
+                            "type": "DIRECTORY",
+                            "directory_name": "utils",
+                            "sub_constraints": [
+                            {
+                                "type": "FILE",
+                                "file_name": "helper.py"
+                            },
+                            {
+                                "type": "NOT_PRESENT",
+                                "file_or_directory_name": "extra_file.txt"
+                            }
+                            ]
+                        }
+                        ]
+                    },
+                    {
+                        "type": "DIRECTORY",
+                        "directory_name": "tests",
+                        "sub_constraints": [
+                        {
+                            "type": "FILE",
+                            "file_name": "test_main.py"
+                        }
+                        ]
+                    },
+                    {
+                        "type": "FILE",
+                        "file_name": "README.md"
+                    },
+                    {
+                        "type": "FILE",
+                        "file_name": ".gitignore"
+                    },
+                    {
+                        "type": "NOT_PRESENT",
+                        "file_or_directory_name": "dist"
+                    },
+                    {
+                        "type": "EXTENSION_NOT_PRESENT",
+                        "extension": ".log"
+                    }
+                    ]
+                }
+            }""",
             max_students=4,
             deadline=datetime(2024, 10, 30, 23, 59, 59, tzinfo=tz.LOCAL),
             dockerfile="",

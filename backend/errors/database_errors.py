@@ -9,8 +9,8 @@ class ItemNotFoundError(ExceptionBase):
     """
 
     def __init__(self, message: str) -> None:
-        self.ERROR_MESSAGE = message
-        self.STATUS_CODE = status.HTTP_404_NOT_FOUND
+        self.detail = message
+        self.status_code = status.HTTP_404_NOT_FOUND
         super().__init__()
 
 

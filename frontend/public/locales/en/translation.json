@@ -82,29 +82,45 @@
         "error_text": "You don't have any courses yet, please create a course first in order to create a project"
     },
     "submission_files": {
-        "changes_text": "",
         "root_switch": {
             "single_file": "single file",
-            "zip_file": "zip-file"
+            "zip_file": "zip file"
         },
-        "color_codes": {
-            "tag": "Color codes:",
-            "zip": "zip",
-            "folder_refuse_others": "folder (only specified files)",
-            "folder_allow_others": "folder (other files allowed)",
-            "file": "file"
+        "constraints": {
+            "global": "Global constraints:",
+            "local": "Local constraints:"
         },
-        "specify_files": {
-            "teacher": "Specify the structure of the submission files:",
-            "student": "File-structure:"
+        "single_file": {
+            "name": "name:"
         },
         "menu": {
             "remove": "remove",
-            "allow_others": "allow others"
+            "file": "FILE",
+            "directory": "DIRECTORY",
+            "zip": "ZIP",
+            "not_present": "NOT_PRESENT",
+            "extension_not_present": "EXTENSION_NOT_PRESENT",
+            "extension_only_present": "EXTENSION_ONLY_PRESENT"
+        },
+        "warning_change_root": {
+            "type_switch": "All current file-specifications will be removed. Are you sure you want to change the type of the root?"
         },
         "warning": {
-            "type_switch": "All current file-specifications will be removed. Are you sure you want to change the type of the root?",
             "remove": "Are you sure?"
+        },
+        "information": {
+            "title": "Information",
+            "constraints": "You can edit the value of a contraint by clicking on it. By hovering over a constraint, more operations will appear.",
+            "extensions": "Please begin extension names with a dot.",
+            "color_codes": {
+                "title": "color codes:",
+                "file": "file",
+                "directory": "directory",
+                "zip": "zip",
+                "not_present": "not present",
+                "extension_not_present": "extension not present",
+                "extension_only_present": "extension only present"
+            }
         }
     },
     "warneable": {

@@ -10,109 +10,129 @@
 
 .content-checks {
     border: solid;
-
-    padding: 20px;
     margin: 10px;
-
     width: 800px;
 
     .type {
+        border-bottom: double;
+        border-width: 4px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding-top: 7px;
+        padding-bottom: 7px;
 
-        margin: 10px;
-
-        .field {
-
-            .thick {
-                font-weight: bolder;
-            }
-
-            .thin {
-                font-weight: lighter;
-            }
-
-            .divider {
-                margin-left: 3px;
-                margin-right: 3px;
-            }
-
-        }
-    }
-
-    .constraints {
-        border: solid;
-        border-width: 1px;
-        margin: 10px;
-        border-radius: 3px;
-
-        height: 200px;
-        overflow: auto;
-
-        .constraint_object {
-            align-items: center;
-            .name {
-                width: min-content;
-            }
-            .add {
-                margin-left: 10px;
-                /* border: solid;
-                border-width: 1px; */
-            }
-            .more {
+        .switch {
+            margin-left: 10px;
+            margin-right: 10px;
+            .button-checked-icon {
+                display: flex;
+                justify-content: center;
                 align-items: center;
+                height: 100%;
+                color: white;
+                margin-left: 7px;
             }
+        }
+
+        .thick {
+            font-weight: bolder;
+        }
+        .thin {
+            font-weight: lighter;
+        }
+    }   
+
+    .type-content {
+        padding: 10px;
+
+        .information-wrapper {
+            float: right;
         }
     }
 
+    .global-table {
+        height: 100px;
+    }
+    .local-table {
+        height: 200px;
+    }
+
+    .constraints-table {
+        border: solid;
+        margin: 10px 20px;
+        padding: 2px 10px;
+        display: flex;
+        flex-direction: column;
+        
+        overflow: auto;
+    }
+
+    .file-root-container {
+        margin: 20px;
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+        align-items: center;
+    }
 }
 
-
-
-/* =============================================== */
-
-.menu-item {
-    padding: 5px 10px;
-    align-items: center;
-}
-
-.menu-item + .menu-item {
-    border-top: 1px solid rgb(187, 187, 187);
-}
-
-
-/* =============================================== */
-
-.column {
-    display: flex;
-    flex-direction: column;
-}
-
-.row {
+.constraint-row {
     display: flex;
     flex-direction: row;
+    gap: 5px;
+    align-items: center;
+
+    .row-value {
+        padding-right: 10px;;
+    }
+
+    .row-icon {
+        height: 26px;
+        width: 26px;
+        padding: 4px;
+    }
+    .row-icon:hover {
+        background-color: rgb(230, 230, 230);
+        border-radius: 50%;
+        border: solid;
+        border-width: 1px;
+    }
+
+    .more-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
 }
 
-.hover-encircle:hover {
-    border-radius: 10px;
-    border: solid;
-    border-width: 1px;
+.FILE {
+        
+}
+.DIRECTORY {
+    font-weight: bold;
+}
+.ZIP {
+    font-weight: bold;
+    font-style: italic;
+}
+.NOT_PRESENT {
+    text-shadow: 2px 2px 4px rgba(0, 4, 255, 0.7);
+}
+.EXTENSION_NOT_PRESENT {
+    text-shadow: 2px 2px 4px rgba(0, 255, 55, 0.7);
+}
+.EXTENSION_ONLY_PRESENT {
+    text-shadow: 2px 2px 4px rgba(255, 4, 0, 0.7);
 }
 
-.hover-shadow:hover {
-    background-color: rgb(232, 232, 232);
-}
+/* =============================================== */
 
-.hidden {
-    color: transparent;
+.menu-not-last-item {
+    margin-right: 5px;
 }
+.menu-not-last-item:focus {
+    outline: none;
+  }
 
-.dir-color {
-    text-shadow: 2px 2px 4px rgba(78, 255, 24, 0.7);
-}
-
-.locked-dir-color {
-    text-shadow: 2px 2px 4px rgba(230, 6, 6, 0.5);
-}
-
-.zip-color {
-    text-shadow: 2px 2px 4px rgba(255, 251, 24, 0.7);
-}
