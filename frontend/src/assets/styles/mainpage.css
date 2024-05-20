@@ -2,6 +2,8 @@
     --sidebar-width: 80px;
     --primary-dark: #5f69cc;
     --primary-light: #b2b1ff;
+    --primary-light-text: white;
+    --primary-dark-text: black;
 }
 
 .login-screen {
@@ -14,7 +16,7 @@
     height: var(--sidebar-width);
     background-color: var(--primary-dark);
     overflow: hidden;
-    color: white;
+    color: var(--primary-light-text);
     font-size: 30px;
 }
 
@@ -51,7 +53,7 @@
         a {
             transform: scale(1.5);
             font-size: 1em;
-            color: white;
+            color: var(--primary-light-text);
         }
     }
 }
