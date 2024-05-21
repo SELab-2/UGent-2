@@ -7,7 +7,6 @@ import {PROJECT_TEACHER, ProjectTeacherLoaderObject} from "../../dataloaders/Pro
 import {useTranslation} from 'react-i18next';
 import DefaultErrorPage from "../../components/DefaultErrorPage.tsx";
 import {DEBUG} from "../root.tsx";
-import {FaDownload} from "react-icons/fa6";
 
 export default function ProjectViewTeacher() {
 
@@ -66,14 +65,10 @@ export default function ProjectViewTeacher() {
                     <Sidebar home={"teacher"}/>
                 </div>
                 <div className={"student-main my-3 is-flex is-flex-direction-column"}>
-                        <button className="js-modal-trigger button is-rounded is-pulled-right"
-                                onClick={() => void downloadAllSubmissions()}>
-                            <span className="icon is-small">
-                                <FaDownload/>
-                            </span>
-                            <span>{t('download.download_all')}</span>
-                        </button>
-                    <ProjectTeacherComponent project={project}/>
+                    <ProjectTeacherComponent 
+                        project={project} 
+                        submission_statistics={project_data.submission_statistics} 
+                        download_all_submissions={downloadAllSubmissions}/>
                 </div>
             </div>
         </>

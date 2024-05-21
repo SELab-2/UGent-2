@@ -12,8 +12,13 @@ import {useTranslation} from 'react-i18next';
 import Switch from "react-switch";
 import Statistics from "./Statistics.tsx";
 import {RegularButton} from "./RegularButton.tsx";
+import {FaDownload} from "react-icons/fa6";
 
-export function ProjectTeacherComponent(props: { project: ProjectTeacher, submission_statistics: {[key: number]: number} | undefined}): JSX.Element {
+export function ProjectTeacherComponent(props: { 
+    project: ProjectTeacher, 
+    submission_statistics: {[key: number]: number} | undefined,
+    download_all_submissions: (() => Promise<void>) | undefined
+}): JSX.Element {
 
     const {t} = useTranslation();
 
@@ -58,6 +63,20 @@ export function ProjectTeacherComponent(props: { project: ProjectTeacher, submis
                 <div className={"mr-5"}/>
                 {props.submission_statistics !== undefined &&
                     <Statistics statistics={props.submission_statistics}/>
+                }
+                <div className={"mr-5"}/>
+                {props.download_all_submissions !== undefined && 
+                    <button className="js-modal-trigger button is-rounded is-pulled-right"
+                            onClick={() => {
+                                if (props.download_all_submissions !== undefined) {
+                                    void props.download_all_submissions()
+                                }
+                            }}>
+                        <span className="icon is-small">
+                            <FaDownload/>
+                        </span>
+                        <span>{t('download.download_all')}</span>
+                    </button>
                 }
             </div>  
             <div className={"create-project-content"}>
