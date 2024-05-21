@@ -58,13 +58,13 @@ export async function loadGroupMembers(project_id: number) {
         return undefined
     }
     const groupMembersApi = groupMembersData.content
-    const groupMembers = await Promise.all(groupMembersApi.map(async (user) => {
+    const groupMembers = groupMembersApi.map((user) => {
         return {
             name: user.name,
             email: user.email,
             lastSubmission: user.id == lastSubmissionId
         }
-    }))
+    })
     return {members: groupMembers, id: groupId, submission: submission}
 }
 
@@ -125,11 +125,9 @@ export async function LoadProjectsForStudent(filter_on_current: boolean = false,
     const all_groupMemberInfo: (groupInfo | undefined)[] = (await Promise.all(groupBackendMembersPromises));
     const groupMemberInfo: groupInfo[] = all_groupMemberInfo.filter(gmi => gmi !== undefined) as groupInfo[]
     const groupMembersPromises: Promise<groupInfo | undefined>[] = groupMemberInfo.map(async (groupinfo) => {
-        const memberPromises: Promise<User | undefined>[] = groupinfo.members.map(async (member) => {
+        const all_users: User[] = groupinfo.members.map((member) => {
             return mapUser(member);
         });
-
-        const all_users: (User | undefined)[] = (await Promise.all(memberPromises));
         const users: User[] = all_users.filter(user => user != undefined) as User[]
         return {
             group_id: groupinfo.group_id,
