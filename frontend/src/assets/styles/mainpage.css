@@ -1,7 +1,9 @@
 :root {
     --sidebar-width: 80px;
-    --primary-dark: #6a74ce;
-    --primary-light: #9c9afd;
+    --primary-dark: #5f69cc;
+    --primary-light: #b2b1ff;
+    --primary-light-text: white;
+    --primary-dark-text: black;
     overflow-y: auto !important
 }
 
@@ -13,8 +15,10 @@
 .main-header {
     width: 100vw;
     height: var(--sidebar-width);
-    background-color: var(--primary-light);
+    background-color: var(--primary-dark);
     overflow: hidden;
+    color: var(--primary-light-text);
+    font-size: 30px;
 }
 
 .main-nav {
@@ -50,6 +54,7 @@
         a {
             transform: scale(1.5);
             font-size: 1em;
+            color: var(--primary-light-text);
         }
     }
 }

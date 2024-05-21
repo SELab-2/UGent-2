@@ -10,7 +10,7 @@ import DefaultErrorPage from "../../components/DefaultErrorPage.tsx";
 
 export function CreateProject(): JSX.Element {
 
-    const { t } = useTranslation();
+    const {t} = useTranslation();
 
     const data = useRouteLoaderData(CREATE_PROJECT_TEACHER_ID) as coursesTeacherLoaderObject;
 
@@ -19,6 +19,7 @@ export function CreateProject(): JSX.Element {
     }
 
     const emptyProjectTeacher: ProjectTeacher = {
+        projectId: -1,
         courseName: data.courses[0].course_name,
         all_courses: data.courses,
         deadline: new Date(Date.now()),

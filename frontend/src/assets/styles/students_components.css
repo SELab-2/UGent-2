@@ -44,12 +44,15 @@
 .deadline-head {
     background-color: var(--primary-dark);
     border-radius: 0.50rem 0.50rem 0 0;
+    color: var(--primary-light-text);
+    font-size: 20px;
 }
 
 .deadline-elements {
     height: 100%;
     overflow-y: auto;
     border-radius: 0 0 0.50rem 0.50rem;
+    color: var(--primary-dark-text);
 }
 
 .deadline-card {

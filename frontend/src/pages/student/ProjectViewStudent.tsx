@@ -41,7 +41,6 @@ export default function ProjectViewStudent(): JSX.Element {
             lastSubmission: project_data.submission_student_id === member?.user_id
         }
     });
-    
     const project: ProjectStudent = {
         projectId: project_data.project_id,
         projectName: project_data.project_name,
@@ -51,6 +50,7 @@ export default function ProjectViewStudent(): JSX.Element {
         description: project_data.project_description,
         requiredFiles: JSON.parse(project_data.project_requirements) as object,
         group_id: project_data.group_id,
+        groups_info: project_data.groups_info,
         groupMembers: groupMembers,
         maxGroupMembers: project_data.project_max_students,
         submission: project_data.submission_file

@@ -6,10 +6,12 @@ import {useRouteLoaderData} from "react-router-dom";
 import {PROJECT_TEACHER, ProjectTeacherLoaderObject} from "../../dataloaders/ProjectTeacher.ts";
 import {useTranslation} from 'react-i18next';
 import DefaultErrorPage from "../../components/DefaultErrorPage.tsx";
+import {DEBUG} from "../root.tsx";
+import {FaDownload} from "react-icons/fa6";
 
 export default function ProjectViewTeacher() {
 
-    const { t } = useTranslation();
+    const {t} = useTranslation();
 
     const data: ProjectTeacherLoaderObject = useRouteLoaderData(PROJECT_TEACHER) as ProjectTeacherLoaderObject
     const project_data = data.project
@@ -22,6 +24,7 @@ export default function ProjectViewTeacher() {
 
 
     const project: ProjectTeacher = {
+        projectId: project_data.project_id,
         projectName: project_data.project_name,
         all_courses: project_data.courses,
         courseName: project_data.course_name,
@@ -35,6 +38,24 @@ export default function ProjectViewTeacher() {
         groupProject: project_data.project_max_students > 1,
     }
 
+    async function downloadAllSubmissions() {
+        let url = ''
+        if (DEBUG) {
+            url = 'http://localhost:8000'
+        }
+        const response = await fetch(
+            `${url}/api/projects/${project.projectId}/submissions`,
+            {headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')}}
+        )
+        const blob = await response.blob();
+        const a = document.createElement('a');
+        a.href = window.URL.createObjectURL(blob);
+        a.download = `${project.projectName}_all_submissions.zip` ?? "project_all_submissions.zip";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    }
+
     return (
         <>
             <div className={"main-header"}>
@@ -44,8 +65,15 @@ export default function ProjectViewTeacher() {
                 <div className={"side-bar is-flex is-justify-content-center"}>
                     <Sidebar home={"teacher"}/>
                 </div>
-                <div className={"student-main is-flex is-flex-direction-column"}>
-                    <ProjectTeacherComponent project={project} submission_statistics={project_data.submission_statistics}/>
+                <div className={"student-main my-3 is-flex is-flex-direction-column"}>
+                        <button className="js-modal-trigger button is-rounded is-pulled-right"
+                                onClick={() => void downloadAllSubmissions()}>
+                            <span className="icon is-small">
+                                <FaDownload/>
+                            </span>
+                            <span>{t('download.download_all')}</span>
+                        </button>
+                    <ProjectTeacherComponent project={project}/>
                 </div>
             </div>
         </>

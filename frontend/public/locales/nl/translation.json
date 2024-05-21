@@ -1,260 +1,263 @@
 {
-    "login": {
-        "title": "Welkom bij Delphi!",
-        "text": "Om in te loggen, drup op de knop hieronder. Je wordt doorgestuurd naar de aanmeldpagina van UGent CAS. ",
-        "button": "Aanmelden"
-    },
-    "login_error": {
-        "title": "Er is een fout opgetreden bij het inloggen!",
-        "text": "Om opnieuw te proberen, druk op de knop hieronder.",
-        "button": "Opnieuw proberen"
-    },
-    "unauthorized": {
-        "title": "Toegang tot deze pagina is beperkt!",
-        "text": "Contacteer een beheerder als u denkt dat dit een vergissing is.",
-        "back": "Ga terug naar de startpagina"
-    },
-    "home_student": {
-        "title": "Startpagina",
-        "deadlines": "Komende deadlines",
-        "card": {
-            "tag": {
-                "course": "vak:",
-                "status": "status:"
-            },
-            "status": {
-                "success": "Geslaagd",
-                "failed": "Mislukt"
-            }
-        }
-    },
-    "home_teacher": {
-        "title": "Startpagina",
-        "card": {
-            "tag": {
-                "course": "vak:"
-            }
-        }
-    },
-    "create_course": {
-        "title": "Maak een vak aan",
-        "name": {
-            "tag": "Vaknaam:",
-            "placeholder": "Voer een naam in"
-        },
-        "confirm": "Bevestigen"
-    },
-    "create_project": {
-        "title": "Maak een project aan",
-        "name": {
-            "tag": "Projectnaam:",
-            "placeholder": "Voer een naam in"
-        },
-        "course": {
-            "tag": "Vak:"
-        },
-        "deadline": {
-            "tag": "Deadline:",
-            "locale": "nl"
-        },
-        "description": {
-            "tag": "Beschrijving:",
-            "placeholder": "Optionele beschrijving van het project"
-        },
-        "docker_file": {
-            "tag": "Docker-bestand",
-            "choose_button": "Kies een bestand"
-        },
-        "submission_files": {
-            "tag": "Indieningsbestanden:"
-        },
-        "teamwork": {
-            "tag": "Groepswerk:",
-            "changes": "Verwisselingen toestaan",
-            "groups": {
-                "tag": "Groepsindeling (kies één van onderstaande):",
-                "random": "willekeurig",
-                "own_choice": "studenten kiezen zelf"
-            }
-        },
-        "save_button": "Opslaan",
-        "error_title": "Oeps, er is iets fout gegaan!",
-        "error_text": "Je hebt nog geen vakken, maak eerst een vak aan om een project te kunnen maken."
-    },
-    "submission_files": {
-        "root_switch": {
-            "single_file": "enkel bestand",
-            "zip_file": "zip bestand"
-        },
-        "constraints": {
-            "global": "Globale voorwaarden:",
-            "local": "Locale voorwaarden:"
-        },
-        "single_file": {
-            "name": "naam:"
-        },
-        "menu": {
-            "remove": "verwijderen",
-            "file": "BESTAND",
-            "directory": "FOLDER",
-            "zip": "ZIP",
-            "not_present": "NIET_AANWEZIG",
-            "extension_not_present": "EXTENSIE_NIET_AANWEZIG",
-            "extension_only_present": "EXTENSIE_ENKEL_AANWEZIG"
-        },
-        "warning_change_root": {
-            "type_switch": "Alle huidige bestand-specificaties zullen verwijderd worden. Ben je zeker dat je het type van de root wil veranderen"
-        },
-        "information": {
-            "title": "Informatie",
-            "constraints": "Je kan de waarde van een voorwaarde veranderen door er op te klikken. Beweeg je cursor over een voorwaarde om meer opties te krijgen.",
-            "extensions": "Begin extensie-namen telkens met een punt.",
-            "color_codes": {
-                "title": "kleurencodes:",
-                "file": "bestand",
-                "directory": "folder",
-                "zip": "zip",
-                "not_present": "niet aanwezig",
-                "extension_not_present": "extensie niet aanwezig",
-                "extension_only_present": "extensie enkel aanwezig"
-            }
-        }
-    },
-    "warneable": {
-        "title": "Waarschuwing!",
-        "cancel": "Annuleren",
-        "proceed": "Doorgaan"
-    },
-    "projects": {
-        "title": "Projecten",
-        "search_placeholder": "zoek een project...",
-        "active": "actief",
-        "archived": "gearchiveerd",
-        "hidden": "verborgen",
-        "new_project": "nieuw project",
+  "login": {
+    "title": "Welkom bij Delphi!",
+    "text": "Om in te loggen, drup op de knop hieronder. Je wordt doorgestuurd naar de aanmeldpagina van UGent CAS. ",
+    "button": "Aanmelden"
+  },
+  "login_error": {
+    "title": "Er is een fout opgetreden bij het inloggen!",
+    "text": "Om opnieuw te proberen, druk op de knop hieronder.",
+    "button": "Opnieuw proberen"
+  },
+  "unauthorized": {
+    "title": "Toegang tot deze pagina is beperkt!",
+    "text": "Contacteer een beheerder als u denkt dat dit een vergissing is.",
+    "back": "Ga terug naar de startpagina"
+  },
+  "home_student": {
+    "title": "Startpagina",
+    "deadlines": "Komende deadlines",
+    "card": {
+      "tag": {
+        "course": "vak:",
+        "status": "status:"
+      },
+      "status": {
         "success": "Geslaagd",
-        "failed": "Gefaald",
-        "pending": "In afwachting"
+        "failed": "Mislukt"
+      }
+    }
+  },
+  "home_teacher": {
+    "title": "Startpagina",
+    "card": {
+      "tag": {
+        "course": "vak:"
+      }
+    }
+  },
+  "create_course": {
+    "title": "Maak een vak aan",
+    "name": {
+      "tag": "Vaknaam:",
+      "placeholder": "Voer een naam in"
     },
-    "table": {
-        "project": "project",
-        "course": "vak",
-        "deadline": "deadline",
-        "status": "status",
-        "number_of_submissions": "aantal indieningen",
-        "first_upcoming_deadline": "eerstvolgende deadline",
-        "name": "naam",
-        "email": "email",
-        "no_data_yet": "Geen data beschikbaar.",
-        "number_of_projects": "aantal projecten",
-        "remove": "verwijder",
-        "add": "voeg toe"
-    },
-    "project": {
-        "name": "Naam",
-        "course": "Vak",
-        "deadline": "Deadline",
-        "status": "Status",
-        "description": "Beschrijving",
-        "submission_files": "Indiening moet bevatten",
-        "groupmembers": {
-            "tag": "Groepsleden",
-            "name": "Naam",
-            "email": "Email",
-            "latest_submission": "Laatste indiening",
-            "amount_of_members": "Aantal leden per groep"
-        },
-        "submission": {
-            "tag": "Indiening",
-            "choose_file": "Kies een bestand"
-        },
-        "confirm": "Bevestigen",
-        "save": "Opslaan",
-        "failed": "Gefaald",
-        "success": "Geslaagd",
-        "not_in_group": "Je hebt nog geen groep, gelieve jezelf in te schrijven om zo aan dit project te kunnen beginnen."
-    },
-    "project_error": {
-        "title": "Oeps, er is iets fout gegaan!",
-        "text": "Het project dat je probeert te bekijken bestaat niet of je hebt geen toegang tot dit project."
-    },
-    "statistics": {
-        "tag": "Statistieken",
-        "submissions": "Indieningen",
-        "nothing_yet": "Nog niets",
-        "failed": "Mislukt",
-        "success": "Geslaagd",
-        "no_submissions": "Er zijn nog geen inzendingen"
-    },
-    "courses": {
-        "title": "Vakken",
-        "search_placeholder": "zoek een vak...",
-        "active": "actief",
-        "archived": "gearchiveerd",
-        "new_project": "nieuw project",
-        "new_course": "nieuw vak"
+    "confirm": "Bevestigen"
+  },
+  "create_project": {
+    "title": "Maak een project aan",
+    "name": {
+      "tag": "Projectnaam:",
+      "placeholder": "Voer een naam in"
     },
     "course": {
-        "teachers": "lesgevers",
-        "projects": "projecten",
-        "students": "studenten",
-        "new_project": "nieuw project",
-        "error": "Er ging iets mis bij het laden van het vak"
+      "tag": "Vak:"
     },
-    "course_error": {
-        "title": "Oeps, er is iets fout gegaan!",
-        "text": "Het vak dat je probeert te bekijken bestaat niet of je hebt geen toegang tot dit vak."
+    "deadline": {
+      "tag": "Deadline:",
+      "locale": "nl"
     },
-    "admin": {
-        "title": "Beheerder operaties",
-        "teacher_rights": {
-            "tag": "Geef lesgever-rechten:",
-            "sub": "(kies tussen alle niet-lesgevers)"
-        },
-        "admin_rights": {
-            "tag": "Geef beheerder-rechten:",
-            "sub": "(kies tussen alle personen)"
-        },
-        "search_placeholder": "zoek een persoon"
+    "description": {
+      "tag": "Beschrijving:",
+      "placeholder": "Optionele beschrijving van het project"
     },
-    "settings": {
-        "english": "Engels",
-        "dutch": "Nederlands",
-        "current_language": "NL",
-        "settings": "Instellingen",
-        "logout": "Uitloggen:",
-        "workstation": "Selecteer werkstation:",
-        "student": "student",
-        "teacher": "lesgever",
-        "admin": "beheerder"
+    "docker_file": {
+      "tag": "Docker-bestand",
+      "choose_button": "Kies een bestand"
     },
-    "join_course": {
-        "message": "Wil je het volgende vak volgen:",
-        "join": "inschrijven",
-        "return_home": "terug naar de startpagina"
+    "submission_files": {
+      "tag": "Indieningsbestanden:"
     },
-    "searchbar": {
-        "find_teacher": "zoek een leerkracht"
+    "teamwork": {
+      "tag": "Groepswerk:",
+      "changes": "Verwisselingen toestaan",
+      "groups": {
+        "tag": "Groepsindeling (kies één van onderstaande):",
+        "random": "willekeurig",
+        "own_choice": "studenten kiezen zelf"
+      }
     },
-    "popups": {
-        "teachers": "lesgevers",
-        "confirmation": "bevestiging",
-        "confirm_add": "Ben je zeker dat je deze persoon lesgever van dit vak wil maken?",
-        "confirm_delete": "Ben je zeker dat je deze persoon zijn lesgeverrechten wilt ontnemen voor dit vak?",
-        "yes": "ja",
-        "no": "nee",
-        "share": "deel link van het vak",
-        "share_warning": "Iedereen die deze link volgt en ingelogd is op dit systeem, zal als student toegevoegd worden aan het vak. Deel deze link enkel met de personen die u wil toevoegen.",
-        "share_link": "deel link",
-        "copied": "gekopieerd",
-        "archive": "archiveer vak",
-        "archive_warning": "Voor iedere student en lesgever van dit vak, zal dit vak ook gearchiveerd worden. Er zullen geen projecten meer aangemaakt kunnen worden en actieve projecten zullen afgesloten worden. Bent u zeker dat u dit vak wil archiveren?",
-        "leave_course": "vak verlaten",
-        "leave_last_teacher": "U bent de laatste lesgever, dus zal het vak gearchiveerd worden voor alle studenten.",
-        "leave_question": "Bent u zeker dat u dit vak wil verlaten?"
+    "save_button": "Opslaan",
+    "error_title": "Oeps, er is iets fout gegaan!",
+    "error_text": "Je hebt nog geen vakken, maak eerst een vak aan om een project te kunnen maken."
+  },
+  "submission_files": {
+    "root_switch": {
+      "single_file": "enkel bestand",
+      "zip_file": "zip bestand"
     },
-    "empty-home": {
-        "empty-cards": "Geen actieve projecten op dit moment.",
-        "empty-deadline": "Geen nieuwe deadlines op dit moment."
+    "constraints": {
+      "global": "Globale voorwaarden:",
+      "local": "Locale voorwaarden:"
+    },
+    "single_file": {
+      "name": "naam:"
+    },
+    "menu": {
+      "remove": "verwijderen",
+      "file": "BESTAND",
+      "directory": "FOLDER",
+      "zip": "ZIP",
+      "not_present": "NIET_AANWEZIG",
+      "extension_not_present": "EXTENSIE_NIET_AANWEZIG",
+      "extension_only_present": "EXTENSIE_ENKEL_AANWEZIG"
+    },
+    "warning_change_root": {
+      "type_switch": "Alle huidige bestand-specificaties zullen verwijderd worden. Ben je zeker dat je het type van de root wil veranderen"
+    },
+    "information": {
+      "title": "Informatie",
+      "constraints": "Je kan de waarde van een voorwaarde veranderen door er op te klikken. Beweeg je cursor over een voorwaarde om meer opties te krijgen.",
+      "extensions": "Begin extensie-namen telkens met een punt.",
+      "color_codes": {
+        "title": "kleurencodes:",
+        "file": "bestand",
+        "directory": "folder",
+        "zip": "zip",
+        "not_present": "niet aanwezig",
+        "extension_not_present": "extensie niet aanwezig",
+        "extension_only_present": "extensie enkel aanwezig"
+      }
     }
+  },
+  "warneable": {
+    "title": "Waarschuwing!",
+    "cancel": "Annuleren",
+    "proceed": "Doorgaan"
+  },
+  "projects": {
+    "title": "Projecten",
+    "search_placeholder": "zoek een project...",
+    "active": "actief",
+    "archived": "gearchiveerd",
+    "hidden": "verborgen",
+    "new_project": "nieuw project",
+    "success": "Geslaagd",
+    "failed": "Gefaald",
+    "pending": "In afwachting"
+  },
+  "table": {
+    "project": "project",
+    "course": "vak",
+    "deadline": "deadline",
+    "status": "status",
+    "number_of_submissions": "aantal indieningen",
+    "first_upcoming_deadline": "eerstvolgende deadline",
+    "name": "naam",
+    "email": "email",
+    "no_data_yet": "Geen data beschikbaar.",
+    "number_of_projects": "aantal projecten",
+    "remove": "verwijder",
+    "add": "voeg toe"
+  },
+  "project": {
+    "name": "Naam",
+    "course": "Vak",
+    "deadline": "Deadline",
+    "status": "Status",
+    "description": "Beschrijving",
+    "submission_files": "Indiening moet bevatten",
+    "groupmembers": {
+      "tag": "Groepsleden",
+      "name": "Naam",
+      "email": "Email",
+      "latest_submission": "Laatste indiening",
+      "amount_of_members": "Aantal leden per groep"
+    },
+    "submission": {
+      "tag": "Indiening",
+      "choose_file": "Kies een bestand"
+    },
+    "confirm": "Bevestigen",
+    "save": "Opslaan",
+    "failed": "Gefaald",
+    "success": "Geslaagd",
+    "not_in_group": "Je hebt nog geen groep, gelieve jezelf in te schrijven om zo aan dit project te kunnen beginnen."
+  },
+  "project_error": {
+    "title": "Oeps, er is iets fout gegaan!",
+    "text": "Het project dat je probeert te bekijken bestaat niet of je hebt geen toegang tot dit project."
+  },
+  "statistics": {
+    "tag": "Statistieken",
+    "submissions": "Indieningen",
+    "nothing_yet": "Nog niets",
+    "failed": "Mislukt",
+    "success": "Geslaagd",
+    "no_submissions": "Er zijn nog geen inzendingen"
+  },
+  "courses": {
+    "title": "Vakken",
+    "search_placeholder": "zoek een vak...",
+    "active": "actief",
+    "archived": "gearchiveerd",
+    "new_project": "nieuw project",
+    "new_course": "nieuw vak"
+  },
+  "course": {
+    "teachers": "lesgevers",
+    "projects": "projecten",
+    "students": "studenten",
+    "new_project": "nieuw project",
+    "error": "Er ging iets mis bij het laden van het vak"
+  },
+  "course_error": {
+    "title": "Oeps, er is iets fout gegaan!",
+    "text": "Het vak dat je probeert te bekijken bestaat niet of je hebt geen toegang tot dit vak."
+  },
+  "admin": {
+    "title": "Beheerder operaties",
+    "teacher_rights": {
+      "tag": "Geef lesgever-rechten:",
+      "sub": "(kies tussen alle niet-lesgevers)"
+    },
+    "admin_rights": {
+      "tag": "Geef beheerder-rechten:",
+      "sub": "(kies tussen alle personen)"
+    },
+    "search_placeholder": "zoek een persoon"
+  },
+  "settings": {
+    "english": "Engels",
+    "dutch": "Nederlands",
+    "current_language": "NL",
+    "settings": "Instellingen",
+    "logout": "Uitloggen:",
+    "workstation": "Selecteer werkstation:",
+    "student": "student",
+    "teacher": "lesgever",
+    "admin": "beheerder"
+  },
+  "join_course": {
+    "message": "Wil je het volgende vak volgen:",
+    "join": "inschrijven",
+    "return_home": "terug naar de startpagina"
+  },
+  "searchbar": {
+    "find_teacher": "zoek een leerkracht"
+  },
+  "popups": {
+    "teachers": "lesgevers",
+    "confirmation": "bevestiging",
+    "confirm_add": "Ben je zeker dat je deze persoon lesgever van dit vak wil maken?",
+    "confirm_delete": "Ben je zeker dat je deze persoon zijn lesgeverrechten wilt ontnemen voor dit vak?",
+    "yes": "ja",
+    "no": "nee",
+    "share": "deel link van het vak",
+    "share_warning": "Iedereen die deze link volgt en ingelogd is op dit systeem, zal als student toegevoegd worden aan het vak. Deel deze link enkel met de personen die u wil toevoegen.",
+    "share_link": "deel link",
+    "copied": "gekopieerd",
+    "archive": "archiveer vak",
+    "archive_warning": "Voor iedere student en lesgever van dit vak, zal dit vak ook gearchiveerd worden. Er zullen geen projecten meer aangemaakt kunnen worden en actieve projecten zullen afgesloten worden. Bent u zeker dat u dit vak wil archiveren?",
+    "leave_course": "vak verlaten",
+    "leave_last_teacher": "U bent de laatste lesgever, dus zal het vak gearchiveerd worden voor alle studenten.",
+    "leave_question": "Bent u zeker dat u dit vak wil verlaten?"
+  },
+  "empty-home": {
+    "empty-cards": "Geen actieve projecten op dit moment.",
+    "empty-deadline": "Geen nieuwe deadlines op dit moment."
+  },
+  "download": {
+    "download_all": "Download alle indieningen"
+  }
 }

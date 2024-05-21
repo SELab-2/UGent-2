@@ -1,9 +1,11 @@
 import {Course} from "../utils/ApiInterfaces.ts";
+import {GroupInfo} from "../dataloaders/ProjectsStudentLoader.ts";
 
 export type ValuePiece = Date | null; // nodig voor de deadline
 export type Value = ValuePiece | [ValuePiece, ValuePiece]; // nodig voor de deadline
 
 export type ProjectTeacher = {
+    projectId: number,
     projectName: string,
     all_courses: Course[],
     courseName: string,
@@ -32,6 +34,7 @@ export type ProjectStudent = {
     description: string,
     requiredFiles: object,
     group_id: number,
+    groups_info: GroupInfo[] | undefined,
     groupMembers: {
         name: string,
         email: string,
