@@ -96,7 +96,11 @@ function getSmallProjectInfo(project: Project): SmallProjectInfo {
 
 
 function getFirstUpcomingDeadline(courseProjects: Project[]): string | Date {
-    const first_deadline = courseProjects.filter(course => course.project_visible && !course.project_archived).reduce((minProject, project) => {
+    const filtered = courseProjects.filter(course => course.project_visible && !course.project_archived);
+    if (filtered.length === 0) {
+      return "";
+    }
+    const first_deadline = filtered.reduce((minProject, project) => {
         if (project.project_deadline < minProject.project_deadline) {
             return project;
         } else {
