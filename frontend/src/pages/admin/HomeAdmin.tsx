@@ -2,7 +2,6 @@ import {JSX} from "react";
 import {Header} from "../../components/Header.tsx";
 import {Sidebar} from "../../components/Sidebar.tsx";
 import '../../assets/styles/admin.css'
-import {SearchBar} from "../../components/SearchBar.tsx";
 import {Person} from "./Person.tsx";
 import {OperationButton} from "./OperationButton.tsx";
 import {OperationType} from "../../others/enums.tsx";
@@ -84,7 +83,6 @@ export default function HomeAdmin(): JSX.Element {
                                 <p className={"main"}>{t('admin.teacher_rights.tag')}</p>
                                 <p className={"sub"}>{t('admin.teacher_rights.sub')}</p>
                             </p>
-                            <SearchBar placeholder={t('admin.search_placeholder')}></SearchBar>
                             <div className="person-list">
                                 {non_teachers.map(person => (
                                     renderForTeacher(person)
@@ -96,7 +94,6 @@ export default function HomeAdmin(): JSX.Element {
                                 <p className={"main"}>{t('admin.admin_rights.tag')}</p>
                                 <p className={"sub"}>{t('admin.admin_rights.sub')}</p>
                             </p>
-                            <SearchBar placeholder={t('admin.search_placeholder')}></SearchBar>
                             <div className="person-list">
                                 {users.map(person => (
                                     renderForAdmin(person)
