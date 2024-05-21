@@ -32,7 +32,7 @@ class TestUserEndpoints(unittest.TestCase):
 
     def test_modify_current_user(self) -> None:
         response = make_authenticated_request(self.client, self.TESTED_USER_ID, "put", MODIFY_CURRENT_USER_URL,
-                                              params={"language": "EN"})
+                                              params={"language": "en"})
         assert_status_code(response, status.HTTP_204_NO_CONTENT)
 
     def test_get_users(self) -> None:
