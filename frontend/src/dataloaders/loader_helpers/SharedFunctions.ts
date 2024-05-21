@@ -8,7 +8,7 @@ import {
     teacherStudentRole
 } from "../../utils/ApiInterfaces.ts";
 import apiFetch from "../../utils/ApiFetch.ts";
-import {mapCourseList, mapProjectList, mapUser} from "../../utils/ApiTypesMapper.ts";
+import {mapCourseList, mapProjectList} from "../../utils/ApiTypesMapper.ts";
 import {Backend_Course, Backend_Project, Backend_user} from "../../utils/BackendInterfaces.ts";
 
 export interface UserIdInfo {
@@ -112,28 +112,17 @@ function getFirstUpcomingDeadline(courseProjects: Project[]): string | Date {
 
 async function getUsersOfCourse(role: teacherStudentRole, courses: Course[]): Promise<(SmallUserInfo | undefined)[]> {
     return (await Promise.all(courses.map(async course => {
-        const user_ids_data = await apiFetch<UserIdInfo[]>(`/courses/${course.course_id}/${role + "s"}`);
-        let user_ids: UserIdInfo[] = []
-        if (user_ids_data.ok) {
-            user_ids = user_ids_data.content;
+        const users_data = await apiFetch<Backend_user[]>(`/courses/${course.course_id}/${role + "s"}`);
+        let users: Backend_user[] = []
+        if (users_data.ok) {
+            users = users_data.content;
         }
-
-        const user_promises = user_ids.map(async user_id => {
-            const userData = await apiFetch<Backend_user>(`/users/${user_id.id}`);
-            if (userData.ok) {
-                return mapUser(userData.content);
-            }
-            return undefined;
-        });
-
-        const users = await Promise.all(user_promises);
-
         return users.map(user => {
             if (user) {
                 return {
-                    name: user.user_name,
-                    email: user.user_email,
-                    user_id: user.user_id,
+                    name: user.name,
+                    email: user.email,
+                    user_id: user.id,
                     course_id: course.course_id
                 } as SmallUserInfo
             }
