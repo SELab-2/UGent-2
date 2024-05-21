@@ -2,14 +2,11 @@ import {Header} from "../../components/Header.tsx";
 import {Sidebar} from "../../components/Sidebar.tsx";
 import {ProjectTeacherComponent} from "../../components/ProjectTeacherComponent.tsx";
 import {ProjectTeacher} from "../../types/project.ts";
-import Statistics from "../../components/Statistics.tsx";
-import {RegularButton} from "../../components/RegularButton.tsx";
 import {useRouteLoaderData} from "react-router-dom";
 import {PROJECT_TEACHER, ProjectTeacherLoaderObject} from "../../dataloaders/ProjectTeacher.ts";
 import {useTranslation} from 'react-i18next';
 import DefaultErrorPage from "../../components/DefaultErrorPage.tsx";
 import {DEBUG} from "../root.tsx";
-import {FaDownload} from "react-icons/fa6";
 
 export default function ProjectViewTeacher() {
 
@@ -68,21 +65,10 @@ export default function ProjectViewTeacher() {
                     <Sidebar home={"teacher"}/>
                 </div>
                 <div className={"student-main my-3 is-flex is-flex-direction-column"}>
-                    <div className={"mx-5 mb-5 is-flex is-justify-content-start"}>
-                        <RegularButton placeholder={t('project.save')} add={false} onClick={() => {
-                        }}/>
-                        <div className={"mr-5"}/>
-                        <Statistics statistics={project_data.submission_statistics}/>
-                        <div className={"mr-5"}/>
-                        <button className="js-modal-trigger button is-rounded is-pulled-right"
-                                onClick={() => void downloadAllSubmissions()}>
-                            <span className="icon is-small">
-                                <FaDownload/>
-                            </span>
-                            <span>{t('download.download_all')}</span>
-                        </button>
-                    </div>
-                    <ProjectTeacherComponent project={project}/>
+                    <ProjectTeacherComponent 
+                        project={project} 
+                        submission_statistics={project_data.submission_statistics} 
+                        download_all_submissions={downloadAllSubmissions}/>
                 </div>
             </div>
         </>

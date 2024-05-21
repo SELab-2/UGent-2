@@ -7,7 +7,6 @@ import {useTranslation} from 'react-i18next';
 import {useRouteLoaderData} from "react-router-dom";
 import {coursesTeacherLoaderObject, CREATE_PROJECT_TEACHER_ID} from "../../dataloaders/CoursesTeacherLoader.ts";
 import DefaultErrorPage from "../../components/DefaultErrorPage.tsx";
-import {RegularButton} from "../../components/RegularButton.tsx";
 
 export function CreateProject(): JSX.Element {
 
@@ -44,13 +43,8 @@ export function CreateProject(): JSX.Element {
                 <div className={"side-bar is-flex is-justify-content-center"}>
                     <Sidebar home={"teacher"}/>
                 </div>
-                <div className={"student-main my-3 is-flex is-flex-direction-column"}>
-                    <div className={"mx-5 mb-5 is-flex is-justify-content-start"}>
-                        <RegularButton placeholder={t('project.save')} add={false} onClick={() => {
-                        }}/>
-                        <div className={"mr-5"}/>
-                    </div>
-                    <ProjectTeacherComponent project={emptyProjectTeacher}/>
+                <div className={"student-main is-flex is-flex-direction-column"}>
+                    <ProjectTeacherComponent project={emptyProjectTeacher} submission_statistics={undefined} download_all_submissions={undefined}/>
                 </div>
             </div>
         </>
