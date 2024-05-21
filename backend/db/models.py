@@ -25,7 +25,7 @@ class StudentGroup(SQLModel, table=True):
 class User(SQLModel, table=True):
     name: str
     email: str
-    language: str = "EN"
+    language: str = "en"
     id: int = Field(default=None, primary_key=True)
 
     admin: "Admin" = Relationship(back_populates="user")
