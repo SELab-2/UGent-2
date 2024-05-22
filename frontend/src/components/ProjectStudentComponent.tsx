@@ -254,7 +254,7 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
                 <div>
                     <div className={"fixated is-flex is-justify-content-start"}>
                         <RegularButton
-                            placeholder={t('project.save')}
+                            placeholder={t('project.submit')}
                             add={false}
                             onClick={() => void submitFile()}
                             styling="is-primary"/>
@@ -263,7 +263,13 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
                 </div>}
             <ProjectInfo project={props.project}/>
             {error && <div className="notification is-danger is-flex is-justify-content-center mx-5 my-3">
-                {error}
+                <div className="rows">
+                    <div className="row is-full">{t('project.failed-submission')}</div>
+                    <br/>
+                    <div className="row is-full">
+                        {error}
+                    </div>
+                </div>
             </div>}
             {success && <div className="notification is-success is-flex is-justify-content-center mx-5 my-3">
                 {success}
@@ -290,9 +296,7 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
                                 <div className="submission-file-download-upload">
                                     {submission != null &&
                                         <div className={"submission-file-download mb-3"}>
-                                            {newSelectedFile
-                                                ? <label className={"mr-3 highlight"}>{file?.name}</label>
-                                                : <label className={"mr-3"}>{file?.name}</label>}
+                                            <label className={"mr-3"}>{file?.name}</label>
                                             <button className="button" onClick={() => void downloadLatestSubmission()}>
                                                 <FaDownload/>
                                             </button>

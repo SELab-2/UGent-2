@@ -81,10 +81,6 @@
     gap: 10px;
 }
 
-.highlight {
-    color: red;
-}
-
 .fixated {
     position: fixed;
     height: 60px;
