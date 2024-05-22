@@ -250,17 +250,6 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
 
     return (
         <div>
-            {newSelectedFile && hasGroup &&
-                <div>
-                    <div className={"fixated is-flex is-justify-content-start"}>
-                        <RegularButton
-                            placeholder={t('project.submit')}
-                            add={false}
-                            onClick={() => void submitFile()}
-                            styling="is-primary"/>
-                    </div>
-                    <div className="fixated-filler"/>
-                </div>}
             <ProjectInfo project={props.project}/>
             {error && <div className="notification is-danger is-flex is-justify-content-center mx-5 my-3">
                 <div className="rows">
@@ -317,7 +306,17 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
                         </div>
                     </div>
                 </>}
-
+            {newSelectedFile && hasGroup &&
+            <div>
+                <div className={"fixated is-flex is-justify-content-start"}>
+                    <RegularButton
+                        placeholder={t('project.submit')}
+                        add={false}
+                        onClick={() => void submitFile()}
+                        styling="is-primary"/>
+                </div>
+                <div className="fixated-filler"/>
+            </div>}
             <div className="p-5"/>
 
         </div>
