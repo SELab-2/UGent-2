@@ -291,19 +291,29 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
                             <ul className="field">
                                 <div className="submission-file-download-upload">
 
-                                    {newSelectedFile &&
-                                        <label className={"mr-3"}>{file?.name}</label>
-                                    }
-                                    <div id="file-js" className="field is-horizontal">
+                                    <div id="file-js" className="field is-horizontal ">
                                         <label className="file-label">
+
                                             <input className="file-input" type="file" name="resume"
                                                    ref={fileInputRef}
-                                                   onChange={selectFile}/>
-                                            <span className="file-cta">
-                                                <span className="file-icon"><FaUpload/></span>
-                                                <span
-                                                    className="file-label">{t('project.submission.choose_file')}</span>
+                                                   onChange={selectFile}
+                                            />
+
+                                            <span className="file-cta file-chooser-first">
+                                                <span className="file-icon">
+                                                    <FaUpload/>
+                                                </span>
+                                                <span className="file-label">
+                                                    {t('project.submission.choose_file')}
+                                                </span>
                                             </span>
+                                            
+                                            {newSelectedFile &&
+                                                <span className={"file-name mr-3 file-chooser-second"}>
+                                                    {file?.name}
+                                                </span>
+                                            }
+
                                         </label>
                                     </div>
                                     {submission != null &&
@@ -320,14 +330,13 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
                 </>}
             {newSelectedFile && hasGroup &&
             <div>
-                <div className={"fixated is-flex is-justify-content-start"}>
+                <div className={"is-flex is-justify-content-end"}>
                     <RegularButton
                         placeholder={t('project.submit')}
                         add={false}
                         onClick={() => void submitFile()}
                         styling="is-primary"/>
                 </div>
-                <div className="fixated-filler"/>
             </div>}
             <div className="p-5"/>
 

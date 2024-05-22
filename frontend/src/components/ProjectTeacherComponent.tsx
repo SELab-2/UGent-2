@@ -14,6 +14,7 @@ import {RegularButton} from "./RegularButton.tsx";
 import {FaDownload} from "react-icons/fa6";
 import _ from 'lodash';
 import { FaEraser } from "react-icons/fa";
+import { getScrollbarWidth } from "../utils/ScrollBarWidth.ts";
 
 export function ProjectTeacherComponent(props: { 
     project: ProjectTeacher, 
@@ -148,9 +149,16 @@ export function ProjectTeacherComponent(props: {
         document.body.removeChild(a);
     }
 
+    const [width, setWidth] = useState<string>('100%');
+    useEffect(() => {
+      const scrollbarWidth = getScrollbarWidth();
+      setWidth(`calc(100vw - var(--sidebar-width) - ${scrollbarWidth}px)`);
+      console.log(scrollbarWidth)
+    }, []);
+
     return (
         <div className={"create-project"}>
-            <div className={"create-project-topbar"}>
+            <div className={"create-project-topbar"} style={{width}}>
                 <RegularButton placeholder={t('project.save')} add={false} onClick={() => {}} 
                     disabled={!allowSaveButton()}
                     primary={allowSaveButton()}/> {/* TODO: implement save */}
@@ -172,7 +180,7 @@ export function ProjectTeacherComponent(props: {
                         <span>{t('download.download_all')}</span>
                     </button>
                 }
-            </div>  
+            </div>
             <div className={"create-project-content"}>
                 {/* PROJECT NAME FIELD */}
                 <div className={"field is-horizontal"}>

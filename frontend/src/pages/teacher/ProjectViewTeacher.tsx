@@ -65,7 +65,7 @@ export default function ProjectViewTeacher() {
                 <div className={"side-bar is-flex is-justify-content-center"}>
                     <Sidebar home={"teacher"}/>
                 </div>
-                <div className={"student-main my-3 is-flex is-flex-direction-column"}>
+                <div className={"student-main is-flex is-flex-direction-column"}>
                     <ProjectTeacherComponent 
                         project={project} 
                         submission_statistics={project_data.submission_statistics} 
