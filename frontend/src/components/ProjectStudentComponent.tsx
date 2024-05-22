@@ -290,13 +290,10 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
                         <div className="field-body">
                             <ul className="field">
                                 <div className="submission-file-download-upload">
-                                    {submission != null &&
-                                        <div className={"submission-file-download mb-3"}>
-                                            <label className={"mr-3"}>{file?.name}</label>
-                                            <button className="button" onClick={() => void downloadLatestSubmission()}>
-                                                <FaDownload/>
-                                            </button>
-                                        </div>}
+
+                                    {newSelectedFile &&
+                                        <label className={"mr-3"}>{file?.name}</label>
+                                    }
                                     <div id="file-js" className="field is-horizontal">
                                         <label className="file-label">
                                             <input className="file-input" type="file" name="resume"
@@ -309,6 +306,13 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
                                             </span>
                                         </label>
                                     </div>
+                                    {submission != null &&
+                                        <button className="button" onClick={() => void downloadLatestSubmission()}>
+                                            <span className="mr-2"><FaDownload/></span>
+                                            <span>{t('project.download-current')}</span>
+                                        </button>
+                                    }
+
                                 </div>
                             </ul>
                         </div>

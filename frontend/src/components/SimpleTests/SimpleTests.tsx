@@ -600,74 +600,83 @@ export default function SimpleTests(props: {
                     </div>
 
                     {/*...global constraints...*/}
-                    <div className="constraint-row">
-                        <div>{t('submission_files.constraints.global')}</div>
-                        {props.teacherOrStudent === TeacherOrStudent.TEACHER &&
-                            <Popup trigger={
-                                <div className="more-wrapper">
-                                    <RiAddBoxLine 
-                                        className="row-icon" 
-                                    />
-                                </div>
-                            }   position="right center" 
-                                arrow={true} 
-                                onOpen={() => {setIsGlobalAddOpen(true)}}
-                                open={isGlobalAddOpen} 
-                                on="click" 
-                                nested 
-                                contentStyle={{width: 'auto'}}
-                            >
-                                <div>
-                                    <button className="menu-not-last-item" onClick={() => handleNewConstraint(undefined, 'NOT_PRESENT')}>{t('submission_files.menu.not_present')}</button>
-                                    <button className="menu-not-last-item" onClick={() => handleNewConstraint(undefined, 'EXTENSION_NOT_PRESENT')}>{t('submission_files.menu.extension_not_present')}</button>
-                                    <button onClick={() => handleNewConstraint(undefined, 'EXTENSION_ONLY_PRESENT')}>{t('submission_files.menu.extension_only_present')}</button>
-                                </div>
-                            </Popup>
-                        }
-                    </div>
-                    <div className="global-constraints">
-                        <div className="constraints-table global-table">
-                            {(submission.submission as Zip).global_constraints.map(constraint =>
-                                <div className="constraint-row" key={''+constraint.id}
-                                    onMouseOver={() => handleHoverOver(constraint.id)}
-                                    onMouseOut={handleHoverOut}
-                                >
-                            
-                                    {/* value field */}
-                                    {props.teacherOrStudent === TeacherOrStudent.TEACHER
-                                    ? <input 
-                                        className={"row-value " + constraint['type']} 
-                                        value={constraint.value}
-                                        onChange={e => handleModifyValue(constraint.id, e.target.value)} 
-                                    />
-                                    : <div className={"" + constraint['type']}>{constraint.value}</div>
-                                    }
-                                        
-                                    {/* more button */}
-                                    {props.teacherOrStudent === TeacherOrStudent.TEACHER && constraint['type'] !== 'ZIP' &&
-                                        <Popup trigger={
-                                            <div className="more-wrapper">
-                                                <IoMdMore 
-                                                    className="row-icon" 
-                                                    style={{visibility: isHovering === constraint.id ? 'visible' : 'hidden' }}
-                                                />
-                                            </div>
-                                        }   position="right center" 
-                                            arrow={true} 
-                                            onOpen={() => handleOpenMenu(constraint.id)}
-                                            open={isMenuOpen.get(constraint.id)} 
-                                            on="click" 
-                                            nested 
-                                            contentStyle={{width: 'auto'}}
+                    {
+                        (props.teacherOrStudent === TeacherOrStudent.TEACHER || 
+                            (props.teacherOrStudent === TeacherOrStudent.STUDENT && 
+                                (submission.submission as Zip).global_constraints.length > 0
+                            )
+                        ) &&
+                        <div>
+                            <div className="constraint-row">
+                                <div>{t('submission_files.constraints.global')}</div>
+                                {props.teacherOrStudent === TeacherOrStudent.TEACHER &&
+                                    <Popup trigger={
+                                        <div className="more-wrapper">
+                                            <RiAddBoxLine 
+                                                className="row-icon" 
+                                            />
+                                        </div>
+                                    }   position="right center" 
+                                        arrow={true} 
+                                        onOpen={() => {setIsGlobalAddOpen(true)}}
+                                        open={isGlobalAddOpen} 
+                                        on="click" 
+                                        nested 
+                                        contentStyle={{width: 'auto'}}
+                                    >
+                                        <div>
+                                            <button className="menu-not-last-item" onClick={() => handleNewConstraint(undefined, 'NOT_PRESENT')}>{t('submission_files.menu.not_present')}</button>
+                                            <button className="menu-not-last-item" onClick={() => handleNewConstraint(undefined, 'EXTENSION_NOT_PRESENT')}>{t('submission_files.menu.extension_not_present')}</button>
+                                            <button onClick={() => handleNewConstraint(undefined, 'EXTENSION_ONLY_PRESENT')}>{t('submission_files.menu.extension_only_present')}</button>
+                                        </div>
+                                    </Popup>
+                                }
+                            </div>
+                            <div className="global-constraints">
+                                <div className="constraints-table global-table">
+                                    {(submission.submission as Zip).global_constraints.map(constraint =>
+                                        <div className="constraint-row" key={''+constraint.id}
+                                            onMouseOver={() => handleHoverOver(constraint.id)}
+                                            onMouseOut={handleHoverOut}
                                         >
-                                            {/* ~ more menu ~ */}
-                                            <button onClick={() => handleDeleteConstraint(constraint.id)}>{t('submission_files.menu.remove')}</button>
-                                        </Popup>
-                                    }
+                                    
+                                            {/* value field */}
+                                            {props.teacherOrStudent === TeacherOrStudent.TEACHER
+                                            ? <input 
+                                                className={"row-value " + constraint['type']} 
+                                                value={constraint.value}
+                                                onChange={e => handleModifyValue(constraint.id, e.target.value)} 
+                                            />
+                                            : <div className={"" + constraint['type']}>{constraint.value}</div>
+                                            }
+                                                
+                                            {/* more button */}
+                                            {props.teacherOrStudent === TeacherOrStudent.TEACHER && constraint['type'] !== 'ZIP' &&
+                                                <Popup trigger={
+                                                    <div className="more-wrapper">
+                                                        <IoMdMore 
+                                                            className="row-icon" 
+                                                            style={{visibility: isHovering === constraint.id ? 'visible' : 'hidden' }}
+                                                        />
+                                                    </div>
+                                                }   position="right center" 
+                                                    arrow={true} 
+                                                    onOpen={() => handleOpenMenu(constraint.id)}
+                                                    open={isMenuOpen.get(constraint.id)} 
+                                                    on="click" 
+                                                    nested 
+                                                    contentStyle={{width: 'auto'}}
+                                                >
+                                                    {/* ~ more menu ~ */}
+                                                    <button onClick={() => handleDeleteConstraint(constraint.id)}>{t('submission_files.menu.remove')}</button>
+                                                </Popup>
+                                            }
+                                        </div>
+                                    )}
                                 </div>
-                            )}
+                            </div>
                         </div>
-                    </div>
+                    }
 
                     {/*...local constraints...*/}
                     <div>{t('submission_files.constraints.local')}</div>

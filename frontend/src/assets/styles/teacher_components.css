@@ -27,3 +27,28 @@
     width: 100%;
     flex-wrap: wrap;
 }
+.docker-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    .docker-row {
+        .docker-file-present-tag {
+            margin-right: 5px;
+        }
+        .docker-file-present-true {
+            color: green;
+        }
+        .docker-file-present-false {
+            color: red;
+        }
+    }
+    .docker-new-file {
+        
+    }
+}
+.download-button {
+    margin-left: 10px;
+    border: solid !important;
+    border-width: 1px !important;
+    border-color: hsla(0, 0%, 0%, 0.15) !important;
+}

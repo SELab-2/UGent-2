@@ -60,7 +60,7 @@ export default function CoursesViewTeacher(): JSX.Element {
                 </div>
                 <div className={"student-main is-flex is-justify-content-center"}>
                     <div className={"table-page is-flex is-flex-direction-column"}>
-                        <div className={"is-flex is-align-items-center is-justify-content-space-between"}>
+                        <div className={"is-flex is-align-items-center is-justify-content-space-between mt-3"}>
                             <RegularATag link={"teacher/courses/create"} text={t('courses.new_course')} add={true}/>
                         </div>
                         <Table title={t('courses.active')} data={tableCoursesActive} ignoreKeys={[]} home={"teacher"}/>

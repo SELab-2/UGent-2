@@ -1,4 +1,9 @@
 {
+    "docker": {
+        "file-present": "file present:",
+        "false": "false",
+        "true": "true"
+    },
     "login": {
         "title": "Welcome to Delphi!",
         "text": "To login, please click the button below, you'll get redirected to the login page of UGent CAS.",
@@ -63,7 +68,7 @@
         },
         "docker_file": {
             "tag": "Docker file",
-            "choose_button": "Choose a file"
+            "choose_button": "Choose new file"
         },
         "submission_files": {
             "tag": "Submission files:"
@@ -174,8 +179,8 @@
         "confirm": "Confirm",
         "save": "Save",
         "submit": "Submit",
-        "submitted": "The submission has been successful",
         "failed-submission": "The submission failed with error:",
+        "download-current": "Download latest submission",
         "failed": "Failed",
         "success": "Success",
         "not_in_group": "You don't have a group yet, please sign yourself up in order to start this project."
@@ -265,8 +270,5 @@
     },
     "download": {
         "download_all": "Download all submissions"
-    },
-    "alert": {
-        "leave_course": "There was an error while trying to leave this course, please try again."
     }
 }

@@ -37,6 +37,7 @@ export function CreateProject(): JSX.Element {
             }
         },
         maxGroupMembers: 0,
+        dockerFile: ""
     };
 
 

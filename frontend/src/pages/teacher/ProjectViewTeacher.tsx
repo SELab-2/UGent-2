@@ -35,6 +35,7 @@ export default function ProjectViewTeacher() {
         requiredFiles: JSON.parse(project_data.project_requirements) as object,
         otherFilesAllow: true,
         groupProject: project_data.project_max_students > 1,
+        dockerFile: project_data.project_dockerfile
     }
 
     async function downloadAllSubmissions() {

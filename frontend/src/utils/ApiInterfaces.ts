@@ -15,6 +15,7 @@ export interface Project {
     project_requirements: string,
     project_visible: boolean,
     project_max_students: number,
+    project_dockerfile: string,
     course_id: number,
 }
 

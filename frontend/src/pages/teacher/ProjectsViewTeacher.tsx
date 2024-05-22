@@ -55,7 +55,7 @@ export default function ProjectsViewTeacher(): JSX.Element {
                 </div>
                 <div className={"student-main is-flex is-justify-content-center"}>
                     <div className={"table-page is-flex is-flex-direction-column"}>
-                        <div className={"is-flex is-align-items-center is-justify-content-space-between"}>
+                        <div className={"is-flex is-align-items-center is-justify-content-space-between mt-3"}>
                             <RegularATag link={"teacher/projects/create"} text={t('projects.new_project')} add={true}/>
                         </div>
                         <Table title={t('projects.active')} data={tableProjectsActive} ignoreKeys={["status"]} home={"teacher"}/>
