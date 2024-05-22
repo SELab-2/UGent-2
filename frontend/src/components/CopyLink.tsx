@@ -20,7 +20,6 @@ export default function CopyLink(props: { link: string }): JSX.Element {
         setCopied(true);
         setTimer(setTimeout(() => {
             setCopied(false);
-            console.log("beep");
         }, 1500));
     }
 
