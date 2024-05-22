@@ -74,7 +74,8 @@ export default function CourseViewTeacher(): JSX.Element {
                                     <div className={"mx-2"}><Archive course_id={data.course.course_id}
                                                                      course_name={data.course.course_name}/></div>
                                 </div>
-                                <LeaveCourseTeacher amountOfTeachers={teachers.length}/>
+                                <LeaveCourseTeacher amountOfTeachers={teachers.length} course_id={data.course.course_id}
+                                                    course_name={data.course.course_name}/>
                             </div>
                         }
                         <div className={"my-5"}/>

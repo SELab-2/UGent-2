@@ -19,3 +19,10 @@ export async function createCourse(name: string): Promise<Course> {
         throw courseData.status_code
     }
 }
+
+export async function leave_course(courseId: number): Promise<boolean> {
+    const response = await apiFetch(`/teacher/courses/${courseId}/leave`, {
+        method: 'POST'
+    });
+    return response.ok
+}

@@ -176,6 +176,7 @@
     "confirm": "Bevestigen",
     "save": "Opslaan",
     "submit": "Indienen",
+    "submitted": "De indiening is geslaagd",
     "failed-submission": "De indiening faalde met als foutboodschap:",
     "download-current": "Download laatste indiening",
     "failed": "Gefaald",
@@ -267,5 +268,8 @@
   },
   "download": {
     "download_all": "Download alle indieningen"
+  },
+  "alert": {
+    "leave_course": "Een fout trad op tijdens het verlaten van het vak, probeer later opnieuw."
   }
 }
