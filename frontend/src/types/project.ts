@@ -13,7 +13,7 @@ export type ProjectTeacher = {
     minutes: number,
     deadline: Value,
     description: string,
-    requiredFiles: string,
+    requiredFiles: object,
     otherFilesAllow: boolean,
     groupProject: boolean,
     maxGroupMembers: number

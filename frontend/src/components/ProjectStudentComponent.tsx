@@ -12,6 +12,8 @@ import {DEBUG} from "../pages/root.tsx";
 import {make_submission} from "../utils/api/Submission.ts";
 import {joinGroup, leaveGroup} from "../utils/api/Groups.ts";
 import {getGroupInfo, loadGroupMembers} from "../dataloaders/ProjectsStudentLoader.ts";
+import SimpleTests from "./SimpleTests/SimpleTests.tsx";
+import { TeacherOrStudent } from "./SimpleTests/TeacherOrStudentEnum.tsx";
 
 function ProjectInfo(props: { project: ProjectStudent }): JSX.Element {
     const {t} = useTranslation();
@@ -42,13 +44,12 @@ function ProjectInfo(props: { project: ProjectStudent }): JSX.Element {
                 </div>
                 <div className="field-body">
                     <div className="field">
-                        { // TODO requiredFiles moet een string geven zoals bij teacher voor dit kan werken
-                            /*<SimpleTests
-                                teacherOrStudent={TeacherOrStudent.STUDENT}
-                                initialData={}
-                                setData={undefined}
-                                setHasChanged={undefined}
-                            /> */}
+                        <SimpleTests
+                            teacherOrStudent={TeacherOrStudent.STUDENT}
+                            initialData={props.project.requiredFiles}
+                            setData={undefined}
+                            setHasChanged={undefined}
+                        />
                     </div>
                 </div>
             </div>

@@ -29,7 +29,13 @@ export function CreateProject(): JSX.Element {
         minutes: 0,
         otherFilesAllow: false,
         projectName: "",
-        requiredFiles: "",
+        requiredFiles: {
+            type: "SUBMISSION",
+            root_constraint: {
+                type: "FILE",
+                file_name: "CHANGE_ME"
+            }
+        },
         maxGroupMembers: 0,
     };
 

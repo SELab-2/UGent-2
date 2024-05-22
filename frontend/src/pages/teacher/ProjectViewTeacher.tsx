@@ -32,7 +32,7 @@ export default function ProjectViewTeacher() {
         deadline: deadline_date,
         description: project_data.project_description,
         maxGroupMembers: project_data.project_max_students,
-        requiredFiles: project_data.project_requirements,
+        requiredFiles: JSON.parse(project_data.project_requirements) as object,
         otherFilesAllow: true,
         groupProject: project_data.project_max_students > 1,
     }
