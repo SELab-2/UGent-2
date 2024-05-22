@@ -17,16 +17,11 @@ export default function LeaveCourseStudent(props: {course_id: number}): JSX.Elem
             if (success) {
                 navigate(`/student/`);
             } else {
-                alert("There was an error while trying to leave this course, please try again.");
+                alert(t('alert.leave_course'));
             }
         } catch (error) {
-            console.error("Error archiving course:", error);
-            alert("There was an error while trying to leave this course, please try again.");
+            alert(t('alert.leave_course'));
         }
-    };
-
-    const handle_leave = () => {
-        void course_leave();
     };
 
     const changeModal = () => {
@@ -52,7 +47,9 @@ export default function LeaveCourseStudent(props: {course_id: number}): JSX.Elem
                     </section>
                     <footer className="modal-card-foot is-flex is-justify-content-center">
                         <RegularButton placeholder={t('popups.yes')} add={false} styling={"is-danger"}
-                                       onClick={handle_leave}/>
+                                       onClick={() => {
+                                           void course_leave()
+                                       }}/>
                         <RegularButton placeholder={t('popups.no')} add={false} styling={"is-info"}
                                        onClick={changeModal}/>
                     </footer>

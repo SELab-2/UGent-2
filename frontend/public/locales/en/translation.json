@@ -265,5 +265,8 @@
     },
     "download": {
         "download_all": "Download all submissions"
+    },
+    "alert": {
+        "leave_course": "There was an error while trying to leave this course, please try again."
     }
 }
