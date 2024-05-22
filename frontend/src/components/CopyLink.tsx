@@ -7,12 +7,22 @@ export default function CopyLink(props: { link: string }): JSX.Element {
     const [modalActive, setModalActive] = useState(false);
     const inputRef = React.createRef<HTMLInputElement>();
     const [copied, setCopied] = useState(false);
+    const [timer, setTimer] = useState<NodeJS.Timeout | null>(null);
 
     const {t} = useTranslation();
 
     const changeModal = () => {
         setModalActive(!modalActive);
     };
+    const copyToClipboard = () => {
+        if (timer !== null) {clearTimeout(timer);}
+        void navigator.clipboard.writeText(props.link);
+        setCopied(true);
+        setTimer(setTimeout(() => {
+            setCopied(false);
+            console.log("beep");
+        }, 1500));
+    }
 
     return (
         <>
@@ -37,12 +47,9 @@ export default function CopyLink(props: { link: string }): JSX.Element {
 
                         {!copied &&
                             <RegularButton placeholder={t('popups.share_link')} add={false} styling={"is-success ml-4"}
-                                           onClick={() => {
-                                               void navigator.clipboard.writeText(props.link);
-                                               setCopied(true)
-                                           }}/>}
-                        {copied && <RegularButton placeholder={t('popups.copied')} onClick={() => {
-                        }} add={false} styling={"is-success ml-4"}/>}
+                                           onClick={copyToClipboard}/>}
+                        {copied && <RegularButton placeholder={t('popups.copied')} onClick={copyToClipboard} add={false}
+                                                  styling={"is-success ml-4"}/>}
                     </footer>
                 </div>
             </div>
