@@ -1,4 +1,4 @@
-import {ChangeEvent, JSX, useEffect, useState} from "react";
+import {ChangeEvent, JSX, useEffect, useRef, useState} from "react";
 import FieldWithLabel from "./FieldWithLabel.tsx";
 import {FaCheck, FaUpload} from "react-icons/fa";
 import {FaDownload} from "react-icons/fa6";
@@ -74,6 +74,8 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
     }[] | undefined>(props.project.groupMembers);
     const [submission, setSubmission] = useState(props.project.submission)
     const [groupInfo, setGroupInfo] = useState(props.project.groups_info)
+
+    const fileInputRef = useRef<HTMLInputElement | null>(null);
 
     function TableJoinedGroup(props: {
         groupMembers: {
@@ -220,12 +222,17 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
                 setSuccess("The submission has been successful") // TODO translation
                 setError('')
             }
+            setFile(undefined);
+            setNewSelectedFile(false);
+            if (fileInputRef.current) {
+                fileInputRef.current.value = '';
+            }
         }
     }
 
     function selectFile(event: ChangeEvent<HTMLInputElement>) {
         if (event.target?.files) {
-            setFile(event?.target?.files[0])
+            setFile(event?.target?.files[0]);
             setNewSelectedFile(true);
         }
     }
@@ -304,6 +311,7 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
                                     <div id="file-js" className="field is-horizontal">
                                         <label className="file-label">
                                             <input className="file-input" type="file" name="resume"
+                                                   ref={fileInputRef}
                                                    onChange={selectFile}/>
                                             <span className="file-cta">
                                                 <span className="file-icon"><FaUpload/></span>
