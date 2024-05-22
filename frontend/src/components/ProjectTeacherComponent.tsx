@@ -172,10 +172,6 @@ export function ProjectTeacherComponent(props: {
                     </div>
                     <div className="field-body field">
                         <div className="field"> {/* Deze moet er blijven, anders doet css raar*/}
-                            {
-                                requiredFilesHasChanged && 
-                                <div>changed</div>
-                            }
                             <SimpleTests
                                 teacherOrStudent={TeacherOrStudent.TEACHER}
                                 initialData={requiredFiles}

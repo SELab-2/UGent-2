@@ -175,6 +175,7 @@
         "save": "Save",
         "submit": "Submit",
         "failed-submission": "The submission failed with error:",
+        "download-current": "Download latest submission",
         "failed": "Failed",
         "success": "Success",
         "not_in_group": "You don't have a group yet, please sign yourself up in order to start this project."
