@@ -251,15 +251,15 @@ export default function SimpleTests(props: {
     const [submission,      setSubmission     ] = useState<Submission>(json_to_submission(init_submission_ref.current));
     const [isZip,           setIsZip          ] = useState<boolean>(submission.type === 'ZIP');
     const [isHovering,      setIsHovering     ] = useState<number | undefined>(undefined);
-    const [isExpanded,      setIsExpanded     ] = useState<Map<number, boolean>>(new Map( get_all_ids(submission).map(id => [id, false])));
-    const [isShown,         setIsShown        ] = useState<Map<number, boolean>>(new Map( get_all_ids(submission).map(id => [id, false])));
+    const [isExpanded,      setIsExpanded     ] = useState<Map<number, boolean>>(new Map( get_all_ids(submission).map(id => [id, true])));
+    const [isShown,         setIsShown        ] = useState<Map<number, boolean>>(new Map( get_all_ids(submission).map(id => [id, true])));
     const [isMenuOpen,      setIsMenuOpen     ] = useState<Map<number, boolean>>(new Map( get_all_ids(submission).map(id => [id, false])));
     const [isGlobalAddOpen, setIsGlobalAddOpen] = useState<boolean>(false);
 
     useEffect(() => {
         if (submission.type === 'ZIP') {
             const zip = submission.submission as Zip;
-            setIsShown(structuredClone(isShown.set(zip.self_constraint.id, true))); /* we laten de root constraint zien */
+            //setIsShown(structuredClone(isShown.set(zip.self_constraint.id, true))); /* we laten de root constraint zien */
             setIsHovering(zip.self_constraint.id);
         }
     }, []);
@@ -575,6 +575,12 @@ export default function SimpleTests(props: {
                                             <br/>
 
                                             <div>
+                                                {t('submission_files.information.global-local')}
+                                            </div>
+
+                                            <br/>
+
+                                            <div>
                                                 {t('submission_files.information.extensions')}
                                             </div>
 
@@ -583,13 +589,22 @@ export default function SimpleTests(props: {
                                     }
                                     
                                     <div>{t('submission_files.information.color_codes.title')}</div>
-                                    <div className="color-codes">
-                                        <li className="FILE">{t('submission_files.information.color_codes.file')}</li>
-                                        <li className="DIRECTORY">{t('submission_files.information.color_codes.directory')}</li>
-                                        <li className="ZIP">{t('submission_files.information.color_codes.zip')}</li>
-                                        <li className="NOT_PRESENT">{t('submission_files.information.color_codes.not_present')}</li>
-                                        <li className="EXTENSION_NOT_PRESENT">{t('submission_files.information.color_codes.extension_not_present')}</li>
-                                        <li className="EXTENSION_ONLY_PRESENT">{t('submission_files.information.color_codes.extension_only_present')}</li>
+                                    <div className="color-codes bullet-list">
+                                        <div className="FILE">{t('submission_files.information.color_codes.file')}</div>
+                                        <div className="DIRECTORY">{t('submission_files.information.color_codes.directory')}</div>
+                                        <div className="ZIP">{t('submission_files.information.color_codes.zip')}</div>
+                                        <div className="info-colorcodes-row">
+                                            <div className="NOT_PRESENT">{t('submission_files.information.color_codes.not_present')}</div>
+                                            <div>({t('submission_files.menu.info-not_present')})</div>
+                                        </div>
+                                        <div className="info-colorcodes-row">
+                                            <div className="EXTENSION_NOT_PRESENT">{t('submission_files.information.color_codes.extension_not_present')}</div>
+                                            <div>({t('submission_files.menu.info-extension_not_present')})</div>
+                                        </div>
+                                        <div className="info-colorcodes-row">
+                                            <div className="EXTENSION_ONLY_PRESENT">{t('submission_files.information.color_codes.extension_only_present')}</div>
+                                            <div>({t('submission_files.menu.info-extension_only_present')})</div>
+                                        </div>
                                     </div>
                                 </div>
                             } 

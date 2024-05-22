@@ -51,3 +51,9 @@
     border-width: 1px !important;
     border-color: hsla(0, 0%, 0%, 0.15) !important;
 }
+
+.teamwork {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
