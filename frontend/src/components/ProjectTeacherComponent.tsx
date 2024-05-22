@@ -1,4 +1,4 @@
-import {JSX, useState} from "react";
+import {JSX, useEffect, useMemo, useRef, useState} from "react";
 import Inputfield from "./Inputfield.tsx";
 import {SelectionBox} from "./SelectionBox.tsx";
 import 'react-calendar/dist/Calendar.css';
@@ -13,6 +13,7 @@ import Switch from "react-switch";
 import Statistics from "./Statistics.tsx";
 import {RegularButton} from "./RegularButton.tsx";
 import {FaDownload} from "react-icons/fa6";
+import _ from 'lodash';
 
 export function ProjectTeacherComponent(props: { 
     project: ProjectTeacher, 
@@ -35,12 +36,49 @@ export function ProjectTeacherComponent(props: {
     const [groupProject, setGroupProject] = useState(props.project.groupProject);
 
     // helpers
-    const [showCalender, setCalender] = useState(props.project.deadline !== null);
     const [showGroup, setGroup] = useState(props.project.groupProject);
 
-    const expandDeadline = () => {
-        setCalender(!showCalender);
-    };
+    const [initialValues, setInitialValues] = useState({
+        value1: projectName,
+        value2: courseName,
+        value3: hours,
+        value4: minutes,
+        value5: deadline,
+        value6: description,
+        value7: max_students,
+        value8: requiredFiles,
+        value9: groupProject,
+    });
+
+    useEffect(() => {
+        setInitialValues({
+            value1: projectName,
+            value2: courseName,
+            value3: hours,
+            value4: minutes,
+            value5: deadline,
+            value6: description,
+            value7: max_students,
+            value8: requiredFiles,
+            value9: groupProject,
+        });
+    }, []);
+
+    function allowSaveButton(): boolean {
+        const first_part = _.isEqual(projectName,  initialValues.value1) &&
+            _.isEqual(courseName,   initialValues.value2) &&
+            _.isEqual(hours,        initialValues.value3) &&
+            _.isEqual(minutes,      initialValues.value4) &&
+            _.isEqual(description,  initialValues.value6) &&
+            _.isEqual(max_students, initialValues.value7) &&
+            _.isEqual(requiredFiles,initialValues.value8) &&
+            _.isEqual(groupProject, initialValues.value9);
+        const second_part_1 = (deadline as Date).toDateString();
+        const second_part_2 = (initialValues.value5 as Date).toDateString();
+        const second_part = _.isEqual(second_part_1, second_part_2);
+        const third_part = groupProject && Number.isNaN(max_students);
+        return !((first_part && second_part) || third_part);
+    }
 
     const expandGroup = (checked: boolean) => {
         setGroup(!showGroup);
@@ -59,7 +97,9 @@ export function ProjectTeacherComponent(props: {
     return (
         <div className={"create-project"}>
             <div className={"create-project-topbar"}>
-                <RegularButton placeholder={t('project.save')} add={false} onClick={() => {}}/> {/* TODO: implement save */}
+                <RegularButton placeholder={t('project.save')} add={false} onClick={() => {}} 
+                    disabled={!allowSaveButton()}
+                    primary={allowSaveButton()}/> {/* TODO: implement save */}
                 <div className={"mr-5"}/>
                 {props.submission_statistics !== undefined &&
                     <Statistics statistics={props.submission_statistics}/>
@@ -106,28 +146,19 @@ export function ProjectTeacherComponent(props: {
                         <label className="label">{t('create_project.deadline.tag')}</label>
                     </div>
                     <div className="field-body is-flex is-flex-direction-column is-align-items-start is-justify-content-center">
-                        <Switch
-                            className="pb-3"
-                            type="checkbox" 
-                            onChange={expandDeadline} 
-                            checked={showCalender}
-                            onColor="#006edc"
-                        />
-                        {showCalender &&
+                        <div>
                             <div>
-                                <div>
-                                    <Calendar onChange={date => setDeadline(date)} value={deadline}
-                                            locale={t('create_project.deadline.locale')}/>
-                                </div>
-                                <div className="is-horizontal field is-justify-content-center mt-2">
-                                    <SelectionBox options={hours_array} value={hours.toString()}
-                                                setValue={setHours}/>
-                                    <label className={"title mx-3"}>:</label>
-                                    <SelectionBox options={minutes_array} value={minutes.toString()}
-                                                setValue={setMinutes}/>
-                                </div>
+                                <Calendar onChange={date => setDeadline(date)} value={deadline}
+                                        locale={t('create_project.deadline.locale')}/>
                             </div>
-                        }
+                            <div className="is-horizontal field is-justify-content-center mt-2">
+                                <SelectionBox options={hours_array} value={hours.toString()}
+                                            setValue={setHours} value_as_number={true}/>
+                                <label className={"title mx-3"}>:</label>
+                                <SelectionBox options={minutes_array} value={minutes.toString()}
+                                            setValue={setMinutes} value_as_number={true}/>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 {/* DESCRIPTION FIELD */}
