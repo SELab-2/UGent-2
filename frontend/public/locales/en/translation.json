@@ -183,6 +183,7 @@
         "confirm": "Confirm",
         "save": "Save",
         "submit": "Submit",
+        "submitted": "The submission has been successful",
         "failed-submission": "The submission failed with error:",
         "download-current": "Download latest submission",
         "failed": "Failed",
