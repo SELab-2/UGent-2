@@ -170,9 +170,9 @@ function json_to_submission(json: any): Submission {
     return x
 }
 
-function submission_to_json(submission: Submission): string {
+function submission_to_json(submission: Submission): object {
 
-    function constraint_to_object(constraint: Constraint, local_constraint_list: Constraint[]): string {
+    function constraint_to_object(constraint: Constraint, local_constraint_list: Constraint[]): object {
         const constraint_object: any = {};
         switch (constraint.type) {
             case 'FILE':
@@ -236,19 +236,19 @@ function get_all_ids(submission: Submission) {
     return global_ids.concat(local_ids).concat([(submission.submission as Zip).self_constraint.id]);
 }
 
-let init_submission: Submission | undefined = undefined;
+let init_submission: object | undefined = undefined;
 
 export default function SimpleTests(props: { 
     teacherOrStudent: TeacherOrStudent,
-    initialData: string,
-    setData: Dispatch<SetStateAction<string>> | undefined,
+    initialData: object,
+    setData: Dispatch<SetStateAction<object>> | undefined,
     setHasChanged: Dispatch<SetStateAction<boolean>> | undefined
 }): JSX.Element {
 
     const { t } = useTranslation();
 
     if (init_submission === undefined) {
-        init_submission = JSON.parse(props.initialData);
+        init_submission = props.initialData;
     }
 
     const [submission,      setSubmission     ] = useState<Submission>(json_to_submission(init_submission));
@@ -271,7 +271,7 @@ export default function SimpleTests(props: {
         if (submission !== undefined) {
             const new_data = submission_to_json(submission);
             if (props.setData !== undefined) {
-                props.setData(JSON.stringify(new_data));
+                props.setData(new_data);
             }
             if (props.setHasChanged !== undefined) {
                 props.setHasChanged(!_.isEqual(init_submission, new_data));
