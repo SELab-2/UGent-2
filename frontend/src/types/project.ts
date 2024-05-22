@@ -16,7 +16,8 @@ export type ProjectTeacher = {
     requiredFiles: object,
     otherFilesAllow: boolean,
     groupProject: boolean,
-    maxGroupMembers: number
+    maxGroupMembers: number,
+    dockerFile: string
 }
 
 export enum ProjectStatus {

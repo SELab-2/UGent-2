@@ -26,6 +26,7 @@ export function mapProject(projectData: Backend_Project): Project{
         project_requirements: projectData.requirements,
         project_visible: projectData.visible,
         project_max_students: projectData.max_students,
+        project_dockerfile: projectData.dockerfile,
         course_id: projectData.course_id,
     }
 }

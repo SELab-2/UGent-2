@@ -15,6 +15,7 @@ export interface Backend_Project {
     requirements: string,
     visible: boolean,
     max_students: number,
+    dockerfile: string,
     course_id: number,
 }
 

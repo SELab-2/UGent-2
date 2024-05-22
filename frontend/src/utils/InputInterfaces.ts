@@ -8,6 +8,7 @@ export interface ProjectInput{
     requirements: string,
     visible: boolean,
     max_students: number,
+    dockerfile: string
 }
 
 export interface CourseInput{

@@ -1,4 +1,9 @@
 {
+  "docker": {
+    "file-present": "bestand aanwezig:",
+    "false": "neen",
+    "true": "ja"
+  },
   "login": {
     "title": "Welkom bij Delphi!",
     "text": "Om in te loggen, drup op de knop hieronder. Je wordt doorgestuurd naar de aanmeldpagina van UGent CAS. ",
@@ -63,7 +68,7 @@
     },
     "docker_file": {
       "tag": "Docker-bestand",
-      "choose_button": "Kies een bestand"
+      "choose_button": "Kies nieuw bestand"
     },
     "submission_files": {
       "tag": "Indieningsbestanden:"

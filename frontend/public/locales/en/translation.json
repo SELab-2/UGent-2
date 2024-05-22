@@ -1,4 +1,9 @@
 {
+    "docker": {
+        "file-present": "file present:",
+        "false": "false",
+        "true": "true"
+    },
     "login": {
         "title": "Welcome to Delphi!",
         "text": "To login, please click the button below, you'll get redirected to the login page of UGent CAS.",
@@ -63,7 +68,7 @@
         },
         "docker_file": {
             "tag": "Docker file",
-            "choose_button": "Choose a file"
+            "choose_button": "Choose new file"
         },
         "submission_files": {
             "tag": "Submission files:"
