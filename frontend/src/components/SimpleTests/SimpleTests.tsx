@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-argument, react-hooks/exhaustive-deps */
-import {Dispatch, JSX, SetStateAction, useEffect} from "react";
+import {Dispatch, JSX, SetStateAction, useEffect, useMemo, useRef} from "react";
 import { useState } from 'react';
 import { IoMdMore } from "react-icons/io";
 import { MdExpandLess, MdExpandMore } from "react-icons/md";
@@ -236,8 +236,6 @@ function get_all_ids(submission: Submission) {
     return global_ids.concat(local_ids).concat([(submission.submission as Zip).self_constraint.id]);
 }
 
-let init_submission: object | undefined = undefined;
-
 export default function SimpleTests(props: { 
     teacherOrStudent: TeacherOrStudent,
     initialData: object,
@@ -247,11 +245,10 @@ export default function SimpleTests(props: {
 
     const { t } = useTranslation();
 
-    if (init_submission === undefined) {
-        init_submission = props.initialData;
-    }
+    const init_submission = useMemo(() => (props.initialData), []); // initialize once and directly
+    const init_submission_ref = useRef<object>(init_submission); // keep mutable reference across re-renders
 
-    const [submission,      setSubmission     ] = useState<Submission>(json_to_submission(init_submission));
+    const [submission,      setSubmission     ] = useState<Submission>(json_to_submission(init_submission_ref.current));
     const [isZip,           setIsZip          ] = useState<boolean>(submission.type === 'ZIP');
     const [isHovering,      setIsHovering     ] = useState<number | undefined>(undefined);
     const [isExpanded,      setIsExpanded     ] = useState<Map<number, boolean>>(new Map( get_all_ids(submission).map(id => [id, false])));
@@ -274,7 +271,7 @@ export default function SimpleTests(props: {
                 props.setData(new_data);
             }
             if (props.setHasChanged !== undefined) {
-                props.setHasChanged(!_.isEqual(init_submission, new_data));
+                props.setHasChanged(!_.isEqual(init_submission_ref.current, new_data));
             }
         }
     }, [submission]);
