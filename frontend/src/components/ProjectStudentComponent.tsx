@@ -217,7 +217,7 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
                 setSuccess('')
             } else {
                 setNewSelectedFile(false)
-                setSuccess("The submission has been successful") // TODO translation
+                setSuccess(t("project.submitted"))
                 setError('')
             }
         }
