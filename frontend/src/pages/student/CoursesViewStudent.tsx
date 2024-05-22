@@ -2,7 +2,6 @@ import {JSX} from "react";
 import {Header} from "../../components/Header.tsx";
 import {Sidebar} from "../../components/Sidebar.tsx";
 import '../../assets/styles/students_components.css'
-import {SearchBar} from "../../components/SearchBar.tsx";
 import {Table} from "../../components/Table.tsx";
 import {TableRowCourses} from "../../types/tableRows.ts";
 import {useRouteLoaderData} from "react-router-dom";
@@ -50,7 +49,6 @@ export default function CoursesViewStudent(): JSX.Element {
                 </div>
                 <div className={"student-main is-flex is-justify-content-center"}>
                     <div className={"table-page is-flex is-flex-direction-column"}>
-                        <SearchBar placeholder={t('courses.search_placeholder')}/>
                         <Table title={t('courses.active')} data={tableCoursesActive} ignoreKeys={[]} home={"student"}/>
                     </div>
                 </div>

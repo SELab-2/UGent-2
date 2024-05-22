@@ -7,6 +7,14 @@ from domain.logic.teacher import is_user_teacher
 from errors.database_errors import ActionAlreadyPerformedError, NoSuchRelationError
 
 
+def archive_course(session: Session, course_id: int) -> None:
+    course = get_course(session, course_id)
+    course.archived = True
+    for project in course.projects:
+        project.archived = True
+    session.commit()
+
+
 def create_course(session: Session, name: str) -> Course:
     new_course = Course(name=name, archived=False)
     session.add(new_course)
@@ -99,6 +107,8 @@ def remove_teacher_from_course(session: Session, teacher_id: int, course_id: int
 
     teacher.courses.remove(course)
     session.commit()
+    if len(course.teachers) == 0:
+        archive_course(session, course_id)
 
 
 def update_course(session: Session, course_id: int, course: CourseInput) -> None:
@@ -106,3 +116,5 @@ def update_course(session: Session, course_id: int, course: CourseInput) -> None
     course_db.archived = course.archived
     course_db.name = course.name
     session.commit()
+    if course_db.archived:
+        archive_course(session, course_id)

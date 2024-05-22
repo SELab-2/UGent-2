@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-argument, react-hooks/exhaustive-deps */
-import {Dispatch, JSX, SetStateAction, useEffect} from "react";
+import {Dispatch, JSX, SetStateAction, useEffect, useMemo, useRef} from "react";
 import { useState } from 'react';
 import { IoMdMore } from "react-icons/io";
 import { MdExpandLess, MdExpandMore } from "react-icons/md";
@@ -170,9 +170,9 @@ function json_to_submission(json: any): Submission {
     return x
 }
 
-function submission_to_json(submission: Submission): string {
+function submission_to_json(submission: Submission): object {
 
-    function constraint_to_object(constraint: Constraint, local_constraint_list: Constraint[]): string {
+    function constraint_to_object(constraint: Constraint, local_constraint_list: Constraint[]): object {
         const constraint_object: any = {};
         switch (constraint.type) {
             case 'FILE':
@@ -236,22 +236,19 @@ function get_all_ids(submission: Submission) {
     return global_ids.concat(local_ids).concat([(submission.submission as Zip).self_constraint.id]);
 }
 
-let init_submission: Submission | undefined = undefined;
-
 export default function SimpleTests(props: { 
     teacherOrStudent: TeacherOrStudent,
-    initialData: string,
-    setData: Dispatch<SetStateAction<string>> | undefined,
+    initialData: object,
+    setData: Dispatch<SetStateAction<object>> | undefined,
     setHasChanged: Dispatch<SetStateAction<boolean>> | undefined
 }): JSX.Element {
 
     const { t } = useTranslation();
 
-    if (init_submission === undefined) {
-        init_submission = JSON.parse(props.initialData);
-    }
+    const init_submission = useMemo(() => (props.initialData), []); // initialize once and directly
+    const init_submission_ref = useRef<object>(init_submission); // keep mutable reference across re-renders
 
-    const [submission,      setSubmission     ] = useState<Submission>(json_to_submission(init_submission));
+    const [submission,      setSubmission     ] = useState<Submission>(json_to_submission(init_submission_ref.current));
     const [isZip,           setIsZip          ] = useState<boolean>(submission.type === 'ZIP');
     const [isHovering,      setIsHovering     ] = useState<number | undefined>(undefined);
     const [isExpanded,      setIsExpanded     ] = useState<Map<number, boolean>>(new Map( get_all_ids(submission).map(id => [id, false])));
@@ -271,10 +268,10 @@ export default function SimpleTests(props: {
         if (submission !== undefined) {
             const new_data = submission_to_json(submission);
             if (props.setData !== undefined) {
-                props.setData(JSON.stringify(new_data));
+                props.setData(new_data);
             }
             if (props.setHasChanged !== undefined) {
-                props.setHasChanged(!_.isEqual(init_submission, new_data));
+                props.setHasChanged(!_.isEqual(init_submission_ref.current, new_data));
             }
         }
     }, [submission]);

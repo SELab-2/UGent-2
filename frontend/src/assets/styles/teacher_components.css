@@ -1,7 +1,21 @@
 .create-project {
     height: 100%;
     flex-wrap: wrap;
-    overflow-x: scroll;
+    overflow-x: auto;
+}
+
+.create-project-topbar {
+    position: fixed;
+    width: calc(100% - var(--sidebar-width) - 20px);
+    z-index: 10;
+    background-color: white;
+    padding: 10px 20px;
+    display:flex
+}
+
+.create-project-content {
+    margin-top: 70px;
+    margin-bottom: 100px;
 }
 
 .teacher-main {

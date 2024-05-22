@@ -5,7 +5,7 @@ from sqlmodel import Session
 
 from create_database_tables import initialize_tables
 from db.extensions import engine
-from db.models import CourseInput, SubmissionState
+from db.models import CourseInput
 from domain.logic.admin import create_admin
 from domain.logic.course import add_student_to_course, add_teacher_to_course, create_course, update_course
 from domain.logic.group import add_student_to_group, create_group
@@ -36,7 +36,7 @@ def fill_database_mock() -> None:
             visible=True,
             description="Maak iets in JavaFX",
             requirements='{"type": "SUBMISSION", "root_constraint": { "type": "ZIP", "zip_name": "submission.zip", '
-                         '"global_constraints": [], "sub_constraints": []}}',
+            '"global_constraints": [], "sub_constraints": []}}',
             max_students=3,
             deadline=datetime(2024, 12, 31, 23, 59, 59, tzinfo=tz.LOCAL),
             dockerfile="",
@@ -59,7 +59,7 @@ def fill_database_mock() -> None:
             "Men kan dus ook van schaakklok, damklok, goklok of iets anders spreken, maar het gaat om"
             "hetzelfde apparaat en wedstrijdklok is de gebruikelijke benaming.",
             requirements='{"type": "SUBMISSION", "root_constraint": { "type": "ZIP", "zip_name": "submission.zip", '
-                         '"global_constraints": [], "sub_constraints": []}}',
+            '"global_constraints": [], "sub_constraints": []}}',
             max_students=999,
             deadline=datetime(2024, 2, 29, 00, tzinfo=tz.LOCAL),
             dockerfile="",
@@ -73,7 +73,7 @@ def fill_database_mock() -> None:
             visible=True,
             description="Implementeer verschillende sorteeralgoritmen",
             requirements='{"type": "SUBMISSION", "root_constraint": { "type": "ZIP", "zip_name": "submission.zip", '
-                         '"global_constraints": [], "sub_constraints": []}}',
+            '"global_constraints": [], "sub_constraints": []}}',
             max_students=1,
             deadline=datetime(2024, 11, 15, 23, 59, 59, tzinfo=tz.LOCAL),
             dockerfile="",
@@ -168,7 +168,7 @@ def fill_database_mock() -> None:
             visible=True,
             description="Maak een RPG game in Haskell!",
             requirements='{"type": "SUBMISSION", "root_constraint": { "type": "ZIP", "zip_name": "submission.zip", '
-                         '"global_constraints": [], "sub_constraints": []}}',
+            '"global_constraints": [], "sub_constraints": []}}',
             max_students=1,
             deadline=datetime(2023, 7, 17, 22, 33, 44, tzinfo=tz.LOCAL),
             dockerfile="",
@@ -289,90 +289,90 @@ def fill_database_mock() -> None:
             session=session,
             student_id=student1.id,
             group_id=groep1_objprog.id,
-            message="Eerste versie",
-            state=SubmissionState.Rejected,
             date_time=datetime(2024, 3, 22, 22, 55, 3, tzinfo=tz.LOCAL),
-            filename="flashcards.zip",
+            file_content=b"TEST1",
+            original_filename="flashcards.zip",
+            skip_validation=True,
         )
 
         create_submission(
             session=session,
             student_id=student5.id,
             group_id=groep2_objprog.id,
-            message="",
-            state=SubmissionState.Pending,
             date_time=datetime(2024, 3, 22, 22, 57, 34, tzinfo=tz.LOCAL),
-            filename="flashcards.zip",
+            file_content=b"TEST2",
+            original_filename="flashcards.zip",
+            skip_validation=True,
         )
 
         create_submission(
             session=session,
             student_id=student8.id,
             group_id=groep3_objprog.id,
-            message="blablabla",
-            state=SubmissionState.Approved,
             date_time=datetime(2024, 3, 22, 22, 59, 17, tzinfo=tz.LOCAL),
-            filename="flashcards.zip",
+            file_content=b"TEST3",
+            original_filename="flashcards.zip",
+            skip_validation=True,
         )
 
         create_submission(
             session=session,
             student_id=student4.id,
             group_id=groep1_algo.id,
-            message="Optimalisatie + enkele bug fixes",
-            state=SubmissionState.Approved,
             date_time=datetime(2024, 3, 21, 7, 59, 13, tzinfo=tz.LOCAL),
-            filename="sorteer_algoritmen.py",
+            file_content=b"TEST4",
+            original_filename="sorteer_algoritmen.py",
+            skip_validation=True,
         )
 
         create_submission(
             session=session,
             student_id=student2.id,
             group_id=groep5_algo.id,
-            message="Klaar is kees!",
-            state=SubmissionState.Approved,
             date_time=datetime(2024, 2, 1, 12, 20, 45, tzinfo=tz.LOCAL),
-            filename="sorteer_algoritmen.py",
+            file_content=b"TEST5",
+            original_filename="sorteer_algoritmen.py",
+            skip_validation=True,
         )
 
         create_submission(
             session=session,
             student_id=student3.id,
             group_id=groep6_algo.id,
-            message="Nog wat werk",
-            state=SubmissionState.Rejected,
             date_time=datetime(2024, 3, 22, 23, 57, 34, tzinfo=tz.LOCAL),
-            filename="sorteer_algoritmen.py",
+            file_content=b"TEST6",
+            original_filename="sorteer_algoritmen.py",
+            skip_validation=True,
         )
 
         create_submission(
             session=session,
             student_id=student7.id,
             group_id=groep8_algo.id,
-            message="",
-            state=SubmissionState.Rejected,
             date_time=datetime(2024, 3, 22, 22, 19, 0, tzinfo=tz.LOCAL),
-            filename="sorteer_algoritmen.py",
+            file_content=b"TEST7",
+            original_filename="sorteer_algoritmen.py",
+            skip_validation=True,
         )
 
         create_submission(
             session=session,
             student_id=student2.id,
             group_id=groep1funcprog.id,
-            message="nieuwe sprites",
-            state=SubmissionState.Approved,
             date_time=datetime(2023, 7, 16, 23, 0, 0, tzinfo=tz.LOCAL),
-            filename="RPG.zip",
+            file_content=b"TEST8",
+            original_filename="RPG.zip",
+            skip_validation=True,
         )
 
         create_submission(
             session=session,
             student_id=student8.id,
             group_id=groep4funcprog.id,
-            message="fix inventory bug",
-            state=SubmissionState.Approved,
             date_time=datetime(2023, 7, 18, 21, 2, 5, tzinfo=tz.LOCAL),
-            filename="fungame.zip",
+            file_content=b"TEST9",
+            original_filename="fungame.zip",
+            skip_validation=True,
         )
 
         # make assistants

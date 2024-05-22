@@ -4,7 +4,6 @@ from datetime import datetime
 
 from sqlmodel import SQLModel
 
-from db.models import SubmissionState
 from domain.logic import group, student, submission
 from errors.database_errors import ItemNotFoundError
 from tests.crud.test_main import get_db, test_engine
@@ -32,10 +31,10 @@ class TestEdgeCases(unittest.TestCase):
                 self.session,
                 stud.id,
                 999,
-                "Test Message",
-                SubmissionState.Pending,
                 datetime.now(),
-                filename="test",
+                b"",
+                "test",
+                skip_validation=True,
             )
 
 

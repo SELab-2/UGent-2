@@ -173,6 +173,9 @@
         },
         "confirm": "Confirm",
         "save": "Save",
+        "submit": "Submit",
+        "submitted": "The submission has been successful",
+        "failed-submission": "The submission failed with error:",
         "failed": "Failed",
         "success": "Success",
         "not_in_group": "You don't have a group yet, please sign yourself up in order to start this project."
@@ -259,5 +262,8 @@
     "empty-home": {
         "empty-cards": "No active projects at this moment.",
         "empty-deadline": "No deadlines at the moment."
+    },
+    "download": {
+        "download_all": "Download all submissions"
     }
 }

@@ -1,6 +1,7 @@
 import i18n from 'i18next';
 import Backend from 'i18next-http-backend';
 import { initReactI18next } from 'react-i18next';
+import {DEBUG} from "./pages/root.tsx";
 
 /*
 TESTING: 
@@ -20,7 +21,7 @@ await i18n
     // init i18next
     // for all options read: https://www.i18next.com/overview/configuration-options
     .init({
-        debug: true,
+        debug: DEBUG,
         lng: localStorage.getItem('language') || 'en',
         fallbackLng: 'en',
         interpolation: {

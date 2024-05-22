@@ -4,6 +4,7 @@
     --primary-light: #b2b1ff;
     --primary-light-text: white;
     --primary-dark-text: black;
+    overflow-y: auto !important
 }
 
 .login-screen {

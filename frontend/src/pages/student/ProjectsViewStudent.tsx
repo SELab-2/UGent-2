@@ -1,7 +1,6 @@
 import {JSX} from "react";
 import {Header} from "../../components/Header.tsx";
 import {Sidebar} from "../../components/Sidebar.tsx";
-import {SearchBar} from "../../components/SearchBar.tsx";
 import {Table} from "../../components/Table.tsx";
 import {TableRowProjects} from "../../types/tableRows.ts";
 import {useRouteLoaderData} from "react-router-dom";
@@ -69,7 +68,6 @@ export default function ProjectsViewStudent(): JSX.Element {
                 </div>
                 <div className={"student-main is-flex is-justify-content-center"}>
                     <div className={"table-page is-flex is-flex-direction-column"}>
-                        <SearchBar placeholder={t('projects.search_placeholder')}/>
                         <Table title={t('projects.active')} data={tableProjectsActive} ignoreKeys={["numberOfSubmissions"]}
                                home={"student"}/>
                         <div className={"my-5"}/>

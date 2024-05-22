@@ -1,4 +1,4 @@
-import {ChangeEvent, JSX, useEffect, useState} from "react";
+import {ChangeEvent, JSX, useEffect, useRef, useState} from "react";
 import FieldWithLabel from "./FieldWithLabel.tsx";
 import {FaCheck, FaUpload} from "react-icons/fa";
 import {FaDownload} from "react-icons/fa6";
@@ -12,6 +12,8 @@ import {DEBUG} from "../pages/root.tsx";
 import {make_submission} from "../utils/api/Submission.ts";
 import {joinGroup, leaveGroup} from "../utils/api/Groups.ts";
 import {getGroupInfo, loadGroupMembers} from "../dataloaders/ProjectsStudentLoader.ts";
+import SimpleTests from "./SimpleTests/SimpleTests.tsx";
+import { TeacherOrStudent } from "./SimpleTests/TeacherOrStudentEnum.tsx";
 
 function ProjectInfo(props: { project: ProjectStudent }): JSX.Element {
     const {t} = useTranslation();
@@ -42,13 +44,12 @@ function ProjectInfo(props: { project: ProjectStudent }): JSX.Element {
                 </div>
                 <div className="field-body">
                     <div className="field">
-                        { // TODO requiredFiles moet een string geven zoals bij teacher voor dit kan werken
-                            /*<SimpleTests
-                                teacherOrStudent={TeacherOrStudent.STUDENT}
-                                initialData={}
-                                setData={undefined}
-                                setHasChanged={undefined}
-                            /> */}
+                        <SimpleTests
+                            teacherOrStudent={TeacherOrStudent.STUDENT}
+                            initialData={props.project.requiredFiles}
+                            setData={undefined}
+                            setHasChanged={undefined}
+                        />
                     </div>
                 </div>
             </div>
@@ -73,6 +74,8 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
     }[] | undefined>(props.project.groupMembers);
     const [submission, setSubmission] = useState(props.project.submission)
     const [groupInfo, setGroupInfo] = useState(props.project.groups_info)
+
+    const fileInputRef = useRef<HTMLInputElement | null>(null);
 
     function TableJoinedGroup(props: {
         groupMembers: {
@@ -216,15 +219,20 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
                 setSuccess('')
             } else {
                 setNewSelectedFile(false)
-                setSuccess("The submission has been successful") // TODO translation
+                setSuccess(t("project.submitted"))
                 setError('')
+            }
+            setFile(undefined);
+            setNewSelectedFile(false);
+            if (fileInputRef.current) {
+                fileInputRef.current.value = '';
             }
         }
     }
 
     function selectFile(event: ChangeEvent<HTMLInputElement>) {
         if (event.target?.files) {
-            setFile(event?.target?.files[0])
+            setFile(event?.target?.files[0]);
             setNewSelectedFile(true);
         }
     }
@@ -249,20 +257,15 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
 
     return (
         <div>
-            {newSelectedFile && hasGroup &&
-                <div>
-                    <div className={"fixated is-flex is-justify-content-start"}>
-                        <RegularButton
-                            placeholder={t('project.save')}
-                            add={false}
-                            onClick={() => void submitFile()}
-                            styling="is-primary"/>
-                    </div>
-                    <div className="fixated-filler"/>
-                </div>}
             <ProjectInfo project={props.project}/>
             {error && <div className="notification is-danger is-flex is-justify-content-center mx-5 my-3">
-                {error}
+                <div className="rows">
+                    <div className="row is-full">{t('project.failed-submission')}</div>
+                    <br/>
+                    <div className="row is-full">
+                        {error}
+                    </div>
+                </div>
             </div>}
             {success && <div className="notification is-success is-flex is-justify-content-center mx-5 my-3">
                 {success}
@@ -289,9 +292,7 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
                                 <div className="submission-file-download-upload">
                                     {submission != null &&
                                         <div className={"submission-file-download mb-3"}>
-                                            {newSelectedFile
-                                                ? <label className={"mr-3 highlight"}>{file?.name}</label>
-                                                : <label className={"mr-3"}>{file?.name}</label>}
+                                            <label className={"mr-3"}>{file?.name}</label>
                                             <button className="button" onClick={() => void downloadLatestSubmission()}>
                                                 <FaDownload/>
                                             </button>
@@ -299,6 +300,7 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
                                     <div id="file-js" className="field is-horizontal">
                                         <label className="file-label">
                                             <input className="file-input" type="file" name="resume"
+                                                   ref={fileInputRef}
                                                    onChange={selectFile}/>
                                             <span className="file-cta">
                                                 <span className="file-icon"><FaUpload/></span>
@@ -312,7 +314,17 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
                         </div>
                     </div>
                 </>}
-
+            {newSelectedFile && hasGroup &&
+            <div>
+                <div className={"fixated is-flex is-justify-content-start"}>
+                    <RegularButton
+                        placeholder={t('project.submit')}
+                        add={false}
+                        onClick={() => void submitFile()}
+                        styling="is-primary"/>
+                </div>
+                <div className="fixated-filler"/>
+            </div>}
             <div className="p-5"/>
 
         </div>

@@ -10,8 +10,15 @@ import {TeacherOrStudent} from "./SimpleTests/TeacherOrStudentEnum.tsx";
 import Calendar from "react-calendar";
 import {useTranslation} from 'react-i18next';
 import Switch from "react-switch";
+import Statistics from "./Statistics.tsx";
+import {RegularButton} from "./RegularButton.tsx";
+import {FaDownload} from "react-icons/fa6";
 
-export function ProjectTeacherComponent(props: { project: ProjectTeacher }): JSX.Element {
+export function ProjectTeacherComponent(props: { 
+    project: ProjectTeacher, 
+    submission_statistics: {[key: number]: number} | undefined,
+    download_all_submissions: (() => Promise<void>) | undefined
+}): JSX.Element {
 
     const {t} = useTranslation();
 
@@ -51,137 +58,162 @@ export function ProjectTeacherComponent(props: { project: ProjectTeacher }): JSX
 
     return (
         <div className={"create-project"}>
-            {/* PROJECT NAME FIELD */}
-            <div className={"field is-horizontal"}>
-                <div className={"field-label"}>
-                    <label className="label">{t('create_project.name.tag')}</label>
-                </div>
-                <div className="field-body field">
-                    <Inputfield placeholder={t('create_project.name.placeholder')} value={projectName}
-                                setValue={setProjectName}/>
-                </div>
-            </div>
-            {/* COURSE NAME FIELD */}
-            <div className="field is-horizontal">
-                <div className="field-label">
-                    <label className="label">{t('create_project.course.tag')}</label>
-                </div>
-                <div className="field-body field">
-                    <SelectionBox options={course_options} value={courseName}
-                                  setValue={setCourseName}/>
-                </div>
-            </div>
-            {/* DEADLINE FIELD */}
-            <div className="field is-horizontal">
-                <div className="field-label">
-                    <label className="label">{t('create_project.deadline.tag')}</label>
-                </div>
-                <div className="field-body is-flex is-flex-direction-column is-align-items-start is-justify-content-center">
-                    <Switch
-                        className="pb-3"
-                        type="checkbox" 
-                        onChange={expandDeadline} 
-                        checked={showCalender}
-                        onColor="#006edc"
-                    />
-                    {showCalender &&
-                        <div>
-                            <div>
-                                <Calendar onChange={date => setDeadline(date)} value={deadline}
-                                          locale={t('create_project.deadline.locale')}/>
-                            </div>
-                            <div className="is-horizontal field is-justify-content-center mt-2">
-                                <SelectionBox options={hours_array} value={hours.toString()}
-                                              setValue={setHours}/>
-                                <label className={"title mx-3"}>:</label>
-                                <SelectionBox options={minutes_array} value={minutes.toString()}
-                                              setValue={setMinutes}/>
-                            </div>
-                        </div>
-                    }
-                </div>
-            </div>
-            {/* DESCRIPTION FIELD */}
-            <div className="field is-horizontal">
-                <div className="field-label">
-                    <label className="label">{t('create_project.description.tag')}</label>
-                </div>
-                <div className="field-body field">
-                    <div style={{width: "33%"}}> {/* Deze moet er blijven, anders doet css raar*/}
-                        <textarea className="textarea" placeholder={t('create_project.description.placeholder')}
-                                  value={description}
-                                  onChange={e => setDescription(e.target.value)}/>
+            <div className={"create-project-topbar"}>
+                <RegularButton placeholder={t('project.save')} add={false} onClick={() => {}}/> {/* TODO: implement save */}
+                <div className={"mr-5"}/>
+                {props.submission_statistics !== undefined &&
+                    <Statistics statistics={props.submission_statistics}/>
+                }
+                <div className={"mr-5"}/>
+                {props.download_all_submissions !== undefined && 
+                    <button className="js-modal-trigger button is-rounded is-pulled-right"
+                            onClick={() => {
+                                if (props.download_all_submissions !== undefined) {
+                                    void props.download_all_submissions()
+                                }
+                            }}>
+                        <span className="icon is-small">
+                            <FaDownload/>
+                        </span>
+                        <span>{t('download.download_all')}</span>
+                    </button>
+                }
+            </div>  
+            <div className={"create-project-content"}>
+                {/* PROJECT NAME FIELD */}
+                <div className={"field is-horizontal"}>
+                    <div className={"field-label"}>
+                        <label className="label">{t('create_project.name.tag')}</label>
+                    </div>
+                    <div className="field-body field">
+                        <Inputfield placeholder={t('create_project.name.placeholder')} value={projectName}
+                                    setValue={setProjectName}/>
                     </div>
                 </div>
-            </div>
-            {/* DOCKER FIELD */}
-            <div className="field is-horizontal">
-                <div className="field-label">
-                    <label className="label">{t('create_project.docker_file.tag')}</label>
+                {/* COURSE NAME FIELD */}
+                <div className="field is-horizontal">
+                    <div className="field-label">
+                        <label className="label">{t('create_project.course.tag')}</label>
+                    </div>
+                    <div className="field-body field">
+                        <SelectionBox options={course_options} value={courseName}
+                                    setValue={setCourseName}/>
+                    </div>
                 </div>
-                <div className="field-body field file has-name">
-                    <label className="file-label">
-                        <input className="file-input" type="file" name="resume"/>
-                        <span className="file-cta">
-                            <span className="file-icon">
-                                <FaUpload/>
-                            </span>
-                            <span className="file-label">
-                                {t('create_project.docker_file.choose_button')}
-                            </span>
-                        </span>
-                        <span className="file-name">
-                            C:\home\files\docker_file.dockerfile
-                        </span>
-                    </label>
-                </div>
-            </div>
-            {/* SUBMISSION FIELD */}
-            <div className="field is-horizontal">
-                <div className="field-label">
-                    <label className="label">{t('create_project.submission_files.tag')}</label>
-                </div>
-                <div className="field-body field">
-                    <div className="field"> {/* Deze moet er blijven, anders doet css raar*/}
-                        <SimpleTests
-                            teacherOrStudent={TeacherOrStudent.TEACHER}
-                            initialData={requiredFiles}
-                            setData={setRequiredFiles}
-                            setHasChanged={setRequiredFilesHasChanged}
+                {/* DEADLINE FIELD */}
+                <div className="field is-horizontal">
+                    <div className="field-label">
+                        <label className="label">{t('create_project.deadline.tag')}</label>
+                    </div>
+                    <div className="field-body is-flex is-flex-direction-column is-align-items-start is-justify-content-center">
+                        <Switch
+                            className="pb-3"
+                            type="checkbox" 
+                            onChange={expandDeadline} 
+                            checked={showCalender}
+                            onColor="#006edc"
                         />
+                        {showCalender &&
+                            <div>
+                                <div>
+                                    <Calendar onChange={date => setDeadline(date)} value={deadline}
+                                            locale={t('create_project.deadline.locale')}/>
+                                </div>
+                                <div className="is-horizontal field is-justify-content-center mt-2">
+                                    <SelectionBox options={hours_array} value={hours.toString()}
+                                                setValue={setHours}/>
+                                    <label className={"title mx-3"}>:</label>
+                                    <SelectionBox options={minutes_array} value={minutes.toString()}
+                                                setValue={setMinutes}/>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+                {/* DESCRIPTION FIELD */}
+                <div className="field is-horizontal">
+                    <div className="field-label">
+                        <label className="label">{t('create_project.description.tag')}</label>
+                    </div>
+                    <div className="field-body field">
+                        <div style={{width: "33%"}}> {/* Deze moet er blijven, anders doet css raar*/}
+                            <textarea className="textarea" placeholder={t('create_project.description.placeholder')}
+                                    value={description}
+                                    onChange={e => setDescription(e.target.value)}/>
+                        </div>
+                    </div>
+                </div>
+                {/* DOCKER FIELD */}
+                <div className="field is-horizontal">
+                    <div className="field-label">
+                        <label className="label">{t('create_project.docker_file.tag')}</label>
+                    </div>
+                    <div className="field-body field file has-name">
+                        <label className="file-label">
+                            <input className="file-input" type="file" name="resume"/>
+                            <span className="file-cta">
+                                <span className="file-icon">
+                                    <FaUpload/>
+                                </span>
+                                <span className="file-label">
+                                    {t('create_project.docker_file.choose_button')}
+                                </span>
+                            </span>
+                            <span className="file-name">
+                                C:\home\files\docker_file.dockerfile
+                            </span>
+                        </label>
+                    </div>
+                </div>
+                {/* SUBMISSION FIELD */}
+                <div className="field is-horizontal">
+                    <div className="field-label">
+                        <label className="label">{t('create_project.submission_files.tag')}</label>
+                    </div>
+                    <div className="field-body field">
+                        <div className="field"> {/* Deze moet er blijven, anders doet css raar*/}
+                            {
+                                requiredFilesHasChanged && 
+                                <div>changed</div>
+                            }
+                            <SimpleTests
+                                teacherOrStudent={TeacherOrStudent.TEACHER}
+                                initialData={requiredFiles}
+                                setData={setRequiredFiles}
+                                setHasChanged={setRequiredFilesHasChanged}
+                            />
+                        </div>
+                    </div>
+                </div>
+                {/* TEAMWORK FIELD */}
+                <div className="field is-horizontal">
+                    <div className="field-label">
+                        <label className="label">{t('create_project.teamwork.tag')}</label>
+                    </div>
+                    <div className="field-body is-fullwidth is-align-content-center">
+                        <label>
+                            <input type="checkbox" onChange={e => expandGroup(e.target.checked)}
+                                checked={groupProject}/>
+                        </label>
+
+                        {showGroup &&
+                            <div>
+                                <div className="field is-horizontal ml-6">
+                                    <label
+                                        className="label mr-3 is-align-content-center">{t('project.groupmembers.amount_of_members')}</label>
+                                    <input
+                                        style={{width: "30%"}}
+                                        className={"input is-rounded"}
+                                        type="number"
+                                        value={max_students}
+                                        onChange={e => setMaxStudents(parseInt(e.target.value))}
+                                    />
+                                </div>
+                            </div>
+                        }
                     </div>
                 </div>
             </div>
-            {/* TEAMWORK FIELD */}
-            <div className="field is-horizontal">
-                <div className="field-label">
-                    <label className="label">{t('create_project.teamwork.tag')}</label>
-                </div>
-                <div className="field-body is-fullwidth is-align-content-center">
-                    <label>
-                        <input type="checkbox" onChange={e => expandGroup(e.target.checked)}
-                               checked={groupProject}/>
-                    </label>
-
-                    {showGroup &&
-                        <div>
-                            <div className="field is-horizontal ml-6">
-                                <label
-                                    className="label mr-3 is-align-content-center">{t('project.groupmembers.amount_of_members')}</label>
-                                <input
-                                    style={{width: "30%"}}
-                                    className={"input is-rounded"}
-                                    type="number"
-                                    value={max_students}
-                                    onChange={e => setMaxStudents(parseInt(e.target.value))}
-                                />
-                            </div>
-                        </div>
-                    }
-                </div>
-            </div>
-
         </div>
-    )
-        ;
+    );
 }

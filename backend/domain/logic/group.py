@@ -4,6 +4,7 @@ from db.models import Group, Project, ProjectStatistics, Student, Submission, Su
 from domain.logic.basic_operations import get, get_all
 from domain.logic.submission import get_last_submission, get_submissions_of_group
 from errors.database_errors import ActionAlreadyPerformedError, NoSuchRelationError
+from errors.logic_errors import ArchivedError
 
 
 def create_group(session: Session, project_id: int) -> Group:
@@ -11,6 +12,8 @@ def create_group(session: Session, project_id: int) -> Group:
     Create an empty group for a certain project.
     """
     project: Project = get(session, Project, project_id)
+    if project.archived:
+        raise ArchivedError
     next_id = 1 if len(project.groups) == 0 else max(project.groups, key=lambda group: group.visible_id).visible_id + 1
     new_group = Group(project_id=project_id, visible_id=next_id)
     project.groups.append(new_group)

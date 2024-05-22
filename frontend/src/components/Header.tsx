@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 import useAuth from "../hooks/useAuth.ts";
 
 export function Header(props: { page_title: string, home: string }): JSX.Element {
-    
+
     const {user} = useAuth()
 
     return (
@@ -14,7 +14,7 @@ export function Header(props: { page_title: string, home: string }): JSX.Element
             </Link>
             <div className={"is-align-self-center"}><p>{props.page_title}</p></div>
             <div className="above-all-others">
-                <button className={"button mx-2 is-transparent"}>
+                <button className={"button mx-2 is-transparent"} style={{cursor: "default"}}>
                     <div className={"icon-text"}>
                         <p>{user?.user_name}</p>
                         <RiAccountPinBoxLine className={"icon"}/>
