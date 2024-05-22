@@ -17,11 +17,10 @@ export default function LeaveCourseStudent(props: {course_id: number}): JSX.Elem
             if (success) {
                 navigate(`/student/`);
             } else {
-                alert("There was an error while trying to leave this course, please try again.");
+                alert(t('alert.leave_course'));
             }
         } catch (error) {
-            console.error("Error archiving course:", error);
-            alert("There was an error while trying to leave this course, please try again.");
+            alert(t('alert.leave_course'));
         }
     };
 

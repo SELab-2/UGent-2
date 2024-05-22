@@ -262,5 +262,8 @@
   },
   "download": {
     "download_all": "Download alle indieningen"
+  },
+  "alert": {
+    "leave_course": "Een fout trad op tijdens het verlaten van het vak, probeer later opnieuw."
   }
 }

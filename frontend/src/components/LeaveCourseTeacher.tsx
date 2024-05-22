@@ -4,8 +4,6 @@ import {IoExitOutline} from "react-icons/io5";
 import {useTranslation} from "react-i18next";
 import {leave_course} from "../utils/api/Teacher.ts";
 import {useNavigate} from "react-router-dom";
-import {CourseInput} from "../utils/InputInterfaces.ts";
-import {update_course} from "../utils/api/Course.ts";
 
 export default function LeaveCourseTeacher(props: {amountOfTeachers: number, course_name: string, course_id: number}): JSX.Element {
     const [modalActive, setModalActive] = useState(false);
@@ -15,21 +13,14 @@ export default function LeaveCourseTeacher(props: {amountOfTeachers: number, cou
 
     const course_leave = async () => {
         try {
-            if (props.amountOfTeachers > 1) {
-                const course_input: CourseInput = {
-                    name: props.course_name,
-                    archived: true
-                }
-                await update_course(props.course_id, course_input);
-            }
             const success = await leave_course(props.course_id);
             if (success) {
                 navigate(`/teacher/`);
             } else {
-                alert("There was an error while trying to leave this course, please try again.");
+                alert(t('alert.leave_course'));
             }
         } catch (error) {
-            alert("There was an error while trying to leave this course, please try again.");
+            alert(t('alert.leave_course'));
         }
     };
 
