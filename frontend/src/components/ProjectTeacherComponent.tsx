@@ -1,4 +1,4 @@
-import {JSX, useEffect, useMemo, useRef, useState} from "react";
+import {JSX, useEffect, useState} from "react";
 import Inputfield from "./Inputfield.tsx";
 import {SelectionBox} from "./SelectionBox.tsx";
 import 'react-calendar/dist/Calendar.css';
@@ -9,7 +9,6 @@ import SimpleTests from "./SimpleTests/SimpleTests.tsx";
 import {TeacherOrStudent} from "./SimpleTests/TeacherOrStudentEnum.tsx";
 import Calendar from "react-calendar";
 import {useTranslation} from 'react-i18next';
-import Switch from "react-switch";
 import Statistics from "./Statistics.tsx";
 import {RegularButton} from "./RegularButton.tsx";
 import {FaDownload} from "react-icons/fa6";
@@ -62,6 +61,7 @@ export function ProjectTeacherComponent(props: {
             value8: requiredFiles,
             value9: groupProject,
         });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     function allowSaveButton(): boolean {
