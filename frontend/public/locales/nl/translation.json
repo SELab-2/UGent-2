@@ -53,6 +53,8 @@
     "title": "Maak een project aan",
     "success": "Uw project is succesvol opgeslagen.",
     "failed": "Er is iets fout gegaan tijdens het opslaan van uw project. Probeer het opnieuw.",
+    "archived": "Gearchiveerd:",
+    "visible": "Zichtbaar:",
     "name": {
       "tag": "Projectnaam:",
       "placeholder": "Voer een naam in"
