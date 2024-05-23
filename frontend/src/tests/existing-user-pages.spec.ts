@@ -1,7 +1,8 @@
 import { test, expect } from '@playwright/test';
 import {Token} from "../utils/ApiInterfaces.ts";
+import {join} from "lodash";
 
-test('fake login works', async ({ page }) => {
+test('user flow: student', async ({ page }) => {
     await page.goto('https://localhost:8080');
     await page.waitForLoadState('networkidle');
     await expect(page).toHaveTitle(/Delphi/);
@@ -39,12 +40,22 @@ test('fake login works', async ({ page }) => {
     //klik op flashcards
     const flashcardsButton = page.getByRole('link', { name: 'Flash Cards' })
     await flashcardsButton.click();
-    const confirmButton = page.getByRole('button', { name: 'Confirm' })
-    await expect(confirmButton).toBeVisible();
-    const groupMember = page.getByText('mathieu.strypsteen@ugent.be');
+    const groupMember = page.getByText('robbe.vandekeere@ugent.be');
     await expect(groupMember).toBeVisible();
     const submissionReq = page.getByText('submission.zip');
     await expect(submissionReq).toBeVisible();
+    const leaveButton = page.getByRole('button').nth(2);
+    await expect(leaveButton).toBeVisible();
+    await leaveButton.click();
+    //const noGroup = page.getByText('You don\'t have a group yet');
+    //await expect(noGroup).toBeVisible();
+    await expect(groupMember).toBeHidden();
+    const joinButton = page.getByRole('row', { name: '2 2' }).getByRole('button');
+    await expect(joinButton).toBeVisible();
+    await joinButton.click();
+    //await expect(noGroup).toBeHidden();
+    await expect(groupMember).toBeVisible();
+    await expect(joinButton).toBeHidden();
     //ga naar courses
     const coursesButton = page.getByRole('link').nth(2);
     await coursesButton.click();
