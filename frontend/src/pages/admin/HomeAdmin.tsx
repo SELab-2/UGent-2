@@ -64,7 +64,7 @@ export default function HomeAdmin(): JSX.Element {
         if (!(person.user_roles.includes("TEACHER"))) {
             return (
                 <div className="person">
-                    <Person name={person.user_name} operations={[
+                    <Person email={person.user_email} operations={[
                         <OperationButton key={getKey()} type={OperationType.ADD}
                                          action={() => void adjust_role(OperationType.ADD, person, user?.user_id, "TEACHER", setUsers)}/>,
                     ]}/>
@@ -81,7 +81,7 @@ export default function HomeAdmin(): JSX.Element {
         if (person.user_roles.includes("ADMIN")) {
             return (
                 <div className="person">
-                    <Person name={person.user_name} operations={[
+                    <Person email={person.user_email} operations={[
                         <OperationButton key={getKey()} type={OperationType.REMOVE}
                                          action={() => void adjust_role(OperationType.REMOVE, person, user?.user_id, "ADMIN", setUsers)}/>,
                     ]}/>
@@ -91,7 +91,7 @@ export default function HomeAdmin(): JSX.Element {
 
         return (
             <div className="person">
-                <Person name={person.user_name} operations={[
+                <Person email={person.user_email} operations={[
                     <OperationButton key={getKey()} type={OperationType.ADD}
                                      action={() => void adjust_role(OperationType.ADD, person, user?.user_id, "ADMIN", setUsers)}/>,
                 ]}/>
