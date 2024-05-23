@@ -20,6 +20,7 @@ import {useNavigate} from "react-router-dom";
 import {project_create_group, update_project} from "../utils/api/Project.ts";
 import {getScrollbarWidth} from "../utils/ScrollBarWidth.ts";
 import Switch from "react-switch";
+import { MdRestore } from "react-icons/md";
 
 export function ProjectTeacherComponent(props: {
     project: ProjectTeacher,
@@ -48,7 +49,7 @@ export function ProjectTeacherComponent(props: {
     const [dockerString, setDockerString] = useState(props.project.dockerFile);
     // helpers
     const [showGroup, setGroup] = useState(props.project.groupProject);
-    const [dockerFileName, setDockerFileName] = useState("original_docker_file");
+    const [dockerFileName, setDockerFileName] = useState(props.project.dockerFile === "" ? undefined : "original_docker_file");
 
     const [initialValues, setInitialValues] = useState({
         value1: projectName,
@@ -132,10 +133,21 @@ export function ProjectTeacherComponent(props: {
         }
     }
 
-    function handleClearNewDocker() {
+    function handleDeleteDocker() {
+        // remove contents
+        setDockerString("");
+        // clear file name
+        setDockerFileName(undefined);
+        // reset selector
+        if (dockerRef.current) {
+            dockerRef.current.value = '';
+        }
+    }
+
+    function handleRestoreDocker() {
         // set contents back to original
         setDockerString(initialValues.value10);
-        // clear file name
+        // restore file name
         setDockerFileName("original_docker_file");
         // reset selector
         if (dockerRef.current) {
@@ -144,15 +156,17 @@ export function ProjectTeacherComponent(props: {
     }
 
     function handleDownloadDocker() {
-        const blob = new Blob([dockerString], {type: 'text/plain'});
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = "docker_file";
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
-        document.body.removeChild(a);
+        if (dockerFileName !== undefined) {
+            const blob = new Blob([dockerString], {type: 'text/plain'});
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = dockerFileName;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        }
     }
 
     async function handleSaveClick() {
@@ -318,11 +332,11 @@ export function ProjectTeacherComponent(props: {
 
                             <div className="docker-row is-flex">
                                 <div className="docker-file-present-tag">{t('docker.file-present')}</div>
-                                {dockerString === ""
+                                {dockerFileName === undefined
                                     ? <div className="docker-file-present-false">{t('docker.false')}</div>
                                     : <div className="docker-file-present-true">{t('docker.true')}</div>
                                 }
-                                {dockerString !== "" &&
+                                {dockerFileName !== undefined &&
                                     <button className="download-button button is-small is-light"
                                             onClick={handleDownloadDocker}>
                                         <span className="icon is-small">
@@ -346,17 +360,25 @@ export function ProjectTeacherComponent(props: {
                                         </span>
                                     </span>
 
-                                    {dockerString !== "" &&
+                                    {dockerFileName !== undefined &&
                                         <span className="file-name docker-new-file">
                                             {dockerFileName}
                                         </span>
                                     }
                                 </label>
-                                {dockerString !== "" &&
+                                {dockerFileName !== undefined &&
                                     <span>
                                     <button className="download-button button is-small is-light"
-                                            onClick={handleClearNewDocker}>
+                                            onClick={handleDeleteDocker}>
                                         <FaEraser/>
+                                    </button>
+                                </span>
+                                }                               
+                                {initialValues.value10 !== "" && initialValues.value10 !== dockerString &&
+                                    <span>
+                                    <button className="download-button button is-small is-light"
+                                            onClick={handleRestoreDocker}>
+                                        <MdRestore />
                                     </button>
                                 </span>
                                 }
