@@ -62,7 +62,7 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
 
     const [newSelectedFile, setNewSelectedFile] = useState<boolean>(false);
     const [file, setFile] = useState<File | undefined>(undefined)
-    const [error, setError] = useState<string>('')
+    const [error, setError] = useState<string | undefined>(undefined)
     const [success, setSuccess] = useState<string>('')
 
     const [hasGroup, setHasGroup] = useState<boolean>((props.project.groupMembers || false) && props.project.groupMembers.length > 0)
@@ -97,7 +97,7 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
             setSubmission('')
             setHasGroup(false)
             setSuccess('')
-            setError('')
+            setError(undefined)
             setFile(undefined)
             setNewSelectedFile(false)
         }
@@ -215,12 +215,12 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
         if (file !== undefined) {
             const submission: string | Submission = await make_submission(groupId, file)
             if (typeof submission === 'string') {
-                setError(submission) // TODO translation
+                setError(submission)
                 setSuccess('')
             } else {
                 setNewSelectedFile(false)
                 setSuccess(t("project.submitted"))
-                setError('')
+                setError(undefined)
             }
             setFile(undefined);
             setNewSelectedFile(false);
@@ -253,6 +253,62 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
+    }
+
+    class ParsedError {
+        success: boolean;
+        rows: ErrorRow[] | undefined;
+        unparsed_error: string;
+        constructor(
+            success: boolean,
+            rows: ErrorRow[] | undefined,
+            unparsed_error: string
+        ) {
+            this.success = success;
+            this.rows = rows;
+            this.unparsed_error = unparsed_error;
+        }
+    }
+
+    class ErrorRow {
+        type: string;
+        value: string | undefined;
+        depth: number;
+        success: boolean;
+        constructor(
+            type: string,
+            value: string | undefined,
+            depth: number,
+            success: boolean,
+        ) {
+            this.type = type;
+            this.value = value;
+            this.depth = depth;
+            this.success = success;
+        }
+    }
+
+    interface StringDictionary {
+        [key: string]: string;
+    }
+
+    function tryParseError(error: string): ParsedError {
+        try {
+            let obj: StringDictionary = JSON.parse(error);
+
+            function dfs(
+                json: StringDictionary, 
+                depth: number
+            ) {
+                let row!: ErrorRow;
+                row.type = json['type']
+            }
+            
+        // call dfs
+        return new ParsedError(false, undefined, error); // adjust
+        } catch {
+            return new ParsedError(false, undefined, error);
+        }
     }
 
     return (
