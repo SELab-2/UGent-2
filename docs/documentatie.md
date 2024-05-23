@@ -86,7 +86,7 @@ Deze volgende acties kan je doen:
 Verder kan je de volgende data ook zien:
 - de naam van het vak
 - de projecten die je hebt voor dit vak
-- de andere proffessoren en assistenten
+- de andere professoren en assistenten
 - de studenten die ingeschreven zijn voor dit vak
 
 ## settings
