@@ -174,9 +174,6 @@ export function ProjectTeacherComponent(props: {
 
         if (props.project.projectId == -1) {
             // Create new project
-            console.log(props.project.projectId)
-            console.log(groups)
-            console.log(max_students)
             const new_project: Project = await course_create_project(course.course_id, projectInput)
             for (let i= 0; i < groups; i += 1){
                 void project_create_group(new_project.project_id)
