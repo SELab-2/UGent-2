@@ -81,7 +81,7 @@ export function ProjectTeacherComponent(props: {
             _.isEqual(dockerString, initialValues.value10) &&
             _.isEqual(visible, initialValues.value11) &&
             _.isEqual(archived, initialValues.value12);
-            _.isEqual(groups, initialValues.value13);
+        _.isEqual(groups, initialValues.value13);
         const second_part_1 = deadline;
         const second_part_2 = initialValues.value5;
         const second_part = _.isEqual(second_part_1, second_part_2);
