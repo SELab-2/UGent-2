@@ -32,7 +32,7 @@ export default function ProjectViewTeacher() {
         courseName: project_data.course_name,
         hours: deadline_date.getHours(),
         minutes: deadline_date.getMinutes(),
-        deadline: deadline_date,
+        deadline: deadline_date.toISOString(),
         visible: project_data.project_visible,
         archived: project_data.project_archived,
         description: project_data.project_description,

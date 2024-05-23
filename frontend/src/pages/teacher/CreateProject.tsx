@@ -22,7 +22,7 @@ export function CreateProject(): JSX.Element {
         projectId: -1,
         courseName: data.courses[0].course_name,
         all_courses: data.courses,
-        deadline: new Date(Date.now()),
+        deadline: (new Date(Date.now())).toISOString(),
         description: "",
         groupProject: false,
         hours: 0,
