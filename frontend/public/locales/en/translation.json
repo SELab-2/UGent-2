@@ -91,7 +91,8 @@
         },
         "save_button": "Save",
         "error_title": "Oops, something went wrong!",
-        "error_text": "You don't have any courses yet, please create a course first in order to create a project"
+        "error_text": "You don't have any courses yet, please create a course first in order to create a project",
+        "enable_constraints": "Enable file constraints"
     },
     "submission_files": {
         "root_switch": {

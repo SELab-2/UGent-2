@@ -41,6 +41,12 @@ export default function ProjectViewStudent(): JSX.Element {
             lastSubmission: project_data.submission_student_id === member?.user_id
         }
     });
+    let requiredFiles;
+    if (project_data.project_requirements == "") {
+        requiredFiles = null;
+    } else {
+        requiredFiles = JSON.parse(project_data.project_requirements) as object
+    }
     const project: ProjectStudent = {
         projectId: project_data.project_id,
         projectName: project_data.project_name,
@@ -48,7 +54,7 @@ export default function ProjectViewStudent(): JSX.Element {
         deadline: deadline_to_string(project_data.project_deadline),
         status: project_status,
         description: project_data.project_description,
-        requiredFiles: JSON.parse(project_data.project_requirements) as object,
+        requiredFiles: requiredFiles,
         group_id: project_data.group_id,
         groups_info: project_data.groups_info,
         groupMembers: groupMembers,
