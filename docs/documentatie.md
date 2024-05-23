@@ -59,7 +59,7 @@ Lees de documentatie van hoe deze werken op de [officiele docker site](https://d
 
 Enkele extra dingen om rekening mee te houden.
 - Je kan aan de indiening door de kijken in het bestand `/submission` in de docker container.
-- status code van de docker file geeft aan als het geslaagd is of niet
+- status code van het commando geeft aan als het geslaagd is of niet
 - alles dat geprint wordt naar stdout tijdens het uitvoeren van de docker file wordt getoond aan de studenten.
 
 ## cursussen pagina
