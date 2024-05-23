@@ -365,7 +365,18 @@ export default function SimpleTests(props: {
         // check local
         const oldConstraint = local_constraints_plus_zip.find(constraint => constraint.id === id);
         const newConstraint = new Constraint(type, "CHANGE_ME", newId, id, oldConstraint!.depth+1);
-        const sub_items = zip.local_constraints.filter(constraint => constraint.parent_id === id);
+
+        let sub_item_ids = [id]; // get subitems recursively
+        let sub_items = [];
+        for (let try_sub_constraint of zip.local_constraints) {
+            if (try_sub_constraint.parent_id !== undefined) {
+                if (sub_item_ids.includes(try_sub_constraint.parent_id)) {
+                    sub_item_ids.push(try_sub_constraint.id);
+                    sub_items.push(try_sub_constraint);
+                }
+            }
+        }
+
         let index!: number;
         if (sub_items.length === 0) {
             // No sub-items yet. Put directly after item.
@@ -640,9 +651,9 @@ export default function SimpleTests(props: {
                                         contentStyle={{width: 'auto'}}
                                     >
                                         <div>
-                                            <button className="menu-not-last-item" onClick={() => handleNewConstraint(undefined, 'NOT_PRESENT')}>{t('submission_files.menu.not_present')}</button>
-                                            <button className="menu-not-last-item" onClick={() => handleNewConstraint(undefined, 'EXTENSION_NOT_PRESENT')}>{t('submission_files.menu.extension_not_present')}</button>
-                                            <button onClick={() => handleNewConstraint(undefined, 'EXTENSION_ONLY_PRESENT')}>{t('submission_files.menu.extension_only_present')}</button>
+                                            <button className="menu-not-last-item" onClick={() => handleNewConstraint(undefined, 'NOT_PRESENT')}>{t('submission_files.menu.not_present').match(/'(.*?)'/)?.[1]}</button>
+                                            <button className="menu-not-last-item" onClick={() => handleNewConstraint(undefined, 'EXTENSION_NOT_PRESENT')}>{t('submission_files.menu.extension_not_present').match(/'(.*?)'/)?.[1]}</button>
+                                            <button onClick={() => handleNewConstraint(undefined, 'EXTENSION_ONLY_PRESENT')}>{t('submission_files.menu.extension_only_present').match(/'(.*?)'/)?.[1]}</button>
                                         </div>
                                     </Popup>
                                 }
