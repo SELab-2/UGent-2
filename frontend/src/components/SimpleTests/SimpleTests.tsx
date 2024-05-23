@@ -105,7 +105,7 @@ function json_to_submission(json: any): Submission {
                 break; 
             }
             case 'EXTENSION_NOT_PRESENT': { 
-                constraint = new Constraint('EXTENSION_NOT_PRESENT', json['extension'], id, parent_id, depth);
+                constraint = new Constraint('EXTENSION_NOT_PRESENT', json['not_present_extension'], id, parent_id, depth);
                 break; 
             }
             case 'EXTENSION_ONLY_PRESENT': { 
@@ -147,7 +147,7 @@ function json_to_submission(json: any): Submission {
                     break; 
                 }
                 case 'EXTENSION_NOT_PRESENT': { 
-                    constraint = new Constraint('EXTENSION_NOT_PRESENT', json['extension'], id, undefined, 0);
+                    constraint = new Constraint('EXTENSION_NOT_PRESENT', json['not_present_extension'], id, undefined, 0);
                     break; 
                 } 
                 case 'EXTENSION_ONLY_PRESENT': { 
