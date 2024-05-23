@@ -50,6 +50,7 @@ Volg deze stappen om de backend van het project op te zetten:
     sudo -u postgres psql -c "CREATE DATABASE delphi;"
     sudo -u postgres psql -c "ALTER USER postgres PASSWORD 'postgres';"
     ```
+    Het is ook mogelijk om zelf de connectieparameters in te stellen met de environment variabelen DB_HOST, DB_PORT, DB_USERNAME, DB_PASSWORD en DB_DATABASE.
 6. Voer het `fill_database_mock.py` script uit als een module om de database te vullen met mock data:
     ```bash
     python fill_database_mock.py
@@ -59,10 +60,13 @@ Volg deze stappen om de backend van het project op te zetten:
     python create_database_tables.py
     ```
     *Opgelet: beide scripts zullen de huidige databankinhoud verwijderen indien die bestaat en daarna de tabellen opnieuw aanmaken.*
-7. Start de API door het `app.py` script uit te voeren:
+7. Als je de dockertests wil kunnen uitvoeren, moet je ook Docker installeren en de service aanzetten.
+
+8. Start de API door het `app.py` script uit te voeren:
     ```bash
     python app.py
     ```
+    Als je het project lokaal uitvoert, is het aangeraden om de DELPHI_DEBUG environment variable in te stellen.
 8. Om meer Info te krijgen over de mogelijke requests die je kan maken naar de API, kan je de swagger documentatie raadplegen op de `/api/docs` route.
 9. De testen kunnen uitgevoerd worden met het volgende commando:
     ```bash
@@ -112,7 +116,11 @@ Volg deze stappen om de frontend van het project op te zetten:
    ```
    De gecompileerde html/css/js bevindt zich nu in de `dist` folder.
 5. Deploy:
-   Zet de inhoud van de `dist` folder op de juiste plaats, zodat het geserveerd kan worden.
+   Zet de inhoud van de `dist` folder op de juiste plaats, zodat het geserveerd kan worden. Je kan nginx gebruiken als webserver, de configuratie hiervoor vind je in `server/nginx.conf`
+   Je kan ook de developmentserver starten met:
+   ```bash
+   npm run dev
+   ```
 6. De testen kunnen uitgevoerd worden met:
    ```bash
    npm run tests
