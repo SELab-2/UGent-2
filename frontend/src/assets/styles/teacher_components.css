@@ -57,3 +57,18 @@
     flex-direction: column;
     gap: 5px;
 }
+
+.error-row {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+}
+
+.error-fail {
+    font-weight: bold;
+    color: black;
+}
+
+.error-success {
+    color: rgb(201, 255, 201);
+}

@@ -257,15 +257,18 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
 
     class ParsedError {
         success: boolean;
-        rows: ErrorRow[] | undefined;
+        local_rows: ErrorRow[] | undefined;
+        global_rows: ErrorRow[] | undefined;
         unparsed_error: string;
         constructor(
             success: boolean,
-            rows: ErrorRow[] | undefined,
+            local_rows: ErrorRow[] | undefined,
+            global_rows: ErrorRow[] | undefined,
             unparsed_error: string
         ) {
             this.success = success;
-            this.rows = rows;
+            this.local_rows = local_rows;
+            this.global_rows = global_rows;
             this.unparsed_error = unparsed_error;
         }
     }
@@ -289,28 +292,80 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
     }
 
     interface StringDictionary {
-        [key: string]: string;
+        [key: string]: (string | boolean | StringDictionary | StringDictionary[] | null);
     }
 
     function tryParseError(error: string): ParsedError {
         try {
             let obj: StringDictionary = JSON.parse(error);
+            const row_list_local: ErrorRow[] = [];
+            const row_list_global: ErrorRow[] = [];
 
             function dfs(
                 json: StringDictionary, 
-                depth: number
+                depth: number,
+                local: boolean = true
             ) {
-                let row!: ErrorRow;
-                row.type = json['type'];
-                row.depth = depth;
-                row.success = json['is_ok'].toLowerCase() === "true"
-                if ('' in json)
+                const _type = json['type'] as string;
+                const _depth = depth;
+                const _success = json['is_ok'] as boolean;
+                let   _value = undefined;
+                if ('file_name'              in json) {_value = json['file_name'] as string}
+                if ('zip_name'               in json) {_value = json['zip_name'] as string}
+                if ('directory_name'         in json) {_value = json['directory_name'] as string}
+                if ('file_or_directory_name' in json) {_value = json['file_or_directory_name'] as string}
+                if ('not_present_extension'  in json) {_value = json['not_present_extension'] as string}
+                if ('extension'              in json) {_value = json['extension'] as string}
+                
+                const row = new ErrorRow(_type, _value, _depth, _success);
+                if (local) {
+                    if (row.type !== "SUBMISSION")
+                    row_list_local.push(row);
+                } else {
+                    row_list_global.push(row);
+                }
+
+                if ('root_constraint_result' in json) {
+                    if (json['root_constraint_result'] !== null) {
+                        const sub_obj = json['root_constraint_result'] as StringDictionary;
+                        dfs(sub_obj, depth);
+                    }
+                }
+
+                if ('sub_constraint_results' in json) {
+                    if (json['sub_constraint_results'] !== null) {
+                        const sub_objs = json['sub_constraint_results'] as StringDictionary[];
+                        for (const sub_obj of sub_objs) {
+                            dfs(sub_obj, depth+1);
+                        }
+                    }
+                }
+
+                if ('global_constraint_result' in json) {
+                    if (json['global_constraint_result'] !== null) {
+                        const sub_obj = json['global_constraint_result'] as StringDictionary;
+                        dfs(sub_obj, 0, false);
+                    }
+                }
+
+                if ('global_constraint_results' in json) {
+                    if (json['global_constraint_results'] !== null) {
+                        const sub_obj = json['global_constraint_results'] as StringDictionary;
+                        for (const x of Object.keys(sub_obj).map(function(key){return sub_obj[key]})) {
+                            dfs(x as StringDictionary, 0, false);
+                        }
+                    }
+                }
+                
             }
-            
-        // call dfs
-        return new ParsedError(false, undefined, error); // adjust
-        } catch {
-            return new ParsedError(false, undefined, error);
+
+            dfs(obj, 0);
+
+            return new ParsedError(true, row_list_local, row_list_global, error);
+
+        } catch (e) {
+            console.log(e)
+            return new ParsedError(false, undefined, undefined, error);
         }
     }
 
@@ -322,7 +377,38 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
                     <div className="row is-full">{t('project.failed-submission')}</div>
                     <br/>
                     <div className="row is-full">
-                        {error}
+                        {tryParseError(error).success
+                            ? <div>
+                                { tryParseError(error).global_rows?.length !== undefined && (tryParseError(error).global_rows?.length as number) > 1 &&
+                                <div>
+                                    <div>
+                                    {tryParseError(error).global_rows?.map(row => 
+                                            <div className="error-row">
+                                                {"\u00A0".repeat(5 * row.depth)}
+                                                {row.success
+                                                    ? <div className="error-success">{row.type.toLocaleLowerCase()}: {row.value}</div>
+                                                    : <div className="error-fail">{row.type.toLocaleLowerCase()}: {row.value}</div>
+                                                }
+                                            </div>
+                                        )}
+                                    </div>
+                                    <br/>
+                                </div>
+                                }
+                                <div>
+                                    {tryParseError(error).local_rows?.map(row => 
+                                        <div className="error-row">
+                                            {"\u00A0".repeat(5 * row.depth)}
+                                            {row.success
+                                                ? <div className="error-success">{row.type.toLocaleLowerCase()}: {row.value}</div>
+                                                : <div className="error-fail">{row.type.toLocaleLowerCase()}: {row.value}</div>
+                                            }
+                                        </div>
+                                    )}
+                                </div>
+                              </div>
+                            : <div>{error}</div>
+                        }
                     </div>
                 </div>
             </div>}
