@@ -1,4 +1,4 @@
-import {JSX} from "react";
+import React, {JSX, useState} from 'react';
 import {Header} from "../../components/Header.tsx";
 import {Sidebar} from "../../components/Sidebar.tsx";
 import '../../assets/styles/admin.css'
@@ -10,17 +10,40 @@ import {useTranslation} from 'react-i18next';
 import {useRouteLoaderData} from "react-router-dom";
 import {ADMIN_LOADER, AdminLoaderObject} from "../../dataloaders/AdminLoader.ts";
 import {User} from "../../utils/ApiInterfaces.ts";
+import apiFetch from "../../utils/ApiFetch.ts";
+import useAuth from "../../hooks/useAuth.ts";
 
 
 function filter_on_not_role(users: User[], role: string): User[] {
     return users.filter((user) => !user.user_roles.includes(role));
 }
 
+async function make_teacher(person: User, current_user_id: (number | undefined), setUsers: React.Dispatch<React.SetStateAction<User[]>>) {
+    const roles = [...person.user_roles, "TEACHER"];
+    const response = await apiFetch(`/users/${person.user_id}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(roles)
+    });
+
+    if (response.ok) {
+        setUsers(prevUsers => prevUsers.map(u =>
+            u.user_id === person.user_id ? {...u, user_roles: roles} : u
+        ));
+        if (current_user_id === person.user_id) {
+            window.location.reload();
+        }
+    }
+}
+
 export default function HomeAdmin(): JSX.Element {
 
     const data: AdminLoaderObject = useRouteLoaderData(ADMIN_LOADER) as AdminLoaderObject
-    const users = data.users
+    const [users, setUsers] = useState(data.users);
     const non_teachers = filter_on_not_role(users, "TEACHER")
+    const {user} = useAuth()
 
     const {t} = useTranslation();
 
@@ -30,9 +53,8 @@ export default function HomeAdmin(): JSX.Element {
             return (
                 <div className="person">
                     <Person name={person.user_name} operations={[
-                        <OperationButton key={getKey()} type={OperationType.ADD} action={function () {
-                            return undefined;
-                        }}/>,
+                        <OperationButton key={getKey()} type={OperationType.ADD}
+                                         action={() => void make_teacher(person, user?.user_id, setUsers)}/>,
                     ]}/>
                 </div>
             )

@@ -1,18 +1,17 @@
 import {JSX} from "react";
 import '../../assets/styles/admin.css'
-import { CgMathPlus } from "react-icons/cg";
-import { CgMathMinus } from "react-icons/cg";
-import { OperationType } from "../../others/enums";
+import {CgMathMinus, CgMathPlus} from "react-icons/cg";
+import {OperationType} from "../../others/enums";
 
 export type OperationButton = React.ReactElement;
 
-export function OperationButton(props: {type: OperationType, action: () => void}): JSX.Element {
-    switch(props.type) {
+export function OperationButton(props: { type: OperationType, action: () => void }): JSX.Element {
+    switch (props.type) {
         case OperationType.ADD:
             return (
-                <button className="button is-small is-success">
+                <button className="button is-small is-success" onClick={props.action}>
                     <span className="icon">
-                        <CgMathPlus />
+                        <CgMathPlus/>
                     </span>
                 </button>
             );
@@ -20,7 +19,7 @@ export function OperationButton(props: {type: OperationType, action: () => void}
             return (
                 <button className="button is-small is-danger">
                     <span className="icon">
-                        <CgMathMinus />
+                        <CgMathMinus/>
                     </span>
                 </button>
             );
