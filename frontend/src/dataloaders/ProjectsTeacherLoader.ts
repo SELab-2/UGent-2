@@ -50,9 +50,9 @@ export async function LoadProjectsForTeacher(filter_on_current: boolean = false,
     const amount_of_submissions: number[] = []
     for (const groupArray of groups) {
         let amount = 0
-        for (const group of groupArray) {
+        const submissionsData = await Promise.all(groupArray.map(group => apiFetch<Backend_submission>(`/groups/${group.group_id}/submission`)));
+        for (const submissionData of submissionsData) {
             try {
-                const submissionData = await apiFetch<Backend_submission>(`/groups/${group.group_id}/submission`);
                 if (!submissionData.ok){
                     continue
                 }
