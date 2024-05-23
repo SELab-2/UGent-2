@@ -394,9 +394,11 @@ def fill_database_mock() -> None:
         admin1 = create_student(session, "Bart Coppens", "bart.coppens@ugent.be")
         admin2 = create_student(session, "Bart Mesuere", "bart.mesuere@ugent.be")
         admin3 = create_student(session, "Annick Van Daele", "annick.vandaele@ugent.be")
+        admin4 = create_student(session, "Charlotte Van Petegem", "charlotte.vanpetegem@ugent.be")
         modify_user_roles(session, admin1.id, [Role.STUDENT, Role.TEACHER, Role.ADMIN])
         modify_user_roles(session, admin2.id, [Role.STUDENT, Role.TEACHER, Role.ADMIN])
         modify_user_roles(session, admin3.id, [Role.STUDENT, Role.TEACHER, Role.ADMIN])
+        modify_user_roles(session, admin4.id, [Role.STUDENT, Role.TEACHER, Role.ADMIN])
         session.commit()
         session.close()
 

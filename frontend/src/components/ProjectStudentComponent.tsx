@@ -38,7 +38,7 @@ function ProjectInfo(props: { project: ProjectStudent }): JSX.Element {
             </div>
             <FieldWithLabel fieldLabel={"> " + t('project.description')}
                             fieldBody={props.project.description} arrow={false}/>
-            <div className="field is-horizontal">
+            {props.project.requiredFiles != null && <div className="field is-horizontal">
                 <div className="field-label">
                     <label className="label">{"> " + t('project.submission_files') + ":"}</label>
                 </div>
@@ -52,7 +52,7 @@ function ProjectInfo(props: { project: ProjectStudent }): JSX.Element {
                         />
                     </div>
                 </div>
-            </div>
+            </div>}
         </div>
     )
 }
