@@ -175,7 +175,6 @@
         "deadline": "Deadline",
         "status": "Status",
         "description": "Description",
-        "amount_of_students": "Amount of students: ",
         "submission_files": "Submission must contain",
         "groupmembers": {
             "tag": "Groupmembers",
