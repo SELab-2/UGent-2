@@ -29,12 +29,10 @@ export function ProjectTeacherComponent(props: {
     updateTitle?: (name: string) => void,
     is_new?: boolean,
 }): JSX.Element {
-    const course_options = props.project.all_courses.filter(course => !course.course_archived).map(course => course.course_name);
-
     const navigate = useNavigate();
     const {t} = useTranslation();
     const [projectName, setProjectName] = useState<string>(props.project.projectName)
-    const [courseName, setCourseName] = useState<string>(course_options[0])
+    const [courseName, setCourseName] = useState<string>(props.project.courseName)
     const [hours, setHours] = useState<number>(props.project.hours);
     const [minutes, setMinutes] = useState<number>(props.project.minutes);
     const [deadline, setDeadline] = useState<string>(props.project.deadline);
@@ -81,7 +79,7 @@ export function ProjectTeacherComponent(props: {
             _.isEqual(dockerString, initialValues.value10) &&
             _.isEqual(visible, initialValues.value11) &&
             _.isEqual(archived, initialValues.value12);
-            _.isEqual(groups, initialValues.value13);
+        _.isEqual(groups, initialValues.value13);
         const second_part_1 = deadline;
         const second_part_2 = initialValues.value5;
         const second_part = _.isEqual(second_part_1, second_part_2);
@@ -97,6 +95,7 @@ export function ProjectTeacherComponent(props: {
         }
     };
 
+    const course_options = props.project.all_courses.filter(course => !course.course_archived).map(course => course.course_name);
 
     const hours_array = Array.from({length: 24}, (_, index) => index.toString());
     const minutes_array = Array.from({length: 60}, (_, index) => index.toString());

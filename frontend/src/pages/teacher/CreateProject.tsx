@@ -20,7 +20,7 @@ export function CreateProject(): JSX.Element {
 
     const emptyProjectTeacher: ProjectTeacher = {
         projectId: -1,
-        courseName: data.courses[0].course_name,
+        courseName: data.courses.filter(course => !course.course_archived)[0].course_name,
         all_courses: data.courses,
         deadline: (new Date(Date.now())).toISOString(),
         description: "",
