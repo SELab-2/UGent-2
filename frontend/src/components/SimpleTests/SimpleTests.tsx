@@ -194,7 +194,7 @@ function submission_to_json(submission: Submission): object {
                 constraint_object['file_or_directory_name'] = constraint.value;
                 break;
             case 'EXTENSION_NOT_PRESENT':
-                constraint_object['extension'] = constraint.value;
+                constraint_object['not_present_extension'] = constraint.value;
                 break;
             case 'EXTENSION_ONLY_PRESENT':
                 constraint_object['extension'] = constraint.value;
