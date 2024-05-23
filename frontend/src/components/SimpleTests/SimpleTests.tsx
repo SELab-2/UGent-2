@@ -366,9 +366,9 @@ export default function SimpleTests(props: {
         const oldConstraint = local_constraints_plus_zip.find(constraint => constraint.id === id);
         const newConstraint = new Constraint(type, "CHANGE_ME", newId, id, oldConstraint!.depth+1);
 
-        let sub_item_ids = [id]; // get subitems recursively
-        let sub_items = [];
-        for (let try_sub_constraint of zip.local_constraints) {
+        const sub_item_ids = [id]; // get subitems recursively
+        const sub_items: Constraint[] = [];
+        for (const try_sub_constraint of zip.local_constraints) {
             if (try_sub_constraint.parent_id !== undefined) {
                 if (sub_item_ids.includes(try_sub_constraint.parent_id)) {
                     sub_item_ids.push(try_sub_constraint.id);
