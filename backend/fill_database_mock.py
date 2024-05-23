@@ -205,6 +205,8 @@ def fill_database_mock() -> None:
         student7 = create_student(session, "Stef", "stef.osse@ugent.be")
         student8 = create_student(session, "Mathieu", "mathieu.strypsteen@ugent.be")
 
+        modify_user_roles(session, student7.id, [Role.STUDENT, Role.ADMIN, Role.TEACHER])
+
         # Create teachers
         teacher1 = create_teacher(session, "Kris Coolsaet", "kris.coolsaet@ugent.be")
         teacher2 = create_teacher(session, "Sophie Devolder", "sophie.devolder@ugent.be")
