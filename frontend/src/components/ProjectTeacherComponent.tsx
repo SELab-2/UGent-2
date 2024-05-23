@@ -1,4 +1,4 @@
-import {ChangeEvent, JSX, useEffect, useRef, useState} from "react";
+import {ChangeEvent, JSX, useRef, useState} from "react";
 import Inputfield from "./Inputfield.tsx";
 import {SelectionBox} from "./SelectionBox.tsx";
 import 'react-calendar/dist/Calendar.css';
@@ -61,11 +61,6 @@ export function ProjectTeacherComponent(props: {
         value11: visible,
         value12: archived
     });
-
-    useEffect(() => {
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
 
     function allowSaveButton(): boolean {
         const first_part = _.isEqual(projectName, initialValues.value1) &&
@@ -169,7 +164,7 @@ export function ProjectTeacherComponent(props: {
             // Create new project
             const new_project: Project = await course_create_project(course.course_id, projectInput)
             await new Promise(resolve => setTimeout(resolve, 500))
-            navigate(`/teacher/projects/${new_project.project_id}`)
+            navigate(`/teacher/project/${new_project.project_id}`)
         } else {
             // Update project
             const updated_project: boolean = await update_project(props.project.projectId, projectInput)
