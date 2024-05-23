@@ -29,10 +29,12 @@ export function ProjectTeacherComponent(props: {
     updateTitle?: (name: string) => void,
     is_new?: boolean,
 }): JSX.Element {
+    const course_options = props.project.all_courses.filter(course => !course.course_archived).map(course => course.course_name);
+
     const navigate = useNavigate();
     const {t} = useTranslation();
     const [projectName, setProjectName] = useState<string>(props.project.projectName)
-    const [courseName, setCourseName] = useState<string>(props.project.courseName)
+    const [courseName, setCourseName] = useState<string>(course_options[0])
     const [hours, setHours] = useState<number>(props.project.hours);
     const [minutes, setMinutes] = useState<number>(props.project.minutes);
     const [deadline, setDeadline] = useState<Value>(props.project.deadline);
@@ -95,7 +97,6 @@ export function ProjectTeacherComponent(props: {
         }
     };
 
-    const course_options = props.project.all_courses.filter(course => !course.course_archived).map(course => course.course_name);
 
     const hours_array = Array.from({length: 24}, (_, index) => index.toString());
     const minutes_array = Array.from({length: 60}, (_, index) => index.toString());
