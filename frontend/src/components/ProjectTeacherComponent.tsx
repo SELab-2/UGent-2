@@ -187,9 +187,12 @@ export function ProjectTeacherComponent(props: {
         if (requiredFiles != null) {
             requirements = JSON.stringify(requiredFiles);
         }
+        const d = new Date(deadline)
+        d.setHours(hours)
+        d.setMinutes(minutes)
         const projectInput: ProjectInput = {
             name: projectName,
-            deadline: deadline,
+            deadline: d.toISOString(),
             visible: visible,
             archived: archived,
             description: description,
