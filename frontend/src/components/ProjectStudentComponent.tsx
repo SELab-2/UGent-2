@@ -301,7 +301,10 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
                 depth: number
             ) {
                 let row!: ErrorRow;
-                row.type = json['type']
+                row.type = json['type'];
+                row.depth = depth;
+                row.success = json['is_ok'].toLowerCase() === "true"
+                if ('' in json)
             }
             
         // call dfs
