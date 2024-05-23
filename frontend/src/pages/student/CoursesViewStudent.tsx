@@ -15,9 +15,13 @@ export default function CoursesViewStudent(): JSX.Element {
     const {t} = useTranslation();
 
     const data: coursesStudentLoaderObject = useRouteLoaderData(COURSES_STUDENT_ROUTER_ID) as coursesStudentLoaderObject
+
     const courses_data = data.courses
 
-    const tableCoursesActive: TableRowCourses[] = courses_data.map((course: properCourse) => {
+    const active_courses = courses_data.filter((course: properCourse) => !course.course_archived)
+    const archived_courses = courses_data.filter((course: properCourse) => course.course_archived)
+
+    const tableCoursesActive: TableRowCourses[] = active_courses.map((course: properCourse) => {
 
         const deadline_date = course.first_deadline ? new Date(course.first_deadline) : null
 
@@ -38,6 +42,17 @@ export default function CoursesViewStudent(): JSX.Element {
         }
     })
 
+    const tableCoursesArchived: TableRowCourses[] = archived_courses.map((course: properCourse) => {
+        return {
+            course: {
+                name: course.course_name,
+                id: course.course_id,
+            },
+            firstUpcomingDeadline: "-",
+            numberOfProjects: 0
+        }
+    })
+
     return (
         <>
             <div className={"main-header"}>
@@ -50,6 +65,10 @@ export default function CoursesViewStudent(): JSX.Element {
                 <div className={"student-main is-flex is-justify-content-center"}>
                     <div className={"table-page is-flex is-flex-direction-column"}>
                         <Table title={t('courses.active')} data={tableCoursesActive} ignoreKeys={[]} home={"student"}/>
+                        <div className={"my-5"}/>
+                        <Table title={t('courses.archived')} data={tableCoursesArchived}
+                               ignoreKeys={["firstUpcomingDeadline", "numberOfProjects"]}
+                               home={"student"}/>
                     </div>
                 </div>
             </div>
