@@ -390,6 +390,13 @@ def fill_database_mock() -> None:
         # Archive a course
         update_course(session, funcprog.id, CourseInput(name="Functioneel Programmeren", archived=True))
 
+
+        admin1 = create_student(session, "Bart Coppens", "bart.coppens@ugent.be")
+        admin2 = create_student(session, "Bart Mesuere", "bart.mesuere@ugent.be")
+        admin3 = create_student(session, "Annick Van Daele", "annick.vandaele@ugent.be")
+        modify_user_roles(session, admin1.id, [Role.STUDENT, Role.TEACHER, Role.ADMIN])
+        modify_user_roles(session, admin2.id, [Role.STUDENT, Role.TEACHER, Role.ADMIN])
+        modify_user_roles(session, admin3.id, [Role.STUDENT, Role.TEACHER, Role.ADMIN])
         session.commit()
         session.close()
 

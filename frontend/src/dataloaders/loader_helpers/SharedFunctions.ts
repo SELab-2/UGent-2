@@ -9,7 +9,8 @@ import {
 } from "../../utils/ApiInterfaces.ts";
 import apiFetch from "../../utils/ApiFetch.ts";
 import {mapCourseList, mapProjectList} from "../../utils/ApiTypesMapper.ts";
-import {Backend_Course, Backend_Project, Backend_user} from "../../utils/BackendInterfaces.ts";
+import {Backend_Course, Backend_Project, Backend_submission, Backend_user} from "../../utils/BackendInterfaces.ts";
+import {GroupInfo} from "../ProjectsStudentLoader.ts";
 
 export interface UserIdInfo {
     id: number
@@ -133,6 +134,44 @@ async function getUsersOfCourse(role: teacherStudentRole, courses: Course[]): Pr
 export interface projectsAndCourses {
     projects: Project[],
     courses: Course[]
+}
+
+export async function getGroupInfo(project_id: number): Promise<GroupInfo[] | undefined> {
+    const groups = await apiFetch<GroupInfo[]>(`/projects/${project_id}/groups`)
+    if (!groups.ok) {
+        return undefined
+    }
+    return groups.content
+}
+
+export async function loadGroupMembers(project_id: number) {
+    const groupIdData = await apiFetch<{ id: number }>(`/projects/${project_id}/group`)
+    if (!groupIdData.ok) {
+        return undefined;
+    }
+    const groupId: number = groupIdData.content.id;
+
+    const submissionData = await apiFetch<Backend_submission>(`/groups/${groupId}/submission`)
+    let submission: string = "";
+    let lastSubmissionId = -1;
+    if (submissionData.ok) {
+        submission = submissionData.content.filename.split('/').reverse()[0]
+        lastSubmissionId = submissionData.content.student_id;
+    }
+
+    const groupMembersData = await apiFetch<[Backend_user]>(`/groups/${groupId}/members`);
+    if (!groupMembersData.ok) {
+        return undefined
+    }
+    const groupMembersApi = groupMembersData.content
+    const groupMembers = groupMembersApi.map((user) => {
+        return {
+            name: user.name,
+            email: user.email,
+            lastSubmission: user.id == lastSubmissionId
+        }
+    })
+    return {members: groupMembers, id: groupId, submission: submission}
 }
 
 export async function getAllProjectsAndCourses(role: teacherStudentRole, filter_on_current: boolean = false): Promise<projectsAndCourses> {

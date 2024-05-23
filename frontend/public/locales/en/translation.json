@@ -55,6 +55,9 @@
         "failed": "Something went wrong while saving your project. Please try again.",
         "archived": "Archived:",
         "visible": "Visible:",
+        "amount_of_students": "Amount of students:",
+        "amount_of_groups": "Amount of groups:",
+        "individual": "Individual project:",
         "name": {
             "tag": "Project name:",
             "placeholder": "Enter a name"
@@ -109,10 +112,7 @@
             "zip": "to 'zip'",
             "not_present": "to 'not present'",
             "extension_not_present": "to 'extension not present'",
-            "extension_only_present": "to 'extension only present'",
-            "info-not_present": "this name may not appear in the zip/folder in which this constraint is located",
-            "info-extension_not_present": "files with this extension may not appear in the zip/folder in which this constraint is located",
-            "info-extension_only_present": "in the zip/folder in which this constraint is located, only files with this extension are allowed"
+            "extension_only_present": "to 'extension only present'"
         },
         "warning_change_root": {
             "type_switch": "All current file-specifications will be removed. Are you sure you want to change the type of the root?"
@@ -126,13 +126,14 @@
             "global-local": "Global constraints apply to all files in the submission. Local constraints only apply in the zip/folder in which they are located.",
             "extensions": "Please begin extension names with a dot.",
             "color_codes": {
-                "title": "color codes:",
+                "title": "color codes",
                 "file": "file",
                 "directory": "directory",
                 "zip": "zip",
                 "not_present": "not present",
                 "extension_not_present": "extension not present",
-                "extension_only_present": "extension only present"
+                "extension_only_present": "extension only present",
+                "href": "more info"
             }
         }
     },
@@ -228,14 +229,14 @@
     "admin": {
         "title": "Admin operations",
         "teacher_rights": {
-            "tag": "Give teacher-rights:",
+            "tag": "Give teacher rights:",
             "sub": "(choose between all non-teachers)"
         },
         "admin_rights": {
-            "tag": "Give admin-rights:",
-            "sub": "(choose between all persons)"
+            "tag": "Give admin rights:",
+            "sub": "(choose between all users)"
         },
-        "search_placeholder": "search a person"
+        "search_placeholder": "search a user"
     },
     "settings": {
         "english": "English",
@@ -246,7 +247,8 @@
         "workstation": "Select workstation:",
         "student": "student",
         "teacher": "teacher",
-        "admin": "admin"
+        "admin": "admin",
+        "docs_url": "documentation"
     },
     "join_course": {
         "message": "Do you want to join the course:",

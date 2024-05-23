@@ -55,6 +55,9 @@
     "failed": "Er is iets fout gegaan tijdens het opslaan van uw project. Probeer het opnieuw.",
     "archived": "Gearchiveerd:",
     "visible": "Zichtbaar:",
+    "amount_of_students": "Aantal leerlingen:",
+    "amount_of_groups": "Aantal groepen:",
+    "individual": "Individueel project:",
     "name": {
       "tag": "Projectnaam:",
       "placeholder": "Voer een naam in"
@@ -97,7 +100,7 @@
     },
     "constraints": {
       "global": "Globale voorwaarden:",
-      "local": "Locale voorwaarden:"
+      "local": "Lokale voorwaarden:"
     },
     "single_file": {
       "name": "naam:"
@@ -109,10 +112,7 @@
       "zip": "maak 'zip'",
       "not_present": "maak 'niet-aanwezig'",
       "extension_not_present": "maak 'extensie niet aanwezig'",
-      "extension_only_present": "maak 'extensie enkel aanwezig'",
-      "info-not_present": "deze naam mag niet voorkomen in zip/folder waarin deze voorwaarde zich bevindt",
-      "info-extension_not_present": "files met deze extensie mogen niet voorkomen in zip/folder waarin deze voorwaarde zich bevindt",
-      "info-extension_only_present": "in zip/folder waarin deze voorwaarde zich bevindt mogen enkel files met deze extensie komen"
+      "extension_only_present": "maak 'extensie enkel aanwezig'"
     },
     "warning_change_root": {
       "type_switch": "Alle huidige bestand-specificaties zullen verwijderd worden. Ben je zeker dat je het type van de root wil veranderen"
@@ -123,13 +123,14 @@
       "global-local": "Globale voorwaarden worden toegepast op alle bestanden in de indiening. Lokale voorwaarden slechts in de zip/folder waarin ze zich bevinden.",
       "extensions": "Begin extensie-namen telkens met een punt.",
       "color_codes": {
-        "title": "kleurencodes:",
+        "title": "kleurencodes",
         "file": "bestand",
         "directory": "folder",
         "zip": "zip",
         "not_present": "niet aanwezig",
         "extension_not_present": "extensie niet aanwezig",
-        "extension_only_present": "extensie enkel aanwezig"
+        "extension_only_present": "extensie enkel aanwezig",
+        "href": "meer info"
       }
     }
   },
@@ -225,11 +226,11 @@
   "admin": {
     "title": "Beheerder operaties",
     "teacher_rights": {
-      "tag": "Geef lesgever-rechten:",
+      "tag": "Geef lesgeverrechten:",
       "sub": "(kies tussen alle niet-lesgevers)"
     },
     "admin_rights": {
-      "tag": "Geef beheerder-rechten:",
+      "tag": "Geef beheerdersrechten:",
       "sub": "(kies tussen alle personen)"
     },
     "search_placeholder": "zoek een persoon"
@@ -243,7 +244,8 @@
     "workstation": "Selecteer werkstation:",
     "student": "student",
     "teacher": "lesgever",
-    "admin": "beheerder"
+    "admin": "beheerder",
+    "docs_url": "documentatie"
   },
   "join_course": {
     "message": "Wil je het volgende vak volgen:",

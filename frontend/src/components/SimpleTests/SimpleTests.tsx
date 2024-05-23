@@ -107,6 +107,10 @@ function json_to_submission(json: any): Submission {
             case 'EXTENSION_NOT_PRESENT': { 
                 constraint = new Constraint('EXTENSION_NOT_PRESENT', json['extension'], id, parent_id, depth);
                 break; 
+            }
+            case 'EXTENSION_ONLY_PRESENT': { 
+                constraint = new Constraint('EXTENSION_ONLY_PRESENT', json['extension'], id, parent_id, depth);
+                break; 
             } 
         } 
 
@@ -599,23 +603,20 @@ export default function SimpleTests(props: {
                                         </div>
                                     }
                                     
-                                    <div>{t('submission_files.information.color_codes.title')}</div>
+                                    <div className="info-colorcodes-row">
+                                        <div>{t('submission_files.information.color_codes.title')}</div>
+                                        <a href="https://selab-2.github.io/UGent-2/simple_constraints.html" target="_blank" rel="noopener noreferrer">
+                                            ({t('submission_files.information.color_codes.href')})
+                                        </a>
+                                        <div>:</div>
+                                    </div>
                                     <div className="color-codes bullet-list">
                                         <div className="FILE">{t('submission_files.information.color_codes.file')}</div>
                                         <div className="DIRECTORY">{t('submission_files.information.color_codes.directory')}</div>
                                         <div className="ZIP">{t('submission_files.information.color_codes.zip')}</div>
-                                        <div className="info-colorcodes-row">
-                                            <div className="NOT_PRESENT">{t('submission_files.information.color_codes.not_present')}</div>
-                                            <div>({t('submission_files.menu.info-not_present')})</div>
-                                        </div>
-                                        <div className="info-colorcodes-row">
-                                            <div className="EXTENSION_NOT_PRESENT">{t('submission_files.information.color_codes.extension_not_present')}</div>
-                                            <div>({t('submission_files.menu.info-extension_not_present')})</div>
-                                        </div>
-                                        <div className="info-colorcodes-row">
-                                            <div className="EXTENSION_ONLY_PRESENT">{t('submission_files.information.color_codes.extension_only_present')}</div>
-                                            <div>({t('submission_files.menu.info-extension_only_present')})</div>
-                                        </div>
+                                        <div className="NOT_PRESENT">{t('submission_files.information.color_codes.not_present')}</div>
+                                        <div className="EXTENSION_NOT_PRESENT">{t('submission_files.information.color_codes.extension_not_present')}</div>
+                                        <div className="EXTENSION_ONLY_PRESENT">{t('submission_files.information.color_codes.extension_only_present')}</div>
                                     </div>
                                 </div>
                             } 
@@ -773,24 +774,35 @@ export default function SimpleTests(props: {
                                                                 <button className="menu-not-last-item" onClick={() => handleChangeConstraintType(constraint.id, 'DIRECTORY')}>{t('submission_files.menu.directory')}</button>
                                                                 <button className="menu-not-last-item" onClick={() => handleChangeConstraintType(constraint.id, 'NOT_PRESENT')}>{t('submission_files.menu.not_present')}</button>
                                                                 <button className="menu-not-last-item" onClick={() => handleChangeConstraintType(constraint.id, 'EXTENSION_NOT_PRESENT')}>{t('submission_files.menu.extension_not_present')}</button>
+                                                                <button className="menu-not-last-item" onClick={() => handleChangeConstraintType(constraint.id, 'EXTENSION_ONLY_PRESENT')}>{t('submission_files.menu.extension_only_present')}</button>
                                                             </div>
                                                         case 'DIRECTORY':
                                                             return <div>
                                                                 <button className="menu-not-last-item" onClick={() => handleChangeConstraintType(constraint.id, 'FILE')}>{t('submission_files.menu.file')}</button>
                                                                 <button className="menu-not-last-item" onClick={() => handleChangeConstraintType(constraint.id, 'NOT_PRESENT')}>{t('submission_files.menu.not_present')}</button>
                                                                 <button className="menu-not-last-item" onClick={() => handleChangeConstraintType(constraint.id, 'EXTENSION_NOT_PRESENT')}>{t('submission_files.menu.extension_not_present')}</button>
+                                                                <button className="menu-not-last-item" onClick={() => handleChangeConstraintType(constraint.id, 'EXTENSION_ONLY_PRESENT')}>{t('submission_files.menu.extension_only_present')}</button>
                                                             </div>
                                                         case 'NOT_PRESENT':
                                                             return <div>
                                                                 <button className="menu-not-last-item" onClick={() => handleChangeConstraintType(constraint.id, 'FILE')}>{t('submission_files.menu.file')}</button>
                                                                 <button className="menu-not-last-item" onClick={() => handleChangeConstraintType(constraint.id, 'DIRECTORY')}>{t('submission_files.menu.directory')}</button>
                                                                 <button className="menu-not-last-item" onClick={() => handleChangeConstraintType(constraint.id, 'EXTENSION_NOT_PRESENT')}>{t('submission_files.menu.extension_not_present')}</button>
+                                                                <button className="menu-not-last-item" onClick={() => handleChangeConstraintType(constraint.id, 'EXTENSION_ONLY_PRESENT')}>{t('submission_files.menu.extension_only_present')}</button>
                                                             </div>
                                                         case 'EXTENSION_NOT_PRESENT':
                                                             return <div>
                                                                 <button className="menu-not-last-item" onClick={() => handleChangeConstraintType(constraint.id, 'FILE')}>{t('submission_files.menu.file')}</button>
                                                                 <button className="menu-not-last-item" onClick={() => handleChangeConstraintType(constraint.id, 'DIRECTORY')}>{t('submission_files.menu.directory')}</button>
                                                                 <button className="menu-not-last-item" onClick={() => handleChangeConstraintType(constraint.id, 'NOT_PRESENT')}>{t('submission_files.menu.not_present')}</button>
+                                                                <button className="menu-not-last-item" onClick={() => handleChangeConstraintType(constraint.id, 'EXTENSION_ONLY_PRESENT')}>{t('submission_files.menu.extension_only_present')}</button>
+                                                            </div>
+                                                        case 'EXTENSION_ONLY_PRESENT':
+                                                            return <div>
+                                                                <button className="menu-not-last-item" onClick={() => handleChangeConstraintType(constraint.id, 'FILE')}>{t('submission_files.menu.file')}</button>
+                                                                <button className="menu-not-last-item" onClick={() => handleChangeConstraintType(constraint.id, 'DIRECTORY')}>{t('submission_files.menu.directory')}</button>
+                                                                <button className="menu-not-last-item" onClick={() => handleChangeConstraintType(constraint.id, 'NOT_PRESENT')}>{t('submission_files.menu.not_present')}</button>
+                                                                <button className="menu-not-last-item" onClick={() => handleChangeConstraintType(constraint.id, 'EXTENSION_NOT_PRESENT')}>{t('submission_files.menu.extension_not_present')}</button>
                                                             </div>
                                                     } })()}
                                                 <button onClick={() => handleDeleteConstraint(constraint.id)}>{t('submission_files.menu.remove')}</button>

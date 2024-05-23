@@ -3,7 +3,7 @@ from sqlmodel import Session
 from db.models import Group, Project, ProjectStatistics, Student, Submission, SubmissionState
 from domain.logic.basic_operations import get, get_all
 from domain.logic.submission import get_last_submission, get_submissions_of_group
-from errors.database_errors import ActionAlreadyPerformedError, NoSuchRelationError
+from errors.database_errors import ActionAlreadyPerformedError, ConflictingRelationError, NoSuchRelationError
 from errors.logic_errors import ArchivedError
 
 
@@ -83,6 +83,9 @@ def add_student_to_group(session: Session, student_id: int, group_id: int) -> No
     student: Student = get(session, Student, ident=student_id)
     group: Group = get(session, Group, ident=group_id)
 
+    if len(group.students) >= group.project.max_students:
+        msg = "Group is already full"
+        raise ConflictingRelationError(msg)
     if student in group.students:
         msg = f"Student with id {student_id} already in group with id {group_id}"
         raise ActionAlreadyPerformedError(msg)

@@ -1,4 +1,3 @@
-import os
 from pathlib import Path
 
 from pydantic import BaseModel
@@ -11,9 +10,9 @@ class FileConstraint(BaseModel):
     file_name: str
 
     def validate_constraint(self, path: Path) -> FileConstraintResult:
-        directory = os.listdir(path)
+        file_path = path / self.file_name
 
-        if self.file_name not in directory:
+        if not file_path.exists() or file_path.is_dir():
             return FileConstraintResult(
                 file_name=self.file_name,
                 is_ok=False,

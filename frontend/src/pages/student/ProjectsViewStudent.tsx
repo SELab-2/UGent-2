@@ -13,7 +13,7 @@ import {deadline_to_string} from "../../utils/helper.ts";
 
 function GenerateTableRowProjects(data: CompleteProjectStudent[]): TableRowProjects[] {
 
-    const { t } = useTranslation();
+    const {t} = useTranslation();
 
     return data.map((project_item) => {
 
@@ -40,8 +40,8 @@ function GenerateTableRowProjects(data: CompleteProjectStudent[]): TableRowProje
                 id: project_item.course_id
             },
             numberOfSubmissions: null,
-            deadline: deadline_to_string(project_item.project_deadline),
-            status: project_status
+            deadline: deadline_to_string(project_item.project_deadline) ?? "",
+            status: project_status ?? null
         }
     })
 }
@@ -52,10 +52,11 @@ export default function ProjectsViewStudent(): JSX.Element {
     const projects_data = data.projects
 
     const active_projects = projects_data.filter((project) => project.project_visible && !project.project_archived)
-
-    const { t } = useTranslation();
+    const archived_projects = projects_data.filter((project) => project.project_visible && project.project_archived)
+    const {t} = useTranslation();
 
     const tableProjectsActive: TableRowProjects[] = GenerateTableRowProjects(active_projects)
+    const tableProjectsArchived: TableRowProjects[] = GenerateTableRowProjects(archived_projects)
 
     return (
         <>
@@ -68,7 +69,12 @@ export default function ProjectsViewStudent(): JSX.Element {
                 </div>
                 <div className={"student-main is-flex is-justify-content-center"}>
                     <div className={"table-page is-flex is-flex-direction-column"}>
-                        <Table title={t('projects.active')} data={tableProjectsActive} ignoreKeys={["numberOfSubmissions"]}
+                        <Table title={t('projects.active')} data={tableProjectsActive}
+                               ignoreKeys={["numberOfSubmissions"]}
+                               home={"student"}/>
+                        <div className={"my-5"}/>
+                        <Table title={t('projects.archived')} data={tableProjectsArchived}
+                               ignoreKeys={["numberOfSubmissions", "deadline", "status"]}
                                home={"student"}/>
                         <div className={"my-5"}/>
                     </div>
