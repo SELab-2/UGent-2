@@ -79,7 +79,7 @@ Hier beheer je vak als leerkracht.
 Deze volgende acties kan je doen:
 - de link naar je vak kopiëren. (om dan later te delen met je studenten)
 - een nieuw project aanmaken
-- andere proffessoren en assistenten toevoegen
+- andere professoren en assistenten toevoegen
 - het vak archiveren
 - het vak verlaten
 
