@@ -68,7 +68,7 @@ Ook van de reeds gearchiveerde cursussen.
 
 Op deze pagina krijg je meer info over je cursus.
 
-Hier kan je al jouw proffessoren zien, en ook de assistenten.
+Hier kan je al jouw professoren zien, en ook de assistenten.
 
 Daarnaast zie je ook alle projecten die je hebt voor dit vak.
 
