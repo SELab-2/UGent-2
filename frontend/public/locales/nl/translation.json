@@ -228,11 +228,11 @@
   "admin": {
     "title": "Beheerder operaties",
     "teacher_rights": {
-      "tag": "Geef lesgever-rechten:",
+      "tag": "Geef lesgeverrechten:",
       "sub": "(kies tussen alle niet-lesgevers)"
     },
     "admin_rights": {
-      "tag": "Geef beheerder-rechten:",
+      "tag": "Geef beheerdersrechten:",
       "sub": "(kies tussen alle personen)"
     },
     "search_placeholder": "zoek een persoon"

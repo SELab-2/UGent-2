@@ -231,14 +231,14 @@
     "admin": {
         "title": "Admin operations",
         "teacher_rights": {
-            "tag": "Give teacher-rights:",
+            "tag": "Give teacher rights:",
             "sub": "(choose between all non-teachers)"
         },
         "admin_rights": {
-            "tag": "Give admin-rights:",
-            "sub": "(choose between all persons)"
+            "tag": "Give admin rights:",
+            "sub": "(choose between all users)"
         },
-        "search_placeholder": "search a person"
+        "search_placeholder": "search a user"
     },
     "settings": {
         "english": "English",
