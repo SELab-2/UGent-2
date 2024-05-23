@@ -91,7 +91,8 @@
     },
     "save_button": "Opslaan",
     "error_title": "Oeps, er is iets fout gegaan!",
-    "error_text": "Je hebt nog geen vakken, maak eerst een vak aan om een project te kunnen maken."
+    "error_text": "Je hebt nog geen vakken, maak eerst een vak aan om een project te kunnen maken.",
+    "enable_constraints": "Zet bestandsvoorwaarden aan"
   },
   "submission_files": {
     "root_switch": {

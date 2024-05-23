@@ -168,15 +168,31 @@ export function ProjectTeacherComponent(props: {
             document.body.removeChild(a);
         }
     }
-
+    async function toggleRequirements(enabled: boolean) {
+        if (enabled) {
+            setRequiredFiles({
+                type: "SUBMISSION",
+                root_constraint: {
+                    type: "FILE",
+                    file_name: "CHANGE_ME"
+                }
+            });
+        } else {
+            setRequiredFiles(null);
+        }
+    }
     async function handleSaveClick() {
+        let requirements = "";
+        if (requiredFiles != null) {
+            requirements = JSON.stringify(requiredFiles);
+        }
         const projectInput: ProjectInput = {
             name: projectName,
             deadline: (deadline as Date).toISOString(),
             visible: visible,
             archived: archived,
             description: description,
-            requirements: JSON.stringify(requiredFiles),
+            requirements: requirements,
             max_students: max_students == 0 ? 1 : max_students,
             dockerfile: dockerString
         }
@@ -390,6 +406,19 @@ export function ProjectTeacherComponent(props: {
                 {/* SUBMISSION FIELD */}
                 <div className="field is-horizontal">
                     <div className="field-label">
+                        <label className="label">{t('create_project.enable_constraints')}</label>
+                    </div>
+                    <div className="field-body is-fullwidth is-align-content-center">
+                        <Switch
+                            type="checkbox"
+                            onColor="#006edc"
+                            checked={requiredFiles != null}
+                            onChange={(e) => toggleRequirements(e)}
+                        />
+                    </div>
+                </div>
+                {requiredFiles != null && <div className="field is-horizontal">
+                    <div className="field-label">
                         <label className="label">{t('create_project.submission_files.tag')}</label>
                     </div>
                     <div className="field-body field">
@@ -402,7 +431,7 @@ export function ProjectTeacherComponent(props: {
                             />
                         </div>
                     </div>
-                </div>
+                </div>}
 
                 {/* VISIBLE FIELD*/}
                 <div className="field is-horizontal">

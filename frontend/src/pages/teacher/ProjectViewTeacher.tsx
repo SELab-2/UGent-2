@@ -25,7 +25,12 @@ export default function ProjectViewTeacher() {
     if (!projectName){
         setProjectName(project_data.project_name)
     }
-
+    let requiredFiles;
+    if (project_data.project_requirements == "") {
+        requiredFiles = null;
+    } else {
+        requiredFiles = JSON.parse(project_data.project_requirements) as object
+    }
     const project: ProjectTeacher = {
         projectId: project_data.project_id,
         projectName: project_data.project_name,
@@ -38,7 +43,7 @@ export default function ProjectViewTeacher() {
         archived: project_data.project_archived,
         description: project_data.project_description,
         maxGroupMembers: project_data.project_max_students,
-        requiredFiles: JSON.parse(project_data.project_requirements) as object,
+        requiredFiles: requiredFiles,
         otherFilesAllow: true,
         groupProject: project_data.project_max_students > 1,
         dockerFile: project_data.project_dockerfile,

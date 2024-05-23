@@ -15,7 +15,7 @@ export type ProjectTeacher = {
     visible: boolean,
     archived: boolean,
     description: string,
-    requiredFiles: object,
+    requiredFiles: object | null,
     otherFilesAllow: boolean,
     groupProject: boolean,
     maxGroupMembers: number,
@@ -36,7 +36,7 @@ export type ProjectStudent = {
     deadline: string,
     status: ProjectStatus,
     description: string,
-    requiredFiles: object,
+    requiredFiles: object | null,
     group_id: number,
     groups_info: GroupInfo[] | undefined,
     groupMembers: {
