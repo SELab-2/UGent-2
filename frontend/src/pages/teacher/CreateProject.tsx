@@ -29,7 +29,7 @@ export function CreateProject(): JSX.Element {
         minutes: 0,
         amount_groups: 1,
         otherFilesAllow: false,
-        visible: false,
+        visible: true,
         archived: false,
         projectName: "",
         requiredFiles: {
