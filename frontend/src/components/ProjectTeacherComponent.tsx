@@ -97,8 +97,8 @@ export function ProjectTeacherComponent(props: {
 
     const course_options = props.project.all_courses.filter(course => !course.course_archived).map(course => course.course_name);
 
-    const hours_array = Array.from({length: 24}, (_, index) => index.toString().padStart(2, '0'));
-    const minutes_array = Array.from({length: 60}, (_, index) => index.toString().padStart(2, '0'));
+    const hours_array = Array.from({length: 24}, (_, index) => index.toString());
+    const minutes_array = Array.from({length: 60}, (_, index) => index.toString());
 
     // SimpleTests
     const [requiredFilesHasChanged, setRequiredFilesHasChanged] = useState(false);
