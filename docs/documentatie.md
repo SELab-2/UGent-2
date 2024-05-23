@@ -44,6 +44,14 @@ indiening downloaden.
 
 ### leerkracht
 
+Hier zie je zowel de huidige data van het project dat de studenten zien.
+En ook kan je de data aanpassen indien nodig.
+
+Verder kan de leerkracht hier ook de indieningen van de studenten bekijken,
+de statistieken om de status van de indieningen te zien.
+
+Op deze pagina staan ook de archiveer en zichtbaarheids knoppen.
+
 Zie [simple constraints](simple_constraints.md) voor meer uitleg hoe je basis bestands beperkingen kan instellen.
 
 Hier kan je ook een docker file uploaden voor jouw geautomatiseerde testen.
@@ -66,13 +74,28 @@ Daarnaast zie je ook alle projecten die je hebt voor dit vak.
 
 ### leerkracht
 
-// TODO
+Hier beheer je vak als leerkracht.
+
+Deze volgende acties kan je doen:
+- de link naar je vak copieren. (om dan later te delen met je studenten)
+- een nieuw project aanmaken
+- andere proffessoren en assistenten toevoegen
+- het vak archiveren
+- het vak verlaten
+
+Verder kan je de volgende data ook zien:
+- de naam van het vak
+- de projecten die je hebt voor dit vak
+- de andere proffessoren en assistenten
+- de studenten die ingeschreven zijn voor dit vak
 
 ## settings
 
 Hier kan je de taal van de website wijzigen. Momenteel is enkel Engels en Nederlands beschikbaar.
 
 Uitloggen doe je ook best via hier.
+
+En ten laatste is er ook een verwijzing naar deze documentatie.
 
 ### leerkracht / admin
 
