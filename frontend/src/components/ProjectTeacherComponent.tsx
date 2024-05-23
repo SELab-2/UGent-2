@@ -193,7 +193,7 @@ export function ProjectTeacherComponent(props: {
     return (
         <div className={"create-project"}>
             <div className={"create-project-topbar"}>
-                <RegularButton placeholder={t('project.save')} add={false} onClick={handleSaveClick}
+                <RegularButton placeholder={t('project.save')} add={false} onClick={() => {void handleSaveClick()}}
                                disabled={!allowSaveButton()}
                                primary={allowSaveButton()}/> {/* TODO: implement save */}
                 <div className={"mr-5"}/>
