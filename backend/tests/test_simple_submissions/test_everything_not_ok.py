@@ -50,7 +50,7 @@ class FaultyProjectConstraintValidationTest(unittest.TestCase):
     submission_constraint = SubmissionConstraint(
         root_constraint=ZipConstraint(
             zip_name="project.zip",
-            global_constraints=[ExtensionNotPresentConstraint(extension=".exe")],
+            global_constraints=[ExtensionNotPresentConstraint(not_present_extension=".exe")],
             sub_constraints=[
                 DirectoryConstraint(
                     directory_name="src",
@@ -72,7 +72,7 @@ class FaultyProjectConstraintValidationTest(unittest.TestCase):
                 FileConstraint(file_name="README.md"),
                 FileConstraint(file_name=".gitignore"),
                 NotPresentConstraint(file_or_directory_name="dist"),
-                ExtensionNotPresentConstraint(extension=".log"),
+                ExtensionNotPresentConstraint(not_present_extension=".log"),
             ],
         ),
     )

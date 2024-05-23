@@ -35,9 +35,9 @@ class GlobalConstraintValidationTest(unittest.TestCase):
         root_constraint=ZipConstraint(
             zip_name="submission.zip",
             global_constraints=[
-                ExtensionNotPresentConstraint(extension=".java"),
-                ExtensionNotPresentConstraint(extension=".c"),
-                ExtensionNotPresentConstraint(extension=".cpp"),
+                ExtensionNotPresentConstraint(not_present_extension=".java"),
+                ExtensionNotPresentConstraint(not_present_extension=".c"),
+                ExtensionNotPresentConstraint(not_present_extension=".cpp"),
                 NotPresentConstraint(file_or_directory_name="dir4"),
             ],
             sub_constraints=[],
