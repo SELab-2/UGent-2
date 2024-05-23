@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import {Token} from "../utils/ApiInterfaces.ts";
 
-test('fake login works', async ({ page }) => {
+test('user flow: student', async ({ page }) => {
     await page.goto('https://localhost:8080');
     await page.waitForLoadState('networkidle');
     await expect(page).toHaveTitle(/Delphi/);
@@ -39,12 +39,22 @@ test('fake login works', async ({ page }) => {
     //klik op flashcards
     const flashcardsButton = page.getByRole('link', { name: 'Flash Cards' })
     await flashcardsButton.click();
-    const confirmButton = page.getByRole('button', { name: 'Confirm' })
-    await expect(confirmButton).toBeVisible();
-    const groupMember = page.getByText('mathieu.strypsteen@ugent.be');
+    const groupMember = page.getByText('robbe.vandekeere@ugent.be');
     await expect(groupMember).toBeVisible();
     const submissionReq = page.getByText('submission.zip');
     await expect(submissionReq).toBeVisible();
+    const leaveButton = page.getByRole('button').nth(2);
+    await expect(leaveButton).toBeVisible();
+    await leaveButton.click();
+    await expect(groupMember).toBeHidden();
+    //selecteer groep
+    const joinButton = page.getByRole('row', { name: '2 2' }).getByRole('button');
+    await expect(joinButton).toBeVisible();
+    await joinButton.click();
+    await expect(groupMember).toBeVisible();
+    const otherMember = page.getByRole('cell', { name: 'Ruben', exact: true });
+    await expect(otherMember).toBeVisible();
+    await expect(joinButton).toBeHidden();
     //ga naar courses
     const coursesButton = page.getByRole('link').nth(2);
     await coursesButton.click();
@@ -59,7 +69,7 @@ test('fake login works', async ({ page }) => {
     //ga naar settings en log uit
     await settingsButton.click();
     const logoutButton = page.locator('div').filter({ hasText: /^Logout:$/ }).getByRole('link')
-    await logoutButton.click(); // deze button zou wel iets eenvoudiger mogen zijn
+    await logoutButton.click();
     await page.waitForLoadState('networkidle');
     await expect(page).toHaveTitle(/Delphi/);
     const loginButton = page.getByRole('link', { name: 'Log in' })
