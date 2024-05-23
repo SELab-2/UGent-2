@@ -17,7 +17,7 @@ import {ProjectInput} from "../utils/InputInterfaces.ts";
 import {course_create_project} from "../utils/api/Course.ts";
 import {Project} from "../utils/ApiInterfaces.ts";
 import {useNavigate} from "react-router-dom";
-import {update_project} from "../utils/api/Project.ts";
+import {project_create_group, update_project} from "../utils/api/Project.ts";
 import {getScrollbarWidth} from "../utils/ScrollBarWidth.ts";
 import Switch from "react-switch";
 
@@ -37,16 +37,15 @@ export function ProjectTeacherComponent(props: {
     const [deadline, setDeadline] = useState<Value>(props.project.deadline);
     const [description, setDescription] = useState(props.project.description);
     const [max_students, setMaxStudents] = useState(props.project.maxGroupMembers);
+    const [groups, setGroups] = useState(props.project.amount_groups);
     const [requiredFiles, setRequiredFiles] = useState(props.project.requiredFiles);
     const [visible, setVisible] = useState(props.project.visible)
     const [archived, setArchived] = useState(props.project.archived)
     const [success, isSuccess] = useState<boolean | undefined>(undefined)
-
     // Deze wordt niet gebruikt. Dit zit verwerkt in het json-object als OnlyPresentConstraint.
     // const [otherFilesAllow, setOtherFilesAllow] = useState(props.project.otherFilesAllow);
     const [groupProject, setGroupProject] = useState(props.project.groupProject);
     const [dockerString, setDockerString] = useState(props.project.dockerFile);
-
     // helpers
     const [showGroup, setGroup] = useState(props.project.groupProject);
     const [dockerFileName, setDockerFileName] = useState("original_docker_file");
@@ -63,7 +62,8 @@ export function ProjectTeacherComponent(props: {
         value9: groupProject,
         value10: dockerString,
         value11: visible,
-        value12: archived
+        value12: archived,
+        value13: groups
     });
 
     function allowSaveButton(): boolean {
@@ -77,7 +77,8 @@ export function ProjectTeacherComponent(props: {
             _.isEqual(groupProject, initialValues.value9) &&
             _.isEqual(dockerString, initialValues.value10) &&
             _.isEqual(visible, initialValues.value11) &&
-            _.isEqual(archived, initialValues.value12);
+            _.isEqual(archived, initialValues.value12) &&
+            _.isEqual(groups, initialValues.value13);
         const second_part_1 = (deadline as Date).toDateString();
         const second_part_2 = (initialValues.value5 as Date).toDateString();
         const second_part = _.isEqual(second_part_1, second_part_2);
@@ -88,6 +89,9 @@ export function ProjectTeacherComponent(props: {
     const expandGroup = (checked: boolean) => {
         setGroup(!showGroup);
         setGroupProject(checked);
+        if (!checked) {
+            setMaxStudents(1)
+        }
     };
 
     const course_options = props.project.all_courses.map(course => course.course_name);
@@ -170,8 +174,14 @@ export function ProjectTeacherComponent(props: {
 
         if (props.project.projectId == -1) {
             // Create new project
+            console.log(props.project.projectId)
+            console.log(groups)
+            console.log(max_students)
             const new_project: Project = await course_create_project(course.course_id, projectInput)
-            await new Promise(resolve => setTimeout(resolve, 500))
+            for (let i= 0; i < groups; i += 1){
+                void project_create_group(new_project.project_id)
+            }
+
             navigate(`/teacher/project/${new_project.project_id}`)
         } else {
             // Update project
@@ -190,7 +200,8 @@ export function ProjectTeacherComponent(props: {
                     value9: groupProject,
                     value10: dockerString,
                     value11: visible,
-                    value12: archived
+                    value12: archived,
+                    value13: groups
                 });
             }
             if (props.updateTitle) {
@@ -205,7 +216,6 @@ export function ProjectTeacherComponent(props: {
     useEffect(() => {
         const scrollbarWidth = getScrollbarWidth();
         setWidth(`calc(100vw - var(--sidebar-width) - ${scrollbarWidth}px)`);
-        console.log(scrollbarWidth)
     }, []);
 
     return (
@@ -391,7 +401,7 @@ export function ProjectTeacherComponent(props: {
                 </div>
 
                 {/* Archived FIELD*/}
-                {props.project.projectId != -1 && <div className="field is-horizontal">
+                {props.project.projectId !== -1 && <div className="field is-horizontal">
                     <div className="field-label">
                         <label className="label">{t('create_project.archived')}</label>
                     </div>
@@ -405,21 +415,19 @@ export function ProjectTeacherComponent(props: {
                     </div>
                 </div>}
 
-
-                {/* TEAMWORK FIELD */}
-                <div className="field is-horizontal">
+                {props.project.projectId === -1 && <div className="field is-horizontal">
                     <div className="field-label">
                         <label className="label">{t('create_project.teamwork.tag')}</label>
                     </div>
-                    <div className="field-body is-fullwidth is-align-content-center teamwork">
 
+                    <div className="field-body is-fullwidth is-align-content-center teamwork">
                         <Switch
                             type="checkbox"
                             onColor="#006edc"
                             checked={groupProject}
                             onChange={e => expandGroup(e)}
                         />
-                        {showGroup &&
+                        {showGroup && <>
                             <div className="field is-horizontal">
                                 <label
                                     className="mr-3 is-align-content-center">{t('project.groupmembers.amount_of_members')}</label>
@@ -428,13 +436,81 @@ export function ProjectTeacherComponent(props: {
                                     className={"input is-rounded"}
                                     type="number"
                                     value={max_students}
-                                    onChange={e => setMaxStudents(parseInt(e.target.value))}
+                                    onChange={e => {
+                                        const newValue = parseInt(e.target.value)
+                                        if (newValue > 0) {
+                                            setMaxStudents(newValue)
+                                        }
+                                    }}
                                 />
                             </div>
+
+                            <div className="field is-horizontal">
+                                <label
+                                    className="mr-3 is-align-content-center">{t('create_project.amount_of_groups')}
+                                </label>
+                                <input
+                                    style={{width: "75px"}}
+                                    className={"input is-rounded"}
+                                    type="number"
+                                    value={groups}
+                                    onChange={e => {
+                                        const newValue = parseInt(e.target.value)
+                                        if (newValue > 0) {
+                                            setGroups(newValue)
+                                        }
+                                    }}
+                                />
+                            </div>
+                        </>
+                        }
+
+                        {!showGroup && <>
+                            <div className="field is-horizontal">
+                                <label
+                                    className="mr-3 is-align-content-center">{t('create_project.amount_of_students')}</label>
+                                <input
+                                    style={{width: "75px"}}
+                                    className={"input is-rounded"}
+                                    type="number"
+                                    value={groups}
+                                    onChange={e => {
+                                        const newValue = parseInt(e.target.value)
+                                        if (newValue > 0) {
+                                            setGroups(newValue)
+                                        }
+                                    }}
+                                />
+                            </div>
+                        </>
                         }
                     </div>
-                </div>
+                </div>}
+
+                {props.project.projectId !== -1 && <div className="field is-horizontal">
+                    {!showGroup && <div className="field-label">
+                        <label className="label">{t('create_project.amount_of_students')}</label>
+                    </div>}
+
+                    {showGroup && <div className="field-label">
+                        <label className="label">{t('create_project.amount_of_groups')}</label>
+                        <label className="label">{t('project.groupmembers.amount_of_members')}</label>
+                    </div>}
+
+                    <div className="field-body is-fullwidth is-align-content-center">
+                        {!showGroup && <div className="field-label">
+                            <label className="label">{groups}</label>
+                        </div>}
+
+                        {showGroup && <div className="field-label">
+                            <label className="label">{groups}</label>
+                            <label className="label">{max_students}</label>
+                        </div>}
+                    </div>
+                </div>}
+
             </div>
         </div>
-    );
+    )
+        ;
 }

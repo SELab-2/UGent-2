@@ -55,6 +55,9 @@
     "failed": "Er is iets fout gegaan tijdens het opslaan van uw project. Probeer het opnieuw.",
     "archived": "Gearchiveerd:",
     "visible": "Zichtbaar:",
+    "amount_of_students": "Aantal leerlingen:",
+    "amount_of_groups": "Aantal groepen:",
+    "individual": "Individueel project:",
     "name": {
       "tag": "Projectnaam:",
       "placeholder": "Voer een naam in"

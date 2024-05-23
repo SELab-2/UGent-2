@@ -1,5 +1,5 @@
 import {CompleteProjectTeacher, Group, SUBMISSION_STATE, teacherStudentRole} from "../utils/ApiInterfaces.ts";
-import {getAllProjectsAndCourses} from "./loader_helpers/SharedFunctions.ts";
+import {getAllProjectsAndCourses, getGroupInfo} from "./loader_helpers/SharedFunctions.ts";
 import apiFetch from "../utils/ApiFetch.ts";
 import {Backend_group, Backend_submission} from "../utils/BackendInterfaces.ts";
 import {mapGroupList, mapSubmission} from "../utils/ApiTypesMapper.ts";
@@ -70,17 +70,19 @@ export async function LoadProjectsForTeacher(filter_on_current: boolean = false,
         }
         amount_of_submissions.push(amount);
     }
-    return projects.map((project, index) => {
+    return await Promise.all(projects.map(async (project, index) => {
         const course = courses.find(course => course.course_id === project.course_id);
         if (!course) {
             throw Error("Course not found for project.");
         }
+        const groups_info = await getGroupInfo(project.project_id);
         return {
             ...project,
             ...course,
             courses: courses,
+            groups_info: groups_info,
             submission_amount: amount_of_submissions[index],
             submission_statistics: statistics
         }
-    })
+    }))
 }

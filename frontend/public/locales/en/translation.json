@@ -55,6 +55,9 @@
         "failed": "Something went wrong while saving your project. Please try again.",
         "archived": "Archived:",
         "visible": "Visible:",
+        "amount_of_students": "Amount of students:",
+        "amount_of_groups": "Amount of groups:",
+        "individual": "Individual project:",
         "name": {
             "tag": "Project name:",
             "placeholder": "Enter a name"
@@ -172,6 +175,7 @@
         "deadline": "Deadline",
         "status": "Status",
         "description": "Description",
+        "amount_of_students": "Amount of students: ",
         "submission_files": "Submission must contain",
         "groupmembers": {
             "tag": "Groupmembers",

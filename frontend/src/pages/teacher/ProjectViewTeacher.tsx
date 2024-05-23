@@ -25,6 +25,7 @@ export default function ProjectViewTeacher() {
     if (!projectName){
         setProjectName(project_data.project_name)
     }
+
     const project: ProjectTeacher = {
         projectId: project_data.project_id,
         projectName: project_data.project_name,
@@ -40,7 +41,8 @@ export default function ProjectViewTeacher() {
         requiredFiles: JSON.parse(project_data.project_requirements) as object,
         otherFilesAllow: true,
         groupProject: project_data.project_max_students > 1,
-        dockerFile: project_data.project_dockerfile
+        dockerFile: project_data.project_dockerfile,
+        amount_groups: project_data.groups_info?.length || 1
     }
 
 
