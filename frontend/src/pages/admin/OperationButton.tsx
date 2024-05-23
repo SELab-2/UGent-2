@@ -17,7 +17,7 @@ export function OperationButton(props: { type: OperationType, action: () => void
             );
         case OperationType.REMOVE:
             return (
-                <button className="button is-small is-danger">
+                <button className="button is-small is-danger" onClick={props.action}>
                     <span className="icon">
                         <CgMathMinus/>
                     </span>

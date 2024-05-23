@@ -18,8 +18,20 @@ function filter_on_not_role(users: User[], role: string): User[] {
     return users.filter((user) => !user.user_roles.includes(role));
 }
 
-async function make_teacher(person: User, current_user_id: (number | undefined), setUsers: React.Dispatch<React.SetStateAction<User[]>>) {
-    const roles = [...person.user_roles, "TEACHER"];
+async function adjust_role(typeOperation: OperationType, person: User, current_user_id: (number | undefined), role: string, setUsers: React.Dispatch<React.SetStateAction<User[]>>) {
+    let roles: string[];
+
+    switch (typeOperation) {
+        case OperationType.ADD:
+            roles = [...person.user_roles, role];
+            break;
+        case OperationType.REMOVE:
+            roles = person.user_roles.filter(r => r !== role);
+            break;
+        default:
+            roles = person.user_roles;
+    }
+
     const response = await apiFetch(`/users/${person.user_id}`, {
         method: 'PUT',
         headers: {
@@ -54,7 +66,7 @@ export default function HomeAdmin(): JSX.Element {
                 <div className="person">
                     <Person name={person.user_name} operations={[
                         <OperationButton key={getKey()} type={OperationType.ADD}
-                                         action={() => void make_teacher(person, user?.user_id, setUsers)}/>,
+                                         action={() => void adjust_role(OperationType.ADD, person, user?.user_id, "TEACHER", setUsers)}/>,
                     ]}/>
                 </div>
             )
@@ -70,9 +82,8 @@ export default function HomeAdmin(): JSX.Element {
             return (
                 <div className="person">
                     <Person name={person.user_name} operations={[
-                        <OperationButton key={getKey()} type={OperationType.REMOVE} action={function () {
-                            return undefined;
-                        }}/>,
+                        <OperationButton key={getKey()} type={OperationType.REMOVE}
+                                         action={() => void adjust_role(OperationType.REMOVE, person, user?.user_id, "ADMIN", setUsers)}/>,
                     ]}/>
                 </div>
             )
@@ -81,9 +92,8 @@ export default function HomeAdmin(): JSX.Element {
         return (
             <div className="person">
                 <Person name={person.user_name} operations={[
-                    <OperationButton key={getKey()} type={OperationType.ADD} action={function () {
-                        return undefined;
-                    }}/>,
+                    <OperationButton key={getKey()} type={OperationType.ADD}
+                                     action={() => void adjust_role(OperationType.ADD, person, user?.user_id, "ADMIN", setUsers)}/>,
                 ]}/>
             </div>
         )
