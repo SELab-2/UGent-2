@@ -102,12 +102,15 @@
     },
     "menu": {
       "remove": "verwijderen",
-      "file": "BESTAND",
-      "directory": "FOLDER",
-      "zip": "ZIP",
-      "not_present": "NIET_AANWEZIG",
-      "extension_not_present": "EXTENSIE_NIET_AANWEZIG",
-      "extension_only_present": "EXTENSIE_ENKEL_AANWEZIG"
+      "file": "maak 'bestand'",
+      "directory": "maak 'folder'",
+      "zip": "maak 'zip'",
+      "not_present": "maak 'niet-aanwezig'",
+      "extension_not_present": "maak 'extensie niet aanwezig'",
+      "extension_only_present": "maak 'extensie enkel aanwezig'",
+      "info-not_present": "deze naam mag niet voorkomen in zip/folder waarin deze voorwaarde zich bevindt",
+      "info-extension_not_present": "files met deze extensie mogen niet voorkomen in zip/folder waarin deze voorwaarde zich bevindt",
+      "info-extension_only_present": "in zip/folder waarin deze voorwaarde zich bevindt mogen enkel files met deze extensie komen"
     },
     "warning_change_root": {
       "type_switch": "Alle huidige bestand-specificaties zullen verwijderd worden. Ben je zeker dat je het type van de root wil veranderen"
@@ -115,6 +118,7 @@
     "information": {
       "title": "Informatie",
       "constraints": "Je kan de waarde van een voorwaarde veranderen door er op te klikken. Beweeg je cursor over een voorwaarde om meer opties te krijgen.",
+      "global-local": "Globale voorwaarden worden toegepast op alle bestanden in de indiening. Lokale voorwaarden slechts in de zip/folder waarin ze zich bevinden.",
       "extensions": "Begin extensie-namen telkens met een punt.",
       "color_codes": {
         "title": "kleurencodes:",
@@ -169,7 +173,7 @@
       "name": "Naam",
       "email": "Email",
       "latest_submission": "Laatste indiening",
-      "amount_of_members": "Aantal leden per groep"
+      "amount_of_members": "Aantal leden per groep:"
     },
     "submission": {
       "tag": "Indiening",

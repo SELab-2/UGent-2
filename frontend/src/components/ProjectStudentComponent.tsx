@@ -13,7 +13,7 @@ import {make_submission} from "../utils/api/Submission.ts";
 import {joinGroup, leaveGroup} from "../utils/api/Groups.ts";
 import {getGroupInfo, loadGroupMembers} from "../dataloaders/ProjectsStudentLoader.ts";
 import SimpleTests from "./SimpleTests/SimpleTests.tsx";
-import { TeacherOrStudent } from "./SimpleTests/TeacherOrStudentEnum.tsx";
+import {TeacherOrStudent} from "./SimpleTests/TeacherOrStudentEnum.tsx";
 
 function ProjectInfo(props: { project: ProjectStudent }): JSX.Element {
     const {t} = useTranslation();
@@ -290,47 +290,47 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
                         <div className="field-body">
                             <ul className="field">
                                 <div className="submission-file-download-upload">
-
-                                    {newSelectedFile &&
-                                        <label className={"mr-3"}>{file?.name}</label>
-                                    }
-                                    <div id="file-js" className="field is-horizontal">
-                                        <label className="file-label">
-                                            <input className="file-input" type="file" name="resume"
-                                                   ref={fileInputRef}
-                                                   onChange={selectFile}/>
-                                            <span className="file-cta">
-                                                <span className="file-icon"><FaUpload/></span>
-                                                <span
-                                                    className="file-label">{t('project.submission.choose_file')}</span>
-                                            </span>
-                                        </label>
-                                    </div>
                                     {submission != null &&
                                         <button className="button" onClick={() => void downloadLatestSubmission()}>
                                             <span className="mr-2"><FaDownload/></span>
                                             <span>{t('project.download-current')}</span>
                                         </button>
                                     }
-
+                                    <div id="file-js" className="field is-horizontal ">
+                                        <label className="file-label">
+                                            <input className="file-input" type="file" name="resume"
+                                                   ref={fileInputRef}
+                                                   onChange={selectFile}
+                                            />
+                                            <span className="file-cta file-chooser-first">
+                                                <span className="file-icon">
+                                                    <FaUpload/>
+                                                </span>
+                                                <span className="file-label">
+                                                    {t('project.submission.choose_file')}
+                                                </span>
+                                            </span>
+                                            {newSelectedFile &&
+                                                <span className={"file-name mr-3 file-chooser-second"}>
+                                                    {file?.name}
+                                                </span>
+                                            }
+                                        </label>
+                                    </div>
+                                    {newSelectedFile && hasGroup &&
+                                        <div className={"is-flex is-justify-content-end"}>
+                                            <RegularButton
+                                                placeholder={t('project.submit')}
+                                                add={false}
+                                                onClick={() => void submitFile()}
+                                                styling="is-primary"/>
+                                        </div>}
                                 </div>
                             </ul>
                         </div>
                     </div>
                 </>}
-            {newSelectedFile && hasGroup &&
-            <div>
-                <div className={"fixated is-flex is-justify-content-start"}>
-                    <RegularButton
-                        placeholder={t('project.submit')}
-                        add={false}
-                        onClick={() => void submitFile()}
-                        styling="is-primary"/>
-                </div>
-                <div className="fixated-filler"/>
-            </div>}
             <div className="p-5"/>
-
         </div>
     );
 }

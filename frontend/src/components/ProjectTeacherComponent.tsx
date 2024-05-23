@@ -18,11 +18,15 @@ import {course_create_project} from "../utils/api/Course.ts";
 import {Project} from "../utils/ApiInterfaces.ts";
 import {useNavigate} from "react-router-dom";
 import {update_project} from "../utils/api/Project.ts";
+import { FaEraser } from "react-icons/fa";
+import { getScrollbarWidth } from "../utils/ScrollBarWidth.ts";
+import Switch from "react-switch";
 
 export function ProjectTeacherComponent(props: {
     project: ProjectTeacher,
     submission_statistics: { [key: number]: number } | undefined,
     download_all_submissions: (() => Promise<void>) | undefined
+    is_new?: boolean 
 }): JSX.Element {
     const navigate = useNavigate();
     const {t} = useTranslation();
@@ -78,7 +82,7 @@ export function ProjectTeacherComponent(props: {
         const second_part_2 = (initialValues.value5 as Date).toDateString();
         const second_part = _.isEqual(second_part_1, second_part_2);
         const third_part = groupProject && Number.isNaN(max_students);
-        return !((first_part && second_part) || third_part);
+        return projectName !== "" && (props.is_new === true || !((first_part && second_part) || third_part));
     }
 
     const expandGroup = (checked: boolean) => {
@@ -190,12 +194,19 @@ export function ProjectTeacherComponent(props: {
         }
     }
 
-    return (
+    const [width, setWidth] = useState<string>('100%');
+    useEffect(() => {
+      const scrollbarWidth = getScrollbarWidth();
+      setWidth(`calc(100vw - var(--sidebar-width) - ${scrollbarWidth}px)`);
+      console.log(scrollbarWidth)
+    }, []);
+
+      return (
         <div className={"create-project"}>
-            <div className={"create-project-topbar"}>
+            <div className={"create-project-topbar"} style={{width}}>
                 <RegularButton placeholder={t('project.save')} add={false} onClick={() => {void handleSaveClick()}}
                                disabled={!allowSaveButton()}
-                               primary={allowSaveButton()}/> {/* TODO: implement save */}
+                               primary={allowSaveButton()}/>
                 <div className={"mr-5"}/>
                 {props.submission_statistics !== undefined &&
                     <Statistics statistics={props.submission_statistics}/>
@@ -386,25 +397,25 @@ export function ProjectTeacherComponent(props: {
                     <div className="field-label">
                         <label className="label">{t('create_project.teamwork.tag')}</label>
                     </div>
-                    <div className="field-body is-fullwidth is-align-content-center">
-                        <label>
-                            <input type="checkbox" onChange={e => expandGroup(e.target.checked)}
-                                   checked={groupProject}/>
-                        </label>
+                    <div className="field-body is-fullwidth is-align-content-center teamwork">
 
+                        <Switch 
+                            type="checkbox"
+                            onColor="#006edc"
+                            checked={groupProject} 
+                            onChange={e => expandGroup(e)}
+                        />
                         {showGroup &&
-                            <div>
-                                <div className="field is-horizontal ml-6">
-                                    <label
-                                        className="label mr-3 is-align-content-center">{t('project.groupmembers.amount_of_members')}</label>
-                                    <input
-                                        style={{width: "30%"}}
-                                        className={"input is-rounded"}
-                                        type="number"
-                                        value={max_students}
-                                        onChange={e => setMaxStudents(parseInt(e.target.value))}
-                                    />
-                                </div>
+                            <div className="field is-horizontal">
+                                <label
+                                    className="mr-3 is-align-content-center">{t('project.groupmembers.amount_of_members')}</label>
+                                <input
+                                    style={{width: "75px"}}
+                                    className={"input is-rounded"}
+                                    type="number"
+                                    value={max_students}
+                                    onChange={e => setMaxStudents(parseInt(e.target.value))}
+                                />
                             </div>
                         }
                     </div>

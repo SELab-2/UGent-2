@@ -6,11 +6,10 @@
 
 .create-project-topbar {
     position: fixed;
-    width: calc(100% - var(--sidebar-width) - 20px);
     z-index: 10;
     background-color: white;
     padding: 10px 20px;
-    display:flex
+    display: flex;
 }
 
 .create-project-content {
@@ -51,4 +50,10 @@
     border: solid !important;
     border-width: 1px !important;
     border-color: hsla(0, 0%, 0%, 0.15) !important;
+}
+
+.teamwork {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 }
