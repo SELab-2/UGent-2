@@ -9,7 +9,7 @@ export interface Course {
 export interface Project {
     project_id: number,
     project_name: string,
-    project_deadline: string | Date,
+    project_deadline: string,
     project_archived: boolean,
     project_description: string,
     project_requirements: string,
