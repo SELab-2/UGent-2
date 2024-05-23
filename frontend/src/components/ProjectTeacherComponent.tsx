@@ -3,7 +3,7 @@ import Inputfield from "./Inputfield.tsx";
 import {SelectionBox} from "./SelectionBox.tsx";
 import 'react-calendar/dist/Calendar.css';
 import {FaEraser, FaUpload} from "react-icons/fa";
-import {ProjectTeacher, Value} from "../types/project.ts";
+import {ProjectTeacher} from "../types/project.ts";
 import "../assets/styles/teacher_components.css"
 import SimpleTests from "./SimpleTests/SimpleTests.tsx";
 import {TeacherOrStudent} from "./SimpleTests/TeacherOrStudentEnum.tsx";
@@ -35,7 +35,7 @@ export function ProjectTeacherComponent(props: {
     const [courseName, setCourseName] = useState<string>(props.project.courseName)
     const [hours, setHours] = useState<number>(props.project.hours);
     const [minutes, setMinutes] = useState<number>(props.project.minutes);
-    const [deadline, setDeadline] = useState<Value>(props.project.deadline);
+    const [deadline, setDeadline] = useState<string>(props.project.deadline);
     const [description, setDescription] = useState(props.project.description);
     const [max_students, setMaxStudents] = useState(props.project.maxGroupMembers);
     const [groups, setGroups] = useState(props.project.amount_groups);
@@ -78,10 +78,10 @@ export function ProjectTeacherComponent(props: {
             _.isEqual(groupProject, initialValues.value9) &&
             _.isEqual(dockerString, initialValues.value10) &&
             _.isEqual(visible, initialValues.value11) &&
-            _.isEqual(archived, initialValues.value12) &&
+            _.isEqual(archived, initialValues.value12);
             _.isEqual(groups, initialValues.value13);
-        const second_part_1 = (deadline as Date).toDateString();
-        const second_part_2 = (initialValues.value5 as Date).toDateString();
+        const second_part_1 = deadline;
+        const second_part_2 = initialValues.value5;
         const second_part = _.isEqual(second_part_1, second_part_2);
         const third_part = groupProject && Number.isNaN(max_students);
         return projectName !== "" && (props.is_new === true || !((first_part && second_part) || third_part));
@@ -172,7 +172,7 @@ export function ProjectTeacherComponent(props: {
     async function handleSaveClick() {
         const projectInput: ProjectInput = {
             name: projectName,
-            deadline: (deadline as Date).toISOString(),
+            deadline: deadline,
             visible: visible,
             archived: archived,
             description: description,
@@ -296,7 +296,12 @@ export function ProjectTeacherComponent(props: {
                         className="field-body is-flex is-flex-direction-column is-align-items-start is-justify-content-center">
                         <div>
                             <div>
-                                <Calendar onChange={date => setDeadline(date)} value={deadline}
+                                <Calendar onChange={date => {
+                                    if (date) {
+                                        setDeadline((new Date(date.toLocaleString())).toISOString())
+                                    }
+                                }}
+                                          value={new Date(deadline)}
                                           locale={t('create_project.deadline.locale')}/>
                             </div>
                             <div className="is-horizontal field is-justify-content-center mt-2">
