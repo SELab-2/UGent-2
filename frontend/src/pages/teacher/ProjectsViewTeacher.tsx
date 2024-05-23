@@ -33,7 +33,7 @@ export default function ProjectsViewTeacher(): JSX.Element {
 
     const data: projectsTeacherLoaderObject = useRouteLoaderData(PROJECTS_TEACHER_ROUTER_ID) as projectsTeacherLoaderObject
 
-    const active_projects = data.projects.filter((project) => !project.project_archived && project.project_visible);
+    const active_projects = data.projects.filter((project) => !project.project_archived);
     // Voorlopig is er geen functionaliteit om projecten te verbergen. Vandaar zullen projecten altijd zichtbaar zijn.
     // const hidden_projects = data.projects.filter((project) => !project.project_archived && !project.project_visible);
     const archived_projects = data.projects.filter((project) => project.project_archived);

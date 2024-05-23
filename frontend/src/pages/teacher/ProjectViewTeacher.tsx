@@ -18,13 +18,14 @@ export default function ProjectViewTeacher() {
     const project_data = data.project
 
     if (!project_data) {
-        return <DefaultErrorPage title={t("project_error.title")} body={"project_error.text"}/>
+        return <DefaultErrorPage title={t("project_error.title")} body={t("project_error.text")}/>
     }
 
     const deadline_date = new Date(project_data.project_deadline)
     if (!projectName){
         setProjectName(project_data.project_name)
     }
+
     const project: ProjectTeacher = {
         projectId: project_data.project_id,
         projectName: project_data.project_name,
@@ -40,7 +41,8 @@ export default function ProjectViewTeacher() {
         requiredFiles: JSON.parse(project_data.project_requirements) as object,
         otherFilesAllow: true,
         groupProject: project_data.project_max_students > 1,
-        dockerFile: project_data.project_dockerfile
+        dockerFile: project_data.project_dockerfile,
+        amount_groups: project_data.groups_info?.length || 1
     }
 
 
@@ -72,9 +74,9 @@ export default function ProjectViewTeacher() {
                     <Sidebar home={"teacher"}/>
                 </div>
                 <div className={"student-main is-flex is-flex-direction-column"}>
-                    <ProjectTeacherComponent 
-                        project={project} 
-                        submission_statistics={project_data.submission_statistics} 
+                    <ProjectTeacherComponent
+                        project={project}
+                        submission_statistics={project_data.submission_statistics}
                         download_all_submissions={downloadAllSubmissions}
                         updateTitle={setProjectName}
                     />

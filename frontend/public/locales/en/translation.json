@@ -55,6 +55,9 @@
         "failed": "Something went wrong while saving your project. Please try again.",
         "archived": "Archived:",
         "visible": "Visible:",
+        "amount_of_students": "Amount of students:",
+        "amount_of_groups": "Amount of groups:",
+        "individual": "Individual project:",
         "name": {
             "tag": "Project name:",
             "placeholder": "Enter a name"
@@ -228,14 +231,14 @@
     "admin": {
         "title": "Admin operations",
         "teacher_rights": {
-            "tag": "Give teacher-rights:",
+            "tag": "Give teacher rights:",
             "sub": "(choose between all non-teachers)"
         },
         "admin_rights": {
-            "tag": "Give admin-rights:",
-            "sub": "(choose between all persons)"
+            "tag": "Give admin rights:",
+            "sub": "(choose between all users)"
         },
-        "search_placeholder": "search a person"
+        "search_placeholder": "search a user"
     },
     "settings": {
         "english": "English",

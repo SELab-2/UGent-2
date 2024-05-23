@@ -55,6 +55,9 @@
     "failed": "Er is iets fout gegaan tijdens het opslaan van uw project. Probeer het opnieuw.",
     "archived": "Gearchiveerd:",
     "visible": "Zichtbaar:",
+    "amount_of_students": "Aantal leerlingen:",
+    "amount_of_groups": "Aantal groepen:",
+    "individual": "Individueel project:",
     "name": {
       "tag": "Projectnaam:",
       "placeholder": "Voer een naam in"
@@ -225,11 +228,11 @@
   "admin": {
     "title": "Beheerder operaties",
     "teacher_rights": {
-      "tag": "Geef lesgever-rechten:",
+      "tag": "Geef lesgeverrechten:",
       "sub": "(kies tussen alle niet-lesgevers)"
     },
     "admin_rights": {
-      "tag": "Geef beheerder-rechten:",
+      "tag": "Geef beheerdersrechten:",
       "sub": "(kies tussen alle personen)"
     },
     "search_placeholder": "zoek een persoon"

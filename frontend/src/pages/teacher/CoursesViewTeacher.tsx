@@ -19,11 +19,9 @@ export default function CoursesViewTeacher(): JSX.Element {
     const archived_courses = data.courses.filter(course => course.course_archived);
 
     const tableCoursesActive: TableRowCourses[] = active_courses.map(course => {
-        const deadline_date = course.first_deadline ? new Date(course.first_deadline) : "-"
-
-        let deadline = deadline_date
+        let deadline = "-"
         if (course.first_deadline) {
-            deadline = deadline_to_string(deadline_date)
+            deadline = deadline_to_string(course.first_deadline)
         }
 
         return {

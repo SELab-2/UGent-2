@@ -28,6 +28,7 @@ De `zip_name` legt de naam van de zip vast en de `sub_constraints` bevat een lij
 - `FileConstraint`
 - `NotPresentConstraint`
 - `ExtensionNotPresentConstraint`
+- `ExtensionOnlyPresentConstraint`
 
 De `global_constraints` zijn constraints die gelden voor de volledige zip indiening. Een element in de lijst van global constraints kan één van volgende types zijn:
 

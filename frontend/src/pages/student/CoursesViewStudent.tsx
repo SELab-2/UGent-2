@@ -23,13 +23,9 @@ export default function CoursesViewStudent(): JSX.Element {
 
     const tableCoursesActive: TableRowCourses[] = active_courses.map((course: properCourse) => {
 
-        const deadline_date = course.first_deadline ? new Date(course.first_deadline) : null
-
-        let deadline = null
-        if (deadline_date !== null) {
-            deadline = deadline_to_string(deadline_date)
-        } else {
-            deadline = "-"
+        let deadline = "-"
+        if (course.first_deadline) {
+            deadline = deadline_to_string(course.first_deadline)
         }
 
         return {

@@ -205,6 +205,8 @@ def fill_database_mock() -> None:
         student7 = create_student(session, "Stef", "stef.osse@ugent.be")
         student8 = create_student(session, "Mathieu", "mathieu.strypsteen@ugent.be")
 
+        modify_user_roles(session, student7.id, [Role.STUDENT, Role.ADMIN, Role.TEACHER])
+
         # Create teachers
         teacher1 = create_teacher(session, "Kris Coolsaet", "kris.coolsaet@ugent.be")
         teacher2 = create_teacher(session, "Sophie Devolder", "sophie.devolder@ugent.be")
@@ -388,6 +390,13 @@ def fill_database_mock() -> None:
         # Archive a course
         update_course(session, funcprog.id, CourseInput(name="Functioneel Programmeren", archived=True))
 
+
+        admin1 = create_student(session, "Bart Coppens", "bart.coppens@ugent.be")
+        admin2 = create_student(session, "Bart Mesuere", "bart.mesuere@ugent.be")
+        admin3 = create_student(session, "Annick Van Daele", "annick.vandaele@ugent.be")
+        modify_user_roles(session, admin1.id, [Role.STUDENT, Role.TEACHER, Role.ADMIN])
+        modify_user_roles(session, admin2.id, [Role.STUDENT, Role.TEACHER, Role.ADMIN])
+        modify_user_roles(session, admin3.id, [Role.STUDENT, Role.TEACHER, Role.ADMIN])
         session.commit()
         session.close()
 
