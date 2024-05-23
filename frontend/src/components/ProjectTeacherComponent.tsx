@@ -175,7 +175,7 @@ export function ProjectTeacherComponent(props: {
         if (props.project.projectId == -1) {
             // Create new project
             const new_project: Project = await course_create_project(course.course_id, projectInput)
-            for (let i= 0; i < groups; i += 1){
+            for (let i = 0; i < groups; i += 1) {
                 void project_create_group(new_project.project_id)
             }
 
@@ -459,8 +459,7 @@ export function ProjectTeacherComponent(props: {
                                     }}
                                 />
                             </div>
-                        </>
-                        }
+                        </>}
 
                         {!showGroup && <>
                             <div className="field is-horizontal">
@@ -479,30 +478,30 @@ export function ProjectTeacherComponent(props: {
                                     }}
                                 />
                             </div>
-                        </>
-                        }
+                        </>}
                     </div>
                 </div>}
 
                 {props.project.projectId !== -1 && <div className="field is-horizontal">
-                    {!showGroup && <div className="field-label">
-                        <label className="label">{t('create_project.amount_of_students')}</label>
-                    </div>}
-
-                    {showGroup && <div className="field-label">
-                        <label className="label">{t('create_project.amount_of_groups')}</label>
-                        <label className="label">{t('project.groupmembers.amount_of_members')}</label>
-                    </div>}
+                    {showGroup
+                        ? <div className="field-label">
+                            <label className="label">{t('create_project.amount_of_groups')}</label>
+                            <label className="label">{t('project.groupmembers.amount_of_members')}</label>
+                        </div>
+                        : <div className="field-label">
+                            <label className="label">{t('create_project.amount_of_students')}</label>
+                        </div>}
 
                     <div className="field-body is-fullwidth is-align-content-center">
-                        {!showGroup && <div className="field-label">
-                            <label className="label">{groups}</label>
-                        </div>}
+                        {showGroup
+                            ? <div className="field-label">
+                                <label className="label">{groups}</label>
+                                <label className="label">{max_students}</label>
+                            </div>
+                            : <div className="field-label">
+                                <label className="label">{groups}</label>
+                            </div>}
 
-                        {showGroup && <div className="field-label">
-                            <label className="label">{groups}</label>
-                            <label className="label">{max_students}</label>
-                        </div>}
                     </div>
                 </div>}
 
