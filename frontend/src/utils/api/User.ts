@@ -11,7 +11,6 @@ export function modify_language(language: string): void {
 }
 
 export function modify_roles(userId: number, roles: string[]): void {
-    console.log(JSON.stringify(roles))
     void apiFetch(`/users/${userId}?roles=${JSON.stringify({roles})}`, {
         method: 'PUT',
         headers: {'Content-Type': 'application/json'},
