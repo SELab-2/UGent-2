@@ -193,7 +193,9 @@ export function ProjectTeacherComponent(props: {
                     value12: archived
                 });
             }
-            props.updateTitle?.(projectName)
+            if (props.updateTitle) {
+                props.updateTitle(projectName)
+            }
             await new Promise(resolve => setTimeout(resolve, 3000))
             isSuccess(undefined)
         }

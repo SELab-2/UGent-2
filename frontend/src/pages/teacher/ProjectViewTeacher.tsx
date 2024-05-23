@@ -22,7 +22,9 @@ export default function ProjectViewTeacher() {
     }
 
     const deadline_date = new Date(project_data.project_deadline)
-    setProjectName(project_data.project_name)
+    if (!projectName){
+        setProjectName(project_data.project_name)
+    }
     const project: ProjectTeacher = {
         projectId: project_data.project_id,
         projectName: project_data.project_name,
