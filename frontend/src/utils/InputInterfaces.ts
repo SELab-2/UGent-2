@@ -1,8 +1,6 @@
-import {Value} from "../types/project.ts";
-
 export interface ProjectInput{
     name: string,
-    deadline: Value,
+    deadline: string,
     archived: boolean,
     description: string,
     requirements: string,
