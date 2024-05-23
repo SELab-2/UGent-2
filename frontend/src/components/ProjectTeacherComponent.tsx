@@ -169,7 +169,7 @@ export function ProjectTeacherComponent(props: {
             document.body.removeChild(a);
         }
     }
-    async function toggleRequirements(enabled: boolean) {
+    function toggleRequirements(enabled: boolean) {
         if (enabled) {
             setRequiredFiles({
                 type: "SUBMISSION",
