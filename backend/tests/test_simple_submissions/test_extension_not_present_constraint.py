@@ -44,12 +44,13 @@ class ExtensionNotPresentConstraintValidationTest(unittest.TestCase):
             zip_name="submission.zip",
             global_constraints=[],
             sub_constraints=[
-                ExtensionNotPresentConstraint(extension=".java"),  # .java is present, should fail
-                ExtensionNotPresentConstraint(extension=".c"),     # .c is present, should fail
-                ExtensionNotPresentConstraint(extension=".cpp"),   # .cpp is not present, should pass
+                ExtensionNotPresentConstraint(not_present_extension=".java"),  # .java is present, should fail
+                ExtensionNotPresentConstraint(not_present_extension=".c"),     # .c is present, should fail
+                ExtensionNotPresentConstraint(not_present_extension=".cpp"),   # .cpp is not present, should pass
                 DirectoryConstraint(  # Directory is present, should pass
                     directory_name="no_txt_in_this_folder",
-                    sub_constraints=[ExtensionNotPresentConstraint(extension=".txt")],  # .txt is present, should fail
+                    sub_constraints=[ExtensionNotPresentConstraint(not_present_extension=".txt")],  # .txt is
+                    # present, should fail
                 ),
             ],
         ),
