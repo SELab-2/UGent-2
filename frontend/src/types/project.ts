@@ -11,7 +11,7 @@ export type ProjectTeacher = {
     courseName: string,
     hours: number,
     minutes: number,
-    deadline: Value,
+    deadline: string,
     visible: boolean,
     archived: boolean,
     description: string,
