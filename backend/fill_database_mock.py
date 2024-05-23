@@ -94,7 +94,7 @@ def fill_database_mock() -> None:
                     "global_constraints": [
                         {
                             "type": "EXTENSION_NOT_PRESENT",
-                            "extension": ".exe"
+                            "not_present_extension": ".exe"
                         },
                         {
                             "type": "NOT_PRESENT",
@@ -150,7 +150,7 @@ def fill_database_mock() -> None:
                     },
                     {
                         "type": "EXTENSION_NOT_PRESENT",
-                        "extension": ".log"
+                        "not_present_extension": ".log"
                     }
                     ]
                 }
