@@ -93,3 +93,12 @@
     height: 60px;
     background-color: white;
 }
+
+.file-chooser-first {
+    border-top-right-radius: 0px !important;
+    border-bottom-right-radius: 0px !important;
+}
+.file-chooser-second {
+    border-top-left-radius: 0px !important;
+    border-bottom-left-radius: 0px !important;
+}

@@ -100,12 +100,15 @@
         },
         "menu": {
             "remove": "remove",
-            "file": "FILE",
-            "directory": "DIRECTORY",
-            "zip": "ZIP",
-            "not_present": "NOT_PRESENT",
-            "extension_not_present": "EXTENSION_NOT_PRESENT",
-            "extension_only_present": "EXTENSION_ONLY_PRESENT"
+            "file": "to 'file'",
+            "directory": "to 'directory'",
+            "zip": "to 'zip'",
+            "not_present": "to 'not present'",
+            "extension_not_present": "to 'extension not present'",
+            "extension_only_present": "to 'extension only present'",
+            "info-not_present": "this name may not appear in the zip/folder in which this constraint is located",
+            "info-extension_not_present": "files with this extension may not appear in the zip/folder in which this constraint is located",
+            "info-extension_only_present": "in the zip/folder in which this constraint is located, only files with this extension are allowed"
         },
         "warning_change_root": {
             "type_switch": "All current file-specifications will be removed. Are you sure you want to change the type of the root?"
@@ -116,6 +119,7 @@
         "information": {
             "title": "Information",
             "constraints": "You can edit the value of a contraint by clicking on it. By hovering over a constraint, more operations will appear.",
+            "global-local": "Global constraints apply to all files in the submission. Local constraints only apply in the zip/folder in which they are located.",
             "extensions": "Please begin extension names with a dot.",
             "color_codes": {
                 "title": "color codes:",
@@ -170,7 +174,7 @@
             "name": "Name",
             "email": "Email",
             "latest_submission": "Latest submission",
-            "amount_of_members": "Amount of members per group"
+            "amount_of_members": "Amount of members per group:"
         },
         "submission": {
             "tag": "Submission",
@@ -179,6 +183,7 @@
         "confirm": "Confirm",
         "save": "Save",
         "submit": "Submit",
+        "submitted": "The submission has been successful",
         "failed-submission": "The submission failed with error:",
         "download-current": "Download latest submission",
         "failed": "Failed",

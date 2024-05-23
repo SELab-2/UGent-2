@@ -127,12 +127,29 @@
 }
 .NOT_PRESENT {
     text-shadow: 2px 2px 4px rgba(0, 4, 255, 0.7);
+    min-width: 130px;
+    margin-right: 20px;
 }
 .EXTENSION_NOT_PRESENT {
     text-shadow: 2px 2px 4px rgba(0, 255, 55, 0.7);
+    min-width: 130px;
+    margin-right: 20px;
 }
 .EXTENSION_ONLY_PRESENT {
     text-shadow: 2px 2px 4px rgba(255, 4, 0, 0.7);
+    min-width: 130px;
+    margin-right: 20px;
+}
+
+.info-colorcodes-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.bullet-list > *::before {
+    content: "• "; /* Unicode bullet character */
+    margin-right: 0.5em; /* Space between bullet and text */
+    color: black; /* Bullet color */
 }
 
 /* =============================================== */
