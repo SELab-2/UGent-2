@@ -1,4 +1,4 @@
-import {ChangeEvent, JSX, useRef, useState} from "react";
+import {ChangeEvent, JSX, useEffect, useRef, useState} from "react";
 import Inputfield from "./Inputfield.tsx";
 import {SelectionBox} from "./SelectionBox.tsx";
 import 'react-calendar/dist/Calendar.css';
@@ -18,15 +18,14 @@ import {course_create_project} from "../utils/api/Course.ts";
 import {Project} from "../utils/ApiInterfaces.ts";
 import {useNavigate} from "react-router-dom";
 import {update_project} from "../utils/api/Project.ts";
-import { FaEraser } from "react-icons/fa";
-import { getScrollbarWidth } from "../utils/ScrollBarWidth.ts";
+import {getScrollbarWidth} from "../utils/ScrollBarWidth.ts";
 import Switch from "react-switch";
 
 export function ProjectTeacherComponent(props: {
     project: ProjectTeacher,
     submission_statistics: { [key: number]: number } | undefined,
     download_all_submissions: (() => Promise<void>) | undefined
-    is_new?: boolean 
+    is_new?: boolean
 }): JSX.Element {
     const navigate = useNavigate();
     const {t} = useTranslation();
@@ -97,7 +96,11 @@ export function ProjectTeacherComponent(props: {
 
     // SimpleTests
     const [requiredFilesHasChanged, setRequiredFilesHasChanged] = useState(false);
-    if (requiredFilesHasChanged) {if (!requiredFilesHasChanged) {console.log("")}} // eslint prevent error
+    if (requiredFilesHasChanged) {
+        if (!requiredFilesHasChanged) {
+            console.log("")
+        }
+    } // eslint prevent error
 
     // Docker
     const dockerRef = useRef<HTMLInputElement | null>(null);
@@ -196,15 +199,18 @@ export function ProjectTeacherComponent(props: {
 
     const [width, setWidth] = useState<string>('100%');
     useEffect(() => {
-      const scrollbarWidth = getScrollbarWidth();
-      setWidth(`calc(100vw - var(--sidebar-width) - ${scrollbarWidth}px)`);
-      console.log(scrollbarWidth)
+        const scrollbarWidth = getScrollbarWidth();
+        setWidth(`calc(100vw - var(--sidebar-width) - ${scrollbarWidth}px)`);
+        console.log(scrollbarWidth)
     }, []);
 
-      return (
+    return (
         <div className={"create-project"}>
             <div className={"create-project-topbar"} style={{width}}>
-                <RegularButton placeholder={t('project.save')} add={false} onClick={() => {void handleSaveClick()}}
+
+                <RegularButton placeholder={t('project.save')} add={false} onClick={() => {
+                    void handleSaveClick()
+                }}
                                disabled={!allowSaveButton()}
                                primary={allowSaveButton()}/>
                 <div className={"mr-5"}/>
@@ -232,10 +238,10 @@ export function ProjectTeacherComponent(props: {
                     {t('create_project.success')}
                 </div>}
 
-                {success !== undefined && !success && <div className="notification is-danger is-flex is-justify-content-center mx-5 my-3">
-                    {t('create_project.failed')}
-                </div>}
-
+                {success !== undefined && !success &&
+                    <div className="notification is-danger is-flex is-justify-content-center mx-5 my-3">
+                        {t('create_project.failed')}
+                    </div>}
                 {/* PROJECT NAME FIELD */}
                 <div className={"field is-horizontal"}>
                     <div className={"field-label"}>
@@ -371,10 +377,12 @@ export function ProjectTeacherComponent(props: {
                         <label className="label">{"Visable:"}</label> {/* TODO: Translation*/}
                     </div>
                     <div className="field-body is-fullwidth is-align-content-center">
-                        <label>
-                            <input type="checkbox" onChange={e => setVisible(e.target.checked)}
-                                   checked={visible}/>
-                        </label>
+                        <Switch
+                            type="checkbox"
+                            onColor="#006edc"
+                            checked={visible}
+                            onChange={e => setVisible(e)}
+                        />
                     </div>
                 </div>
 
@@ -384,10 +392,12 @@ export function ProjectTeacherComponent(props: {
                         <label className="label">{"Archived:"}</label> {/* TODO: Translation*/}
                     </div>
                     <div className="field-body is-fullwidth is-align-content-center">
-                        <label>
-                            <input type="checkbox" onChange={e => setArchived(e.target.checked)}
-                                   checked={archived}/>
-                        </label>
+                        <Switch
+                            type="checkbox"
+                            onColor="#006edc"
+                            checked={archived}
+                            onChange={e => setArchived(e)}
+                        />
                     </div>
                 </div>}
 
@@ -399,10 +409,10 @@ export function ProjectTeacherComponent(props: {
                     </div>
                     <div className="field-body is-fullwidth is-align-content-center teamwork">
 
-                        <Switch 
+                        <Switch
                             type="checkbox"
                             onColor="#006edc"
-                            checked={groupProject} 
+                            checked={groupProject}
                             onChange={e => expandGroup(e)}
                         />
                         {showGroup &&
