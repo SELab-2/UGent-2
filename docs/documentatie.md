@@ -58,7 +58,7 @@ Hier kan je ook een docker file uploaden voor jouw geautomatiseerde testen.
 Lees de documentatie van hoe deze werken op de [officiele docker site](https://docs.docker.com/reference/dockerfile/).
 
 Enkele extra dingen om rekening mee te houden.
-- Je kan aan de indiening door de kijken in de folder `/submission/` in de docker container.
+- Je kan aan de indiening door de kijken in het bestand `/submission` in de docker container.
 - status code van de docker file geeft aan als het geslaagd is of niet
 - alles dat geprint wordt naar stdout tijdens het uitvoeren van de docker file wordt getoond aan de studenten.
 
