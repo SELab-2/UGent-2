@@ -246,7 +246,8 @@
     "workstation": "Selecteer werkstation:",
     "student": "student",
     "teacher": "lesgever",
-    "admin": "beheerder"
+    "admin": "beheerder",
+    "docs_url": "documentatie"
   },
   "join_course": {
     "message": "Wil je het volgende vak volgen:",

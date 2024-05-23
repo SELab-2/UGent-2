@@ -88,9 +88,12 @@ function Settings(props: { home: string }): JSX.Element {
                 <div className={"modal-background"} onClick={handleSettings}/>
                 <div className={"card popup"}>
                     <div className={"is-flex is-align-items-center is-justify-content-right"}>
-                <span className={"py-2"}>
-                    <DropdownLanguage/>
-                </span>
+                        <Link to={`https://selab-2.github.io/UGent-2/${t('settings.docs_url')}`} target={"_blank"}>
+                            <button className={"button"}>docs</button>
+                        </Link>
+                        <span className={"py-2"}>
+                            <DropdownLanguage/>
+                        </span>
                         <button className={"button mx-2 my-1"} onClick={handleSettings}><IoMdClose/></button>
                     </div>
                     <div className={"px-5 pb-5"}>

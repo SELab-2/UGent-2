@@ -249,7 +249,8 @@
         "workstation": "Select workstation:",
         "student": "student",
         "teacher": "teacher",
-        "admin": "admin"
+        "admin": "admin",
+        "docs_url": "documentation"
     },
     "join_course": {
         "message": "Do you want to join the course:",
