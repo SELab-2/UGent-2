@@ -55,6 +55,7 @@ export interface CompleteProjectStudent extends CompleteProject {
 
 export interface CompleteProjectTeacher extends CompleteProject {
     submission_amount: number,
+    groups_info: GroupInfo[] | undefined,
     courses: Course[],
     submission_statistics: { [key: number]: number }
 }

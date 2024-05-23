@@ -11,7 +11,7 @@ import {Submission} from "../utils/ApiInterfaces.ts";
 import {DEBUG} from "../pages/root.tsx";
 import {make_submission} from "../utils/api/Submission.ts";
 import {joinGroup, leaveGroup} from "../utils/api/Groups.ts";
-import {getGroupInfo, loadGroupMembers} from "../dataloaders/ProjectsStudentLoader.ts";
+import {getGroupInfo, loadGroupMembers} from "../dataloaders/loader_helpers/SharedFunctions.ts";
 import SimpleTests from "./SimpleTests/SimpleTests.tsx";
 import {TeacherOrStudent} from "./SimpleTests/TeacherOrStudentEnum.tsx";
 
@@ -89,7 +89,7 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
         const {t} = useTranslation();
 
         async function onLeaveClick() {
-            void leaveGroup(groupId)
+            await leaveGroup(groupId)
             const group_info = await getGroupInfo(props.project_id)
             setGroupInfo(group_info)
             setGroupMembers([])
@@ -134,7 +134,7 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
                     </div>
                 </div>
                 <div className={"is-flex is-justify-content-end is-align-items-center"}>
-                    {props.maxGroupMembers > 1 && <div className={"columns"}>
+                    {<div className={"columns"}>
 
                         <p className={"mx-3"}>leave group: </p>
                         <button className={"button"} onClick={() => {
@@ -270,7 +270,7 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
             {success && <div className="notification is-success is-flex is-justify-content-center mx-5 my-3">
                 {success}
             </div>}
-            {!hasGroup && props.project.maxGroupMembers > 1 &&
+            {!hasGroup &&
                 <div>
                     <div className={"notification is-danger is-flex is-justify-content-center mx-5 my-3"}>
                         {t('project.not_in_group')}

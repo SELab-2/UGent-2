@@ -27,6 +27,7 @@ export function CreateProject(): JSX.Element {
         groupProject: false,
         hours: 0,
         minutes: 0,
+        amount_groups: 1,
         otherFilesAllow: false,
         visible: false,
         archived: false,
@@ -38,7 +39,7 @@ export function CreateProject(): JSX.Element {
                 file_name: "CHANGE_ME"
             }
         },
-        maxGroupMembers: 0,
+        maxGroupMembers: 1,
         dockerFile: ""
     };
 
