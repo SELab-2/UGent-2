@@ -378,7 +378,7 @@ export function ProjectTeacherComponent(props: {
                 {/* VISIBLE FIELD*/}
                 <div className="field is-horizontal">
                     <div className="field-label">
-                        <label className="label">{"Visable:"}</label> {/* TODO: Translation*/}
+                        <label className="label">{t('create_project.visible')}</label>
                     </div>
                     <div className="field-body is-fullwidth is-align-content-center">
                         <Switch
@@ -393,7 +393,7 @@ export function ProjectTeacherComponent(props: {
                 {/* Archived FIELD*/}
                 {props.project.projectId != -1 && <div className="field is-horizontal">
                     <div className="field-label">
-                        <label className="label">{"Archived:"}</label> {/* TODO: Translation*/}
+                        <label className="label">{t('create_project.archived')}</label>
                     </div>
                     <div className="field-body is-fullwidth is-align-content-center">
                         <Switch
