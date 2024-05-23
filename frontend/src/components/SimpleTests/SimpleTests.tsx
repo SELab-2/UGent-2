@@ -603,23 +603,20 @@ export default function SimpleTests(props: {
                                         </div>
                                     }
                                     
-                                    <div>{t('submission_files.information.color_codes.title')}</div>
+                                    <div className="info-colorcodes-row">
+                                        <div>{t('submission_files.information.color_codes.title')}</div>
+                                        <a href="https://selab-2.github.io/UGent-2/simple_constraints.html" target="_blank" rel="noopener noreferrer">
+                                            ({t('submission_files.information.color_codes.href')})
+                                        </a>
+                                        <div>:</div>
+                                    </div>
                                     <div className="color-codes bullet-list">
                                         <div className="FILE">{t('submission_files.information.color_codes.file')}</div>
                                         <div className="DIRECTORY">{t('submission_files.information.color_codes.directory')}</div>
                                         <div className="ZIP">{t('submission_files.information.color_codes.zip')}</div>
-                                        <div className="info-colorcodes-row">
-                                            <div className="NOT_PRESENT">{t('submission_files.information.color_codes.not_present')}</div>
-                                            <div>({t('submission_files.menu.info-not_present')})</div>
-                                        </div>
-                                        <div className="info-colorcodes-row">
-                                            <div className="EXTENSION_NOT_PRESENT">{t('submission_files.information.color_codes.extension_not_present')}</div>
-                                            <div>({t('submission_files.menu.info-extension_not_present')})</div>
-                                        </div>
-                                        <div className="info-colorcodes-row">
-                                            <div className="EXTENSION_ONLY_PRESENT">{t('submission_files.information.color_codes.extension_only_present')}</div>
-                                            <div>({t('submission_files.menu.info-extension_only_present')})</div>
-                                        </div>
+                                        <div className="NOT_PRESENT">{t('submission_files.information.color_codes.not_present')}</div>
+                                        <div className="EXTENSION_NOT_PRESENT">{t('submission_files.information.color_codes.extension_not_present')}</div>
+                                        <div className="EXTENSION_ONLY_PRESENT">{t('submission_files.information.color_codes.extension_only_present')}</div>
                                     </div>
                                 </div>
                             } 

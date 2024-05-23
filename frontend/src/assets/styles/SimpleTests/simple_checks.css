@@ -144,6 +144,7 @@
 .info-colorcodes-row {
     display: flex;
     flex-direction: row;
+    gap: 4px;
 }
 
 .bullet-list > *::before {
