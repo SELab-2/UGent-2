@@ -59,7 +59,7 @@ Lees de documentatie van hoe deze werken op de [officiele docker site](https://d
 
 ## cursussen pagina
 
-Hier krijg een oplijsting van al jouw cursussen.
+Hier krijg je een oplijsting van al jouw cursussen.
 Ook van de reeds gearchiveerde cursussen.
 
 ## cursus pagina
