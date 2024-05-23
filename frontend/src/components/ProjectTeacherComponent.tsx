@@ -24,8 +24,9 @@ import Switch from "react-switch";
 export function ProjectTeacherComponent(props: {
     project: ProjectTeacher,
     submission_statistics: { [key: number]: number } | undefined,
-    download_all_submissions: (() => Promise<void>) | undefined
-    is_new?: boolean
+    download_all_submissions: (() => Promise<void>) | undefined,
+    updateTitle?: (name: string) => void,
+    is_new?: boolean,
 }): JSX.Element {
     const navigate = useNavigate();
     const {t} = useTranslation();
@@ -192,6 +193,7 @@ export function ProjectTeacherComponent(props: {
                     value12: archived
                 });
             }
+            props.updateTitle?.(projectName)
             await new Promise(resolve => setTimeout(resolve, 3000))
             isSuccess(undefined)
         }

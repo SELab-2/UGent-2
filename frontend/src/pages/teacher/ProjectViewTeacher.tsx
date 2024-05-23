@@ -7,10 +7,12 @@ import {PROJECT_TEACHER, ProjectTeacherLoaderObject} from "../../dataloaders/Pro
 import {useTranslation} from 'react-i18next';
 import DefaultErrorPage from "../../components/DefaultErrorPage.tsx";
 import {DEBUG} from "../root.tsx";
+import {useState} from "react";
 
 export default function ProjectViewTeacher() {
 
     const {t} = useTranslation();
+    const [projectName, setProjectName] = useState("")
 
     const data: ProjectTeacherLoaderObject = useRouteLoaderData(PROJECT_TEACHER) as ProjectTeacherLoaderObject
     const project_data = data.project
@@ -20,8 +22,7 @@ export default function ProjectViewTeacher() {
     }
 
     const deadline_date = new Date(project_data.project_deadline)
-
-
+    setProjectName(project_data.project_name)
     const project: ProjectTeacher = {
         projectId: project_data.project_id,
         projectName: project_data.project_name,
@@ -39,6 +40,7 @@ export default function ProjectViewTeacher() {
         groupProject: project_data.project_max_students > 1,
         dockerFile: project_data.project_dockerfile
     }
+
 
     async function downloadAllSubmissions() {
         let url = ''
@@ -61,7 +63,7 @@ export default function ProjectViewTeacher() {
     return (
         <>
             <div className={"main-header"}>
-                <Header page_title={project.projectName} home={"teacher"}/>
+                <Header page_title={projectName} home={"teacher"}/>
             </div>
             <div className={"main-content is-flex is-flex-direction-row"}>
                 <div className={"side-bar is-flex is-justify-content-center"}>
@@ -71,7 +73,9 @@ export default function ProjectViewTeacher() {
                     <ProjectTeacherComponent 
                         project={project} 
                         submission_statistics={project_data.submission_statistics} 
-                        download_all_submissions={downloadAllSubmissions}/>
+                        download_all_submissions={downloadAllSubmissions}
+                        updateTitle={setProjectName}
+                    />
                 </div>
             </div>
         </>

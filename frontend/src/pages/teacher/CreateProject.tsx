@@ -53,7 +53,11 @@ export function CreateProject(): JSX.Element {
                     <Sidebar home={"teacher"}/>
                 </div>
                 <div className={"student-main is-flex is-flex-direction-column"}>
-                    <ProjectTeacherComponent project={emptyProjectTeacher} submission_statistics={undefined} download_all_submissions={undefined} is_new={true}/>
+                    <ProjectTeacherComponent
+                        project={emptyProjectTeacher}
+                        submission_statistics={undefined}
+                        download_all_submissions={undefined}
+                        is_new={true}/>
                 </div>
             </div>
         </>
