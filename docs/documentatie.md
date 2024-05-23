@@ -1,40 +1,38 @@
-English version can be found [here](documentation.md)
+English version can be found [here](documentation.md).
 
 # Gebruikers handleiding
 
-## homepagina leerkracht / student
+## Homepagina leerkracht / student
 
-Op deze pagina krijg je al jouw huidige projecten te zien. Dit is een snelle overview.
-Dit zijn niet gearchiveerde projecten, en ook projecten die al zichtbaar zijn voor de studenten.
+Op deze pagina krijg je een snelle overview van al jouw huidige projecten te zien.
+Dit zijn niet-gearchiveerde projecten die zichtbaar zijn voor zowel leerkrachten als studenten.
 
-### student
+Als student krijg je hier ook een overzicht van al je komende deadlines die gesorteerd zijn op datum.
 
-Als student krijg je hier ook een overzicht van al je deadlines gesorteerd op datum.
+## Projecten pagina
 
-## projecten pagina
+### Student
 
-### student
+Hier krijg je al jouw projecten te zien. Zowel actieve als gearchiveerde projecten kan je hier terugvinden.
 
-Hier krijg je al jouw projecten te zien. Je kan ook gearchiveerde projecten bekijken.
+### Leerkracht
 
-### leerkracht
+Op de projecten pagina kan je al jouw projecten zien, dit zijn dus de huidige, gearchiveerde en de nog 
+niet zichtbare projecten voor de studenten.
 
-Op de projecten pagina kan je al jouw projecten zien, dit zijnde dus de huidige, ge-archiveerde en de projecten
-die nog niet zichtbaar zijn voor de studenten.
+## Project pagina
 
-## project pagina
-
-### student
+### Student
 
 Hier krijg je een overzicht van het project.
 
-Dit bevat namelijk de volgende data:
-- de naam van het project
-- de beschrijving van het project
-- jouw groepsleden
-- de deadline
-- de indieningstatus van het project
-- vereisten voor het project als die er zijn
+Dit bevat de volgende data:
+- naam van het project
+- beschrijving
+- groepsleden als aanwezig
+- deadline
+- indieningstatus van het project
+- vereisten als die er zijn
 
 Dit is ook de plaats waar je een indiening kan doen.
 
@@ -42,17 +40,16 @@ Als je nog eens wilt nakijken wat je ingediend hebt kan je ook de laatste
 indiening downloaden.
 
 
-### leerkracht
+### Leerkracht
 
-Hier zie je zowel de huidige data van het project dat de studenten zien.
-En ook kan je de data aanpassen indien nodig.
+Hier kan je de huidige data van het project vinden, maar ook deze aanpassen.
 
-Verder kan de leerkracht hier ook de indieningen van de studenten bekijken,
-de statistieken om de status van de indieningen te zien.
+Verder kan de leerkracht op deze pagina de indieningen van de studenten bekijken,
+net zoals de statistieken over de status van indieningen.
 
-Op deze pagina staan ook de archiveer en zichtbaarheids knoppen.
+Op deze pagina staan ook de archiveer- en zichtbaarheidsknoppen.
 
-Zie [simple constraints](simple_constraints.md) voor meer uitleg hoe je basis bestands beperkingen kan instellen.
+Zie [simple constraints](simple_constraints.md) voor meer uitleg hoe je basis bestandsbeperkingen kan instellen.
 
 Hier kan je ook een docker file uploaden voor jouw geautomatiseerde testen.
 Lees de documentatie van hoe deze werken op de [officiele docker site](https://docs.docker.com/reference/dockerfile/).
@@ -62,14 +59,13 @@ Enkele extra dingen om rekening mee te houden.
 - status code van het commando geeft aan als het geslaagd is of niet
 - alles dat geprint wordt naar stdout tijdens het uitvoeren van de docker file wordt getoond aan de studenten.
 
-## cursussen pagina
+## Cursussen pagina
 
-Hier krijg je een oplijsting van al jouw cursussen.
-Ook van de reeds gearchiveerde cursussen.
+Hier krijg je een oplijsting van al jouw cursussen, ook van de reeds gearchiveerde.
 
-## cursus pagina
+## Cursus pagina
 
-### student
+### Student
 
 Op deze pagina krijg je meer info over je cursus.
 
@@ -77,34 +73,32 @@ Hier kan je al jouw professoren zien, en ook de assistenten.
 
 Daarnaast zie je ook alle projecten die je hebt voor dit vak.
 
-### leerkracht
+### Leerkracht
 
 Hier beheer je vak als leerkracht.
 
-Deze volgende acties kan je doen:
-- de link naar je vak kopiëren. (om dan later te delen met je studenten)
+Deze volgende acties kan je uitvoeren:
+- de link naar je vak kopiëren (om dan later te delen met je studenten)
 - een nieuw project aanmaken
 - andere professoren en assistenten toevoegen
 - het vak archiveren
 - het vak verlaten
 
 Verder kan je de volgende data ook zien:
-- de naam van het vak
-- de projecten die je hebt voor dit vak
-- de andere professoren en assistenten
-- de studenten die ingeschreven zijn voor dit vak
+- naam van het vak
+- projecten die je hebt voor dit vak
+- andere professoren en assistenten
+- studenten die ingeschreven zijn voor dit vak
 
-## settings
+## Settings
 
-Hier kan je de taal van de website wijzigen. Momenteel is enkel Engels en Nederlands beschikbaar.
+Hier kan je de taal van de website wijzigen. Momenteel is Engels en Nederlands beschikbaar.
+Uitloggen doe je ook hier.
 
-Uitloggen doe je ook best via hier.
+Ten laatste is er ook een verwijzing naar deze documentatie.
 
-En ten laatste is er ook een verwijzing naar deze documentatie.
-
-### leerkracht / admin
+### Leerkracht / admin
 
 Voor gebruikers die meerdere rollen hebben kunnen zij hier van rol wisselen.
 Om de website dan te gebruiken als deze nieuwe rol.
-Zo houden we het overzichtelijk. En is het moeilijker om opeens iets te doen dat je niet van plan was.
-
+Zo houden we het overzichtelijk en is het moeilijker om opeens iets te doen dat je niet van plan was.
