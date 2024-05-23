@@ -54,7 +54,7 @@ export async function coursesLoader(role: teacherStudentRole, course_id?: number
         if (courseProjects.length === 0) {
             return {
                 active_projects: 0,
-                first_deadline: null,
+                first_deadline: "-",
                 project_archived: false,
                 project_visible: false,
                 all_projects: [],
@@ -63,7 +63,7 @@ export async function coursesLoader(role: teacherStudentRole, course_id?: number
                 course_archived: course.course_archived,
                 course_id: course.course_id,
                 course_name: course.course_name
-            };
+            } as properCourse;
         }
 
         const firstDeadline = getFirstUpcomingDeadline(courseProjects);
@@ -96,10 +96,10 @@ function getSmallProjectInfo(project: Project): SmallProjectInfo {
 }
 
 
-function getFirstUpcomingDeadline(courseProjects: Project[]): string | Date {
+function getFirstUpcomingDeadline(courseProjects: Project[]): string {
     const filtered = courseProjects.filter(course => course.project_visible && !course.project_archived);
     if (filtered.length === 0) {
-      return "";
+      return "-";
     }
     const first_deadline = filtered.reduce((minProject, project) => {
         if (project.project_deadline < minProject.project_deadline) {

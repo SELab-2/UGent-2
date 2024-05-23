@@ -9,7 +9,7 @@ export interface Backend_Course {
 export interface Backend_Project {
     id: number,
     name: string,
-    deadline: string | Date,
+    deadline: string,
     archived: boolean,
     description: string,
     requirements: string,

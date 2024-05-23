@@ -9,7 +9,7 @@ export interface Course {
 export interface Project {
     project_id: number,
     project_name: string,
-    project_deadline: string | Date,
+    project_deadline: string,
     project_archived: boolean,
     project_description: string,
     project_requirements: string,
@@ -63,14 +63,14 @@ export interface CompleteProjectTeacher extends CompleteProject {
 export interface SmallProjectInfo {
     project_id: number,
     project_name: string,
-    project_deadline: Date | string,
+    project_deadline: string,
     project_archived: boolean,
     project_visible: boolean,
 }
 
 export interface properCourse extends Course {
     active_projects: number,
-    first_deadline: Date | null | string,
+    first_deadline: string,
     all_projects: SmallProjectInfo[] | null,
     teachers: SmallUserInfo[],
     students: SmallUserInfo[]
