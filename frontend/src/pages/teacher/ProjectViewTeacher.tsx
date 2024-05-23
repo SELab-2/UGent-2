@@ -30,6 +30,8 @@ export default function ProjectViewTeacher() {
         hours: deadline_date.getHours(),
         minutes: deadline_date.getMinutes(),
         deadline: deadline_date,
+        visible: project_data.project_visible,
+        archived: project_data.project_archived,
         description: project_data.project_description,
         maxGroupMembers: project_data.project_max_students,
         requiredFiles: JSON.parse(project_data.project_requirements) as object,

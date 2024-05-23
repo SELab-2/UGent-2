@@ -28,6 +28,8 @@ export function CreateProject(): JSX.Element {
         hours: 0,
         minutes: 0,
         otherFilesAllow: false,
+        visible: false,
+        archived: false,
         projectName: "",
         requiredFiles: {
             type: "SUBMISSION",

@@ -12,6 +12,8 @@ export type ProjectTeacher = {
     hours: number,
     minutes: number,
     deadline: Value,
+    visible: boolean,
+    archived: boolean,
     description: string,
     requiredFiles: object,
     otherFilesAllow: boolean,

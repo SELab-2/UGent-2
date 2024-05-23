@@ -51,6 +51,8 @@
     },
     "create_project": {
         "title": "Create project",
+        "success": "Your project has been successfully saved.",
+        "failed": "Something went wrong while saving your project. Please try again.",
         "name": {
             "tag": "Project name:",
             "placeholder": "Enter a name"

@@ -2,7 +2,7 @@ import {ChangeEvent, JSX, useEffect, useRef, useState} from "react";
 import Inputfield from "./Inputfield.tsx";
 import {SelectionBox} from "./SelectionBox.tsx";
 import 'react-calendar/dist/Calendar.css';
-import {FaUpload} from "react-icons/fa";
+import {FaEraser, FaUpload} from "react-icons/fa";
 import {ProjectTeacher, Value} from "../types/project.ts";
 import "../assets/styles/teacher_components.css"
 import SimpleTests from "./SimpleTests/SimpleTests.tsx";
@@ -13,16 +13,19 @@ import Statistics from "./Statistics.tsx";
 import {RegularButton} from "./RegularButton.tsx";
 import {FaDownload} from "react-icons/fa6";
 import _ from 'lodash';
-import { FaEraser } from "react-icons/fa";
+import {ProjectInput} from "../utils/InputInterfaces.ts";
+import {course_create_project} from "../utils/api/Course.ts";
+import {Project} from "../utils/ApiInterfaces.ts";
+import {useNavigate} from "react-router-dom";
+import {update_project} from "../utils/api/Project.ts";
 
-export function ProjectTeacherComponent(props: { 
-    project: ProjectTeacher, 
-    submission_statistics: {[key: number]: number} | undefined,
+export function ProjectTeacherComponent(props: {
+    project: ProjectTeacher,
+    submission_statistics: { [key: number]: number } | undefined,
     download_all_submissions: (() => Promise<void>) | undefined
 }): JSX.Element {
-
+    const navigate = useNavigate();
     const {t} = useTranslation();
-
     const [projectName, setProjectName] = useState<string>(props.project.projectName)
     const [courseName, setCourseName] = useState<string>(props.project.courseName)
     const [hours, setHours] = useState<number>(props.project.hours);
@@ -31,6 +34,10 @@ export function ProjectTeacherComponent(props: {
     const [description, setDescription] = useState(props.project.description);
     const [max_students, setMaxStudents] = useState(props.project.maxGroupMembers);
     const [requiredFiles, setRequiredFiles] = useState(props.project.requiredFiles);
+    const [visible, setVisible] = useState(props.project.visible)
+    const [archived, setArchived] = useState(props.project.archived)
+    const [success, isSuccess] = useState<boolean | undefined>(undefined)
+
     // Deze wordt niet gebruikt. Dit zit verwerkt in het json-object als OnlyPresentConstraint.
     // const [otherFilesAllow, setOtherFilesAllow] = useState(props.project.otherFilesAllow);
     const [groupProject, setGroupProject] = useState(props.project.groupProject);
@@ -50,35 +57,28 @@ export function ProjectTeacherComponent(props: {
         value7: max_students,
         value8: requiredFiles,
         value9: groupProject,
-        value10: dockerString
+        value10: dockerString,
+        value11: visible,
+        value12: archived
     });
 
     useEffect(() => {
-        setInitialValues({
-            value1: projectName,
-            value2: courseName,
-            value3: hours,
-            value4: minutes,
-            value5: deadline,
-            value6: description,
-            value7: max_students,
-            value8: requiredFiles,
-            value9: groupProject,
-            value10: dockerString
-        });
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     function allowSaveButton(): boolean {
-        const first_part = _.isEqual(projectName,  initialValues.value1) &&
-            _.isEqual(courseName,   initialValues.value2) &&
-            _.isEqual(hours,        initialValues.value3) &&
-            _.isEqual(minutes,      initialValues.value4) &&
-            _.isEqual(description,  initialValues.value6) &&
+        const first_part = _.isEqual(projectName, initialValues.value1) &&
+            _.isEqual(courseName, initialValues.value2) &&
+            _.isEqual(hours, initialValues.value3) &&
+            _.isEqual(minutes, initialValues.value4) &&
+            _.isEqual(description, initialValues.value6) &&
             _.isEqual(max_students, initialValues.value7) &&
-            _.isEqual(requiredFiles,initialValues.value8) &&
+            _.isEqual(requiredFiles, initialValues.value8) &&
             _.isEqual(groupProject, initialValues.value9) &&
-            _.isEqual(dockerString, initialValues.value10);
+            _.isEqual(dockerString, initialValues.value10) &&
+            _.isEqual(visible, initialValues.value11) &&
+            _.isEqual(archived, initialValues.value12);
         const second_part_1 = (deadline as Date).toDateString();
         const second_part_2 = (initialValues.value5 as Date).toDateString();
         const second_part = _.isEqual(second_part_1, second_part_2);
@@ -137,7 +137,7 @@ export function ProjectTeacherComponent(props: {
     }
 
     function handleDownloadDocker() {
-        const blob = new Blob([dockerString], { type: 'text/plain' });
+        const blob = new Blob([dockerString], {type: 'text/plain'});
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
@@ -148,18 +148,65 @@ export function ProjectTeacherComponent(props: {
         document.body.removeChild(a);
     }
 
+    async function handleSaveClick() {
+        const projectInput: ProjectInput = {
+            name: projectName,
+            deadline: (deadline as Date).toISOString(),
+            visible: visible,
+            archived: archived,
+            description: description,
+            requirements: JSON.stringify(requiredFiles),
+            max_students: max_students == 0 ? 1 : max_students,
+            dockerfile: dockerString
+        }
+
+        const course = props.project.all_courses.find(project => project.course_name == props.project.courseName)
+        if (!course) {
+            return;
+        }
+
+        if (props.project.projectId == -1) {
+            // Create new project
+            const new_project: Project = await course_create_project(course.course_id, projectInput)
+            await new Promise(resolve => setTimeout(resolve, 500))
+            navigate(`/teacher/projects/${new_project.project_id}`)
+        } else {
+            // Update project
+            const updated_project: boolean = await update_project(props.project.projectId, projectInput)
+            isSuccess(updated_project);
+            if (updated_project) {
+                setInitialValues({
+                    value1: projectName,
+                    value2: courseName,
+                    value3: hours,
+                    value4: minutes,
+                    value5: deadline,
+                    value6: description,
+                    value7: max_students,
+                    value8: requiredFiles,
+                    value9: groupProject,
+                    value10: dockerString,
+                    value11: visible,
+                    value12: archived
+                });
+            }
+            await new Promise(resolve => setTimeout(resolve, 3000))
+            isSuccess(undefined)
+        }
+    }
+
     return (
         <div className={"create-project"}>
             <div className={"create-project-topbar"}>
-                <RegularButton placeholder={t('project.save')} add={false} onClick={() => {}} 
-                    disabled={!allowSaveButton()}
-                    primary={allowSaveButton()}/> {/* TODO: implement save */}
+                <RegularButton placeholder={t('project.save')} add={false} onClick={handleSaveClick}
+                               disabled={!allowSaveButton()}
+                               primary={allowSaveButton()}/> {/* TODO: implement save */}
                 <div className={"mr-5"}/>
                 {props.submission_statistics !== undefined &&
                     <Statistics statistics={props.submission_statistics}/>
                 }
                 <div className={"mr-5"}/>
-                {props.download_all_submissions !== undefined && 
+                {props.download_all_submissions !== undefined &&
                     <button className="js-modal-trigger button is-rounded is-pulled-right"
                             onClick={() => {
                                 if (props.download_all_submissions !== undefined) {
@@ -172,8 +219,17 @@ export function ProjectTeacherComponent(props: {
                         <span>{t('download.download_all')}</span>
                     </button>
                 }
-            </div>  
+            </div>
             <div className={"create-project-content"}>
+                {/* Result Save */}
+                {success && <div className="notification is-success is-flex is-justify-content-center mx-5 my-3">
+                    {t('create_project.success')}
+                </div>}
+
+                {success !== undefined && !success && <div className="notification is-danger is-flex is-justify-content-center mx-5 my-3">
+                    {t('create_project.failed')}
+                </div>}
+
                 {/* PROJECT NAME FIELD */}
                 <div className={"field is-horizontal"}>
                     <div className={"field-label"}>
@@ -191,7 +247,7 @@ export function ProjectTeacherComponent(props: {
                     </div>
                     <div className="field-body field">
                         <SelectionBox options={course_options} value={courseName}
-                                    setValue={setCourseName}/>
+                                      setValue={setCourseName}/>
                     </div>
                 </div>
                 {/* DEADLINE FIELD */}
@@ -199,18 +255,19 @@ export function ProjectTeacherComponent(props: {
                     <div className="field-label">
                         <label className="label">{t('create_project.deadline.tag')}</label>
                     </div>
-                    <div className="field-body is-flex is-flex-direction-column is-align-items-start is-justify-content-center">
+                    <div
+                        className="field-body is-flex is-flex-direction-column is-align-items-start is-justify-content-center">
                         <div>
                             <div>
                                 <Calendar onChange={date => setDeadline(date)} value={deadline}
-                                        locale={t('create_project.deadline.locale')}/>
+                                          locale={t('create_project.deadline.locale')}/>
                             </div>
                             <div className="is-horizontal field is-justify-content-center mt-2">
                                 <SelectionBox options={hours_array} value={hours.toString()}
-                                            setValue={setHours} value_as_number={true}/>
+                                              setValue={setHours} value_as_number={true}/>
                                 <label className={"title mx-3"}>:</label>
                                 <SelectionBox options={minutes_array} value={minutes.toString()}
-                                            setValue={setMinutes} value_as_number={true}/>
+                                              setValue={setMinutes} value_as_number={true}/>
                             </div>
                         </div>
                     </div>
@@ -223,8 +280,8 @@ export function ProjectTeacherComponent(props: {
                     <div className="field-body field">
                         <div style={{width: "33%"}}> {/* Deze moet er blijven, anders doet css raar*/}
                             <textarea className="textarea" placeholder={t('create_project.description.placeholder')}
-                                    value={description}
-                                    onChange={e => setDescription(e.target.value)}/>
+                                      value={description}
+                                      onChange={e => setDescription(e.target.value)}/>
                         </div>
                     </div>
                 </div>
@@ -244,7 +301,7 @@ export function ProjectTeacherComponent(props: {
                                 }
                                 {dockerString !== "" &&
                                     <button className="download-button button is-small is-light"
-                                        onClick={handleDownloadDocker}>
+                                            onClick={handleDownloadDocker}>
                                         <span className="icon is-small">
                                             <FaDownload/>
                                         </span>
@@ -255,8 +312,8 @@ export function ProjectTeacherComponent(props: {
                             <div className="is-flex is-align-items-center">
                                 <label className="file-label">
                                     <input className="file-input" type="file" name="resume"
-                                        ref={dockerRef}
-                                        onChange={handleChangeDocker}/>
+                                           ref={dockerRef}
+                                           onChange={handleChangeDocker}/>
                                     <span className="file-cta">
                                         <span className="file-icon">
                                             <FaUpload/>
@@ -273,9 +330,9 @@ export function ProjectTeacherComponent(props: {
                                     }
                                 </label>
                                 {dockerString !== "" &&
-                                <span>
+                                    <span>
                                     <button className="download-button button is-small is-light"
-                                        onClick={handleClearNewDocker}>
+                                            onClick={handleClearNewDocker}>
                                         <FaEraser/>
                                     </button>
                                 </span>
@@ -301,6 +358,34 @@ export function ProjectTeacherComponent(props: {
                         </div>
                     </div>
                 </div>
+
+                {/* VISIBLE FIELD*/}
+                <div className="field is-horizontal">
+                    <div className="field-label">
+                        <label className="label">{"Visable:"}</label> {/* TODO: Translation*/}
+                    </div>
+                    <div className="field-body is-fullwidth is-align-content-center">
+                        <label>
+                            <input type="checkbox" onChange={e => setVisible(e.target.checked)}
+                                   checked={visible}/>
+                        </label>
+                    </div>
+                </div>
+
+                {/* Archived FIELD*/}
+                {props.project.projectId != -1 && <div className="field is-horizontal">
+                    <div className="field-label">
+                        <label className="label">{"Archived:"}</label> {/* TODO: Translation*/}
+                    </div>
+                    <div className="field-body is-fullwidth is-align-content-center">
+                        <label>
+                            <input type="checkbox" onChange={e => setArchived(e.target.checked)}
+                                   checked={archived}/>
+                        </label>
+                    </div>
+                </div>}
+
+
                 {/* TEAMWORK FIELD */}
                 <div className="field is-horizontal">
                     <div className="field-label">
@@ -309,7 +394,7 @@ export function ProjectTeacherComponent(props: {
                     <div className="field-body is-fullwidth is-align-content-center">
                         <label>
                             <input type="checkbox" onChange={e => expandGroup(e.target.checked)}
-                                checked={groupProject}/>
+                                   checked={groupProject}/>
                         </label>
 
                         {showGroup &&
