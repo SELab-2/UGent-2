@@ -1,6 +1,5 @@
 import { test, expect } from '@playwright/test';
 import {Token} from "../utils/ApiInterfaces.ts";
-import {join} from "lodash";
 
 test('user flow: student', async ({ page }) => {
     await page.goto('https://localhost:8080');
@@ -47,14 +46,14 @@ test('user flow: student', async ({ page }) => {
     const leaveButton = page.getByRole('button').nth(2);
     await expect(leaveButton).toBeVisible();
     await leaveButton.click();
-    //const noGroup = page.getByText('You don\'t have a group yet');
-    //await expect(noGroup).toBeVisible();
     await expect(groupMember).toBeHidden();
+    //selecteer groep
     const joinButton = page.getByRole('row', { name: '2 2' }).getByRole('button');
     await expect(joinButton).toBeVisible();
     await joinButton.click();
-    //await expect(noGroup).toBeHidden();
     await expect(groupMember).toBeVisible();
+    const otherMember = page.getByRole('cell', { name: 'Ruben', exact: true });
+    await expect(otherMember).toBeVisible();
     await expect(joinButton).toBeHidden();
     //ga naar courses
     const coursesButton = page.getByRole('link').nth(2);
@@ -70,7 +69,7 @@ test('user flow: student', async ({ page }) => {
     //ga naar settings en log uit
     await settingsButton.click();
     const logoutButton = page.locator('div').filter({ hasText: /^Logout:$/ }).getByRole('link')
-    await logoutButton.click(); // deze button zou wel iets eenvoudiger mogen zijn
+    await logoutButton.click();
     await page.waitForLoadState('networkidle');
     await expect(page).toHaveTitle(/Delphi/);
     const loginButton = page.getByRole('link', { name: 'Log in' })
