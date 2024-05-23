@@ -20,7 +20,7 @@ import {useNavigate} from "react-router-dom";
 import {project_create_group, update_project} from "../utils/api/Project.ts";
 import {getScrollbarWidth} from "../utils/ScrollBarWidth.ts";
 import Switch from "react-switch";
-import { MdRestore } from "react-icons/md";
+import {MdRestore} from "react-icons/md";
 
 export function ProjectTeacherComponent(props: {
     project: ProjectTeacher,
@@ -95,7 +95,7 @@ export function ProjectTeacherComponent(props: {
         }
     };
 
-    const course_options = props.project.all_courses.map(course => course.course_name);
+    const course_options = props.project.all_courses.filter(course => !course.course_archived).map(course => course.course_name);
 
     const hours_array = Array.from({length: 24}, (_, index) => index.toString().padStart(2, '0'));
     const minutes_array = Array.from({length: 60}, (_, index) => index.toString().padStart(2, '0'));
@@ -373,12 +373,12 @@ export function ProjectTeacherComponent(props: {
                                         <FaEraser/>
                                     </button>
                                 </span>
-                                }                               
+                                }
                                 {initialValues.value10 !== "" && initialValues.value10 !== dockerString &&
                                     <span>
                                     <button className="download-button button is-small is-light"
                                             onClick={handleRestoreDocker}>
-                                        <MdRestore />
+                                        <MdRestore/>
                                     </button>
                                 </span>
                                 }
