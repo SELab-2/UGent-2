@@ -1,11 +1,11 @@
 import { test, expect } from '@playwright/test';
 import {Token} from "../utils/ApiInterfaces.ts";
 
-test('user flow: student', async ({ page }) => {
+//use fake login endpoint from DEBUG mode backend
+async function login(page, uid) {
     await page.goto('https://localhost:8080');
     await page.waitForLoadState('networkidle');
-    await expect(page).toHaveTitle(/Delphi/);
-    const url = 'http://127.0.0.1:8000/api/fake-login?uid=6'  //uid=6 is Robbe
+    const url = "http://127.0.0.1:8000/api/fake-login?uid="+uid.toString();
     const token = await (await fetch(url, {method: 'POST', headers: {'Content-Type': 'application/json'}}))
         .json() as Token
     if (token.token) {
@@ -15,9 +15,12 @@ test('user flow: student', async ({ page }) => {
         const tokenValue = await page.evaluate(() => localStorage.getItem('token'));
         expect(tokenValue).toBe(token.token);
     }
-
     await page.goto('https://localhost:8080');
     await page.waitForLoadState('networkidle');
+}
+
+test('user flow: student', async ({ page }) => {
+    await login(page, 6);  //uid=6 is Robbe
     await expect(page).toHaveTitle(/Delphi/);
     const username = page.getByRole('button', { name: 'Robbe' })
     await expect(username).toBeVisible();
@@ -29,8 +32,6 @@ test('user flow: student', async ({ page }) => {
     await studentButton.click();
     const home = page.getByText('Flash Cards').first();
     await expect(home).toBeVisible();
-    const status3 = page.getByRole('link').nth(1)
-    await expect(status3).toBeVisible();
     //ga naar projects
     const projectsButton = page.getByRole('link').nth(1);
     await projectsButton.click();
@@ -72,6 +73,70 @@ test('user flow: student', async ({ page }) => {
     await logoutButton.click();
     await page.waitForLoadState('networkidle');
     await expect(page).toHaveTitle(/Delphi/);
+    const loginButton = page.getByRole('link', { name: 'Log in' })
+    await expect(loginButton).toBeVisible();
+});
+
+test('user flow: teacher', async ({ page }) => {
+    await login(page, 11);  //uid=11 is PJ
+    await expect(page).toHaveTitle(/Delphi/);
+    const username = page.getByRole('button', { name: 'Pieter-Jan De Smet' })
+    await expect(username).toBeVisible();
+    const home = page.getByText('Flash Cards').first();
+    await expect(home).toBeVisible();
+
+    const projectsButton = page.getByRole('link').nth(1);
+    await projectsButton.click();
+    const projectsTitle = page.getByText('Projects');
+    await expect(projectsTitle).toBeVisible();
+    const project1 = page.getByRole('link', { name: 'Flash Cards' });
+    await project1.click();
+    const stats = page.getByText('Statistics');
+    await expect(stats).toBeVisible();
+    await stats.click();
+    const statsNum = page.getByText('Success: 100 %');
+    await expect(statsNum).toBeVisible();
+    const close = page.getByLabel('close');
+    await close.click();
+
+    await projectsButton.click();
+    await expect(projectsTitle).toBeVisible();
+    const newProjectButton = page.getByRole('link', { name: 'new project' });
+    await newProjectButton.click();
+    const newProjectTitle = page.getByText('Create project');
+    await expect(newProjectTitle).toBeVisible();
+    const nameInput = page.getByPlaceholder('Enter a name');
+    await nameInput.fill('Test Project');
+    const hours = page.getByRole('combobox').nth(1);
+    await hours.selectOption({ label: '16' });
+    const minutes = page.getByRole('combobox').nth(2);
+    await minutes.selectOption({ label: '20' });
+    const description = page.getByPlaceholder('Optional description of the');
+    await description.fill('test 1 2 3 test');
+    const visible = page.locator('.field-body > div > .react-switch-handle').first();
+    await visible.click();
+    const saveButton = page.getByRole('button', { name: 'Save' });
+    await saveButton.click();
+
+    await projectsButton.click();
+    const newProject = page.getByRole('link', { name: 'Test Project' });
+    await newProject.click();
+    const projectTitle = page.getByText('Test Project');
+    await expect(projectTitle).toBeVisible();
+
+    const coursesButton = page.getByRole('link').nth(2);
+    await coursesButton.click();
+    const objprog = page.getByRole('link', { name: 'Objectgericht Programmeren' })
+    await objprog.click();
+    const teacherName = page.getByText('Kris Coolsaet');
+    await expect(teacherName).toBeVisible();
+
+    //ga naar settings en log uit
+    const settingsButton = page.locator('.is-transparent.mb-5');
+    await settingsButton.click();
+    const logoutButton = page.locator('div').filter({ hasText: /^Logout:$/ }).getByRole('link')
+    await logoutButton.click();
+    await page.waitForLoadState('networkidle');
     const loginButton = page.getByRole('link', { name: 'Log in' })
     await expect(loginButton).toBeVisible();
 });
