@@ -181,7 +181,7 @@ export function ProjectTeacherComponent(props: {
             dockerfile: dockerString
         }
 
-        const course = props.project.all_courses.find(project => project.course_name == props.project.courseName)
+        const course = props.project.all_courses.find(project => project.course_name == courseName)
         if (!course) {
             return;
         }
