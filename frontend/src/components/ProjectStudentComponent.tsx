@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment, no-inner-declarations */
 import {ChangeEvent, JSX, useEffect, useRef, useState} from "react";
 import FieldWithLabel from "./FieldWithLabel.tsx";
 import {FaCheck, FaUpload} from "react-icons/fa";
@@ -14,6 +15,7 @@ import {joinGroup, leaveGroup} from "../utils/api/Groups.ts";
 import {getGroupInfo, loadGroupMembers} from "../dataloaders/loader_helpers/SharedFunctions.ts";
 import SimpleTests from "./SimpleTests/SimpleTests.tsx";
 import {TeacherOrStudent} from "./SimpleTests/TeacherOrStudentEnum.tsx";
+import getID from "./SimpleTests/IDProvider.tsx";
 
 function ProjectInfo(props: { project: ProjectStudent }): JSX.Element {
     const {t} = useTranslation();
@@ -297,7 +299,7 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
 
     function tryParseError(error: string): ParsedError {
         try {
-            let obj: StringDictionary = JSON.parse(error);
+            const obj: StringDictionary = JSON.parse(error);
             const row_list_local: ErrorRow[] = [];
             const row_list_global: ErrorRow[] = [];
 
@@ -383,7 +385,7 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
                                 <div>
                                     <div>
                                     {tryParseError(error).global_rows?.map(row => 
-                                            <div className="error-row">
+                                            <div key={getID()} className="error-row">
                                                 {"\u00A0".repeat(5 * row.depth)}
                                                 {row.success
                                                     ? <div className="error-success">{row.type.toLocaleLowerCase()}: {row.value}</div>
@@ -397,7 +399,7 @@ export default function ProjectStudentComponent(props: { project: ProjectStudent
                                 }
                                 <div>
                                     {tryParseError(error).local_rows?.map(row => 
-                                        <div className="error-row">
+                                        <div key={getID()} className="error-row">
                                             {"\u00A0".repeat(5 * row.depth)}
                                             {row.success
                                                 ? <div className="error-success">{row.type.toLocaleLowerCase()}: {row.value}</div>
